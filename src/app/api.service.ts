@@ -1,0 +1,56 @@
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/delay';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/merge';
+
+
+declare let io: any;
+
+@Injectable()
+export class ApiService {
+
+  private socket: any;
+  private subject = new Subject<any>();
+
+  constructor() { }
+
+  /**
+   * Sets up connection to the server.
+   */
+  init () {
+      let socket = this.socket = io.connect('localhost:3030');
+      socket.on('any', (data) => {
+        this.subject.next(data);
+        console.log(data);
+      });
+  }
+
+  /**
+   * Executes code on the server. Returns an Observable<string>
+   * where `string` is each line that was printed to STDOUT.
+   */
+  runCode (code: string) : Observable<string> {
+
+    let uniqueId = 'some-unique-id';
+    this.socket.emit('run_code', {
+      id: uniqueId,
+      data: code
+    });
+
+    return this.subject
+               .filter(msg => msg.ref_id === uniqueId)
+               // we want our Observables to complete when the remote code execution
+               // is completed. Hence we wait for the `process_finished` event for 
+               // that particular process and complete the Observable through `takeUntil`
+               .takeUntil(this.subject.filter(msg => msg.ref_id === uniqueId && 
+                                              msg.event_type === 'process_finished'))
+               .map(msg => msg.data);
+  }
+
+}

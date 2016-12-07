@@ -1,0 +1,15 @@
+textarea {
+    width: 100%;
+    height: 300px
+}
+
+output {
+    width: 100%;
+    height: 300px;
+    background: lightgoldenrodyellow;
+    display: block;
+}
+
+li {
+    display:block;
+}
