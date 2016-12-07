@@ -1,14 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/takeWhile';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/merge';
-
 
 declare let io: any;
 
