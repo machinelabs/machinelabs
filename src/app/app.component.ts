@@ -22,6 +22,6 @@ export class AppComponent {
     // which saves us the manually book-keeping of subscriptions, hence the scan.
 
     this.output = this.apiService.runCode(code)
-                                 .scan((acc, current) => [...acc, current], [])
+                                 .scan((acc, current) => [...acc, current], []);
   }
 }

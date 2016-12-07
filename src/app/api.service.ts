@@ -5,7 +5,7 @@ import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/takeWhile';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/merge';
 
@@ -47,9 +47,8 @@ export class ApiService {
                .filter(msg => msg.ref_id === uniqueId)
                // we want our Observables to complete when the remote code execution
                // is completed. Hence we wait for the `process_finished` event for 
-               // that particular process and complete the Observable through `takeUntil`
-               .takeUntil(this.subject.filter(msg => msg.ref_id === uniqueId && 
-                                              msg.event_type === 'process_finished'))
+               // that particular process and complete the Observable through `takeWhile`
+               .takeWhile(msg => !(msg.ref_id === uniqueId && msg.event_type === 'process_finished'))
                .map(msg => msg.data);
   }
 
