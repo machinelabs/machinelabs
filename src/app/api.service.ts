@@ -32,7 +32,8 @@ export class ApiService {
    */
   runCode (code: string) : Observable<string> {
 
-    let uniqueId = 'some-unique-id';
+    // ids need to be unique only across connection, so Date.now() should do it
+    let uniqueId = Date.now();
     this.socket.emit('run_code', {
       id: uniqueId,
       data: code
