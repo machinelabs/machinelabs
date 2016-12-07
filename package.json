@@ -1,0 +1,15 @@
+{
+  "name": "machinelabs-server",
+  "version": "0.1.0",
+  "description": "Prototype backend for machinelabs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Christoph Burgdorf <christoph.burgdorf@bvsn.org> (http://cburgdorf.wordpress.com/)",
+  "license": "ISC",
+  "dependencies": {
+    "@reactivex/rxjs": "^5.0.0-rc.5",
+    "socket.io": "^1.7.1"
+  }
+}
