@@ -14,7 +14,7 @@
     "serve": "gulp build && node dist/index.js",
     "test": "node scripts/run-tests.js",
     "tslint": "tslint -c config/tslint.json src/**/*.ts"
-   },
+  },
   "devDependencies": {
     "@types/core-js": "^0.9.34",
     "@types/glob": "^5.0.29",
@@ -24,6 +24,7 @@
     "@types/minimist": "^1.1.28",
     "@types/node": "^6.0.45",
     "@types/run-sequence": "0.0.27",
+    "@types/socket.io": "^1.4.27",
     "@types/source-map": "^0.1.27",
     "@types/uglify-js": "^2.0.27",
     "chalk": "^1.1.3",
