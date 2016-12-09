@@ -11,7 +11,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "noEmitOnError": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "noImplicitReturns": false,
     "suppressImplicitAnyIndexErrors": true,
     "inlineSources": true,
