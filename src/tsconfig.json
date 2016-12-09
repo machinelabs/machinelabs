@@ -5,26 +5,20 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "../dist/",
-    "rootDir": ".",
+    "rootDir": "./",
     "sourceMap": true,
     "target": "es5",
-
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-
     "noEmitOnError": true,
     "noImplicitAny": false,
     "noImplicitReturns": false,
     "suppressImplicitAnyIndexErrors": true,
     "inlineSources": true,
     "stripInternal": true,
-
+    "paths": {  },
     "baseUrl": "",
-    "typeRoots": [
-      "../../node_modules/@types"
-    ],
-    "types": [
-      "node"
-    ]
+    "typeRoots": [  "../../node_modules/@types" ],
+    "types": [  "node"  ]
   }
 }
