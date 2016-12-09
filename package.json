@@ -14,8 +14,9 @@
   },
   "scripts": {
     "build": "gulp build",
-     "test": "node scripts/run-tests.js",
-     "tslint": "tslint -c tslint.json lib/**/*.ts"
+    "serve": "gulp build && node dist/index.js",
+    "test": "node scripts/run-tests.js",
+    "tslint": "tslint -c tslint.json lib/**/*.ts"
    },
   "devDependencies": {
     "@types/core-js": "^0.9.34",

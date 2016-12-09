@@ -7,6 +7,5 @@ This is a work in progress prototype of the server powering machinelabs.ai
 ```
 git clone <this-repo-url>
 npm install   # or yarn install
-gulp build
-node ./dist/index
+npm run serve
 ```
