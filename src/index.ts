@@ -1,17 +1,15 @@
-var Rx = require('@reactivex/rxjs');
-const Observable = Rx.Observable;
-const io = require('socket.io')();
-
+import * as io_lib from 'socket.io';
 import { DummyRunner } from './code-runner/dummy-runner.js';
 import { DockerRunner } from './code-runner/docker-runner.js';
 
+const io = io_lib();
 const DUMMY_RUNNER = process.argv.includes('--dummy-runner');
 
 let runner = DUMMY_RUNNER ? new DummyRunner() : new DockerRunner();
 
 //TODO: Make sure this code allows only connections from trusted clients
-io.on('connection', (socket) => {
-  socket.on('run_code', (data) => {
+io.on('connection', (socket: any) => {
+  socket.on('run_code', (data: any) => {
     runner.run(data.data)
       .subscribe(psData => {
         socket.emit('any', {

@@ -8,7 +8,7 @@ import { CodeRunner, ProcessStreamData } from './code-runner';
  * This is the Docker Runner that takes the code and runs it on a isolated docker container
  */
 export class DockerRunner implements CodeRunner {
-  run(code): Observable<ProcessStreamData> {
+  run(code: string): Observable<ProcessStreamData> {
 
     // FixMe: Sync is bad. Kitten die. But this code has even more issues so keep calm. 
     fs.writeFileSync(`${process.cwd()}/labfs/run.py`, code);
