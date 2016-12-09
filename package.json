@@ -16,7 +16,7 @@
     "build": "gulp build",
     "serve": "gulp build && node dist/index.js",
     "test": "node scripts/run-tests.js",
-    "tslint": "tslint -c tslint.json lib/**/*.ts"
+    "tslint": "tslint -c tslint.json src/**/*.ts"
    },
   "devDependencies": {
     "@types/core-js": "^0.9.34",
