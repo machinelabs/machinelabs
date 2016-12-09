@@ -1,5 +1,4 @@
-// FIXME: Workaround to get the type until typescript typing import is fixed
-export type Observable<T> = any;
+import { Observable } from '@ReactiveX/rxjs';
 
 export interface ProcessStreamData {
   origin: string,
