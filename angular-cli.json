@@ -20,7 +20,11 @@
       "styles": [
         "styles.css"
       ],
-      "scripts": [],
+      "scripts": [
+        "../node_modules/ace-builds/src-noconflict/ace.js",
+        "../node_modules/ace-builds/src-noconflict/theme-github.js",
+        "../node_modules/ace-builds/src-noconflict/mode-python.js"
+      ],
       "environments": {
         "source": "environments/environment.ts",
         "dev": "environments/environment.ts",
