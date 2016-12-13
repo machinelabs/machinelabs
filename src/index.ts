@@ -7,6 +7,8 @@ const DUMMY_RUNNER = process.argv.includes('--dummy-runner');
 
 let runner = DUMMY_RUNNER ? new DummyRunner() : new DockerRunner();
 
+console.log(`Using runner: ${runner.constructor.name}`);
+
 //TODO: Make sure this code allows only connections from trusted clients
 io.on('connection', (socket: any) => {
   socket.on('run_code', (data: any) => {
