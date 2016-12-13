@@ -3,7 +3,7 @@ import { ApiService } from './api.service';
 import 'rxjs/add/operator/scan';
 
 @Component({
-  selector: 'app-root',
+  selector: 'ml-app',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
