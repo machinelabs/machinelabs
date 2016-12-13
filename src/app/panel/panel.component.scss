@@ -1,0 +1,18 @@
+:host {
+  display: block;
+  width: 50%;
+  float: left;
+  border-left: 2px solid #b6b6b6;
+
+  &:first-child {
+    border-left: none;
+  }
+}
+
+.ml-panel__title {
+  color: rgba(208, 208, 208, 1);
+  text-transform: uppercase;
+  font-size: 1.1em;
+  margin: 0;
+  padding: 0.5em 1.2em;
+}

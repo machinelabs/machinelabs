@@ -5,11 +5,13 @@ import { HttpModule } from '@angular/http';
 import { ApiService } from './api.service';
 import { AppComponent } from './app.component';
 import { AceEditorComponent } from './ace-editor/ace-editor.component';
+import { PanelComponent } from './panel/panel.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AceEditorComponent
+    AceEditorComponent,
+    PanelComponent
   ],
   imports: [
     BrowserModule,

@@ -9,15 +9,11 @@
     </li>
   </ul>
 </header>
-
-<ml-ace-editor #editor [value]="code" (valueChange)="log($event)">
-Hello World
-</ml-ace-editor>
-
-
-<h3>Output</h3>
-<output>
-<ul>
-  <li *ngFor="let line of output | async"><pre>{{line}}</pre></li>
-</ul>
-</output>
+<div role="main">
+  <ml-panel panelTitle="Code">
+    <ml-ace-editor #editor [value]="code" (valueChange)="log($event)"></ml-ace-editor>
+  </ml-panel>
+  <ml-panel panelTitle="Output">
+    <ml-ace-editor [value]="output" [readOnly]="true" [showGutter]="false"></ml-ace-editor>
+  </ml-panel>
+</div>

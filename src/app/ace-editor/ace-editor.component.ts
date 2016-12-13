@@ -17,7 +17,7 @@ const ACE_EDITOR_MODE = 'ace/mode/python';
 @Component({
   selector: 'ml-ace-editor',
   template: `
-    <div #editor><ng-content></ng-content></div>
+    <div class="ml-ace-editor__mount" #editor><ng-content></ng-content></div>
   `,
   styleUrls: ['./ace-editor.component.scss']
 })
@@ -29,6 +29,10 @@ export class AceEditorComponent implements AfterViewInit {
 
   @Input() value = null;
 
+  @Input() readOnly = false;
+
+  @Input() showGutter = true;
+
   @Output() valueChange = new EventEmitter();
 
   ngOnChanges(changes) {
@@ -38,13 +42,19 @@ export class AceEditorComponent implements AfterViewInit {
       if (changes.value) {
         this.editor.setValue(this.value, 1);
       }
+
+      if (changes.readOnly) {
+        this.editor.setReadOnly(this.readOnly);
+      }
     }
   }
 
   ngAfterViewInit() {
     this.editor = ace.edit(this.editorElement.nativeElement);
     this.editor.setTheme(ACE_EDITOR_THEME);
+    this.editor.setReadOnly(this.readOnly);
     this.editor.getSession().setMode(ACE_EDITOR_MODE);
+    this.editor.renderer.setShowGutter(this.showGutter);
 
     // if content children are used `value` might be null
     if (this.value !== null) {

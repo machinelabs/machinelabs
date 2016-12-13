@@ -8,7 +8,7 @@ import 'rxjs/add/operator/scan';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  output: any;
+  output = null;
   subscription: any;
 
   // this is just temporary until we have proper models
@@ -46,8 +46,11 @@ print model.predict(training_data).round()
     // have an Observable<Array<string>> so that we can use the ngFor + async pipe
     // which saves us the manually book-keeping of subscriptions, hence the scan.
 
-    this.output = this.apiService.runCode(code)
-                                 .scan((acc, current) => [...acc, current], []);
+    this.apiService.runCode(code)
+        .scan((acc, current) => [...acc, current], [])
+        .subscribe((output) => {
+          this.output = output.join('\n');
+        });
   }
 
   log(value) {

@@ -1,5 +1,5 @@
-.ace_editor {
-  height: 700px;
-  float: left;
-  width: 50%;
+:host { display: block; }
+
+.ml-ace-editor__mount {
+  font-size: 0.9em;
 }

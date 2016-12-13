@@ -35,3 +35,16 @@ img {
   vertical-align: middle;
 }
 
+
+.ace_editor {
+  height: 680px;
+  width: 100%;
+}
+
+.ace_gutter {
+  // we actually don't want to use !important
+  // here but the only alternative is to make
+  // the selector more specific by adding the
+  // theme class e.g. `.ace-github .ace_cutter`
+  background-color: transparent!important;
+}
