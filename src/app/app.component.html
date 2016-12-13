@@ -1,12 +1,19 @@
-<h1>
-  MachineLabs: Democratizing AI
-</h1>
+<header class="ml-header">
+  <h1 class="ml-header__logo">MachineLabs <span>Democratizing AI</span></h1>
+  <ul class="ml-header__cta-list">
+    <li class="ml-header__cta-list-item">
+      <button class="ml-header__cta-button" (click)="runCode(editor.value)"><i class="material-icons">cached</i> Run</button>
+    </li>
+    <li class="ml-header__cta-list-item">
+      <button class="ml-header__cta-button"><i class="material-icons">save</i> Save</button>
+    </li>
+  </ul>
+</header>
 
 <ml-ace-editor #editor [value]="code" (valueChange)="log($event)">
 Hello World
 </ml-ace-editor>
 
-<button (click)="runCode(editor.value)">Run</button>
 
 <h3>Output</h3>
 <output>

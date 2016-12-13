@@ -1,0 +1,48 @@
+.ml-header {
+  background-color: rgba(226, 226, 226, 1);
+  padding: 1.2em;
+  position: relative;
+}
+
+.ml-header__logo {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+}
+
+.ml-header__cta-list {
+  position: absolute;
+  right: 1em;
+  top: 1.2em;
+  margin: 0;
+}
+
+.ml-header__cta-list-item {
+  display: inline-block;
+  margin-left: 1em;
+
+  &:first-child {
+    margin-left: 0;
+  }
+}
+
+.ml-header__cta-button {
+  background-color: transparent;
+  border: none;
+  padding: 0.3em 0.5em;
+  font-size: 1em;
+  color: rgba(15, 19, 50, 1);
+
+  &:hover,
+  &:focus,
+  &:active {
+    cursor: pointer;
+    background-color: #b6b6b6;
+    border-radius: 0.2em;
+  }
+
+  .material-icons {
+    vertical-align: -28%;
+    font-size: 1.8em;
+  }
+}
