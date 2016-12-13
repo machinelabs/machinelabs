@@ -123,8 +123,8 @@
     <md-toolbar color="primary">
       <span class="ml-toolbar__fill-space"></span>
       <div class="ml-toolbar__cta-bar">
-        <button md-raised-button md-button (click)="runCode(editor.value)"><md-icon>cached</md-icon> Run</button>
-        <button md-raised-button md-button><md-icon>save</md-icon> Save</button>
+        <button md-raised-button md-button (click)="run(lab)"><md-icon>cached</md-icon> Run</button>
+        <button md-raised-button md-button (click)="save(lab)"><md-icon>save</md-icon> Save</button>
 
         <!-- menu opens when trigger button is clicked -->
         <button md-icon-button [md-menu-trigger-for]="menu">
@@ -144,7 +144,7 @@
         <ml-panel panelTitle="Code" fx-flex="50">
           <ml-ace-editor
             #editor
-            [(value)]="code"
+            [(value)]="lab.code"
             mode="python"
           ></ml-ace-editor>
         </ml-panel>

@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from './api.service';
+import { LabStorageService } from './lab-storage.service';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/scan';
+import { Lab } from './models/lab';
 
 @Component({
   selector: 'ml-app',
@@ -10,44 +12,38 @@ import 'rxjs/add/operator/scan';
 })
 export class AppComponent {
   output: Observable<string>;
-  subscription: any;
+  lab: Lab;
   sidebarToggled = false;
 
-  // this is just temporary until we have proper models
-  code = `import numpy as np
-from keras.models import Sequential
-from keras.layers.core import Dense
-
-# the four different states of the XOR gate
-training_data = np.array([[0,0],[0,1],[1,0],[1,1]], "float32")
-
-# the four expected results in the same order
-target_data = np.array([[0],[1],[1],[0]], "float32")
-
-model = Sequential()
-model.add(Dense(16, input_dim=2, activation='relu'))
-model.add(Dense(1, activation='sigmoid'))
-
-model.compile(loss='mean_squared_error',
-              optimizer='adam',
-              metrics=['binary_accuracy'])
-
-model.fit(training_data, target_data, nb_epoch=500, verbose=2)
-
-print model.predict(training_data).round()`;
-
-  constructor (private apiService: ApiService) {
+  constructor (private apiService: ApiService, 
+               private labStorageService: LabStorageService,
+               private route: ActivatedRoute,
+               private router: Router) {
     apiService.init();
+
+    this.lab = labStorageService.createLab();
+
+    route.queryParams
+         .map(params => params['lab'])
+         .filter(id => id !== this.lab.id)
+         .switchMap(id => this.labStorageService.getLab(id))
+         .filter((lab: any) => lab !== null)
+         .subscribe((lab:any) => this.lab = lab);
   }
 
-  runCode (code: string) {
+  run(lab: Lab) {
 
     // Scan the notifications and build up a string with line breaks
     // Don't make this a manual subscription without dealing with 
     // Unsubscribing. The returned Observable may not auto complete
     // in all scenarios.
-    this.output = this.apiService.runCode(code)
+    this.output = this.apiService.runCode(lab.code)
                       .scan((acc, current) => `${acc}\n${current}`, '');
+  }
+
+  save(lab: Lab) {
+    this.labStorageService.saveLab(lab)
+        .subscribe(() => this.router.navigateByUrl(`?lab=${this.lab.id}`))
   }
 
   toggleSidebar() {
