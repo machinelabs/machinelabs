@@ -1,5 +1,5 @@
 <div fx-layout="row">
-  <div [fx-flex]="sidebarFlexWith" class="ml-sidebar">
+  <div fx-flex="25" [hidden]="sidebarToggled" class="ml-sidebar">
     <div fx-layout="column" fx-flex-align="center" class="ml-sidebar__layout">
       <h1 class="ml-logo">MachineLabs <span>Democratizing AI</span></h1>
       <div fx-flex="80">
@@ -12,10 +12,110 @@
               <button class="ml-sidebar__tabs-list__tab">Public Labs</button>
             </li>
           </ul>
+          <div class="ml-sidebar__tabs-content">
+            <ul class="ml-labs-list">
+              <li class="ml-labs-list__item">
+                <a href="#" class="ml-lab ml-lab--done">
+                  <div class="ml-lab__status">
+                    <i class="material-icons">check</i>
+                  </div>
+                  <div class="ml-lab__info">
+                    <span class="ml-lab__name">Dolor sit amet</span>
+                    <span class="ml-lab__id">#KX74P</span>
+                  </div>
+                  <span class="ml-lab__duration"><i class="material-icons">schedule</i> 10 min 30 sec</span>
+                </a>
+              </li>
+              <li class="ml-labs-list__item ml-labs-list__item--selected ">
+                <a href="#" class="ml-lab ml-lab--running">
+                  <div class="ml-lab__status">
+                    <i class="material-icons">loop</i>
+                    <span class="ml-lab__status-label">Running</span>
+                  </div>
+                  <div class="ml-lab__info">
+                    <span class="ml-lab__name">Dolor sit amet</span>
+                    <span class="ml-lab__id">#KX74P</span>
+                  </div>
+                  <span class="ml-lab__duration"><i class="material-icons">schedule</i> 10 min 30 sec</span>
+                </a>
+              </li>
+              <li class="ml-labs-list__item">
+                <a href="#" class="ml-lab ml-lab--running">
+                  <div class="ml-lab__status">
+                    <i class="material-icons">loop</i>
+                  </div>
+                  <div class="ml-lab__info">
+                    <span class="ml-lab__name">Dolor sit amet</span>
+                    <span class="ml-lab__id">#KX74P</span>
+                  </div>
+                  <span class="ml-lab__duration"><i class="material-icons">schedule</i> 10 min 30 sec</span>
+                </a>
+              </li>
+              <li class="ml-labs-list__item">
+                <a href="#" class="ml-lab ml-lab--error">
+                  <div class="ml-lab__status">
+                    <i class="material-icons">close</i>
+                  </div>
+                  <div class="ml-lab__info">
+                    <span class="ml-lab__name">Dolor sit amet</span>
+                    <span class="ml-lab__id">#KX74P</span>
+                  </div>
+                  <span class="ml-lab__duration"><i class="material-icons">schedule</i> 10 min 30 sec</span>
+                </a>
+              </li>
+              <li class="ml-labs-list__item">
+                <a href="#" class="ml-lab ml-lab--done">
+                  <div class="ml-lab__status">
+                    <i class="material-icons">check</i>
+                  </div>
+                  <div class="ml-lab__info">
+                    <span class="ml-lab__name">Dolor sit amet</span>
+                    <span class="ml-lab__id">#KX74P</span>
+                  </div>
+                  <span class="ml-lab__duration"><i class="material-icons">schedule</i> 10 min 30 sec</span>
+                </a>
+              </li>
+              <li class="ml-labs-list__item">
+                <a href="#" class="ml-lab ml-lab--done">
+                  <div class="ml-lab__status">
+                    <i class="material-icons">check</i>
+                  </div>
+                  <div class="ml-lab__info">
+                    <span class="ml-lab__name">Dolor sit amet</span>
+                    <span class="ml-lab__id">#KX74P</span>
+                  </div>
+                  <span class="ml-lab__duration"><i class="material-icons">schedule</i> 10 min 30 sec</span>
+                </a>
+              </li>
+              <li class="ml-labs-list__item">
+                <a href="#" class="ml-lab ml-lab--done">
+                  <div class="ml-lab__status">
+                    <i class="material-icons">check</i>
+                  </div>
+                  <div class="ml-lab__info">
+                    <span class="ml-lab__name">Dolor sit amet</span>
+                    <span class="ml-lab__id">#KX74P</span>
+                  </div>
+                  <span class="ml-lab__duration"><i class="material-icons">schedule</i> 10 min 30 sec</span>
+                </a>
+              </li>
+              <li class="ml-labs-list__item">
+                <a href="#" class="ml-lab ml-lab--done">
+                  <div class="ml-lab__status">
+                    <i class="material-icons">check</i>
+                  </div>
+                  <div class="ml-lab__info">
+                    <span class="ml-lab__name">Dolor sit amet</span>
+                    <span class="ml-lab__id">#KX74P</span>
+                  </div>
+                  <span class="ml-lab__duration"><i class="material-icons">schedule</i> 10 min 30 sec</span>
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
       <div fx-flex>
-        two
       </div>
     </div>
   </div>
@@ -29,7 +129,7 @@
           <button class="ml-toolbar__cta-button"><i class="material-icons">save</i> Save</button>
         </li>
         <li class="ml-toolbar__cta-list-item">
-          <button class="ml-toolbar__cta-button" (click)="toggleSidebar()"><i class="material-icons">save</i> Toogle</button>
+          <button class="ml-toolbar__cta-button" (click)="toggleSidebar()">Toggle Sidebar</button>
         </li>
       </ul>
     </div>

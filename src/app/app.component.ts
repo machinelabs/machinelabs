@@ -2,9 +2,6 @@ import { Component } from '@angular/core';
 import { ApiService } from './api.service';
 import 'rxjs/add/operator/scan';
 
-const SIDEBAR_FLEX_HIDDEN_VALUE = '0';
-const SIDEBAR_FLEX_SHOWN_VALUE = '25';
-
 @Component({
   selector: 'ml-app',
   templateUrl: './app.component.html',
@@ -13,11 +10,10 @@ const SIDEBAR_FLEX_SHOWN_VALUE = '25';
 export class AppComponent {
   output = null;
   subscription: any;
-  sidebarFlexWith = SIDEBAR_FLEX_SHOWN_VALUE;
+  sidebarToggled = false;
 
   // this is just temporary until we have proper models
-  code = `
-import numpy as np
+  code = `import numpy as np
 from keras.models import Sequential
 from keras.layers.core import Dense
 
@@ -37,8 +33,7 @@ model.compile(loss='mean_squared_error',
 
 model.fit(training_data, target_data, nb_epoch=500, verbose=2)
 
-print model.predict(training_data).round()
-  `;
+print model.predict(training_data).round()`;
 
   constructor (private apiService: ApiService) {
     apiService.init();
@@ -58,9 +53,7 @@ print model.predict(training_data).round()
   }
 
   toggleSidebar() {
-    this.sidebarFlexWith === SIDEBAR_FLEX_SHOWN_VALUE ?
-      this.sidebarFlexWith = SIDEBAR_FLEX_HIDDEN_VALUE :
-      this.sidebarFlexWith = SIDEBAR_FLEX_SHOWN_VALUE;
+    this.sidebarToggled = !this.sidebarToggled;
   }
 
   log(value) {
