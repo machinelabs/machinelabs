@@ -29,7 +29,7 @@
               <li class="ml-labs-list__item ml-labs-list__item--selected ">
                 <a href="#" class="ml-lab ml-lab--running">
                   <div class="ml-lab__status">
-                    <i class="material-icons">loop</i>
+                    <i class="material-icons">cached</i>
                     <span class="ml-lab__status-label">Running</span>
                   </div>
                   <div class="ml-lab__info">
@@ -42,7 +42,7 @@
               <li class="ml-labs-list__item">
                 <a href="#" class="ml-lab ml-lab--running">
                   <div class="ml-lab__status">
-                    <i class="material-icons">loop</i>
+                    <i class="material-icons">cached</i>
                   </div>
                   <div class="ml-lab__info">
                     <span class="ml-lab__name">Dolor sit amet</span>
@@ -123,13 +123,16 @@
     <div class="ml-toolbar">
       <ul class="ml-toolbar__cta-list">
         <li class="ml-toolbar__cta-list-item">
+          <button class="ml-toolbar__cta-button" (click)="toggleSidebar()">Toggle Sidebar</button>
+        </li>
+        <li class="ml-toolbar__cta-list-item">
           <button class="ml-toolbar__cta-button" (click)="runCode(editor.value)"><i class="material-icons">cached</i> Run</button>
         </li>
         <li class="ml-toolbar__cta-list-item">
           <button class="ml-toolbar__cta-button"><i class="material-icons">save</i> Save</button>
         </li>
         <li class="ml-toolbar__cta-list-item">
-          <button class="ml-toolbar__cta-button" (click)="toggleSidebar()">Toggle Sidebar</button>
+          <button class="ml-toolbar__cta-button"><i class="material-icons">exit_to_app</i> Logout</button>
         </li>
       </ul>
     </div>
