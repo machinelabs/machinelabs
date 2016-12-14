@@ -15,6 +15,7 @@
     "@angular/common": "2.2.3",
     "@angular/compiler": "2.2.3",
     "@angular/core": "2.2.3",
+    "@angular/flex-layout": "git+https://git@github.com/angular/flex-layout.git",
     "@angular/forms": "2.2.3",
     "@angular/http": "2.2.3",
     "@angular/platform-browser": "2.2.3",

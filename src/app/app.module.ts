@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { ApiService } from './api.service';
 import { AppComponent } from './app.component';
@@ -15,7 +16,8 @@ import { PanelComponent } from './panel/panel.component';
   ],
   imports: [
     BrowserModule,
-    HttpModule
+    HttpModule,
+    FlexLayoutModule.forRoot()
   ],
   providers: [ApiService],
   bootstrap: [AppComponent]
