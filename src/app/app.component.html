@@ -120,22 +120,15 @@
     </div>
   </div>
   <div fx-flex>
-    <div class="ml-toolbar">
-      <ul class="ml-toolbar__cta-list">
-        <li class="ml-toolbar__cta-list-item">
-          <button class="ml-toolbar__cta-button" (click)="toggleSidebar()">Toggle Sidebar</button>
-        </li>
-        <li class="ml-toolbar__cta-list-item">
-          <button class="ml-toolbar__cta-button" (click)="runCode(editor.value)"><i class="material-icons">cached</i> Run</button>
-        </li>
-        <li class="ml-toolbar__cta-list-item">
-          <button class="ml-toolbar__cta-button"><i class="material-icons">save</i> Save</button>
-        </li>
-        <li class="ml-toolbar__cta-list-item">
-          <button class="ml-toolbar__cta-button"><i class="material-icons">exit_to_app</i> Logout</button>
-        </li>
-      </ul>
-    </div>
+    <md-toolbar color="primary">
+      <span class="ml-toolbar__fill-space"></span>
+      <div class="ml-toolbar__cta-bar">
+        <button md-raised-button md-button (click)="runCode(editor.value)"><md-icon>cached</md-icon> Run</button>
+        <button md-raised-button md-button><md-icon>save</md-icon> Save</button>
+        <button md-raised-button md-button><md-icon>exit_to_app</md-icon> Logout</button>
+      </div>
+    </md-toolbar>
+
     <div role="main">
       <div fx-layout="row">
         <ml-panel panelTitle="Code" fx-flex="50">

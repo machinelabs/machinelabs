@@ -191,43 +191,16 @@
   }
 }
 
-.ml-toolbar {
-  background-color: rgba(226, 226, 226, 1);
-  padding: 1.2em;
+.ml-toolbar__fill-space {
+  flex: 1 auto;
 }
 
-.ml-toolbar__cta-list {
-  margin: 0;
-  text-align: right;
-}
+.ml-toolbar__cta-bar {
+  [md-button] {
+    margin-left: 0.5em;
 
-.ml-toolbar__cta-list-item {
-  display: inline-block;
-  margin-left: 1em;
-
-  &:first-child {
-    margin-left: 0;
-  }
-}
-
-.ml-toolbar__cta-button {
-  background-color: transparent;
-  border: none;
-  padding: 0.3em 0.5em;
-  font-size: 1em;
-  color: rgba(15, 19, 50, 1);
-
-  &:hover,
-  &:focus,
-  &:active {
-    cursor: pointer;
-    background-color: rgba(15, 19, 50, 1);
-    color: rgba(255, 255, 255, 1);
-    border-radius: 0.2em;
-  }
-
-  .material-icons {
-    vertical-align: -28%;
-    font-size: 1.8em;
+    &:first-child {
+      margin-left: 0;
+    }
   }
 }
