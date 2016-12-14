@@ -11,9 +11,19 @@
 </header>
 <div role="main">
   <ml-panel panelTitle="Code">
-    <ml-ace-editor #editor [value]="code" (valueChange)="log($event)"></ml-ace-editor>
+    <ml-ace-editor
+      #editor
+      [value]="code"
+      (valueChange)="log($event)"
+      mode="python"
+    ></ml-ace-editor>
   </ml-panel>
   <ml-panel panelTitle="Output">
-    <ml-ace-editor [value]="output" [readOnly]="true" [showGutter]="false"></ml-ace-editor>
+    <ml-ace-editor
+      [value]="output"
+      [readOnly]="true"
+      [showGutter]="false"
+      mode="sh"
+    ></ml-ace-editor>
   </ml-panel>
 </div>
