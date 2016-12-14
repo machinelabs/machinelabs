@@ -18,6 +18,7 @@
       "prefix": "ml",
       "mobile": false,
       "styles": [
+        "ml-theme.scss",
         "styles.scss"
       ],
       "scripts": [
