@@ -141,8 +141,7 @@
         <ml-panel panelTitle="Code" fx-flex="50">
           <ml-ace-editor
             #editor
-            [value]="code"
-            (valueChange)="log($event)"
+            [(value)]="code"
             mode="python"
           ></ml-ace-editor>
         </ml-panel>
