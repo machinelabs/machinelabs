@@ -35,6 +35,8 @@ export class AceEditorComponent implements AfterViewInit {
 
   @Input() showGutter = true;
 
+  @Input() hlActiveLine = false;
+
   @Input() set mode(value) {
     this._mode = ACE_EDITOR_MODE_PREFIX + value;
   }
@@ -61,6 +63,10 @@ export class AceEditorComponent implements AfterViewInit {
       if (changes.mode) {
         this.editor.getSession().setMode(this.mode);
       }
+
+      if (changes.hlActiveLine) {
+        this.editor.setHighlightActiveLine(this.hlActiveLine);
+      }
     }
   }
 
@@ -69,6 +75,7 @@ export class AceEditorComponent implements AfterViewInit {
 
     this.editor.setTheme(ACE_EDITOR_THEME);
     this.editor.setReadOnly(this.readOnly);
+    this.editor.setHighlightActiveLine(this.hlActiveLine);
 
     this.editor.getSession().setMode(this.mode);
     this.editor.renderer.setShowGutter(this.showGutter);
