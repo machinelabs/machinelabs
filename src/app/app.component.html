@@ -1,9 +1,26 @@
 <div fx-layout="row">
-  <div [fx-flex]="sidebarFlexWith" class="ml-sidebar" style="background-color: red;">
-    <h1 class="ml-header__logo">MachineLabs <span>Democratizing AI</span></h1>
+  <div [fx-flex]="sidebarFlexWith" class="ml-sidebar">
+    <div fx-layout="column" fx-flex-align="center" class="ml-sidebar__layout">
+      <h1 class="ml-logo">MachineLabs <span>Democratizing AI</span></h1>
+      <div fx-flex="80">
+        <div class="ml-sidebar__tabs">
+          <ul class="ml-sidebar__tabs-list" fx-layout="row">
+            <li class="ml-sidebar__tabs-list-item" fx-flex="50">
+              <button class="ml-sidebar__tabs-list__tab ml-sidebar__tabs-list__tab--selected">My Labs</button>
+            </li>
+            <li class="ml-sidebar__tabs-list-item" fx-flex="50">
+              <button class="ml-sidebar__tabs-list__tab">Public Labs</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div fx-flex>
+        two
+      </div>
+    </div>
   </div>
   <div fx-flex>
-    <header class="ml-toolbar">
+    <div class="ml-toolbar">
       <ul class="ml-toolbar__cta-list">
         <li class="ml-toolbar__cta-list-item">
           <button class="ml-toolbar__cta-button" (click)="runCode(editor.value)"><i class="material-icons">cached</i> Run</button>
@@ -15,7 +32,7 @@
           <button class="ml-toolbar__cta-button" (click)="toggleSidebar()"><i class="material-icons">save</i> Toogle</button>
         </li>
       </ul>
-    </header>
+    </div>
     <div role="main">
       <div fx-layout="row">
         <ml-panel panelTitle="Code" fx-flex="50">

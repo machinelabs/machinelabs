@@ -1,14 +1,55 @@
 :host { display: block; }
 
+.ml-logo {
+  margin: 0;
+  padding: 1em;
+  text-align: center;
+  font-size: 1.5em;
+}
+
+.ml-sidebar {
+  background-color: rgba(226, 226, 226, 1);
+  border-right: 4px solid #fff;
+}
+
+.ml-sidebar__layout {
+  height: 100%;
+}
+
+.ml-sidebar__tabs-list {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+  border-bottom: 1px solid rgba(15, 19, 50, 1);
+}
+
+.ml-sidebar__tabs-list-item {
+
+}
+
+.ml-sidebar__tabs-list__tab {
+  border: none;
+  background-color: transparent;
+  color: rgba(15, 19, 50, 1);
+  display: block;
+  font-size: 1em;
+  width: 100%;
+  padding: 0.5em 1em;
+
+  &--selected,
+  &:focus,
+  &:hover,
+  &:active {
+    background-color: rgba(15, 19, 50, 1);
+    color: rgba(255, 255, 255, 1);
+    border-top-right-radius: 1em;
+    cursor: pointer;
+  }
+}
+
 .ml-toolbar {
   background-color: rgba(226, 226, 226, 1);
   padding: 1.2em;
-}
-
-.ml-header__logo {
-  margin: 0;
-  padding: 0;
-  display: inline-block;
 }
 
 .ml-toolbar__cta-list {
@@ -36,7 +77,8 @@
   &:focus,
   &:active {
     cursor: pointer;
-    background-color: #b6b6b6;
+    background-color: rgba(15, 19, 50, 1);
+    color: rgba(255, 255, 255, 1);
     border-radius: 0.2em;
   }
 

@@ -3,7 +3,7 @@ import { ApiService } from './api.service';
 import 'rxjs/add/operator/scan';
 
 const SIDEBAR_FLEX_HIDDEN_VALUE = '0';
-const SIDEBAR_FLEX_SHOWN_VALUE = '20';
+const SIDEBAR_FLEX_SHOWN_VALUE = '25';
 
 @Component({
   selector: 'ml-app',
