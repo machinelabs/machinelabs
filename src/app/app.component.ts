@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { ApiService } from './api.service';
 import 'rxjs/add/operator/scan';
 
+const SIDEBAR_FLEX_HIDDEN_VALUE = '0';
+const SIDEBAR_FLEX_SHOWN_VALUE = '20';
+
 @Component({
   selector: 'ml-app',
   templateUrl: './app.component.html',
@@ -10,6 +13,7 @@ import 'rxjs/add/operator/scan';
 export class AppComponent {
   output = null;
   subscription: any;
+  sidebarFlexWith = SIDEBAR_FLEX_SHOWN_VALUE;
 
   // this is just temporary until we have proper models
   code = `
@@ -51,6 +55,12 @@ print model.predict(training_data).round()
         .subscribe((output) => {
           this.output = output.join('\n');
         });
+  }
+
+  toggleSidebar() {
+    this.sidebarFlexWith === SIDEBAR_FLEX_SHOWN_VALUE ?
+      this.sidebarFlexWith = SIDEBAR_FLEX_HIDDEN_VALUE :
+      this.sidebarFlexWith = SIDEBAR_FLEX_SHOWN_VALUE;
   }
 
   log(value) {

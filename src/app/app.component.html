@@ -1,29 +1,40 @@
-<header class="ml-header">
-  <h1 class="ml-header__logo">MachineLabs <span>Democratizing AI</span></h1>
-  <ul class="ml-header__cta-list">
-    <li class="ml-header__cta-list-item">
-      <button class="ml-header__cta-button" (click)="runCode(editor.value)"><i class="material-icons">cached</i> Run</button>
-    </li>
-    <li class="ml-header__cta-list-item">
-      <button class="ml-header__cta-button"><i class="material-icons">save</i> Save</button>
-    </li>
-  </ul>
-</header>
-<div role="main">
-  <ml-panel panelTitle="Code">
-    <ml-ace-editor
-      #editor
-      [value]="code"
-      (valueChange)="log($event)"
-      mode="python"
-    ></ml-ace-editor>
-  </ml-panel>
-  <ml-panel panelTitle="Output">
-    <ml-ace-editor
-      [value]="output"
-      [readOnly]="true"
-      [showGutter]="false"
-      mode="sh"
-    ></ml-ace-editor>
-  </ml-panel>
+<div fx-layout="row">
+  <div [fx-flex]="sidebarFlexWith" class="ml-sidebar" style="background-color: red;">
+    <h1 class="ml-header__logo">MachineLabs <span>Democratizing AI</span></h1>
+  </div>
+  <div fx-flex>
+    <header class="ml-toolbar">
+      <ul class="ml-toolbar__cta-list">
+        <li class="ml-toolbar__cta-list-item">
+          <button class="ml-toolbar__cta-button" (click)="runCode(editor.value)"><i class="material-icons">cached</i> Run</button>
+        </li>
+        <li class="ml-toolbar__cta-list-item">
+          <button class="ml-toolbar__cta-button"><i class="material-icons">save</i> Save</button>
+        </li>
+        <li class="ml-toolbar__cta-list-item">
+          <button class="ml-toolbar__cta-button" (click)="toggleSidebar()"><i class="material-icons">save</i> Toogle</button>
+        </li>
+      </ul>
+    </header>
+    <div role="main">
+      <div fx-layout="row">
+        <ml-panel panelTitle="Code" fx-flex="50">
+          <ml-ace-editor
+            #editor
+            [value]="code"
+            (valueChange)="log($event)"
+            mode="python"
+          ></ml-ace-editor>
+        </ml-panel>
+        <ml-panel panelTitle="Output" fx-flex="50">
+          <ml-ace-editor
+            [value]="output"
+            [readOnly]="true"
+            [showGutter]="false"
+            mode="sh"
+          ></ml-ace-editor>
+        </ml-panel>
+      </div>
+    </div>
+  </div>
 </div>

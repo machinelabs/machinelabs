@@ -1,9 +1,8 @@
 :host { display: block; }
 
-.ml-header {
+.ml-toolbar {
   background-color: rgba(226, 226, 226, 1);
   padding: 1.2em;
-  position: relative;
 }
 
 .ml-header__logo {
@@ -12,14 +11,12 @@
   display: inline-block;
 }
 
-.ml-header__cta-list {
-  position: absolute;
-  right: 1em;
-  top: 1.2em;
+.ml-toolbar__cta-list {
   margin: 0;
+  text-align: right;
 }
 
-.ml-header__cta-list-item {
+.ml-toolbar__cta-list-item {
   display: inline-block;
   margin-left: 1em;
 
@@ -28,7 +25,7 @@
   }
 }
 
-.ml-header__cta-button {
+.ml-toolbar__cta-button {
   background-color: transparent;
   border: none;
   padding: 0.3em 0.5em;
