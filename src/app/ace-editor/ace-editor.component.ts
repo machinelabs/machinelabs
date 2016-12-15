@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 
 declare var ace: any;
-
+declare var Infinity: any;
 
 const ACE_EDITOR_THEME = 'ace/theme/github';
 const ACE_EDITOR_MODE_PREFIX = 'ace/mode/';
@@ -79,6 +79,7 @@ export class AceEditorComponent implements AfterViewInit {
 
     this.editor.getSession().setMode(this.mode);
     this.editor.renderer.setShowGutter(this.showGutter);
+    this.editor.$blockScrolling = Infinity;
 
     // if content children are used `value` might be null
     if (this.value !== null) {
