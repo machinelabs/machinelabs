@@ -150,11 +150,12 @@
         </ml-panel>
         <ml-panel panelTitle="Output" fx-flex="50">
           <ml-ace-editor
-            [value]="output"
+            [value]="output | async"
             [readOnly]="true"
             [showGutter]="false"
             mode="sh"
-          ></ml-ace-editor>
+          >
+          </ml-ace-editor>
         </ml-panel>
       </div>
     </div>

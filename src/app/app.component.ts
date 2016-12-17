@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ApiService } from './api.service';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/scan';
 
 @Component({
@@ -8,7 +9,7 @@ import 'rxjs/add/operator/scan';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  output = null;
+  output: Observable<string>;
   subscription: any;
   sidebarToggled = false;
 
@@ -41,15 +42,12 @@ print model.predict(training_data).round()`;
 
   runCode (code: string) {
 
-    // Our service returns an Observable<string> but we rather like to
-    // have an Observable<Array<string>> so that we can use the ngFor + async pipe
-    // which saves us the manually book-keeping of subscriptions, hence the scan.
-
-    this.apiService.runCode(code)
-        .scan((acc, current) => [...acc, current], [])
-        .subscribe((output) => {
-          this.output = output.join('\n');
-        });
+    // Scan the notifications and build up a string with line breaks
+    // Don't make this a manual subscription without dealing with 
+    // Unsubscribing. The returned Observable may not auto complete
+    // in all scenarios.
+    this.output = this.apiService.runCode(code)
+                      .scan((acc, current) => `${acc}\n${current}`, '');
   }
 
   toggleSidebar() {
