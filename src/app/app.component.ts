@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ApiService } from './api.service';
+import { RemoteLabExecService } from './remote-lab-exec.service';
 import { LabStorageService } from './lab-storage.service';
 import { Observable } from 'rxjs/Observable';
 import { Lab } from './models/lab';
@@ -15,11 +15,11 @@ export class AppComponent {
   lab: Lab;
   sidebarToggled = false;
 
-  constructor (private apiService: ApiService, 
+  constructor (private rleService: RemoteLabExecService, 
                private labStorageService: LabStorageService,
                private route: ActivatedRoute,
                private router: Router) {
-    apiService.init();
+    rleService.init();
 
     this.lab = labStorageService.createLab();
 
@@ -37,7 +37,7 @@ export class AppComponent {
     // Don't make this a manual subscription without dealing with 
     // Unsubscribing. The returned Observable may not auto complete
     // in all scenarios.
-    this.output = this.apiService.runCode(lab.code)
+    this.output = this.rleService.runCode(lab.code)
                       .scan((acc, current) => `${acc}\n${current}`, '');
   }
 

@@ -5,7 +5,7 @@ import { Subject } from 'rxjs/Subject';
 declare let io: any;
 
 @Injectable()
-export class ApiService {
+export class RemoteLabExecService {
 
   private socket: any;
   private subject = new Subject<any>();

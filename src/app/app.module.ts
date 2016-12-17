@@ -5,7 +5,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
-import { ApiService } from './api.service';
+import { RemoteLabExecService } from './remote-lab-exec.service';
 import { LabStorageService } from './lab-storage.service';
 import { AppComponent } from './app.component';
 import { AceEditorComponent } from './ace-editor/ace-editor.component';
@@ -24,7 +24,7 @@ import { PanelComponent } from './panel/panel.component';
     MaterialModule.forRoot(),
     RouterModule.forRoot([])
   ],
-  providers: [ApiService, LabStorageService],
+  providers: [RemoteLabExecService, LabStorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
