@@ -46,7 +46,7 @@ export class LabStorageService {
       .map((snapshot: any) => snapshot.val());
   }
 
-  saveLab(lab: any): Observable<any> {
+  saveLab(lab: Lab): Observable<any> {
     return this.login$
       .switchMap((login: any) => {
         let res = firebase.database().ref(`labs/${lab.id}`).set({
