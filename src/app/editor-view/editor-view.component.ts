@@ -19,20 +19,12 @@ export class EditorViewComponent implements OnInit {
                private labStorageService: LabStorageService,
                private route: ActivatedRoute,
                private router: Router) {
-    rleService.init();
-
-    this.lab = labStorageService.createLab();
-
-    route.params
-         .map(params => params['labid'])
-         .filter(id => id !== this.lab.id)
-         .switchMap(id => this.labStorageService.getLab(id))
-         .filter((lab: any) => lab !== null)
-         .subscribe((lab:any) => this.lab = lab);
   }
 
   ngOnInit () {
-
+    this.rleService.init();
+    this.route.data.map(data => data['lab'])
+              .subscribe(lab => this.lab = lab);
   }
 
   run(lab: Lab) {

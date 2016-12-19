@@ -7,12 +7,14 @@ import { RouterModule } from '@angular/router';
 
 import { RemoteLabExecService } from './remote-lab-exec.service';
 import { LabStorageService } from './lab-storage.service';
+
 import { AppComponent } from './app.component';
 import { AceEditorComponent } from './ace-editor/ace-editor.component';
 import { PanelComponent } from './panel/panel.component';
 import { EditorViewComponent } from './editor-view/editor-view.component';
 
 import { APP_ROUTES } from './app.routes';
+import { LabResolver } from './lab.resolver';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,7 @@ import { APP_ROUTES } from './app.routes';
     MaterialModule.forRoot(),
     RouterModule.forRoot(APP_ROUTES)
   ],
-  providers: [RemoteLabExecService, LabStorageService],
+  providers: [RemoteLabExecService, LabStorageService, LabResolver],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
