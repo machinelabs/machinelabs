@@ -10,12 +10,14 @@ import { LabStorageService } from './lab-storage.service';
 import { AppComponent } from './app.component';
 import { AceEditorComponent } from './ace-editor/ace-editor.component';
 import { PanelComponent } from './panel/panel.component';
+import { EditorViewComponent } from './editor-view/editor-view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AceEditorComponent,
-    PanelComponent
+    PanelComponent,
+    EditorViewComponent
   ],
   imports: [
     BrowserModule,
