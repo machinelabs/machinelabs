@@ -37,9 +37,14 @@ export class EditorViewComponent implements OnInit {
                       .scan((acc, current) => `${acc}\n${current}`, '');
   }
 
+  fork(lab: Lab) {
+    this.lab = this.labStorageService.createLab(lab);
+    this.save(this.lab);
+  }
+
   save(lab: Lab) {
     this.labStorageService.saveLab(lab)
-        .subscribe(() => this.router.navigateByUrl(`${this.lab.id}`))
+        .subscribe(() => this.router.navigateByUrl(`${lab.id}`))
   }
 
   toggleSidebar() {

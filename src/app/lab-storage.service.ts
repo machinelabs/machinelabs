@@ -31,12 +31,12 @@ export class LabStorageService {
 
   login$: Observable<any>;
 
-  createLab(): Lab {
+  createLab(lab: Lab): Lab {
     return {
       id: shortid.generate(),
       // TODO: we may wanna change the return type to Observable<Lab> and prefill with userId
       userId: '',
-      code: DEFAULT_LAB_CODE
+      code: lab ? lab.code : DEFAULT_LAB_CODE
     };
   }
 
