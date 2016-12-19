@@ -37,8 +37,6 @@ export class AceEditorComponent implements AfterViewInit {
 
   @Input() hlActiveLine = false;
 
-  @Input() cursorAtEOF = false;
-
   @Input() set mode(value) {
     this._mode = ACE_EDITOR_MODE_PREFIX + value;
   }
