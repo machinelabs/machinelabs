@@ -23,8 +23,8 @@ export class EditorViewComponent implements OnInit {
 
     this.lab = labStorageService.createLab();
 
-    route.queryParams
-         .map(params => params['lab'])
+    route.params
+         .map(params => params['labid'])
          .filter(id => id !== this.lab.id)
          .switchMap(id => this.labStorageService.getLab(id))
          .filter((lab: any) => lab !== null)
@@ -47,7 +47,7 @@ export class EditorViewComponent implements OnInit {
 
   save(lab: Lab) {
     this.labStorageService.saveLab(lab)
-        .subscribe(() => this.router.navigateByUrl(`?lab=${this.lab.id}`))
+        .subscribe(() => this.router.navigateByUrl(`${this.lab.id}`))
   }
 
   toggleSidebar() {

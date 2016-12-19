@@ -12,6 +12,8 @@ import { AceEditorComponent } from './ace-editor/ace-editor.component';
 import { PanelComponent } from './panel/panel.component';
 import { EditorViewComponent } from './editor-view/editor-view.component';
 
+import { APP_ROUTES } from './app.routes';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,7 +26,7 @@ import { EditorViewComponent } from './editor-view/editor-view.component';
     HttpModule,
     FlexLayoutModule.forRoot(),
     MaterialModule.forRoot(),
-    RouterModule.forRoot([])
+    RouterModule.forRoot(APP_ROUTES)
   ],
   providers: [RemoteLabExecService, LabStorageService],
   bootstrap: [AppComponent]
