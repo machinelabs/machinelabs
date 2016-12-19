@@ -31,28 +31,38 @@ export class LabStorageService {
 
   login$: Observable<any>;
 
-  createLab(lab: Lab): Lab {
+  createLab(lab?: Lab): Lab {
     return {
       id: shortid.generate(),
       // TODO: we may wanna change the return type to Observable<Lab> and prefill with userId
       userId: '',
-      code: lab ? lab.code : DEFAULT_LAB_CODE
+      name: 'Untitled',
+      description: '',
+      tags: [],
+      files: lab ? lab.files : [{ name: 'main.py', content: DEFAULT_LAB_CODE }],
+      status: 0
     };
   }
 
   getLab(id: string): Observable<Lab> {
     return this.login$
-      .switchMap(_ => Observable.fromPromise(firebase.database().ref(`labs/${id}`).once('value')))
+      .switchMap(_ => Observable.fromPromise(firebase.database().ref(`labs_multiple_files/${id}`).once('value')))
       .map((snapshot: any) => snapshot.val());
   }
 
   saveLab(lab: Lab): Observable<any> {
     return this.login$
       .switchMap((login: any) => {
-        let res = firebase.database().ref(`labs/${lab.id}`).set({
+        let res = firebase.database().ref(`labs_multiple_files/${lab.id}`).set({
           id: lab.id,
           user_id: login.uid,
-          code: lab.code
+          name: lab.name,
+          description: lab.description,
+          // `lab.tags` can be undefined when editing an existing lab that
+          // doesn't have any tags yet.
+          tags: lab.tags || [],
+          files: lab.files,
+          status: lab.status
         });
         return Observable.fromPromise(res);
       });

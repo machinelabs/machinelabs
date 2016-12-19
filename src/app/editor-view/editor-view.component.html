@@ -1,126 +1,21 @@
 <div fx-layout="row">
   <div fx-flex="25" [hidden]="sidebarToggled" class="ml-sidebar">
-    <div fx-layout="column" fx-flex-align="center" class="ml-sidebar__layout">
+    <div fx-flex-align="center" class="ml-sidebar__layout">
       <h1 class="ml-logo">MachineLabs <span>Democratizing AI</span></h1>
-      <div fx-flex="80">
-        <div class="ml-sidebar__tabs">
-          <ul class="ml-sidebar__tabs-list" fx-layout="row">
-            <li class="ml-sidebar__tabs-list-item" fx-flex="50">
-              <button class="ml-sidebar__tabs-list__tab ml-sidebar__tabs-list__tab--selected">My Labs</button>
-            </li>
-            <li class="ml-sidebar__tabs-list-item" fx-flex="50">
-              <button class="ml-sidebar__tabs-list__tab">Public Labs</button>
-            </li>
-          </ul>
-          <div class="ml-sidebar__tabs-content">
-            <ul class="ml-labs-list">
-              <li class="ml-labs-list__item">
-                <a href="#" class="ml-lab ml-lab--done">
-                  <div class="ml-lab__status">
-                    <i class="material-icons">check</i>
-                  </div>
-                  <div class="ml-lab__info">
-                    <span class="ml-lab__name">Dolor sit amet</span>
-                    <span class="ml-lab__id">#KX74P</span>
-                  </div>
-                  <span class="ml-lab__duration"><i class="material-icons">schedule</i> 10 min 30 sec</span>
-                </a>
-              </li>
-              <li class="ml-labs-list__item ml-labs-list__item--selected ">
-                <a href="#" class="ml-lab ml-lab--running">
-                  <div class="ml-lab__status">
-                    <i class="material-icons">cached</i>
-                    <span class="ml-lab__status-label">Running</span>
-                  </div>
-                  <div class="ml-lab__info">
-                    <span class="ml-lab__name">Dolor sit amet</span>
-                    <span class="ml-lab__id">#KX74P</span>
-                  </div>
-                  <span class="ml-lab__duration"><i class="material-icons">schedule</i> 10 min 30 sec</span>
-                </a>
-              </li>
-              <li class="ml-labs-list__item">
-                <a href="#" class="ml-lab ml-lab--running">
-                  <div class="ml-lab__status">
-                    <i class="material-icons">cached</i>
-                  </div>
-                  <div class="ml-lab__info">
-                    <span class="ml-lab__name">Dolor sit amet</span>
-                    <span class="ml-lab__id">#KX74P</span>
-                  </div>
-                  <span class="ml-lab__duration"><i class="material-icons">schedule</i> 10 min 30 sec</span>
-                </a>
-              </li>
-              <li class="ml-labs-list__item">
-                <a href="#" class="ml-lab ml-lab--error">
-                  <div class="ml-lab__status">
-                    <i class="material-icons">close</i>
-                  </div>
-                  <div class="ml-lab__info">
-                    <span class="ml-lab__name">Dolor sit amet</span>
-                    <span class="ml-lab__id">#KX74P</span>
-                  </div>
-                  <span class="ml-lab__duration"><i class="material-icons">schedule</i> 10 min 30 sec</span>
-                </a>
-              </li>
-              <li class="ml-labs-list__item">
-                <a href="#" class="ml-lab ml-lab--done">
-                  <div class="ml-lab__status">
-                    <i class="material-icons">check</i>
-                  </div>
-                  <div class="ml-lab__info">
-                    <span class="ml-lab__name">Dolor sit amet</span>
-                    <span class="ml-lab__id">#KX74P</span>
-                  </div>
-                  <span class="ml-lab__duration"><i class="material-icons">schedule</i> 10 min 30 sec</span>
-                </a>
-              </li>
-              <li class="ml-labs-list__item">
-                <a href="#" class="ml-lab ml-lab--done">
-                  <div class="ml-lab__status">
-                    <i class="material-icons">check</i>
-                  </div>
-                  <div class="ml-lab__info">
-                    <span class="ml-lab__name">Dolor sit amet</span>
-                    <span class="ml-lab__id">#KX74P</span>
-                  </div>
-                  <span class="ml-lab__duration"><i class="material-icons">schedule</i> 10 min 30 sec</span>
-                </a>
-              </li>
-              <li class="ml-labs-list__item">
-                <a href="#" class="ml-lab ml-lab--done">
-                  <div class="ml-lab__status">
-                    <i class="material-icons">check</i>
-                  </div>
-                  <div class="ml-lab__info">
-                    <span class="ml-lab__name">Dolor sit amet</span>
-                    <span class="ml-lab__id">#KX74P</span>
-                  </div>
-                  <span class="ml-lab__duration"><i class="material-icons">schedule</i> 10 min 30 sec</span>
-                </a>
-              </li>
-              <li class="ml-labs-list__item">
-                <a href="#" class="ml-lab ml-lab--done">
-                  <div class="ml-lab__status">
-                    <i class="material-icons">check</i>
-                  </div>
-                  <div class="ml-lab__info">
-                    <span class="ml-lab__name">Dolor sit amet</span>
-                    <span class="ml-lab__id">#KX74P</span>
-                  </div>
-                  <span class="ml-lab__duration"><i class="material-icons">schedule</i> 10 min 30 sec</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div fx-flex>
-      </div>
+        <md-divider></md-divider>
+        <h3 md-subheader>Files</h3>
+        <md-nav-list>
+          <md-list-item *ngFor="let file of lab.files" (click)="openFile(file)">
+            {{file.name}} <button md-raised-button [disabled]="lab.files.length == 1" (click)="deleteFile(file)">Delete</button>
+          </md-list-item>
+        </md-nav-list>
+        <md-divider></md-divider>
+        <button md-raised-button md-button (click)="openAddFileDialog()">Add File</button>
     </div>
   </div>
   <div fx-flex>
     <md-toolbar color="primary">
+      <span>MachineLabs</span>
       <span class="ml-toolbar__fill-space"></span>
       <div class="ml-toolbar__cta-bar">
         <button md-raised-button md-button (click)="run(lab)"><md-icon>cached</md-icon> Run</button>
@@ -142,10 +37,10 @@
 
     <div role="main">
       <div fx-layout="row">
-        <ml-panel panelTitle="Code" fx-flex="50">
+        <ml-panel [panelTitle]="activeFile.name" fx-flex="50">
           <ml-ace-editor
             #editor
-            [(value)]="lab.code"
+            [(value)]="activeFile.content"
             mode="python"
           ></ml-ace-editor>
         </ml-panel>

@@ -37,6 +37,8 @@ export class AceEditorComponent implements AfterViewInit {
 
   @Input() hlActiveLine = false;
 
+  @Input() cursorAtEOF = false;
+
   @Input() set mode(value) {
     this._mode = ACE_EDITOR_MODE_PREFIX + value;
   }
@@ -52,7 +54,6 @@ export class AceEditorComponent implements AfterViewInit {
     // runs before ngAfterViewInit(). Is there a better way?
     if (this.editor !== undefined) {
       if (changes.value) {
-        // set value and put cursor at the very last line
         this.editor.setValue(this.value, 1);
       }
 
