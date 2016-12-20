@@ -50,4 +50,4 @@ jspm_packages
 .yarn-integrity
 
 # Temporary file to host the lab code
-/labfs/run.py
+/labfs/**/*

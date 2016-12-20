@@ -1,4 +1,5 @@
 import { Observable } from '@ReactiveX/rxjs';
+import { Lab } from '../models/lab';
 
 export interface ProcessStreamData {
   origin: string,
@@ -7,5 +8,5 @@ export interface ProcessStreamData {
 }
 
 export interface CodeRunner {
-  run (code: string) : Observable<ProcessStreamData>
+  run (lab: Lab) : Observable<ProcessStreamData>
 }

@@ -12,7 +12,7 @@ console.log(`Using runner: ${runner.constructor.name}`);
 //TODO: Make sure this code allows only connections from trusted clients
 io.on('connection', (socket: any) => {
   socket.on('run_code', (data: any) => {
-    runner.run(data.data)
+    runner.run(data.lab)
       .subscribe(psData => {
         socket.emit('any', {
           event_type: 'process_stdout',
