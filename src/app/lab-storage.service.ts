@@ -46,14 +46,14 @@ export class LabStorageService {
 
   getLab(id: string): Observable<Lab> {
     return this.login$
-      .switchMap(_ => Observable.fromPromise(firebase.database().ref(`labs_multiple_files/${id}`).once('value')))
+      .switchMap(_ => Observable.fromPromise(firebase.database().ref(`labs/${id}`).once('value')))
       .map((snapshot: any) => snapshot.val());
   }
 
   saveLab(lab: Lab): Observable<any> {
     return this.login$
       .switchMap((login: any) => {
-        let res = firebase.database().ref(`labs_multiple_files/${lab.id}`).set({
+        let res = firebase.database().ref(`labs/${lab.id}`).set({
           id: lab.id,
           user_id: login.uid,
           name: lab.name,
