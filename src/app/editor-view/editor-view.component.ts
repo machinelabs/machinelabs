@@ -46,7 +46,7 @@ export class EditorViewComponent implements OnInit {
     // Don't make this a manual subscription without dealing with
     // Unsubscribing. The returned Observable may not auto complete
     // in all scenarios.
-    this.output = this.rleService.runCode(lab.files[0].content)
+    this.output = this.rleService.run(lab)
                       .scan((acc, current) => `${acc}\n${current}`, '');
   }
 

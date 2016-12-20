@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { Lab } from './models/lab';
 
 declare let io: any;
 
@@ -27,13 +28,13 @@ export class RemoteLabExecService {
    * Executes code on the server. Returns an Observable<string>
    * where `string` is each line that was printed to STDOUT.
    */
-  runCode (code: string) : Observable<string> {
+  run (lab: Lab) : Observable<string> {
 
     // ids need to be unique only across connection, so Date.now() should do it
     let uniqueId = Date.now();
     this.socket.emit('run_code', {
       id: uniqueId,
-      data: code
+      lab: lab
     });
 
     return this.subject
