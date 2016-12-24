@@ -48,6 +48,3 @@ jspm_packages
 
 # Yarn Integrity file
 .yarn-integrity
-
-# Temporary file to host the lab code
-/labfs/**/*
