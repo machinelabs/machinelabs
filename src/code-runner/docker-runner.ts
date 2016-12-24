@@ -13,11 +13,6 @@ const PROCESS_START_INDICATOR = '6d04bc0d-15eb-4189-9314-d56545aa1c1a';
 export class DockerRunner implements CodeRunner {
   run(lab: Lab): Observable<ProcessStreamData> {
 
-    lab.files.forEach((file: File) => {
-      // FixMe: Sync is bad. Kitten die. But this code has even more issues so keep calm. 
-      fs.writeFileSync(`${process.cwd()}/labfs/${file.name}`, file.content);
-    })
-
     let containerName = `${lab.id}-${Date.now()}`;
 
     // This may not catch all processes because there is asynchronism
@@ -31,15 +26,27 @@ export class DockerRunner implements CodeRunner {
     // be killed before we spawn a new one the answer is simply, stopping
     // docker containers is quite slow and we want the UI to be fast. Read on.
     exec(`docker stop $(docker ps -a -q --filter="name=${lab.id}-")`)
-    
+
+    // construct a shell command to create all files.
+    // The `&` makes sure that file creation happens asynchronously rather than sequentially.
+    // File creation happens inside the docker container. That means we don't have to map
+    // any directory from the host into container. And if anything bad happens to the container there
+    // is no way we could leave cruft behind on the host system.
+
+    // ATTENTION: The formatting is important here. We have to use a Here Doc because of multi line strings
+    // http://stackoverflow.com/questions/2953081/how-can-i-write-a-here-doc-to-a-file-in-bash-script/2954835#2954835
+    let writeCommand = lab.files.map((file: File) =>`{ cat <<'EOL' > ${file.name}
+${file.content}
+EOL
+}`)
+                                .join(` & `);
+
     let ps = spawn(`docker`, [
                                 'run',
                                 '-i',
                                 '--rm',
                                 `--name`,
                                 containerName,
-                                '-v',
-                                `${process.cwd()}/labfs:/labfs`,
                                 'thoughtram/keras',
                                 '/bin/bash',
                                 '-c',
@@ -47,7 +54,7 @@ export class DockerRunner implements CodeRunner {
                                 // We put an echo before the actual python call so that
                                 // we have something on STDOUT that tells us that the process
                                 // is alive and kicking. If anyone knows a better way I'm all ears!
-                                `echo ${PROCESS_START_INDICATOR} && python /labfs/main.py`
+                                `(${writeCommand}) && echo ${PROCESS_START_INDICATOR} && python main.py`
                                 ]);
 
     // This may look weird and in fact it is! We want to wait for the process 
