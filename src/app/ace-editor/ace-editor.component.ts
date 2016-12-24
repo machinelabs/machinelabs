@@ -53,7 +53,9 @@ export class AceEditorComponent implements AfterViewInit {
     // we need to check if editor is defined because ngOnChanges
     // runs before ngAfterViewInit(). Is there a better way?
     if (this.editor !== undefined) {
-      if (changes.value && this.value !== null) {
+      if (changes.value 
+          && this.value !== null
+          && this.value !== this.editor.getValue()) {
         this.editor.setValue(this.value, 1);
       }
 
