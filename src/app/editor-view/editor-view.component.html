@@ -1,6 +1,6 @@
-<div fx-layout="row">
-  <div fx-flex="25" [hidden]="sidebarToggled" class="ml-sidebar">
-    <div fx-flex-align="center" class="ml-sidebar__layout">
+<div fxLayout="row">
+  <div fxFlex="25" [hidden]="sidebarToggled" class="ml-sidebar">
+    <div fxFlex-align="center" class="ml-sidebar__layout">
       <h1 class="ml-logo">MachineLabs <span>Democratizing AI</span></h1>
         <md-divider></md-divider>
         <h3 md-subheader>Files</h3>
@@ -13,7 +13,7 @@
         <button md-raised-button md-button (click)="openAddFileDialog()">Add File</button>
     </div>
   </div>
-  <div fx-flex>
+  <div fxFlex>
     <md-toolbar color="primary">
       <span>MachineLabs</span>
       <span class="ml-toolbar__fill-space"></span>
@@ -36,15 +36,15 @@
     </md-toolbar>
 
     <div role="main">
-      <div fx-layout="row">
-        <ml-panel [panelTitle]="activeFile.name" fx-flex="50">
+      <div fxLayout="row">
+        <ml-panel [panelTitle]="activeFile.name" fxFlex="50">
           <ml-ace-editor
             #editor
             [(value)]="activeFile.content"
             mode="python"
           ></ml-ace-editor>
         </ml-panel>
-        <ml-panel panelTitle="Output" fx-flex="50">
+        <ml-panel panelTitle="Output" fxFlex="50">
           <ml-ace-editor
             [value]="output | async"
             [readOnly]="true"
