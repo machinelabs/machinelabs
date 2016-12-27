@@ -1,3 +1,5 @@
+import * as firebase from 'firebase';
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
@@ -8,6 +10,7 @@ import { RouterModule } from '@angular/router';
 
 import { RemoteLabExecService } from './remote-lab-exec.service';
 import { LabStorageService } from './lab-storage.service';
+import { AuthService, FirebaseAuthService, OfflineAuthService } from './auth.service';
 
 import { AppComponent } from './app.component';
 import { AceEditorComponent } from './ace-editor/ace-editor.component';
@@ -18,6 +21,14 @@ import { FileTreeComponent } from './file-tree/file-tree.component';
 
 import { APP_ROUTES } from './app.routes';
 import { LabResolver } from './lab.resolver';
+
+import { environment } from '../environments/environment';
+import { DATABASE } from './app.tokens';
+
+// We need to export this factory function to make AoT happy
+export function databaseFactory() {
+  return firebase.initializeApp(environment.firebaseConfig).database();
+}
 
 @NgModule({
   declarations: [
@@ -37,7 +48,13 @@ import { LabResolver } from './lab.resolver';
     MaterialModule.forRoot(),
     RouterModule.forRoot(APP_ROUTES)
   ],
-  providers: [RemoteLabExecService, LabStorageService, LabResolver],
+  providers: [
+    RemoteLabExecService,
+    LabStorageService,
+    LabResolver,
+    { provide: DATABASE, useFactory: databaseFactory },
+    { provide: AuthService, useClass: environment.offline ? OfflineAuthService : FirebaseAuthService }
+  ],
   entryComponents: [AddFileDialogComponent],
   bootstrap: [AppComponent]
 })

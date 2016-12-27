@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Lab } from './models/lab';
-
-declare let io: any;
+import * as io from 'socket.io-client';
 
 @Injectable()
 export class RemoteLabExecService {
@@ -40,7 +39,7 @@ export class RemoteLabExecService {
     return this.subject
                .filter(msg => msg.ref_id === uniqueId)
                // we want our Observables to complete when the remote code execution
-               // is completed. Hence we wait for the `process_finished` event for 
+               // is completed. Hence we wait for the `process_finished` event for
                // that particular process and complete the Observable through `takeWhile`
                .takeWhile(msg => !(msg.ref_id === uniqueId && msg.event_type === 'process_finished'))
                .map(msg => msg.data);
