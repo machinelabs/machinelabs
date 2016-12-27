@@ -13,10 +13,11 @@ import { AppComponent } from './app.component';
 import { AceEditorComponent } from './ace-editor/ace-editor.component';
 import { PanelComponent } from './panel/panel.component';
 import { EditorViewComponent } from './editor-view/editor-view.component';
+import { AddFileDialogComponent } from './add-file-dialog/add-file-dialog.component';
+import { FileTreeComponent } from './file-tree/file-tree.component';
 
 import { APP_ROUTES } from './app.routes';
 import { LabResolver } from './lab.resolver';
-import { AddFileDialogComponent } from './add-file-dialog/add-file-dialog.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { AddFileDialogComponent } from './add-file-dialog/add-file-dialog.compon
     AceEditorComponent,
     PanelComponent,
     EditorViewComponent,
-    AddFileDialogComponent
+    AddFileDialogComponent,
+    FileTreeComponent
   ],
   imports: [
     BrowserModule,

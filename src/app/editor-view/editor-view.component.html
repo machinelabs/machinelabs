@@ -4,13 +4,12 @@
       <h1 class="ml-logo">MachineLabs <span>Democratizing AI</span></h1>
         <md-divider></md-divider>
         <h3 md-subheader>Files</h3>
-        <md-nav-list>
-          <md-list-item *ngFor="let file of lab.files" (click)="openFile(file)">
-            {{file.name}} <button md-raised-button [disabled]="lab.files.length == 1" (click)="deleteFile(file)">Delete</button>
-          </md-list-item>
-        </md-nav-list>
-        <md-divider></md-divider>
-        <button md-raised-button md-button (click)="openAddFileDialog()">Add File</button>
+        <ml-file-tree
+          [files]="lab.files"
+          (selectFile)="openFile($event)"
+          (removeFile)="deleteFile($event)"
+          (addFile)="openAddFileDialog()"
+          ></ml-file-tree>
     </div>
   </div>
   <div fxFlex>
