@@ -27,7 +27,7 @@ export class LabStorageService {
       description: '',
       tags: [],
       files: lab ? lab.files : [{ name: 'main.py', content: DEFAULT_LAB_CODE }],
-      status: 0
+      status: LabStatus.Pristine
     };
   }
 
