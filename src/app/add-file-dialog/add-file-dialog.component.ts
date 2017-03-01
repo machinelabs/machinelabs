@@ -6,10 +6,11 @@ import { MdDialogRef } from '@angular/material';
   selector: 'ml-add-file-dialog',
   template: `
     <form [formGroup]="form" (ngSubmit)="submit(form)">
-      <md-input placeholder="File name" formControlName="filename">
+    <md-input-container>
         <span md-suffix>.py</span>
+        <input mdInput placeholder="File name" formControlName="filename">
         <md-hint *ngIf="!form.valid && !form.pristine" align="start">This field is required.</md-hint>
-      </md-input>
+      </md-input-container>
       <div style="margin-top: 1em; text-align: center;">
         <button md-raised-button [disabled]="!form.valid" type="submit">Add</button>
         <button md-raised-button type="button" (click)="dialogRef.close()">Close</button>
