@@ -1,6 +1,6 @@
 import { spawn } from 'child_process';
 import { ProcessUtil } from '../util/process';
-import { Observable } from '@ReactiveX/rxjs';
+import { Observable } from '@reactivex/rxjs';
 import { CodeRunner, ProcessStreamData } from './code-runner';
 import { Lab } from '../models/lab';
 

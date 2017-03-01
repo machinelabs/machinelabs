@@ -1,4 +1,4 @@
-import { Observable } from '@ReactiveX/rxjs';
+import { Observable } from '@reactivex/rxjs';
 import { Lab } from '../models/lab';
 
 export interface ProcessStreamData {

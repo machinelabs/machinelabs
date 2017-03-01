@@ -1,5 +1,5 @@
 import { ChildProcess } from 'child_process';
-import { Observable } from '@ReactiveX/rxjs';
+import { Observable } from '@reactivex/rxjs';
 
 export class ProcessUtil {
   static toObservableProcess(process: ChildProcess) {
