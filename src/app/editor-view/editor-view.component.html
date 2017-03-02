@@ -17,7 +17,8 @@
       <span>MachineLabs</span>
       <span class="ml-toolbar__fill-space"></span>
       <div class="ml-toolbar__cta-bar">
-        <button md-raised-button md-button (click)="run(lab)"><md-icon>cached</md-icon> Run</button>
+        <button md-raised-button md-button (click)="run(lab)" *ngIf="!context.isRunning()"><md-icon>cached</md-icon> Run</button>
+        <button md-raised-button md-button (click)="stop(lab)" *ngIf="context.isRunning()"><md-icon>stop</md-icon> Stop</button>
         <button md-raised-button md-button (click)="save(lab)"><md-icon>save</md-icon> Save</button>
         <button md-raised-button md-button (click)="fork(lab)"><md-icon>build</md-icon> Fork</button>
 

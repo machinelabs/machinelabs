@@ -5,7 +5,7 @@ import { AddFileDialogComponent } from '../add-file-dialog/add-file-dialog.compo
 import { RemoteLabExecService } from '../remote-lab-exec.service';
 import { LabStorageService } from '../lab-storage.service';
 import { Observable } from 'rxjs/Observable';
-import { Lab, File } from '../models/lab';
+import { Lab, LabExecutionContext, File } from '../models/lab';
 
 @Component({
   selector: 'ml-editor-view',
@@ -17,6 +17,8 @@ export class EditorViewComponent implements OnInit {
   output: Observable<string>;
 
   lab: Lab;
+
+  context: LabExecutionContext;
 
   sidebarToggled = false;
 
@@ -32,6 +34,7 @@ export class EditorViewComponent implements OnInit {
   }
 
   ngOnInit () {
+    this.context = new LabExecutionContext();
     this.rleService.init();
     this.route.data.map(data => data['lab'])
               .subscribe(lab =>  {
@@ -42,11 +45,13 @@ export class EditorViewComponent implements OnInit {
 
   run(lab: Lab) {
 
+    this.context = new LabExecutionContext(lab);
+    
     // Scan the notifications and build up a string with line breaks
     // Don't make this a manual subscription without dealing with
     // Unsubscribing. The returned Observable may not auto complete
     // in all scenarios.
-    this.output = this.rleService.run(lab)
+    this.output = this.rleService.run(this.context)
                       .scan((acc, current) => `${acc}\n${current}`, '');
   }
 

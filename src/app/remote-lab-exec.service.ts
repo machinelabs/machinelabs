@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { Lab } from './models/lab';
+import { Lab, ExecutionStatus, LabExecutionContext } from './models/lab';
 import * as io from 'socket.io-client';
 
 @Injectable()
@@ -27,22 +27,22 @@ export class RemoteLabExecService {
    * Executes code on the server. Returns an Observable<string>
    * where `string` is each line that was printed to STDOUT.
    */
-  run (lab: Lab) : Observable<string> {
+  run (context: LabExecutionContext) : Observable<string> {
 
-    // ids need to be unique only across connection, so Date.now() should do it
-    let uniqueId = Date.now();
     this.socket.emit('run_code', {
-      id: uniqueId,
-      lab: lab
+      context
     });
 
+    context.status = ExecutionStatus.Running;
+
     return this.subject
-               .filter(msg => msg.ref_id === uniqueId)
+               .filter(msg => msg.context_id === context.id)
                // we want our Observables to complete when the remote code execution
                // is completed. Hence we wait for the `process_finished` event for
                // that particular process and complete the Observable through `takeWhile`
-               .takeWhile(msg => !(msg.ref_id === uniqueId && msg.event_type === 'process_finished'))
-               .map(msg => msg.data);
+               .takeWhile(msg => !(msg.context_id === context.id && msg.event_type === 'process_finished'))
+               .map(msg => msg.data)
+               .finally(() => context.status = ExecutionStatus.Done)
   }
 
 }

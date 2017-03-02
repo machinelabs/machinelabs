@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import * as shortid from 'shortid';
 import * as firebase from 'firebase';
 
-import { Lab, LabStatus } from './models/lab';
+import { Lab } from './models/lab';
 import { DEFAULT_LAB_CODE } from './default-lab';
 import { DATABASE } from './app.tokens';
 import { AuthService } from './auth.service';
@@ -26,8 +26,7 @@ export class LabStorageService {
       name: 'Untitled',
       description: '',
       tags: [],
-      files: lab ? lab.files : [{ name: 'main.py', content: DEFAULT_LAB_CODE }],
-      status: LabStatus.Pristine
+      files: lab ? lab.files : [{ name: 'main.py', content: DEFAULT_LAB_CODE }]
     };
   }
 
@@ -48,8 +47,7 @@ export class LabStorageService {
           // `lab.tags` can be undefined when editing an existing lab that
           // doesn't have any tags yet.
           tags: lab.tags || [],
-          files: lab.files,
-          status: lab.status
+          files: lab.files
         });
         return Observable.fromPromise(res);
       });
