@@ -55,6 +55,10 @@ export class EditorViewComponent implements OnInit {
                       .scan((acc, current) => `${acc}\n${current}`, '');
   }
 
+  stop(context: LabExecutionContext) {
+    this.rleService.stop(context);
+  }
+
   fork(lab: Lab) {
     this.lab = this.labStorageService.createLab(lab);
     this.save(this.lab);

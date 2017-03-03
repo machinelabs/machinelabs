@@ -40,9 +40,18 @@ export class RemoteLabExecService {
                // we want our Observables to complete when the remote code execution
                // is completed. Hence we wait for the `process_finished` event for
                // that particular process and complete the Observable through `takeWhile`
-               .takeWhile(msg => !(msg.context_id === context.id && msg.event_type === 'process_finished'))
+               .takeWhile(msg => !(msg.context_id === context.id 
+                                 && (msg.event_type === 'process_finished' || msg.event_type === 'process_stopped')))
                .map(msg => msg.data)
                .finally(() => context.status = ExecutionStatus.Done)
+  }
+
+  stop (context: LabExecutionContext) {
+    this.socket.emit('stop_code', {
+      context
+    });
+
+    context.status = ExecutionStatus.Stopped;
   }
 
 }
