@@ -9,4 +9,5 @@ export interface ProcessStreamData {
 
 export interface CodeRunner {
   run (lab: Lab) : Observable<ProcessStreamData>
+  stop (lab: Lab) : void
 }

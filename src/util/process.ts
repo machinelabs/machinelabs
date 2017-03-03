@@ -1,4 +1,4 @@
-import { ChildProcess } from 'child_process';
+import { ChildProcess, exec } from 'child_process';
 import { Observable } from '@reactivex/rxjs';
 
 export class ProcessUtil {
@@ -23,5 +23,17 @@ export class ProcessUtil {
     let closeStream = Observable.fromEvent(process, 'close').share();
 
     return Observable.merge(stdOutStream, stdErrStream).takeUntil(closeStream)
+  }
+
+  // TODO: Do the logging based on an env variable (e.g. !production)
+  static execLog(cmd: string) {
+    return exec(cmd, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`exec error: ${error}`);
+          return;
+        }
+        console.log(`${stdout}`);
+        console.log(`${stderr}`);
+      });
   }
 }

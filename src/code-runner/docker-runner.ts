@@ -25,7 +25,7 @@ export class DockerRunner implements CodeRunner {
     // If you are wondering why don't we just wait for the old process to
     // be killed before we spawn a new one the answer is simply, stopping
     // docker containers is quite slow and we want the UI to be fast. Read on.
-    exec(`docker stop $(docker ps -a -q --filter="name=${lab.id}-")`)
+    this.stop(lab);
 
     // construct a shell command to create all files.
     // The `&` makes sure that file creation happens asynchronously rather than sequentially.
@@ -67,11 +67,23 @@ EOL
     return ProcessUtil.toObservableProcess(ps)
                       .do((data: ProcessStreamData) => {
                         if (data.str.trim() === PROCESS_START_INDICATOR){
-                          console.log(`Killing all labs of ${lab.id} except ${containerName}`);
-                          exec(`docker stop $(docker ps -a -q --filter="name=${lab.id}-" --filter="before=${containerName}")`);
+                          this.stop(lab, containerName);
                         }
                       })
                       .filter((data: ProcessStreamData) => data.str.trim() !== PROCESS_START_INDICATOR);
 
   }
+
+  stop (lab: Lab, exceptContainerName?: string) {
+    if (exceptContainerName) {
+      console.log(`Killing all labs of ${lab.id} except ${exceptContainerName}`);
+      ProcessUtil.execLog(`docker stop $(docker ps -a -q --filter="name=${lab.id}-" --filter="before=${exceptContainerName}")`);
+    }
+    else {
+      console.log(`Killing all labs of ${lab.id}`);
+      ProcessUtil.execLog(`docker stop $(docker ps -a -q --filter="name=${lab.id}-")`);
+    }
+  }
+
+
 }

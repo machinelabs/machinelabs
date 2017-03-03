@@ -11,4 +11,8 @@ export class DummyRunner implements CodeRunner {
   run(lab: Lab): Observable<ProcessStreamData> {
     return ProcessUtil.toObservableProcess(spawn(`ping`, ['-c10', 'machinelabs.ai']))
   }
+
+  stop(lab: Lab) {
+    
+  }
 }

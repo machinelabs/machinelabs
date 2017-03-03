@@ -24,8 +24,16 @@ io.on('connection', (socket: any) => {
         socket.emit('any', {
           event_type: 'process_finished',
           context_id: data.context.id
-        })
+        });
       });
+  });
+
+  socket.on('stop_code', (data: any) => {
+    runner.stop(data.context.lab);
+    socket.emit('any', {
+      event_type: 'process_stopped',
+      context_id: data.context.id
+    });
   });
 });
 
