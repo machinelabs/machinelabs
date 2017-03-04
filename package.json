@@ -45,6 +45,8 @@
     "karma-cli": "^1.0.1",
     "karma-jasmine": "^1.1.0",
     "karma-remap-istanbul": "^0.2.1",
+    "karma-coverage-istanbul-reporter": "^0.2.3",
+    "karma-mocha-reporter": "^2.2.2",
     "protractor": "5.1.0",
     "ts-node": "2.0.0",
     "tslint": "4.4.2",
