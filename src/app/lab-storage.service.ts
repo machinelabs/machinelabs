@@ -6,7 +6,7 @@ import * as firebase from 'firebase';
 import { Lab } from './models/lab';
 import { DEFAULT_LAB_CODE } from './default-lab';
 import { DATABASE } from './app.tokens';
-import { AuthService } from './auth.service';
+import { AuthService } from './auth';
 
 @Injectable()
 export class LabStorageService {

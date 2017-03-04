@@ -1,8 +1,9 @@
 /* tslint:disable:no-unused-variable */
 
 import { TestBed, async, inject } from '@angular/core/testing';
-import { AuthService, OfflineAuthService, FirebaseAuthService } from './auth.service';
-import './rx.operators';
+import { AuthService, OfflineAuthService, FirebaseAuthService } from './index';
+
+import '../rx.operators';
 
 describe('OfflineAuthService', () => {
 

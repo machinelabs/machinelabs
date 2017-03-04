@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
-import { User } from './models/user';
+import { User } from '../models/user';
 import { Observable } from 'rxjs/Observable';
+import { AuthService} from './auth.service';
 
-export abstract class AuthService {
-  abstract authenticate(): Observable<User>;
-}
+@Injectable()
+export class FirebaseAuthService extends AuthService {
 
-export class FirebaseAuthService {
-
-  login$: Observable<User>
+  login$: Observable<User>;
 
   authenticate(): Observable<User> {
 
@@ -24,19 +22,3 @@ export class FirebaseAuthService {
     return this.login$;
   }
 }
-
-export class OfflineAuthService {
-
-  authenticate(): Observable<User> {
-    const user = {
-      uid: 'some unique id',
-      displayName: 'Tony Stark',
-      email: 'tony@starkindustries.com',
-      isAnonymous: true,
-      photoUrl: null
-    };
-
-    return Observable.fromPromise(new Promise(resolve => resolve(user)));
-  }
-}
-
