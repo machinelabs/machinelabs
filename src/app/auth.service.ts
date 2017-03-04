@@ -1,22 +1,33 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
 import { User } from './models/user';
+import { Observable } from 'rxjs/Observable';
 
 export abstract class AuthService {
-  abstract authenticate(): Promise<User>;
+  abstract authenticate(): Observable<User>;
 }
 
 export class FirebaseAuthService {
 
-  authenticate(): Promise<User> {
-    return new Promise(resolve => firebase.auth().onAuthStateChanged(resolve))
-              .then(user => user ? user : firebase.auth().signInAnonymously());
+  login$: Observable<User>
+
+  authenticate(): Observable<User> {
+
+    if (!this.login$) {
+      this.login$ = Observable.fromPromise(new Promise(resolve => firebase.auth().onAuthStateChanged(resolve))
+                                .then(user => user ? user : firebase.auth().signInAnonymously())
+                              )
+                              .publishLast()
+                              .refCount();
+    }
+
+    return this.login$;
   }
 }
 
 export class OfflineAuthService {
 
-  authenticate(): Promise<User> {
+  authenticate(): Observable<User> {
     const user = {
       uid: 'some unique id',
       displayName: 'Tony Stark',
@@ -25,7 +36,7 @@ export class OfflineAuthService {
       photoUrl: null
     };
 
-    return new Promise(resolve => resolve(user));
+    return Observable.fromPromise(new Promise(resolve => resolve(user)));
   }
 }
 

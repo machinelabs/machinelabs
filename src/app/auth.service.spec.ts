@@ -2,6 +2,7 @@
 
 import { TestBed, async, inject } from '@angular/core/testing';
 import { AuthService, OfflineAuthService, FirebaseAuthService } from './auth.service';
+import './rx.operators';
 
 describe('OfflineAuthService', () => {
 
@@ -14,7 +15,7 @@ describe('OfflineAuthService', () => {
   describe('.authenticate()', () => {
 
     it('should resolve with dummy User object', inject([AuthService], (service: AuthService) => {
-      service.authenticate().then(user => {
+      service.authenticate().subscribe(user => {
         expect(user).toBeDefined();
         expect(user.displayName).toEqual('Tony Stark');
         expect(user.email).toEqual('tony@starkindustries.com');

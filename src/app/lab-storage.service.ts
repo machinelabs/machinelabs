@@ -11,11 +11,7 @@ import { AuthService } from './auth.service';
 @Injectable()
 export class LabStorageService {
 
-  login$: Observable<any>;
-
   constructor(@Inject(DATABASE) private db, private authService: AuthService) {
-    this.login$ = Observable.fromPromise(this.authService.authenticate())
-                    .publishLast().refCount();
   }
 
   createLab(lab?: Lab): Lab {
@@ -31,26 +27,28 @@ export class LabStorageService {
   }
 
   getLab(id: string): Observable<Lab> {
-    return this.login$
-      .switchMap(_ => Observable.fromPromise(this.db.ref(`labs/${id}`).once('value')))
-      .map((snapshot: any) => snapshot.val());
+    return this.authService
+              .authenticate()
+              .switchMap(_ => Observable.fromPromise(this.db.ref(`labs/${id}`).once('value')))
+              .map((snapshot: any) => snapshot.val());
   }
 
   saveLab(lab: Lab): Observable<any> {
-    return this.login$
-      .switchMap((login: any) => {
-        let res = this.db.ref(`labs/${lab.id}`).set({
-          id: lab.id,
-          user_id: login.uid,
-          name: lab.name,
-          description: lab.description,
-          // `lab.tags` can be undefined when editing an existing lab that
-          // doesn't have any tags yet.
-          tags: lab.tags || [],
-          files: lab.files
-        });
-        return Observable.fromPromise(res);
-      });
+    return this.authService
+              .authenticate()
+              .switchMap((login: any) => {
+                let res = this.db.ref(`labs/${lab.id}`).set({
+                  id: lab.id,
+                  user_id: login.uid,
+                  name: lab.name,
+                  description: lab.description,
+                  // `lab.tags` can be undefined when editing an existing lab that
+                  // doesn't have any tags yet.
+                  tags: lab.tags || [],
+                  files: lab.files
+                });
+                return Observable.fromPromise(res);
+              });
   }
 
 }
