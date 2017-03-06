@@ -6,6 +6,8 @@ import { RemoteLabExecService } from '../remote-lab-exec.service';
 import { LabStorageService } from '../lab-storage.service';
 import { Observable } from 'rxjs/Observable';
 import { Lab, LabExecutionContext, File } from '../models/lab';
+import { User } from '../models/user';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'ml-editor-view',
@@ -24,12 +26,15 @@ export class EditorViewComponent implements OnInit {
 
   activeFile: File;
 
-  dialogRef: MdDialogRef<AddFileDialogComponent>
+  dialogRef: MdDialogRef<AddFileDialogComponent>;
+
+  user: User;
 
   constructor (private rleService: RemoteLabExecService,
                private labStorageService: LabStorageService,
                private route: ActivatedRoute,
                private dialog: MdDialog,
+               private authService: AuthService,
                private router: Router) {
   }
 
@@ -41,12 +46,14 @@ export class EditorViewComponent implements OnInit {
                 this.lab = lab;
                 this.activeFile = this.lab.files[0];
               });
+
+    this.authService.requireAuth().subscribe(user => this.user = user);
   }
 
   run(lab: Lab) {
 
     this.context = new LabExecutionContext(lab);
-    
+
     // Scan the notifications and build up a string with line breaks
     // Don't make this a manual subscription without dealing with
     // Unsubscribing. The returned Observable may not auto complete
@@ -100,5 +107,13 @@ export class EditorViewComponent implements OnInit {
         this.lab.files.push(file);
         this.openFile(file);
       });
+  }
+
+  loginWithGitHub() {
+    this.authService.signInWithGitHub().subscribe();
+  }
+
+  logout() {
+    this.authService.signOut().subscribe();
   }
 }
