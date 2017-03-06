@@ -16,7 +16,7 @@ export class LabStorageService {
 
   createLab(lab?: Lab): Observable<Lab> {
     return this.authService
-      .authenticate()
+      .requireAuthOnce()
       .map(user => {
         return {
           id: shortid.generate(),
@@ -31,14 +31,14 @@ export class LabStorageService {
 
   getLab(id: string): Observable<Lab> {
     return this.authService
-              .authenticate()
+              .requireAuthOnce()
               .switchMap(_ => Observable.fromPromise(this.db.ref(`labs/${id}`).once('value')))
               .map((snapshot: any) => snapshot.val());
   }
 
   saveLab(lab: Lab): Observable<any> {
     return this.authService
-              .authenticate()
+              .requireAuthOnce()
               .switchMap((login: any) => {
                 let res = this.db.ref(`labs/${lab.id}`).set({
                   id: lab.id,
