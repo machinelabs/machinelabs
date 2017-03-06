@@ -30,7 +30,8 @@
       "environments": {
         "dev": "environments/environment.ts",
         "offline": "environments/environment.offline.ts",
-        "prod": "environments/environment.prod.ts"
+        "prod": "environments/environment.prod.ts",
+        "test": "environments/environment.test.ts"
       }
     }
   ],
