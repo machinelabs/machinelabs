@@ -14,16 +14,19 @@ export class LabStorageService {
   constructor(@Inject(DATABASE) private db, private authService: AuthService) {
   }
 
-  createLab(lab?: Lab): Lab {
-    return {
-      id: shortid.generate(),
-      // TODO: we may wanna change the return type to Observable<Lab> and prefill with userId
-      userId: '',
-      name: 'Untitled',
-      description: '',
-      tags: [],
-      files: lab ? lab.files : [{ name: 'main.py', content: DEFAULT_LAB_CODE }]
-    };
+  createLab(lab?: Lab): Observable<Lab> {
+    return this.authService
+      .authenticate()
+      .map(user => {
+        return {
+          id: shortid.generate(),
+          userId: user.uid,
+          name: 'Untitled',
+          description: '',
+          tags: [],
+          files: lab ? lab.files : [{ name: 'main.py', content: DEFAULT_LAB_CODE }]
+        };
+      });
   }
 
   getLab(id: string): Observable<Lab> {

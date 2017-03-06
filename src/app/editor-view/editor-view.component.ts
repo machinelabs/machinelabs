@@ -60,8 +60,10 @@ export class EditorViewComponent implements OnInit {
   }
 
   fork(lab: Lab) {
-    this.lab = this.labStorageService.createLab(lab);
-    this.save(this.lab);
+    this.labStorageService.createLab(lab).subscribe(lab => {
+      this.lab = lab;
+      this.save(this.lab);
+    });
   }
 
   save(lab: Lab) {
