@@ -36,12 +36,11 @@ export class FirebaseAuthService extends AuthService {
   }
 
   signInWithGitHub(): Observable<User> {
-    let loginPromise = new Promise(resolve => {
-        firebase.auth().signInWithPopup(new firebase.auth.GithubAuthProvider())
-                       .then(result => resolve(result.user));
-    });
+    let loginPromise = firebase.auth()
+                               .signInWithPopup(new firebase.auth.GithubAuthProvider())
+                               .then(result => result.user);
 
-    return Observable.fromPromise(loginPromise);
+    return Observable.fromPromise(<Promise<any>>loginPromise);
   }
 }
 
