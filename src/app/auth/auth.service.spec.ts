@@ -3,9 +3,13 @@ import { environment } from '../../environments/environment.test';
 import { TestBed } from '@angular/core/testing';
 import { Subject } from 'rxjs/Subject';
 
-import { AuthService } from './auth.service';
-import { OfflineAuthService, OfflineAuth, dummyUser } from './offline-auth.service';
-import { FirebaseAuthService } from './firebase-auth.service';
+import {
+  AuthService,
+  FirebaseAuthService,
+  OfflineAuthService,
+  OfflineAuth,
+  dummyUser
+} from './index';
 
 import { User } from '../models/user';
 
