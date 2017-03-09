@@ -14,28 +14,31 @@ export class LabStorageService {
   constructor(@Inject(DATABASE) private db, private authService: AuthService) {
   }
 
-  createLab(lab?: Lab): Lab {
-    return {
-      id: shortid.generate(),
-      // TODO: we may wanna change the return type to Observable<Lab> and prefill with userId
-      userId: '',
-      name: 'Untitled',
-      description: '',
-      tags: [],
-      files: lab ? lab.files : [{ name: 'main.py', content: DEFAULT_LAB_CODE }]
-    };
+  createLab(lab?: Lab): Observable<Lab> {
+    return this.authService
+      .requireAuthOnce()
+      .map(user => {
+        return {
+          id: shortid.generate(),
+          user_id: user.uid,
+          name: 'Untitled',
+          description: '',
+          tags: [],
+          files: lab ? lab.files : [{ name: 'main.py', content: DEFAULT_LAB_CODE }]
+        };
+      });
   }
 
   getLab(id: string): Observable<Lab> {
     return this.authService
-              .authenticate()
+              .requireAuthOnce()
               .switchMap(_ => Observable.fromPromise(this.db.ref(`labs/${id}`).once('value')))
               .map((snapshot: any) => snapshot.val());
   }
 
   saveLab(lab: Lab): Observable<any> {
     return this.authService
-              .authenticate()
+              .requireAuthOnce()
               .switchMap((login: any) => {
                 let res = this.db.ref(`labs/${lab.id}`).set({
                   id: lab.id,

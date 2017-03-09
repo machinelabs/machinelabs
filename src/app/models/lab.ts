@@ -13,7 +13,7 @@ export interface File {
 
 export interface Lab {
   id: string;
-  userId: string;
+  user_id: string;
   name: string;
   description: string;
   tags: string[];
