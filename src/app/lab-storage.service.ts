@@ -20,7 +20,7 @@ export class LabStorageService {
       .map(user => {
         return {
           id: shortid.generate(),
-          userId: user.uid,
+          user_id: user.uid,
           name: 'Untitled',
           description: '',
           tags: [],
