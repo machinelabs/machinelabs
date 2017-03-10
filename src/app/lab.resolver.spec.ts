@@ -13,6 +13,7 @@ describe('LabResolver', () => {
 
   let labStorageServiceStub = {
     createLab: () => {},
+    createLabFromTemplate: (arg) => {},
     getLab: (id) => {}
   };
 
@@ -30,7 +31,7 @@ describe('LabResolver', () => {
 
   describe('.resolve()', () => {
 
-    it('should resolve with new lab if no route param labid is given', () => {
+    it('should resolve with new lab from template if no route param labid is given', () => {
 
       let newLab: Lab = {
         id: 'new-lab',
@@ -43,10 +44,10 @@ describe('LabResolver', () => {
 
       let activatedRouteSnapshotStub = { params: {}, data: {} };
 
-      spyOn(labStorageService, 'createLab').and.returnValue(Observable.of(newLab));
+      spyOn(labStorageService, 'createLabFromTemplate').and.returnValue(Observable.of(newLab));
 
       labResolver.resolve(activatedRouteSnapshotStub).subscribe(lab => {
-        expect(labStorageService.createLab).toHaveBeenCalled();
+        expect(labStorageService.createLabFromTemplate).toHaveBeenCalled();
         expect(lab).toEqual(newLab);
       });
     });
