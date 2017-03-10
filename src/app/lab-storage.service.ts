@@ -3,18 +3,20 @@ import { Observable } from 'rxjs/Observable';
 import * as shortid from 'shortid';
 import * as firebase from 'firebase';
 
-import { Lab } from './models/lab';
-import { DEFAULT_LAB_CODE } from './default-lab';
+import { Lab, LabTemplate } from './models/lab';
 import { DATABASE } from './app.tokens';
 import { AuthService } from './auth';
+import { LabTemplateService } from './lab-template.service';
 
 @Injectable()
 export class LabStorageService {
 
-  constructor(@Inject(DATABASE) private db, private authService: AuthService) {
-  }
+  constructor(
+    @Inject(DATABASE) private db,
+    private authService: AuthService,
+    private labTemplateService: LabTemplateService) {}
 
-  createLab(lab?: Lab): Observable<Lab> {
+  createLab(lab?: Lab | LabTemplate): Observable<Lab> {
     return this.authService
       .requireAuthOnce()
       .map(user => {
@@ -24,9 +26,15 @@ export class LabStorageService {
           name: lab ? `Fork of ${lab.name}` : 'Untitled',
           description: lab ? lab.description : '',
           tags: lab ? lab.tags: [],
-          files: lab ? lab.files : [{ name: 'main.py', content: DEFAULT_LAB_CODE }]
+          files: lab ? lab.files : [{ name: 'main.py', content: '' }]
         };
       });
+  }
+
+  createLabFromTemplate(templateName: string): Observable<Lab> {
+    return this.labTemplateService
+        .getTemplate(templateName)
+        .switchMap(template => template ? this.createLab(template) : this.createLab());
   }
 
   getLab(id: string): Observable<Lab> {

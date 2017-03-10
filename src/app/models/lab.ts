@@ -11,13 +11,16 @@ export interface File {
   content: string;
 }
 
-export interface Lab {
-  id: string;
-  user_id: string;
+export interface LabTemplate {
   name: string;
   description: string;
   tags: string[];
   files: File[];
+}
+
+export interface Lab extends LabTemplate {
+  id: string;
+  user_id: string;
 }
 
 export class LabExecutionContext {

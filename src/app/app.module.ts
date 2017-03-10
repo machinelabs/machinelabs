@@ -11,6 +11,7 @@ import { RouterModule } from '@angular/router';
 import { RemoteLabExecService } from './remote-lab-exec.service';
 import { LabStorageService } from './lab-storage.service';
 import { AuthService, FirebaseAuthService, OfflineAuthService } from './auth';
+import { LabTemplateService, InMemoryLabTemplateService } from './lab-template.service';
 
 import { AppComponent } from './app.component';
 import { AceEditorComponent } from './ace-editor/ace-editor.component';
@@ -53,7 +54,8 @@ export function databaseFactory() {
     LabStorageService,
     LabResolver,
     { provide: DATABASE, useFactory: databaseFactory },
-    { provide: AuthService, useClass: environment.offline ? OfflineAuthService : FirebaseAuthService }
+    { provide: AuthService, useClass: environment.offline ? OfflineAuthService : FirebaseAuthService },
+    { provide: LabTemplateService, useClass: InMemoryLabTemplateService }
   ],
   entryComponents: [AddFileDialogComponent],
   bootstrap: [AppComponent]

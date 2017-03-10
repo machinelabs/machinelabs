@@ -1,5 +1,4 @@
-export const DEFAULT_LAB_CODE = `
-import numpy as np
+export const SIMPLE_XOR_LAB_CODE = `import numpy as np
 from keras.models import Sequential
 from keras.layers.core import Dense
 
@@ -20,3 +19,4 @@ model.compile(loss='mean_squared_error',
 model.fit(training_data, target_data, nb_epoch=500, verbose=2)
 
 print model.predict(training_data).round()`;
+

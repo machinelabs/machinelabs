@@ -16,7 +16,7 @@ export class LabResolver implements Resolve<Lab> {
     // if we don't have any param, create a default lab
     // if we have an id, fetch the lab. If it fails, go for the default lab
     return !route.params['labid']
-            ? this.labStorageService.createLab()
+            ? this.labStorageService.createLabFromTemplate('XOR')
             : this.labStorageService.getLab(route.params['labid'])
                                     .map(lab => lab ? lab : this.labStorageService.createLab());
 
