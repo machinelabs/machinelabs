@@ -21,9 +21,9 @@ export class LabStorageService {
         return {
           id: shortid.generate(),
           user_id: user.uid,
-          name: 'Untitled',
-          description: '',
-          tags: [],
+          name: lab ? `Fork of ${lab.name}` : 'Untitled',
+          description: lab ? lab.description : '',
+          tags: lab ? lab.tags: [],
           files: lab ? lab.files : [{ name: 'main.py', content: DEFAULT_LAB_CODE }]
         };
       });
