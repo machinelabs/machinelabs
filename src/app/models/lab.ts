@@ -24,14 +24,37 @@ export interface Lab extends LabTemplate {
 }
 
 export class LabExecutionContext {
-  readonly id: string;
-  readonly lab: Lab;
+  private _id: string;
+  private _lab: Lab;
   status: ExecutionStatus;
 
-  constructor (lab?:Lab) {
+  constructor (lab: Lab = null, id: string = '') {
+    this._id = id;
+    this._lab = lab;
     this.status = ExecutionStatus.Pristine;
-    this.id = `${Date.now()}`;
-    this.lab = lab;
+  }
+
+  get id () {
+    return this._id
+  }
+
+  get lab () {
+    return this._lab
+  }
+
+  clone () {
+    let context = new LabExecutionContext(this.lab, this.id);
+    context.status = this.status;
+    return context;
+  }
+
+  setData(lab: Lab, id: string) {
+    if (!lab || !id) {
+      throw new Error('Providing lab and id is mandatory');
+    }
+
+    this._lab = lab;
+    this._id = id;
   }
 
   isRunning () {

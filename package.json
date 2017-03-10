@@ -29,7 +29,6 @@
     "firebase": "3.6.4",
     "rxjs": "5.1.0",
     "shortid": "2.2.6",
-    "socket.io": "1.7.2",
     "zone.js": "0.7.6"
   },
   "devDependencies": {

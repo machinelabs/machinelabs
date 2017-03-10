@@ -46,7 +46,6 @@ export class EditorViewComponent implements OnInit {
 
   ngOnInit () {
     this.context = new LabExecutionContext();
-    this.rleService.init();
     this.route.data.map(data => data['lab'])
               .subscribe(lab =>  {
                 this.lab = lab;
@@ -58,13 +57,20 @@ export class EditorViewComponent implements OnInit {
 
   run(lab: Lab) {
 
-    this.context = new LabExecutionContext(lab);
+    // we want to have this immutable. Shared instances make it hard
+    // to reason about things when code is executed asynchronously.
+    // E.g. if some async handler has a reference to a context it needs
+    // to be sure that the id won't change because someone started a new
+    // run in between.
+    // However, we want to give information about the previous context to
+    // the rleService, hence we clone the current context and pass it on.
+    this.context = this.context.clone();
 
     // Scan the notifications and build up a string with line breaks
     // Don't make this a manual subscription without dealing with
     // Unsubscribing. The returned Observable may not auto complete
     // in all scenarios.
-    this.output = this.rleService.run(this.context)
+    this.output = this.rleService.run(this.context, lab)
                       .scan((acc, current) => `${acc}\n${current}`, '');
   }
 
