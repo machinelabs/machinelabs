@@ -7,7 +7,7 @@
   "license": "ISC",
   "dependencies": {
     "@reactivex/rxjs": "^5.0.0-rc.5",
-    "socket.io": "^1.7.1"
+    "firebase": "^3.7.1"
   },
   "scripts": {
     "build": "gulp build",

@@ -1,5 +1,5 @@
 import { Observable } from '@reactivex/rxjs';
-import { Lab } from '../models/lab';
+import { Run } from '../models/run';
 
 export interface ProcessStreamData {
   origin: string,
@@ -8,6 +8,6 @@ export interface ProcessStreamData {
 }
 
 export interface CodeRunner {
-  run (lab: Lab) : Observable<ProcessStreamData>
-  stop (lab: Lab) : void
+  run (run: Run) : Observable<ProcessStreamData>
+  stop (run: Run) : void
 }
