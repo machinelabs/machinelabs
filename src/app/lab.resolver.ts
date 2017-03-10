@@ -11,7 +11,7 @@ export class LabResolver implements Resolve<Lab> {
 
   }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  resolve(route: ActivatedRouteSnapshot) {
 
     // if we don't have any param, create a default lab
     // if we have an id, fetch the lab. If it fails, go for the default lab
