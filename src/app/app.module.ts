@@ -18,6 +18,7 @@ import { AceEditorComponent } from './ace-editor/ace-editor.component';
 import { PanelComponent } from './panel/panel.component';
 import { EditorViewComponent } from './editor-view/editor-view.component';
 import { AddFileDialogComponent } from './add-file-dialog/add-file-dialog.component';
+import { NavigationConfirmDialogComponent } from './navigation-confirm-dialog/navigation-confirm-dialog.component';
 import { FileTreeComponent } from './file-tree/file-tree.component';
 
 import { APP_ROUTES } from './app.routes';
@@ -38,7 +39,8 @@ export function databaseFactory() {
     PanelComponent,
     EditorViewComponent,
     AddFileDialogComponent,
-    FileTreeComponent
+    FileTreeComponent,
+    NavigationConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +59,10 @@ export function databaseFactory() {
     { provide: AuthService, useClass: environment.offline ? OfflineAuthService : FirebaseAuthService },
     { provide: LabTemplateService, useClass: InMemoryLabTemplateService }
   ],
-  entryComponents: [AddFileDialogComponent],
+  entryComponents: [
+    AddFileDialogComponent,
+    NavigationConfirmDialogComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
