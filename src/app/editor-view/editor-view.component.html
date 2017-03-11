@@ -11,7 +11,7 @@
     <!-- menu opens when trigger button is clicked -->
     <button md-icon-button [md-menu-trigger-for]="menu">
       <md-icon *ngIf="user?.isAnonymous">more_vert</md-icon>
-      <img *ngIf="user && !user.isAnonymous" src="{{user.photoURL}}" alt="{{user.displayName}} profile picture" class="ml-login-avatar">
+      <img *ngIf="user && user.photoURL" [src]="user.photoURL" alt="{{user.displayName}} profile picture" class="ml-login-avatar">
     </button>
 
     <md-menu #menu="mdMenu">

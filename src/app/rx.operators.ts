@@ -8,3 +8,4 @@ import 'rxjs/add/operator/takeWhile';
 import 'rxjs/add/operator/publishLast';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/catch';

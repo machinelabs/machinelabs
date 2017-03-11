@@ -7,5 +7,6 @@ export abstract class AuthService {
   abstract requireAuthOnce(): Observable<User>;
   abstract signOut(): Observable<any>;
   abstract signInWithGitHub(): Observable<User>;
+  abstract linkOrSignInWithGitHub(): Observable<User>;
 }
 

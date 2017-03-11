@@ -136,7 +136,7 @@ export class EditorViewComponent implements OnInit {
   }
 
   loginWithGitHub() {
-    this.authService.signInWithGitHub().subscribe();
+    this.authService.linkOrSignInWithGitHub().subscribe();
   }
 
   logout() {

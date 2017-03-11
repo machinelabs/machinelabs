@@ -37,6 +37,10 @@ export class OfflineAuthService implements OfflineAuth {
     return Observable.of(this.user);
   }
 
+  linkOrSignInWithGitHub(): Observable<User> {
+    return this.signInWithGitHub();
+  }
+
   signOut(): Observable<any> {
     this.user.isAnonymous = true;
     return Observable.of();
