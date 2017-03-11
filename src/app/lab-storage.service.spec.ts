@@ -3,7 +3,7 @@ import { Inject } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { LabStorageService } from './lab-storage.service';
-import { LabTemplateService, InMemoryLabTemplateService } from './lab-template.service';
+import { LabTemplateService, InMemoryLabTemplateService, DEFAULT_LAB_TPL_ID } from './lab-template.service';
 import { AuthService } from './auth';
 import { DATABASE } from './app.tokens';
 import { LAB_TEMPLATES } from './data/lab-templates';
@@ -87,7 +87,7 @@ describe('LabStorageService', () => {
 
     it('should create lab from given template', () => {
 
-      const TEMPLATE = 'XOR';
+      const TEMPLATE = DEFAULT_LAB_TPL_ID;
 
       spyOn(labTemplateService, 'getTemplate').and.returnValue(Observable.of(LAB_TEMPLATES[TEMPLATE]));
       spyOn(labStorageService, 'createLab').and.callThrough();
