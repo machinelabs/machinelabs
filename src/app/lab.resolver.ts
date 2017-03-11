@@ -3,6 +3,7 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Lab } from './models/lab';
 import { LabStorageService } from './lab-storage.service';
 import { Observable } from 'rxjs/Observable';
+import { BLANK_LAB_TPL_ID, DEFAULT_LAB_TPL_ID } from './lab-template.service';
 
 @Injectable()
 export class LabResolver implements Resolve<Lab> {
@@ -12,13 +13,19 @@ export class LabResolver implements Resolve<Lab> {
   }
 
   resolve(route: ActivatedRouteSnapshot) {
+    if (route.params['labid']) {
+      // If we have a lab id, try to fetch it and fall back to
+      // a new empty lab if no lab with the given id exists.
+      return this.labStorageService
+                  .getLab(route.params['labid'])
+                  .map(lab => lab ? lab : this.labStorageService.createLab());
+    }
 
-    // if we don't have any param, create a default lab
-    // if we have an id, fetch the lab. If it fails, go for the default lab
-    return !route.params['labid']
-            ? this.labStorageService.createLabFromTemplate('XOR')
-            : this.labStorageService.getLab(route.params['labid'])
-                                    .map(lab => lab ? lab : this.labStorageService.createLab());
-
+    // If a template id is specified, create a lab from that template,
+    // unless it's the blank template id. Since `queryParams['tpl']` can
+    // be undefined, we can easily fallback to default lab template.
+    return (route.queryParams['tpl'] === BLANK_LAB_TPL_ID)
+            ? this.labStorageService.createLab()
+            : this.labStorageService.createLabFromTemplate(route.queryParams['tpl'] || DEFAULT_LAB_TPL_ID);
   }
 }

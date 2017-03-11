@@ -4,6 +4,7 @@ import { MdDialog, MdDialogRef } from '@angular/material';
 import { AddFileDialogComponent } from '../add-file-dialog/add-file-dialog.component';
 import { RemoteLabExecService } from '../remote-lab-exec.service';
 import { LabStorageService } from '../lab-storage.service';
+import { BLANK_LAB_TPL_ID } from '../lab-template.service';
 import { Observable } from 'rxjs/Observable';
 import { Lab, LabExecutionContext, File } from '../models/lab';
 import { User } from '../models/user';
@@ -76,6 +77,10 @@ export class EditorViewComponent implements OnInit {
   save(lab: Lab) {
     this.labStorageService.saveLab(lab)
         .subscribe(() => this.router.navigateByUrl(`${lab.id}`))
+  }
+
+  create() {
+    this.router.navigate(['/'], { queryParams: { tpl: BLANK_LAB_TPL_ID }});
   }
 
   toggleSidebar() {
