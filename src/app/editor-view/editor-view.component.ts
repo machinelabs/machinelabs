@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { AddFileDialogComponent } from '../add-file-dialog/add-file-dialog.component';
+import { NavigationConfirmDialogComponent } from '../navigation-confirm-dialog/navigation-confirm-dialog.component';
 import { RemoteLabExecService } from '../remote-lab-exec.service';
 import { LabStorageService } from '../lab-storage.service';
+import { BLANK_LAB_TPL_ID } from '../lab-template.service';
 import { Observable } from 'rxjs/Observable';
 import { Lab, LabExecutionContext, File } from '../models/lab';
 import { User } from '../models/user';
@@ -26,7 +29,9 @@ export class EditorViewComponent implements OnInit {
 
   activeFile: File;
 
-  dialogRef: MdDialogRef<AddFileDialogComponent>;
+  addFileDialogRef: MdDialogRef<AddFileDialogComponent>;
+
+  navigationConfirmDialogRef: MdDialogRef<NavigationConfirmDialogComponent>;
 
   user: User;
 
@@ -35,6 +40,7 @@ export class EditorViewComponent implements OnInit {
                private route: ActivatedRoute,
                private dialog: MdDialog,
                private authService: AuthService,
+               private location: Location,
                private router: Router) {
   }
 
@@ -78,6 +84,20 @@ export class EditorViewComponent implements OnInit {
         .subscribe(() => this.router.navigateByUrl(`${lab.id}`))
   }
 
+  create() {
+    this.navigationConfirmDialogRef = this.dialog.open(NavigationConfirmDialogComponent, {
+      disableClose: false
+    });
+
+    this.navigationConfirmDialogRef.afterClosed()
+      .filter(confirmed => confirmed)
+      .switchMap(_ => this.labStorageService.createLab())
+      .subscribe(lab => {
+        this.location.go(`/?tpl=${BLANK_LAB_TPL_ID}`);
+        this.initLab(lab);
+      })
+  }
+
   toggleSidebar() {
     this.sidebarToggled = !this.sidebarToggled;
   }
@@ -96,11 +116,11 @@ export class EditorViewComponent implements OnInit {
   }
 
   openAddFileDialog() {
-    this.dialogRef = this.dialog.open(AddFileDialogComponent, {
+    this.addFileDialogRef = this.dialog.open(AddFileDialogComponent, {
       disableClose: false
     });
 
-    this.dialogRef.afterClosed()
+    this.addFileDialogRef.afterClosed()
       .filter(filename => filename !== '' && filename !== undefined)
       .subscribe(filename => {
         const file = { name: filename, content: '' };
@@ -115,5 +135,10 @@ export class EditorViewComponent implements OnInit {
 
   logout() {
     this.authService.signOut().subscribe();
+  }
+
+  initLab(lab) {
+    this.lab = lab;
+    this.openFile(this.lab.files[0]);
   }
 }
