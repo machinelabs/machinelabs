@@ -127,6 +127,49 @@ describe('Auth services', () => {
         });
       });
     });
+
+    describe('.linkOrSignInWithGitHub()', () => {
+
+      it('should link anonymous user with GitHub user using firebase APIs', (done) => {
+
+        let result = { user: Object.assign({}, dummyUser) };
+        let currentUserStub = {
+          currentUser: {
+            linkWithPopup: jasmine.createSpy('linkWithPopup').and.returnValue(Promise.resolve(result)),
+            updateProfile: jasmine.createSpy('updateProfile').and.callFake(() => {})
+          },
+          signInWithPopup: jasmine.createSpy('signInWithPopup').and.returnValue(Promise.resolve(result))
+        };
+
+        spyOn(firebase, 'auth').and.returnValue(currentUserStub);
+
+        authService.linkOrSignInWithGitHub().subscribe(user => {
+          expect(firebase.auth().currentUser.linkWithPopup).toHaveBeenCalledWith(new firebase.auth.GithubAuthProvider());
+          expect(user).toEqual(dummyUser);
+          done();
+        });
+      });
+
+      it('should sign in with GitHub if linking throws', (done) => {
+
+        let result = { user: Object.assign({}, dummyUser) };
+
+        let currentUserStub = {
+          currentUser: {
+            linkWithPopup: jasmine.createSpy('linkWithPopup').and.returnValue(Promise.reject(new Error())),
+          },
+          signInWithPopup: jasmine.createSpy('signInWithPopup').and.returnValue(Promise.resolve(result))
+        };
+
+        spyOn(firebase, 'auth').and.returnValue(currentUserStub);
+
+        authService.linkOrSignInWithGitHub().subscribe(user => {
+          expect(firebase.auth().signInWithPopup).toHaveBeenCalledWith(new firebase.auth.GithubAuthProvider());
+          expect(user).toEqual(dummyUser);
+          done();
+        });
+      });
+    });
   });
 
   describe('OfflineAuthService', () => {
@@ -185,6 +228,19 @@ describe('Auth services', () => {
 
       it('should resolve with non-anonymous dummy user object', () => {
         authService.signInWithGitHub().subscribe(user => {
+          expect(user).toBeDefined();
+          expect(user.displayName).toEqual('Tony Stark');
+          expect(user.email).toEqual('tony@starkindustries.com');
+          expect(user.isAnonymous).toBe(false);
+          expect(user.photoUrl).toBe(null);
+        });
+      });
+    });
+
+    describe('.linkOrSignInWithGithub()', () => {
+
+      it('should resolve with non-anonymous dummy user object', () => {
+        authService.linkOrSignInWithGitHub().subscribe(user => {
           expect(user).toBeDefined();
           expect(user.displayName).toEqual('Tony Stark');
           expect(user.email).toEqual('tony@starkindustries.com');
