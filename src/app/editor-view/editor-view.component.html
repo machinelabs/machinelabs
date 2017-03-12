@@ -5,7 +5,7 @@
     <button md-button (click)="run(lab)" *ngIf="!context.isRunning()"><md-icon>cached</md-icon> Run</button>
     <button md-button (click)="stop(context)" *ngIf="context.isRunning()"><md-icon>stop</md-icon> Stop</button>
     <button *ngIf="lab.user_id == user?.uid" md-button (click)="save(lab)"><md-icon>save</md-icon> Save</button>
-    <button *ngIf="lab.user_id != user?.uid" md-button (click)="fork(lab)"><md-icon>share</md-icon> Fork</button>
+    <button md-button (click)="fork(lab)"><md-icon>share</md-icon> Fork</button>
 
     <!-- menu opens when trigger button is clicked -->
     <button md-icon-button [md-menu-trigger-for]="menu">
