@@ -1,0 +1,20 @@
+:host {
+  display: block;
+  border-left: 2px solid rgba(226, 226, 226, 1);
+
+  &:first-child {
+    border-left: none;
+  }
+}
+
+.ml-panel__title {
+  color: rgb(90, 90, 90);
+  text-transform: uppercase;
+  font-size: 0.7em;
+  margin: 0;
+  padding: 1.2em 1.5em;
+}
+
+h2 {
+  border-bottom : #f2f8f8 1px solid;
+}

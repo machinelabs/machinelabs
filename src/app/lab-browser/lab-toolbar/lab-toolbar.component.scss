@@ -1,0 +1,38 @@
+.mat-toolbar {
+  padding: 0px;
+  background-color: #2196f3;
+}
+.mat-toolbar.mat-primary {
+  background-color : rgba(137, 170, 251, 0.27) 1px solid
+}
+.mat-raised-button {
+  color: #3f51b5;
+}
+
+.ml-login-avatar {
+  border-radius: 50%;
+  width: 2.5em;
+}
+
+.ml-logo {
+  margin: 0;
+  padding: 1em;
+  text-align: center;
+  font-size: 1.5em;
+}
+
+.mat-button {
+  padding :0;
+}
+
+.padded {
+  padding-left:50px; padding-right:60px;
+}
+
+.elevated {
+    color : #1a97fa;
+    line-height: 20px;
+    height: 30px;
+    vertical-align: middle;
+    margin: 8px;
+}
