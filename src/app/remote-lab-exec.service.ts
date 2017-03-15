@@ -2,6 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Lab, ExecutionStatus, LabExecutionContext } from './models/lab';
+import { Run, RunAction } from './models/run';
 import * as shortid from 'shortid';
 import * as firebase from 'firebase';
 
@@ -42,10 +43,9 @@ export class RemoteLabExecService {
                   id: context.id,
                   user_id: login.uid,
                   timestamp: firebase.database.ServerValue.TIMESTAMP,
-                  type: 'run',
+                  type: RunAction.Run,
                   lab: {
                     id: context.lab.id,
-                    messages: [],
                     files: context.lab.files
                   }
                 });
@@ -66,7 +66,7 @@ export class RemoteLabExecService {
       .switchMap(_ => Observable.fromPromise(this.db.ref(`runs/${context.id}`).once('value')))
       .map((snapshot: any) => snapshot.val())
       .switchMap(data => Observable.fromPromise(this.db.ref(`runs/${context.id}`)
-                                   .set(Object.assign(data, { type: 'stopped' }))))
+                                   .set(Object.assign(data, { type: RunAction.Stop }))))
       .subscribe();
   }
 }
