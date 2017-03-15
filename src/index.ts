@@ -2,7 +2,7 @@ import * as io_lib from 'socket.io';
 
 import { DummyRunner } from './code-runner/dummy-runner.js';
 import { DockerRunner } from './code-runner/docker-runner.js';
-import { AuthService } from './fb';
+import { AuthService } from './ml-firebase';
 import { MessagingService } from './messaging.service';
 
 const io = io_lib();

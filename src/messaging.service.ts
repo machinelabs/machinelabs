@@ -1,5 +1,5 @@
 import * as firebase from 'firebase';
-import { db, AuthService } from './fb';
+import { db, AuthService } from './ml-firebase';
 import { CodeRunner, ProcessStreamData } from './code-runner/code-runner';
 import { Observable } from '@reactivex/rxjs';
 import { Run, RunAction } from './models/run';
