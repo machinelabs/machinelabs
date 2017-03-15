@@ -2,7 +2,7 @@ import * as firebase from 'firebase';
 import { db, AuthService } from './fb';
 import { CodeRunner, ProcessStreamData } from './code-runner/code-runner';
 import { Observable } from '@reactivex/rxjs';
-import { Run } from 'models/run';
+import { Run, RunAction } from './models/run';
 
 export class MessagingService {
 
@@ -26,7 +26,7 @@ export class MessagingService {
         .subscribe();
 
     this.getChangedRunsAsObservable()
-        .filter(run => run.type === 'stopped')
+        .filter(run => run.type === RunAction.Stop)
         .subscribe(run => this.codeRunner.stop(run));
   }
 
