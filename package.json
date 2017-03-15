@@ -47,7 +47,7 @@
     "ts-helpers": "1.1.2",
     "ts-node": "^0.9.3",
     "tslint": "^3.13.0",
-    "typescript": "^2.1.0",
+    "typescript": "^2.2.1",
     "yargs": "^4.7.1"
   }
 }
