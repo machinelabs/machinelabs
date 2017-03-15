@@ -63,14 +63,10 @@ export class RemoteLabExecService {
     context.status = ExecutionStatus.Stopped;
     return this.authService
       .requireAuthOnce()
-      .switchMap(_ => { 
-        return Observable.fromPromise(this.db.ref(`runs/${context.id}`).once('value'));
-      })
+      .switchMap(_ => Observable.fromPromise(this.db.ref(`runs/${context.id}`).once('value')))
       .map((snapshot: any) => snapshot.val())
-      .switchMap(data => {
-        return Observable.fromPromise(this.db.ref(`runs/${context.id}`)
-                                   .set(Object.assign(data, { type: 'stopped' })));
-      })
+      .switchMap(data => Observable.fromPromise(this.db.ref(`runs/${context.id}`)
+                                   .set(Object.assign(data, { type: 'stopped' }))))
       .subscribe();
   }
 }
