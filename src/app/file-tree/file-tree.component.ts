@@ -6,17 +6,29 @@ const MAIN_PYTHON_FILENAME = 'main.py';
 @Component({
   selector: 'ml-file-tree',
   template: `
-    <md-nav-list>
-      <md-list-item *ngFor="let file of files" (click)="selectFile.next(file)">
-        {{file.name}} <button md-raised-button *ngIf="isRemovable(file)" (click)="removeFile.next(file)"><md-icon>delete</md-icon></button>
-      </md-list-item>
-    </md-nav-list>
-    <button md-raised-button md-button (click)="addFile.next()">Add File</button>
-  `
+    <ul class="ml-file-list">
+      <li
+        class="ml-file-list__item"
+        *ngFor="let file of files"
+        (click)="selectFile.next(file)"
+        [ngClass]="{ selected: selectedFile && selectedFile.name == file.name }">
+
+        <md-icon>description</md-icon> {{file.name}} <button class="ml-file-tree__cta--delete" *ngIf="isRemovable(file)" (click)="removeFile.next(file)"><md-icon>delete_forever</md-icon></button>
+      </li>
+    </ul>
+    <div class="ml-file-tree__cta-bar">
+      <button md-button (click)="addFile.next()" class="ml-file-tree__cta">
+        <md-icon>note_add</md-icon> Add file
+      </button>
+    </div>
+  `,
+  styleUrls: ['./file-tree.component.scss']
 })
 export class FileTreeComponent {
 
   @Input() files: File[];
+
+  @Input() selectedFile;
 
   @Output() selectFile = new EventEmitter<File>();
 

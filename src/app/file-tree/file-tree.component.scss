@@ -1,0 +1,81 @@
+:host {
+  display: block;
+  font-weight: 400;
+}
+
+.ml-file-tree__cta-bar {
+  padding: 1em 1.2em;
+}
+
+.ml-file-list {
+  list-style: none;
+  margin: 0;
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-top: 1.2em;
+  padding-bottom: 1.2em;
+  border-bottom: 1px solid rgb(244, 245, 247);
+
+  &__item {
+    font-size: 0.9em;
+    font-weight: 400;
+    padding: 0.4em 0.4em;
+    line-height: 1.4;
+    position: relative;
+
+    md-icon {
+      font-size: 1.2em;
+      vertical-align: -22%;
+      height: 18px;
+      width: 18px;
+      color: rgb(173, 183, 185);
+    }
+
+    &:hover {
+      cursor: pointer;
+      background-color: #fcfcfc;
+    }
+
+    &.selected {
+      background-color: rgb(223, 237, 245);
+      color: rgb(48, 129, 216);
+
+      md-icon {
+        color: rgb(48, 129, 216);
+      }
+    }
+
+    .ml-file-tree__cta--delete {
+      background: transparent;
+      border: none;
+      position: absolute;
+      right: 0;
+      top: 4px;
+      cursor: pointer;
+
+      &:hover {
+        md-icon {
+          color: darkred;
+        }
+      }
+
+      md-icon {
+        font-size: 1.8em;
+        color: palevioletred;
+      }
+    }
+  }
+}
+
+.ml-file-tree__cta {
+  font-size: 0.9em;
+  color: rgb(48, 129, 216);
+
+  md-icon {
+    font-size: 1.2em;
+    vertical-align: -22%;
+    height: 18px;
+    width: 18px;
+  }
+}
+

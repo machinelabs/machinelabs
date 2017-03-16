@@ -59,7 +59,7 @@ describe('FileTreeComponent', () => {
     });
 
     it('should render list of files', () => {
-      let items = fixture.debugElement.queryAll(By.css('md-list-item'));
+      let items = fixture.debugElement.queryAll(By.css('li'));
       expect(items.length).toEqual(3);
       expect(items[0].nativeElement.textContent).toContain('main.py');
       expect(items[1].nativeElement.textContent).toContain('second.py');
@@ -69,7 +69,7 @@ describe('FileTreeComponent', () => {
     describe('Event emitters', () => {
 
       it('should emit selectFile event when list item is clicked', () => {
-        let items = fixture.debugElement.queryAll(By.css('md-list-item'));
+        let items = fixture.debugElement.queryAll(By.css('.ml-file-list__item'));
 
         let subscription = component.selectFile.subscribe((file) => {
           expect(file).toBeDefined();
@@ -89,7 +89,7 @@ describe('FileTreeComponent', () => {
       });
 
       it('should emit removeFile event when remove button is clicked', () => {
-        let items = fixture.debugElement.queryAll(By.css('md-list-item button'));
+        let items = fixture.debugElement.queryAll(By.css('.ml-file-list__item button'));
 
         // `main.py` isn't removable, hence only two items expected
         expect(items.length).toBe(2);
@@ -112,7 +112,7 @@ describe('FileTreeComponent', () => {
       });
 
       it('should emit addFile event when add button is clicked', () => {
-        let item = fixture.debugElement.query(By.css('md-nav-list + button'));
+        let item = fixture.debugElement.query(By.css('.ml-file-tree__cta'));
         let emitted = false;
 
         component.addFile.subscribe(() => {
@@ -154,7 +154,7 @@ describe('FileTreeComponent', () => {
     });
 
     it('should render list of items', () => {
-      let items = fixture.debugElement.queryAll(By.css('md-list-item'));
+      let items = fixture.debugElement.queryAll(By.css('li'));
       expect(items.length).toEqual(3);
       expect(items[0].nativeElement.textContent).toContain('main.py');
       expect(items[1].nativeElement.textContent).toContain('second.py');
@@ -162,7 +162,7 @@ describe('FileTreeComponent', () => {
     });
 
     it('should select file', () => {
-      let items = fixture.debugElement.queryAll(By.css('md-list-item'));
+      let items = fixture.debugElement.queryAll(By.css('.ml-file-list__item'));
 
       items[0].triggerEventHandler('click', null);
       expect(component.logs).toEqual([
@@ -171,7 +171,7 @@ describe('FileTreeComponent', () => {
     });
 
     it('should remove file', () => {
-      let items = fixture.debugElement.queryAll(By.css('md-list-item button'));
+      let items = fixture.debugElement.queryAll(By.css('.ml-file-list__item button'));
 
       items[0].triggerEventHandler('click', null);
       expect(component.files.length).toEqual(2);
@@ -181,7 +181,7 @@ describe('FileTreeComponent', () => {
     });
 
     it('should add file', () => {
-      let item = fixture.debugElement.query(By.css('md-nav-list + button'));
+      let item = fixture.debugElement.query(By.css('.ml-file-tree__cta'));
       item.triggerEventHandler('click', null);
 
       expect(component.files.length).toEqual(4);
