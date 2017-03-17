@@ -1,5 +1,4 @@
 import {task} from 'gulp';
-
 import {SOURCE_ROOT, TEST_ROOT } from '../constants';
 import { tsBuildTask } from '../task_helpers';
 
@@ -7,7 +6,8 @@ import { tsBuildTask } from '../task_helpers';
 // PUBLIC tasks
 
 /** Builds server to ESM output and UMD bundle. */
-task('build', [':build:server:ts']);
+
+task('build', ['clean', 'config', ':build:server:ts']);
 
 // INTERNAL tasks
 /**

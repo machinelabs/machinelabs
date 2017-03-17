@@ -1,4 +1,5 @@
 import * as firebase from 'firebase';
+import { environment } from '../environments/environment';
 
 export const db = this.db = firebase.initializeApp({
       apiKey: "AIzaSyDu0Qds2fWo8iZMcCj0T_ANqD9V4E0_9QY",
