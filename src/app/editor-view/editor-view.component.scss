@@ -3,59 +3,6 @@
   height: 100%;
 }
 
-.ml-toolbar {
-  background: #2196f3;
-  color: #fff;
-}
-
-.padded {
-  padding-right: 20px;
-}
-
-.ml-logo {
-  font-size: 1.2em;
-  font-weight: 400;
-  margin: 0;
-  padding: 0.8em;
-  text-align: center;
-  margin-right: 3.8em;
-
-  span {
-    font-weight: 600;
-  }
-}
-
-.ml-toolbar__lab-name {
-  margin-left: 4.5em;
-  input {
-    font-size: 0.75em;
-  }
-
-  [md-icon-button] {
-    margin-top: 14px;
-  }
-
-  md-icon {
-    font-size: 1.4em;
-  }
-}
-
-.ml-toolbar__cta-bar {
-  margin-right: 0.4em;
-  [md-button] {
-    margin-left: 0.2em;
-
-    &:first-child {
-      margin-left: 0;
-    }
-  }
-}
-
-.ml-login-avatar {
-  border-radius: 50%;
-  width: 2.5em;
-}
-
 md-sidenav { width: 350px; }
 
 .ml-footer {

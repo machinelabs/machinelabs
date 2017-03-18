@@ -9,8 +9,7 @@ import { LabStorageService } from '../lab-storage.service';
 import { BLANK_LAB_TPL_ID } from '../lab-template.service';
 import { Observable } from 'rxjs/Observable';
 import { Lab, LabExecutionContext, File } from '../models/lab';
-import { User } from '../models/user';
-import { AuthService } from '../auth/auth.service';
+import { ToolbarAction, ToolbarActionTypes } from '../toolbar/toolbar.component';
 
 @Component({
   selector: 'ml-editor-view',
@@ -33,13 +32,10 @@ export class EditorViewComponent implements OnInit {
 
   navigationConfirmDialogRef: MdDialogRef<NavigationConfirmDialogComponent>;
 
-  user: User;
-
   constructor (private rleService: RemoteLabExecService,
                private labStorageService: LabStorageService,
                private route: ActivatedRoute,
                private dialog: MdDialog,
-               private authService: AuthService,
                private location: Location,
                private router: Router) {
   }
@@ -47,12 +43,17 @@ export class EditorViewComponent implements OnInit {
   ngOnInit () {
     this.context = new LabExecutionContext();
     this.route.data.map(data => data['lab'])
-              .subscribe(lab =>  {
-                this.lab = lab;
-                this.activeFile = this.lab.files[0];
-              });
+              .subscribe(lab =>  this.initLab(lab));
+  }
 
-    this.authService.requireAuth().subscribe(user => this.user = user);
+  toolbarAction(action: ToolbarAction) {
+    switch (action.type) {
+      case ToolbarActionTypes.Run: this.run(action.data); break;
+      case ToolbarActionTypes.Stop: this.stop(action.data); break;
+      case ToolbarActionTypes.Save: this.save(action.data); break;
+      case ToolbarActionTypes.Fork: this.fork(action.data); break;
+      case ToolbarActionTypes.Create: this.create(); break;
+    }
   }
 
   run(lab: Lab) {
@@ -133,14 +134,6 @@ export class EditorViewComponent implements OnInit {
         this.lab.files.push(file);
         this.openFile(file);
       });
-  }
-
-  loginWithGitHub() {
-    this.authService.linkOrSignInWithGitHub().subscribe();
-  }
-
-  logout() {
-    this.authService.signOut().subscribe();
   }
 
   initLab(lab) {
