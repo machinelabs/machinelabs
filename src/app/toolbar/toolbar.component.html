@@ -1,0 +1,32 @@
+<md-toolbar color="primary" class="ml-toolbar">
+  <div fxLayout fxLayoutAlign="space-between center" fxFlex class="padded">
+    <span class="ml-logo">Machine<span>Labs</span></span>
+
+    <div fxFlex class="ml-toolbar__lab-name">
+      <md-input-container>
+        <input mdInput [readOnly]="true" [(ngModel)]="lab.name">
+      </md-input-container>
+      <button md-icon-button><md-icon>edit</md-icon></button>
+    </div>
+
+    <div fxLayout fxLayoutAlign="end">
+      <div fxLayout class="ml-toolbar__cta-bar">
+        <button md-button (click)="emitAction(ToolbarActionTypes.Run, lab)" *ngIf="!context.isRunning()"><md-icon>cached</md-icon> Run</button>
+        <button md-button (click)="emitAction(ToolbarActionTypes.Stop, context)" *ngIf="context.isRunning()"><md-icon>stop</md-icon> Stop</button>
+        <button md-button (click)="emitAction(ToolbarActionTypes.Save, lab)" *ngIf="lab.user_id == user?.uid"><md-icon>save</md-icon> Save</button>
+        <button md-button (click)="emitAction(ToolbarActionTypes.Fork, lab)"><md-icon>share</md-icon> Fork</button>
+        <button md-button (click)="emitAction(ToolbarActionTypes.Create)"><md-icon>add</md-icon> New</button>
+      </div>
+
+      <button md-icon-button [md-menu-trigger-for]="menu">
+        <md-icon *ngIf="user?.isAnonymous">more_vert</md-icon>
+        <img *ngIf="user && user.photoURL" [src]="user.photoURL" alt="{{user.displayName}} profile picture" class="ml-login-avatar">
+      </button>
+
+      <md-menu #menu="mdMenu">
+        <button md-menu-item *ngIf="user?.isAnonymous" (click)="loginWithGitHub()"><md-icon>perm_identity</md-icon>Login with GitHub</button>
+        <button *ngIf="!user?.isAnonymous" (click)="logout()" md-menu-item><md-icon>exit_to_app</md-icon>Sign Out</button>
+      </md-menu>
+    </div>
+  </div>
+</md-toolbar>
