@@ -21,13 +21,16 @@
 }
 
 .ml-toolbar__lab-name {
+
+  > span {
+    display: inline-block;
+    vertical-align: -10%;
+    font-size: 0.8em;
+  }
+
   margin-left: 4.5em;
   input {
     font-size: 0.75em;
-  }
-
-  [md-icon-button] {
-    margin-top: 14px;
   }
 
   md-icon {

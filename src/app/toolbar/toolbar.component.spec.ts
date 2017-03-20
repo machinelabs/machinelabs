@@ -50,6 +50,28 @@ describe('ToolbarComponent', () => {
     expect(authService.requireAuth).toHaveBeenCalled();
   });
 
+  it('should render lab name or input', () => {
+    let lab = Object.assign({}, testLab);
+    // lab user id and user id have to be equal
+    lab.user_id = 'some unique id';
+
+    component.context = new LabExecutionContext(lab);
+    component.lab = lab;
+    fixture.detectChanges();
+
+    let nameSpan = fixture.debugElement.query(By.css('.ml-toolbar__lab-name span'));
+
+    expect(nameSpan).toBeDefined();
+    expect(nameSpan.nativeElement.textContent).toEqual(lab.name);
+
+    let editButton = fixture.debugElement.query(By.css('.ml-toolbar__lab-name button'));
+    editButton.triggerEventHandler('click', null);
+    fixture.detectChanges();
+
+    let nameInput = fixture.debugElement.query(By.css('.ml-toolbar__lab-name input'));
+    expect(nameInput).toBeDefined();
+  });
+
   describe('Toolbar Actions', () => {
 
     it('should emit run action', () => {
@@ -82,6 +104,7 @@ describe('ToolbarComponent', () => {
 
     it('should emit save action', () => {
       let lab = Object.assign({}, testLab);
+      // lab user id and user id have to be equal
       lab.user_id = 'some unique id';
 
       component.context = new LabExecutionContext(lab);
