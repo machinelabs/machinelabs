@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Lab, ExecutionStatus, LabExecutionContext } from './models/lab';
 import { Run, RunAction } from './models/run';
+import { OutputMessage, OutputKind } from './models/output';
 import * as shortid from 'shortid';
 import * as firebase from 'firebase';
 
@@ -36,27 +37,38 @@ export class RemoteLabExecService {
     context.setData(lab, id);
     context.status = ExecutionStatus.Running;
     
-    return this.authService
-              .requireAuthOnce()
-              .switchMap(login => {
-                let res = this.db.ref(`runs/${context.id}`).set({
-                  id: context.id,
-                  user_id: login.uid,
-                  timestamp: firebase.database.ServerValue.TIMESTAMP,
-                  type: RunAction.Run,
-                  lab: {
-                    id: context.lab.id,
-                    files: context.lab.files
-                  }
-                });
+    let output$ = this.authService
+                    .requireAuthOnce()
+                    .switchMap(login => {
+                      let res = this.db.ref(`runs/${context.id}`).set({
+                        id: context.id,
+                        user_id: login.uid,
+                        timestamp: firebase.database.ServerValue.TIMESTAMP,
+                        type: RunAction.Run,
+                        lab: {
+                          id: context.lab.id,
+                          files: context.lab.files
+                        }
+                      });
 
-                return Observable.fromPromise(res);
-              })
-              .switchMap(_ => this._childAddedAsObservable(this.db.ref(`outputs/${context.id}/messages`)))
-              .map((msg:any) => msg.val())
-              .takeWhile((msg:any) => msg.kind !== 'process_finished')
-              .map((msg:any) => msg.data)
-              .finally(() => context.status = ExecutionStatus.Done);
+                      return Observable.fromPromise(res);
+                    })
+                    .switchMap(_ => this._childAddedAsObservable(this.db.ref(`process_messages/${context.id}`)))
+                    .map((snapshot:any) => snapshot.val())
+                    .share();
+
+    // we create a stream that - based on a filter - will only ever start producing 
+    // messages if the output was redirected
+    let redirectedOutput$ = output$.filter(msg => msg.kind === OutputKind.OutputRedirected)
+                                   .switchMap(msg => this._childAddedAsObservable(this.db.ref(`process_messages/${msg.data}`)))
+                                   .map((msg:any) => msg.val());
+
+    //we combine the regular stream with the redirected one (which may never be used)
+    return output$
+            .merge(redirectedOutput$)
+            .takeWhile(msg => msg.kind !== OutputKind.ProcessFinished)
+            .map(msg => msg.kind === OutputKind.OutputRedirected ? `Serving cached run: ${msg.data}` : msg.data)
+            .finally(() => context.status = ExecutionStatus.Done);
   }
 
   stop(context: LabExecutionContext) {
