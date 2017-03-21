@@ -35,6 +35,10 @@ export class ToolbarComponent implements OnInit {
     this.authService.requireAuth().subscribe(user => this.user = user);
   }
 
+  userOwnsLab () {
+    return this.lab && this.user && this.lab.user_id === this.user.uid;
+  }
+
   emitAction(action: ToolbarActionTypes, data?: any) {
     this.action.emit({ type: action, data });
   }

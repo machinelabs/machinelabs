@@ -11,14 +11,14 @@
           (keydown.enter)="editing = false"
           [(ngModel)]="lab.name">
       </md-input-container>
-      <button *ngIf="lab.user_id == user?.uid" md-icon-button type="button" (click)="editing = !editing"><md-icon>edit</md-icon></button>
+      <button *ngIf="userOwnsLab()" md-icon-button type="button" (click)="editing = !editing"><md-icon>edit</md-icon></button>
     </div>
 
     <div fxLayout fxLayoutAlign="end">
       <div fxLayout class="ml-toolbar__cta-bar">
         <button md-button (click)="emitAction(ToolbarActionTypes.Run, lab)" *ngIf="!context.isRunning()"><md-icon>cached</md-icon> Run</button>
         <button md-button (click)="emitAction(ToolbarActionTypes.Stop, context)" *ngIf="context.isRunning()"><md-icon>stop</md-icon> Stop</button>
-        <button md-button (click)="emitAction(ToolbarActionTypes.Save, lab)" *ngIf="lab.user_id == user?.uid"><md-icon>save</md-icon> Save</button>
+        <button md-button (click)="emitAction(ToolbarActionTypes.Save, lab)" *ngIf="userOwnsLab()"><md-icon>save</md-icon> Save</button>
         <button md-button (click)="emitAction(ToolbarActionTypes.Fork, lab)"><md-icon>share</md-icon> Fork</button>
         <button md-button (click)="emitAction(ToolbarActionTypes.Create)"><md-icon>add</md-icon> New</button>
       </div>
