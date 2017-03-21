@@ -1,8 +1,10 @@
 import * as firebase from 'firebase';
+import { Crypto } from './util/crypto';
 import { db, AuthService } from './ml-firebase';
 import { CodeRunner, ProcessStreamData } from './code-runner/code-runner';
 import { Observable } from '@reactivex/rxjs';
 import { Run, RunAction } from './models/run';
+import { OutputMessage, OutputKind, toOutputKind } from './models/output';
 
 export class MessagingService {
 
@@ -14,13 +16,36 @@ export class MessagingService {
     this.getNewRunsAsObservable()
         .switchMap(run => {
           console.log(`Starting new run ${run.id}`);
-          return this.codeRunner.run(run)
+
+          // check if we have existing output for the requested run
+          let hash = Crypto.hashLabFiles(run.lab);
+          return this.getExistingOutputAsObservable(hash)
+                    .switchMap(output => {
+
+                      // if we do have output, send a redirect message
+                      if (output) {
+                        console.log('redirecting output');
+                        return Observable.of({
+                                  origin: 'output_redirected',
+                                  raw: '',
+                                  str: '' + output.id
+                                });
+                      }
+
+                      // ...if we don't, create runs_meta and execute code
+                      db.ref(`runs_meta/${run.id}`).set({
+                        id: run.id,
+                        file_set_hash: hash
+                      });
+
+                      return this.codeRunner.run(run)
                                 .concat(Observable.of({
                                   origin: 'process_finished',
                                   raw: '',
                                   str: ''
                                 }))
-                                .map(output => ({output, run}))
+                    })
+                    .map(output => ({output, run}));
         })
         .switchMap(data => this.writeOutput(data.output, data.run))
         .subscribe();
@@ -29,6 +54,20 @@ export class MessagingService {
         .filter(run => run.type === RunAction.Stop)
         .subscribe(run => this.codeRunner.stop(run));
   }
+
+
+  /**
+   * Gets an Observable<Output> that emits once with either null or an existing output 
+   */
+  getExistingOutputAsObservable(fileSetHash: string) : Observable<any> {
+    return Observable.fromPromise(<Promise<any>>db.ref('runs_meta')
+                                   .orderByChild('file_set_hash')
+                                   .equalTo(fileSetHash)
+                                   .once('value'))
+                                   .map(snapshot => snapshot.val())
+                                   .map(val => val ? val[Object.keys(val)[0]] : null);
+  }
+
 
   /**
    * Gets an Observable<Run> that emits every time a new run was added 
@@ -64,8 +103,8 @@ export class MessagingService {
       id: id,
       data: data.str,
       timestamp: firebase.database.ServerValue.TIMESTAMP,
-      kind: data.origin
+      kind: toOutputKind(data.origin)
     };
-    return Observable.fromPromise(<Promise<any>>db.ref(`outputs/${run.id}/messages/${id}`).set(output));
+    return Observable.fromPromise(<Promise<any>>db.ref(`process_messages/${run.id}/${id}`).set(output));
   }
 }

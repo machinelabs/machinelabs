@@ -4,6 +4,7 @@ import { DummyRunner } from './code-runner/dummy-runner.js';
 import { DockerRunner } from './code-runner/docker-runner.js';
 import { AuthService } from './ml-firebase';
 import { MessagingService } from './messaging.service';
+import { createHash } from 'crypto';
 
 const io = io_lib();
 const DUMMY_RUNNER = process.argv.includes('--dummy-runner');
