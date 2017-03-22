@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
 import { AddFileDialogComponent } from '../add-file-dialog/add-file-dialog.component';
 import { NavigationConfirmDialogComponent } from '../navigation-confirm-dialog/navigation-confirm-dialog.component';
 import { RemoteLabExecService } from '../remote-lab-exec.service';
@@ -36,6 +36,7 @@ export class EditorViewComponent implements OnInit {
                private labStorageService: LabStorageService,
                private route: ActivatedRoute,
                private dialog: MdDialog,
+               private snackBar: MdSnackBar,
                private location: Location,
                private router: Router) {
   }
@@ -82,13 +83,15 @@ export class EditorViewComponent implements OnInit {
   fork(lab: Lab) {
     this.labStorageService.createLab(lab).subscribe(lab => {
       this.lab = lab;
-      this.save(this.lab);
+      this.save(this.lab, true);
     });
   }
 
-  save(lab: Lab) {
-    this.labStorageService.saveLab(lab)
-        .subscribe(() => this.router.navigateByUrl(`${lab.id}`))
+  save(lab: Lab, forking = false) {
+    this.labStorageService.saveLab(lab).subscribe(() => {
+      this.snackBar.open(`Lab ${forking ? 'forked' : 'saved' }.`, 'Dismiss', { duration: 3000 })
+      this.router.navigateByUrl(`${lab.id}`);
+    });
   }
 
   create() {
@@ -102,6 +105,7 @@ export class EditorViewComponent implements OnInit {
       .subscribe(lab => {
         this.location.go(`/?tpl=${BLANK_LAB_TPL_ID}`);
         this.initLab(lab);
+        this.snackBar.open('New lab created.', 'Dismiss', { duration: 3000 })
       })
   }
 
