@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { MdSnackBar } from '@angular/material';
 import { Lab, LabExecutionContext } from '../models/lab';
 import { User } from '../models/user';
 import { AuthService } from '../auth/auth.service';
@@ -29,7 +30,7 @@ export class ToolbarComponent implements OnInit {
 
   ToolbarActionTypes = ToolbarActionTypes;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private snackBar: MdSnackBar) {}
 
   ngOnInit() {
     this.authService.requireAuth().subscribe(user => this.user = user);
@@ -44,10 +45,14 @@ export class ToolbarComponent implements OnInit {
   }
 
   loginWithGitHub() {
-    this.authService.linkOrSignInWithGitHub().subscribe();
+    this.authService.linkOrSignInWithGitHub().subscribe(user => {
+      this.snackBar.open(`Logged in as ${user.displayName}`, 'Dismiss', { duration: 3000 });
+    });
   }
 
   logout() {
-    this.authService.signOut().subscribe();
+    this.authService.signOut().subscribe(_ => {
+      this.snackBar.open('Logged out successfully', 'Dismiss', { duration: 3000 });
+    });
   }
 }
