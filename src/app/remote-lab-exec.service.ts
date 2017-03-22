@@ -34,9 +34,9 @@ export class RemoteLabExecService {
     }
 
     let id = `${Date.now()}-${shortid.generate()}`;
-    context.setData(lab, id);
+    context.setData(lab.toJSON(), id);
     context.status = ExecutionStatus.Running;
-    
+
     let output$ = this.authService
                     .requireAuthOnce()
                     .switchMap(login => {
@@ -57,7 +57,7 @@ export class RemoteLabExecService {
                     .map((snapshot:any) => snapshot.val())
                     .share();
 
-    // we create a stream that - based on a filter - will only ever start producing 
+    // we create a stream that - based on a filter - will only ever start producing
     // messages if the output was redirected
     let redirectedOutput$ = output$.filter(msg => msg.kind === OutputKind.OutputRedirected)
                                    .switchMap(msg => this._childAddedAsObservable(this.db.ref(`process_messages/${msg.data}`)))
