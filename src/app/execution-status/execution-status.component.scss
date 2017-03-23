@@ -1,0 +1,31 @@
+.ml-status-message {
+  display: inline-block;
+  line-height: 1.5em;
+  font-weight: 600;
+  color: #444;
+
+  md-icon {
+    font-size: 1.3em;
+    vertical-align: -20%;
+    height: 15px;
+    width: 15px;
+    font-weight: bold;
+  }
+
+  &.done {
+    md-icon { color: springgreen; }
+  }
+  &.stopped {
+    md-icon { color: #ffc107; }
+  }
+  &.errored {
+    md-icon { color: orangered; }
+  }
+}
+
+md-progress-bar {
+  height: 3px;
+  margin-top: 0.7em;
+}
+
+

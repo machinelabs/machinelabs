@@ -1,0 +1,16 @@
+<div fxLayout>
+  <div fxFlex [ngSwitch]="executionContext.status">
+    <span *ngSwitchCase="ExecutionStatus.Running" class="ml-status-message">Running...</span>
+    <span *ngSwitchCase="ExecutionStatus.Done" class="ml-status-message done"><md-icon>done</md-icon> Done</span>
+    <span *ngSwitchCase="ExecutionStatus.Stopped" class="ml-status-message stopped"><md-icon>info</md-icon> Stopped</span>
+    <span *ngSwitchCase="ExecutionStatus.Error" class="ml-status-message errored"><md-icon>highlight_off</md-icon> Errored</span>
+  </div>
+  <div fxFlex>
+    <md-progress-bar
+      *ngIf="executionContext.isRunning()"
+      color="accent"
+      [bufferValue]="0"
+      mode="indeterminate"></md-progress-bar>
+  </div>
+</div>
+

@@ -38,12 +38,7 @@
         [checked]="true"
         (click)="sidenav.toggle()">File browser</md-slide-toggle>
       <div class="ml-footer__status">
-        <div *ngIf="context.isRunning()">
-          <md-progress-bar
-            color="accent"
-            [bufferValue]="0"
-            mode="indeterminate"></md-progress-bar>
-        </div>
+        <ml-execution-status [executionContext]="context"></ml-execution-status>
       </div>
       <div>
         <button disabled md-button md-raised-button md-primary class="elevated">Share</button>
