@@ -6,6 +6,7 @@ import { LabStorageService } from './lab-storage.service';
 import { BLANK_LAB_TPL_ID, DEFAULT_LAB_TPL_ID } from './lab-template.service';
 
 import { Lab } from './models/lab';
+import { ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
 
 describe('LabResolver', () => {
 
@@ -43,8 +44,7 @@ describe('LabResolver', () => {
         files: []
       };
 
-      let activatedRouteSnapshotStub = { params: {}, data: {}, queryParams: {} };
-
+      let activatedRouteSnapshotStub =  new ActivatedRouteSnapshot();
       spyOn(labStorageService, 'createLabFromTemplate').and.returnValue(Observable.of(newLab));
 
       labResolver.resolve(activatedRouteSnapshotStub).subscribe(lab => {
@@ -64,11 +64,8 @@ describe('LabResolver', () => {
         files: []
       };
 
-      let activatedRouteSnapshotStub = {
-        params: {},
-        data: {},
-        queryParams: { tpl: BLANK_LAB_TPL_ID }
-      };
+      let activatedRouteSnapshotStub = new ActivatedRouteSnapshot();
+      activatedRouteSnapshotStub.queryParams = { tpl: BLANK_LAB_TPL_ID }
 
       spyOn(labStorageService, 'createLab').and.returnValue(Observable.of(newLab));
 
@@ -89,11 +86,8 @@ describe('LabResolver', () => {
         files: []
       };
 
-      let activatedRouteSnapshotStub = {
-        params: {},
-        data: {},
-        queryParams: { tpl: 'any'}
-      };
+      let activatedRouteSnapshotStub = new ActivatedRouteSnapshot();
+      activatedRouteSnapshotStub.queryParams = { tpl: 'any'};
 
       spyOn(labStorageService, 'createLabFromTemplate').and.returnValue(Observable.of(newLab));
 
@@ -114,13 +108,14 @@ describe('LabResolver', () => {
         files: []
       };
 
-      let activatedRouteSnapshotStub = { params: { labid: 'some-id' }, data: {} };
+      let activatedRouteSnapshotStub = new ActivatedRouteSnapshot();
+      activatedRouteSnapshotStub.params = { labid: 'some-id' };
 
       spyOn(labStorageService, 'getLab').and.returnValue(Observable.of(existingLab));
 
       labResolver.resolve(activatedRouteSnapshotStub).subscribe(lab => {
         expect(labStorageService.getLab)
-          .toHaveBeenCalledWith(activatedRouteSnapshotStub.params.labid);
+          .toHaveBeenCalledWith(activatedRouteSnapshotStub.params['labid']);
         expect(lab).toEqual(existingLab);
       });
     });
