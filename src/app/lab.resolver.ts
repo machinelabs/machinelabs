@@ -13,19 +13,19 @@ export class LabResolver implements Resolve<Lab> {
   }
 
   resolve(route: ActivatedRouteSnapshot) {
-    if (route.params['labid']) {
+    if (route.paramMap.get('labid')) {
       // If we have a lab id, try to fetch it and fall back to
       // a new empty lab if no lab with the given id exists.
       return this.labStorageService
-                  .getLab(route.params['labid'])
+                  .getLab(route.paramMap.get('labid'))
                   .map(lab => lab ? lab : this.labStorageService.createLab());
     }
 
     // If a template id is specified, create a lab from that template,
     // unless it's the blank template id. Since `queryParams['tpl']` can
     // be undefined, we can easily fallback to default lab template.
-    return (route.queryParams['tpl'] === BLANK_LAB_TPL_ID)
+    return (route.queryParamMap.get('tpl') === BLANK_LAB_TPL_ID)
             ? this.labStorageService.createLab()
-            : this.labStorageService.createLabFromTemplate(route.queryParams['tpl'] || DEFAULT_LAB_TPL_ID);
+            : this.labStorageService.createLabFromTemplate(route.queryParamMap.get('tpl') || DEFAULT_LAB_TPL_ID);
   }
 }
