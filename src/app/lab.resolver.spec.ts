@@ -45,6 +45,8 @@ describe('LabResolver', () => {
       };
 
       let activatedRouteSnapshotStub =  new ActivatedRouteSnapshot();
+      activatedRouteSnapshotStub.params = {};
+      activatedRouteSnapshotStub.queryParams = {};
       spyOn(labStorageService, 'createLabFromTemplate').and.returnValue(Observable.of(newLab));
 
       labResolver.resolve(activatedRouteSnapshotStub).subscribe(lab => {
@@ -65,6 +67,7 @@ describe('LabResolver', () => {
       };
 
       let activatedRouteSnapshotStub = new ActivatedRouteSnapshot();
+      activatedRouteSnapshotStub.params = {};
       activatedRouteSnapshotStub.queryParams = { tpl: BLANK_LAB_TPL_ID }
 
       spyOn(labStorageService, 'createLab').and.returnValue(Observable.of(newLab));
@@ -87,6 +90,7 @@ describe('LabResolver', () => {
       };
 
       let activatedRouteSnapshotStub = new ActivatedRouteSnapshot();
+      activatedRouteSnapshotStub.params = {};
       activatedRouteSnapshotStub.queryParams = { tpl: 'any'};
 
       spyOn(labStorageService, 'createLabFromTemplate').and.returnValue(Observable.of(newLab));
