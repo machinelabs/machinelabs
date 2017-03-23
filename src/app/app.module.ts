@@ -22,6 +22,7 @@ import { EditorViewComponent } from './editor-view/editor-view.component';
 import { AddFileDialogComponent } from './add-file-dialog/add-file-dialog.component';
 import { NavigationConfirmDialogComponent } from './navigation-confirm-dialog/navigation-confirm-dialog.component';
 import { FileTreeComponent } from './file-tree/file-tree.component';
+import { ExecutionStatusComponent } from './execution-status/execution-status.component';
 
 import { APP_ROUTES } from './app.routes';
 import { LabResolver } from './lab.resolver';
@@ -43,7 +44,8 @@ export function databaseFactory() {
     EditorViewComponent,
     AddFileDialogComponent,
     FileTreeComponent,
-    NavigationConfirmDialogComponent
+    NavigationConfirmDialogComponent,
+    ExecutionStatusComponent
   ],
   imports: [
     BrowserModule,
