@@ -29,6 +29,7 @@
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
+        "personal": "environments/environment.personal.ts",
         "offline": "environments/environment.offline.ts",
         "prod": "environments/environment.prod.ts",
         "test": "environments/environment.test.ts"
