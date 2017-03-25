@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { MdSnackBar } from '@angular/material';
 import { Lab, LabExecutionContext } from '../models/lab';
 import { User } from '../models/user';
@@ -28,7 +28,11 @@ export class ToolbarComponent implements OnInit {
 
   private user: User;
 
+  private editing = false;
+
   ToolbarActionTypes = ToolbarActionTypes;
+
+  @ViewChild('nameInput') nameInput;
 
   constructor(private authService: AuthService, private snackBar: MdSnackBar) {}
 
@@ -42,6 +46,15 @@ export class ToolbarComponent implements OnInit {
 
   emitAction(action: ToolbarActionTypes, data?: any) {
     this.action.emit({ type: action, data });
+  }
+
+  toggleAndFocus() {
+    this.editing = !this.editing;
+    if (this.editing) {
+      // We need to run `.focus()` in the next tick because the input element
+      // isn't visible yet and therefore can't be focussed.
+      setTimeout(() => this.nameInput.nativeElement.focus());
+    }
   }
 
   loginWithGitHub() {
