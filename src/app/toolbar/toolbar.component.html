@@ -3,15 +3,16 @@
     <span class="ml-logo">Machine<span>Labs</span></span>
 
     <div fxFlex class="ml-toolbar__lab-name">
-      <span *ngIf="!editing">{{lab.name}}</span>
-      <md-input-container *ngIf="editing">
+      <span [class.hidden]="editing">{{lab.name}}</span>
+      <md-input-container [class.hidden]="!editing">
         <input
           mdInput
           (blur)="editing = false"
           (keydown.enter)="editing = false"
-          [(ngModel)]="lab.name">
+          [(ngModel)]="lab.name"
+          #nameInput>
       </md-input-container>
-      <button *ngIf="userOwnsLab()" md-icon-button type="button" (click)="editing = !editing"><md-icon>edit</md-icon></button>
+      <button *ngIf="userOwnsLab()" md-icon-button type="button" (click)="toggleAndFocus();"><md-icon>edit</md-icon></button>
     </div>
 
     <div fxLayout fxLayoutAlign="end">
