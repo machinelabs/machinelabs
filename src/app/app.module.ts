@@ -19,7 +19,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { AceEditorComponent } from './ace-editor/ace-editor.component';
 import { PanelComponent } from './panel/panel.component';
 import { EditorViewComponent } from './editor-view/editor-view.component';
-import { AddFileDialogComponent } from './add-file-dialog/add-file-dialog.component';
+import { FileNameDialogComponent } from './file-name-dialog/file-name-dialog.component';
 import { NavigationConfirmDialogComponent } from './navigation-confirm-dialog/navigation-confirm-dialog.component';
 import { FileTreeComponent } from './file-tree/file-tree.component';
 import { ExecutionStatusComponent } from './execution-status/execution-status.component';
@@ -42,7 +42,7 @@ export function databaseFactory() {
     AceEditorComponent,
     PanelComponent,
     EditorViewComponent,
-    AddFileDialogComponent,
+    FileNameDialogComponent,
     FileTreeComponent,
     NavigationConfirmDialogComponent,
     ExecutionStatusComponent
@@ -66,7 +66,7 @@ export function databaseFactory() {
     { provide: LabTemplateService, useClass: InMemoryLabTemplateService }
   ],
   entryComponents: [
-    AddFileDialogComponent,
+    FileNameDialogComponent,
     NavigationConfirmDialogComponent
   ],
   bootstrap: [AppComponent]
