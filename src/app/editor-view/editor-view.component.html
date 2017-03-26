@@ -12,6 +12,7 @@
           [selectedFile]="activeFile"
           (selectFile)="openFile($event)"
           (removeFile)="deleteFile($event)"
+          (editFile)="openFileNameDialog($event)"
           (addFile)="openFileNameDialog()"></ml-file-tree>
       </ml-panel>
     </md-sidenav>

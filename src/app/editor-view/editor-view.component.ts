@@ -126,17 +126,31 @@ export class EditorViewComponent implements OnInit {
     this.openFile(this.lab.files[0]);
   }
 
-  openFileNameDialog() {
+  updateFile(file: File, newFile: File) {
+    const index = this.lab.files.findIndex(f => f.name == file.name);
+    if (index != -1) {
+      this.lab.files[index] = newFile;
+    }
+  }
+
+  openFileNameDialog(file?: File) {
     this.fileNameDialogRef = this.dialog.open(FileNameDialogComponent, {
-      disableClose: false
+      disableClose: false,
+      data: {
+        fileName: file ? file.name.substring(0, file.name.indexOf('.py')) : ''
+      }
     });
 
     this.fileNameDialogRef.afterClosed()
-      .filter(filename => filename !== '' && filename !== undefined)
-      .subscribe(filename => {
-        const file = { name: filename, content: '' };
-        this.lab.files.push(file);
-        this.openFile(file);
+      .filter(name => name !== '' && name !== undefined)
+      .subscribe(name => {
+        if (!file) {
+          const newFile = { name, content: '' };
+          this.lab.files.push(newFile);
+          this.openFile(newFile);
+        } else {
+          this.updateFile(file, { name, content: file.content});
+        }
       });
   }
 
