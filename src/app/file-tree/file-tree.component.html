@@ -1,0 +1,29 @@
+<ul class="ml-file-list">
+  <li
+    class="ml-file-list__item"
+    *ngFor="let file of files"
+    (click)="emitSelectFile($event, file)"
+    [ngClass]="{ selected: selectedFile && selectedFile.name == file.name }">
+
+    <md-icon>description</md-icon> {{file.name}}
+
+    <button class="ml-file-tree__cta ml-file-tree__cta--edit"
+      mdTooltip="Change filename"
+      mdTooltipPosition="below"
+      (click)="editFile.emit(file)"
+      ><md-icon>create</md-icon></button>
+
+    <button class="ml-file-tree__cta ml-file-tree__cta--delete"
+      *ngIf="isRemovable(file)"
+      mdTooltip="Delete file"
+      mdTooltipPosition="below"
+      (click)="removeFile.emit(file)"><md-icon>highlight_off</md-icon></button>
+  </li>
+</ul>
+
+<div class="ml-file-tree__cta-bar">
+  <button md-button (click)="addFile.next()" class="ml-file-tree__cta ml-file-tree__cta--add">
+    <md-icon>note_add</md-icon> Add file
+  </button>
+</div>
+
