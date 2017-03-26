@@ -8,6 +8,8 @@
 }
 
 .ml-file-list {
+  max-height: 250px;
+  overflow: scroll;
   list-style: none;
   margin: 0;
   padding-left: 2em;
@@ -34,6 +36,10 @@
     &:hover {
       cursor: pointer;
       background-color: #fcfcfc;
+
+      .ml-file-tree__cta {
+        display: block;
+      }
     }
 
     &.selected {
@@ -45,23 +51,34 @@
       }
     }
 
-    .ml-file-tree__cta--delete {
+    .ml-file-tree__cta {
       background: transparent;
       border: none;
       position: absolute;
-      right: 0;
-      top: 4px;
       cursor: pointer;
+      display: none;
 
-      &:hover {
-        md-icon {
-          color: darkred;
+      md-icon { font-size: 1.6em; }
+
+      &--edit {
+        right: 28px;
+        top: 3px;
+        md-icon { color: #888; }
+
+        &:hover {
+          md-icon { color: #222; }
         }
       }
 
-      md-icon {
-        font-size: 1.8em;
-        color: palevioletred;
+      &--delete {
+        right: 2px;
+        top: 4px;
+
+        md-icon { color: palevioletred; }
+
+        &:hover {
+          md-icon { color: darkred; }
+        }
       }
     }
   }
