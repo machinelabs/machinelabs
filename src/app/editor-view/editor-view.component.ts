@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
-import { AddFileDialogComponent } from '../add-file-dialog/add-file-dialog.component';
+import { FileNameDialogComponent } from '../file-name-dialog/file-name-dialog.component';
 import { NavigationConfirmDialogComponent } from '../navigation-confirm-dialog/navigation-confirm-dialog.component';
 import { RemoteLabExecService } from '../remote-lab-exec.service';
 import { LabStorageService } from '../lab-storage.service';
@@ -28,7 +28,7 @@ export class EditorViewComponent implements OnInit {
 
   activeFile: File;
 
-  addFileDialogRef: MdDialogRef<AddFileDialogComponent>;
+  fileNameDialogRef: MdDialogRef<FileNameDialogComponent>;
 
   navigationConfirmDialogRef: MdDialogRef<NavigationConfirmDialogComponent>;
 
@@ -126,12 +126,12 @@ export class EditorViewComponent implements OnInit {
     this.openFile(this.lab.files[0]);
   }
 
-  openAddFileDialog() {
-    this.addFileDialogRef = this.dialog.open(AddFileDialogComponent, {
+  openFileNameDialog() {
+    this.fileNameDialogRef = this.dialog.open(FileNameDialogComponent, {
       disableClose: false
     });
 
-    this.addFileDialogRef.afterClosed()
+    this.fileNameDialogRef.afterClosed()
       .filter(filename => filename !== '' && filename !== undefined)
       .subscribe(filename => {
         const file = { name: filename, content: '' };
