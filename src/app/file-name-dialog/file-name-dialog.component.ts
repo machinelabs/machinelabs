@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MdDialogRef } from '@angular/material';
+import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'ml-file-name-dialog',
@@ -24,11 +24,15 @@ export class FileNameDialogComponent implements OnInit {
 
   form: FormGroup;
 
-  constructor(private dialogRef: MdDialogRef<FileNameDialogComponent>, private formBuilder: FormBuilder) { }
+  constructor(
+    private dialogRef: MdDialogRef<FileNameDialogComponent>,
+    private formBuilder: FormBuilder,
+    @Inject(MD_DIALOG_DATA) private data: any
+  ) { }
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      filename: ['', Validators.required]
+      filename: [this.data.fileName || '', Validators.required]
     });
   }
 
