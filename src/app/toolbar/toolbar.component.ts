@@ -20,7 +20,7 @@ export interface ToolbarAction {
 })
 export class ToolbarComponent implements OnInit {
 
-  @Input() lab: Lab;
+  @Input() lab = null as Lab;
 
   @Input() context: LabExecutionContext;
 
