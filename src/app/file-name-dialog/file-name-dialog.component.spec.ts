@@ -66,7 +66,7 @@ describe('FileNameDialogComponent', () => {
 
     component.form.setValue({ filename: testName });
     component.submit(component.form);
-    expect(dialogRef.close).toHaveBeenCalledWith(`${testName}.py`);
+    expect(dialogRef.close).toHaveBeenCalledWith(testName);
   });
 });
 
