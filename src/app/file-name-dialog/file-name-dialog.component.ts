@@ -7,7 +7,6 @@ import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
   template: `
     <form [formGroup]="form" (ngSubmit)="submit(form)">
     <md-input-container>
-        <span md-suffix>.py</span>
         <input mdInput placeholder="File name" formControlName="filename">
         <md-hint *ngIf="!form.valid && !form.pristine" align="start">This field is required.</md-hint>
       </md-input-container>
@@ -37,6 +36,6 @@ export class FileNameDialogComponent implements OnInit {
   }
 
   submit(form) {
-    this.dialogRef.close(`${form.value.filename}.py`);
+    this.dialogRef.close(`${form.value.filename}`);
   }
 }

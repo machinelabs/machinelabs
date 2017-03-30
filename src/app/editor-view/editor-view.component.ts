@@ -137,7 +137,7 @@ export class EditorViewComponent implements OnInit {
     this.fileNameDialogRef = this.dialog.open(FileNameDialogComponent, {
       disableClose: false,
       data: {
-        fileName: file ? file.name.substring(0, file.name.indexOf('.py')) : ''
+        fileName: file ? file.name :  ''
       }
     });
 
