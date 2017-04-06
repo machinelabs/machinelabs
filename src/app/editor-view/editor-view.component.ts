@@ -58,6 +58,10 @@ export class EditorViewComponent implements OnInit {
     }
   }
 
+  notifySnackBar(text: string) {
+    this.snackBar.open(text, 'Dismiss', { duration: 3000 });
+  }
+
   run(lab: Lab) {
 
     // we want to have this immutable. Shared instances make it hard
@@ -76,10 +80,10 @@ export class EditorViewComponent implements OnInit {
     this.output = this.rleService.run(this.context, lab)
                       .do(msg => {
                         if (msg.kind === OutputKind.ProcessFinished) {
-                          this.snackBar.open(`Process finished`, 'Dismiss', { duration: 3000 });
+                          this.notifySnackBar(`Process finished`);
                         }
                         else if (msg.kind === OutputKind.OutputRedirected) {
-                          this.snackBar.open(`Replaying cached run: ${msg.data}`, 'Dismiss', { duration: 3000 });
+                          this.notifySnackBar(`Replaying cached run: ${msg.data}`);
                         }
                       })
                       .filter(msg => msg.kind === OutputKind.Stdout || msg.kind === OutputKind.Stderr)
@@ -99,7 +103,7 @@ export class EditorViewComponent implements OnInit {
 
   save(lab: Lab, forking = false) {
     this.labStorageService.saveLab(lab).subscribe(() => {
-      this.snackBar.open(`Lab ${forking ? 'forked' : 'saved' }.`, 'Dismiss', { duration: 3000 })
+      this.notifySnackBar(`Lab ${forking ? 'forked' : 'saved' }.`);
       this.router.navigateByUrl(`${lab.id}`);
     });
   }
@@ -115,7 +119,7 @@ export class EditorViewComponent implements OnInit {
       .subscribe(lab => {
         this.location.go(`/?tpl=${BLANK_LAB_TPL_ID}`);
         this.initLab(lab);
-        this.snackBar.open('New lab created.', 'Dismiss', { duration: 3000 })
+        this.notifySnackBar('New lab created.');
       })
   }
 
