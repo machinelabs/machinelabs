@@ -16,10 +16,15 @@ export class RemoteLabExecService {
   constructor(@Inject(DATABASE) private db, private authService: AuthService) {
   }
 
-  _childAddedAsObservable(ref: any) {
+  private childAddedAsObservable(ref: any) {
     return Observable.fromEventPattern(handler => ref.on('child_added', handler),
                                        handler => ref.off('child_added', handler));
   }
+
+  private processMessagesAsObservable(id: string) {
+    return this.childAddedAsObservable(this.db.ref(`process_messages/${id}`));
+  }
+
 
   /**
    * Executes code on the server. Returns an Observable<string>
@@ -53,14 +58,14 @@ export class RemoteLabExecService {
 
                       return Observable.fromPromise(res);
                     })
-                    .switchMap(_ => this._childAddedAsObservable(this.db.ref(`process_messages/${context.id}`)))
+                    .switchMap(_ => this.processMessagesAsObservable(context.id))
                     .map((snapshot:any) => snapshot.val())
                     .share();
 
     // we create a stream that - based on a filter - will only ever start producing 
     // messages if the output was redirected
     let redirectedOutput$ = output$.filter(msg => msg.kind === OutputKind.OutputRedirected)
-                                   .switchMap(msg => this._childAddedAsObservable(this.db.ref(`process_messages/${msg.data}`)))
+                                   .switchMap(msg => this.processMessagesAsObservable(msg.data))
                                    .map((msg:any) => msg.val());
 
     //we combine the regular stream with the redirected one (which may never be used)
