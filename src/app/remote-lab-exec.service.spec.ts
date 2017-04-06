@@ -96,6 +96,37 @@ describe('RemoteLabExecService', () => {
 
     });
 
+    it('should handle ExecutionRejected gracefully', (done) => {
+
+      let messages$ = new Observable(obs => {
+          obs.next(createSnapshot(OutputKind.ExecutionRejected, 'not allowed'));
+          return () => {
+            // in case the cleanup does not run, the test won't complete
+            // which seems to be the only way to properly test this.
+            done();
+          };
+      })
+
+      //FIXME This is really fragile. If we return undefined the test throws but passes
+      spyOn(rleService, 'processMessagesAsObservable')
+        .and.callFake((id) => {
+          if (id === context.id) {
+            return messages$;
+          } 
+        });
+
+      let actualMessages = [];
+      rleService.run(context, testLab)
+                .do(data => actualMessages.push(data))
+                .finally(() => {
+                  expect(actualMessages).toEqual([
+                    { kind: 4, data: 'not allowed' }
+                  ]);
+                })
+                .subscribe();
+
+    });
+
     it('should handle OutputRedirected gracefully', (done) => {
 
       let doneCount = 0;

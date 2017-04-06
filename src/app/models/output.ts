@@ -2,7 +2,8 @@ export enum OutputKind {
   Stdout,
   Stderr,
   ProcessFinished,
-  OutputRedirected
+  OutputRedirected,
+  ExecutionRejected
 }
 
 export interface OutputMessage {
