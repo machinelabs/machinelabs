@@ -71,7 +71,7 @@ export class RemoteLabExecService {
     //we combine the regular stream with the redirected one (which may never be used)
     return output$
             .merge(redirectedOutput$)
-            .takeWhileInclusive(msg => msg.kind !== OutputKind.ProcessFinished && msg.kind !== OutputKind.ExecutionRejected)
+            .takeWhileInclusive(msg => msg.kind !== OutputKind.ExecutionFinished && msg.kind !== OutputKind.ExecutionRejected)
             .finally(() => context.status = ExecutionStatus.Done);
   }
 
