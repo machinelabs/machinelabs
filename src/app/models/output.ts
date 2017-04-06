@@ -1,7 +1,7 @@
 export enum OutputKind {
   Stdout,
   Stderr,
-  ProcessFinished,
+  ExecutionFinished,
   OutputRedirected,
   ExecutionRejected
 }

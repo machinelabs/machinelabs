@@ -65,7 +65,7 @@ describe('RemoteLabExecService', () => {
       let messages$ = new Observable(obs => {
           obs.next(createSnapshot(OutputKind.Stdout, 'some-text'));
           obs.next(createSnapshot(OutputKind.Stdout, 'other-text'));
-          obs.next(createSnapshot(OutputKind.ProcessFinished, ''));
+          obs.next(createSnapshot(OutputKind.ExecutionFinished, ''));
           obs.next(createSnapshot(OutputKind.Stdout, 'other-text'));
           return () => {
             // in case the cleanup does not run, the test won't complete
@@ -145,7 +145,7 @@ describe('RemoteLabExecService', () => {
       let redirectedMessages$ = new Observable(obs => {
           obs.next(createSnapshot(OutputKind.Stdout, 'some-text'));
           obs.next(createSnapshot(OutputKind.Stdout, 'other-text'));
-          obs.next(createSnapshot(OutputKind.ProcessFinished, ''));
+          obs.next(createSnapshot(OutputKind.ExecutionFinished, ''));
           obs.next(createSnapshot(OutputKind.Stdout, 'other-text'));
           return () => {
             // in case the cleanup does not run, the test won't complete

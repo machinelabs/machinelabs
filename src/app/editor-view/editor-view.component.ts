@@ -79,7 +79,7 @@ export class EditorViewComponent implements OnInit {
     // in all scenarios.
     this.output = this.rleService.run(this.context, lab)
                       .do(msg => {
-                        if (msg.kind === OutputKind.ProcessFinished) {
+                        if (msg.kind === OutputKind.ExecutionFinished) {
                           this.notifySnackBar(`Process finished`);
                         }
                         else if (msg.kind === OutputKind.OutputRedirected) {
