@@ -1,4 +1,4 @@
-import './rx.operators';
+import './rx/rx.operators';
 
 export * from './app.component';
 export * from './app.module';
