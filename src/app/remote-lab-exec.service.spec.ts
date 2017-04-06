@@ -86,7 +86,11 @@ describe('RemoteLabExecService', () => {
       rleService.run(context, testLab)
                 .do(data => actualMessages.push(data))
                 .finally(() => {
-                  expect(actualMessages).toEqual(['some-text', 'other-text']);
+                  expect(actualMessages).toEqual([
+                    { kind: 0, data: 'some-text' },
+                    { kind: 0, data: 'other-text' },
+                    { kind: 2, data: '' }
+                  ]);
                 })
                 .subscribe();
 
@@ -134,7 +138,12 @@ describe('RemoteLabExecService', () => {
       rleService.run(context, testLab)
                 .do(data => actualMessages.push(data))
                 .finally(() => {
-                  expect(actualMessages).toEqual(['Serving cached run: 2', 'some-text', 'other-text']);
+                  expect(actualMessages).toEqual([
+                    { kind: 3, data: '2' },
+                    { kind: 0, data: 'some-text' },
+                    { kind: 0, data: 'other-text' },
+                    { kind: 2, data: '' } 
+                  ]);
                 })
                 .subscribe();
 
