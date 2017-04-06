@@ -30,7 +30,7 @@ export class RemoteLabExecService {
    * Executes code on the server. Returns an Observable<string>
    * where `string` is each line that was printed to STDOUT.
    */
-  run (context: LabExecutionContext, lab: Lab) : Observable<string> {
+  run (context: LabExecutionContext, lab: Lab) : Observable<OutputMessage> {
 
     // This shouldn't really happen in practice because the UI forbids this.
     // But semantically it makes sense to check for it.
@@ -71,8 +71,7 @@ export class RemoteLabExecService {
     //we combine the regular stream with the redirected one (which may never be used)
     return output$
             .merge(redirectedOutput$)
-            .takeWhile(msg => msg.kind !== OutputKind.ProcessFinished)
-            .map(msg => msg.kind === OutputKind.OutputRedirected ? `Serving cached run: ${msg.data}` : msg.data)
+            .takeWhileInclusive(msg => msg.kind !== OutputKind.ProcessFinished)
             .finally(() => context.status = ExecutionStatus.Done);
   }
 

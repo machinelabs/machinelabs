@@ -9,6 +9,7 @@ import { LabStorageService } from '../lab-storage.service';
 import { BLANK_LAB_TPL_ID } from '../lab-template.service';
 import { Observable } from 'rxjs/Observable';
 import { Lab, LabExecutionContext, File } from '../models/lab';
+import { OutputMessage, OutputKind } from '../models/output';
 import { ToolbarAction, ToolbarActionTypes } from '../toolbar/toolbar.component';
 
 @Component({
@@ -73,7 +74,16 @@ export class EditorViewComponent implements OnInit {
     // Unsubscribing. The returned Observable may not auto complete
     // in all scenarios.
     this.output = this.rleService.run(this.context, lab)
-                      .scan((acc, current) => `${acc}\n${current}`, '');
+                      .do(msg => {
+                        if (msg.kind === OutputKind.ProcessFinished) {
+                          this.snackBar.open(`Process finished`, 'Dismiss', { duration: 3000 });
+                        }
+                        else if (msg.kind === OutputKind.OutputRedirected) {
+                          this.snackBar.open(`Replaying cached run: ${msg.data}`, 'Dismiss', { duration: 3000 });
+                        }
+                      })
+                      .filter(msg => msg.kind === OutputKind.Stdout || msg.kind === OutputKind.Stderr)
+                      .scan((acc, current) => `${acc}\n${current.data}`, '');
   }
 
   stop(context: LabExecutionContext) {
