@@ -85,6 +85,11 @@ export class EditorViewComponent implements OnInit {
                         else if (msg.kind === OutputKind.OutputRedirected) {
                           this.notifySnackBar(`Replaying cached run: ${msg.data}`);
                         }
+                        else if (msg.kind === OutputKind.ExecutionRejected) {
+                          // TODO: Better show something with more info.
+                          // Tell the user to create an account etc.
+                          this.notifySnackBar('Execution rejected');
+                        }
                       })
                       .filter(msg => msg.kind === OutputKind.Stdout || msg.kind === OutputKind.Stderr)
                       .scan((acc, current) => `${acc}\n${current.data}`, '');
