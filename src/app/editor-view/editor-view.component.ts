@@ -92,6 +92,7 @@ export class EditorViewComponent implements OnInit {
 
   stop(context: LabExecutionContext) {
     this.rleService.stop(context);
+    this.notifySnackBar('Lab stopped');
   }
 
   fork(lab: Lab) {
