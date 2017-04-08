@@ -29,6 +29,7 @@ import { LabResolver } from './lab.resolver';
 
 import { environment } from '../environments/environment';
 import { DATABASE } from './app.tokens';
+import { DbRefBuilder } from './firebase/db-ref-builder';
 
 // We need to export this factory function to make AoT happy
 export function databaseFactory() {
@@ -61,6 +62,7 @@ export function databaseFactory() {
     RemoteLabExecService,
     LabStorageService,
     LabResolver,
+    DbRefBuilder,
     { provide: DATABASE, useFactory: databaseFactory },
     { provide: AuthService, useClass: environment.offline ? OfflineAuthService : FirebaseAuthService },
     { provide: LabTemplateService, useClass: InMemoryLabTemplateService }

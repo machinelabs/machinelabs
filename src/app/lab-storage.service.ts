@@ -4,7 +4,7 @@ import * as shortid from 'shortid';
 import * as firebase from 'firebase';
 
 import { Lab, LabTemplate } from './models/lab';
-import { DATABASE } from './app.tokens';
+import { DbRefBuilder } from './firebase/db-ref-builder';
 import { AuthService } from './auth';
 import { LabTemplateService } from './lab-template.service';
 
@@ -12,7 +12,7 @@ import { LabTemplateService } from './lab-template.service';
 export class LabStorageService {
 
   constructor(
-    @Inject(DATABASE) private db,
+    private db: DbRefBuilder,
     private authService: AuthService,
     private labTemplateService: LabTemplateService) {}
 
@@ -40,15 +40,14 @@ export class LabStorageService {
   getLab(id: string): Observable<Lab> {
     return this.authService
               .requireAuthOnce()
-              .switchMap(_ => Observable.fromPromise(this.db.ref(`labs/${id}`).once('value')))
+              .switchMap(_ => this.db.labRef(id).onceValue())
               .map((snapshot: any) => snapshot.val());
   }
 
   saveLab(lab: Lab): Observable<any> {
     return this.authService
               .requireAuthOnce()
-              .switchMap((login: any) => {
-                let res = this.db.ref(`labs/${lab.id}`).set({
+              .switchMap((login: any) => this.db.labRef(lab.id).set({
                   id: lab.id,
                   user_id: login.uid,
                   name: lab.name,
@@ -57,9 +56,7 @@ export class LabStorageService {
                   // doesn't have any tags yet.
                   tags: lab.tags || [],
                   files: lab.files
-                });
-                return Observable.fromPromise(res);
-              });
+                }));
   }
 
 }

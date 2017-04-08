@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { RemoteLabExecService } from './remote-lab-exec.service';
 import { AuthService } from './auth';
 import { DATABASE } from './app.tokens';
+import { DbRefBuilder } from './firebase/db-ref-builder';
 import { LabExecutionContext, Lab } from './models/lab';
 import { OutputKind } from 'app/models/output';
 
@@ -45,7 +46,8 @@ describe('RemoteLabExecService', () => {
       providers: [
         RemoteLabExecService,
         { provide: AuthService, useValue: authServiceStub },
-        { provide: DATABASE, useValue: databaseStub }
+        { provide: DATABASE, useValue: databaseStub },
+        DbRefBuilder
       ]
     });
 
