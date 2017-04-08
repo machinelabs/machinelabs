@@ -6,6 +6,7 @@ import { LabStorageService } from './lab-storage.service';
 import { LabTemplateService, InMemoryLabTemplateService, DEFAULT_LAB_TPL_ID } from './lab-template.service';
 import { AuthService } from './auth';
 import { DATABASE } from './app.tokens';
+import { DbRefBuilder } from './firebase/db-ref-builder';
 import { LAB_TEMPLATES } from './data/lab-templates';
 
 let testLab = {
@@ -43,7 +44,8 @@ describe('LabStorageService', () => {
         LabStorageService,
         { provide: LabTemplateService, useClass: InMemoryLabTemplateService },
         { provide: AuthService, useValue: authServiceStub },
-        { provide: DATABASE, useValue: databaseStub }
+        { provide: DATABASE, useValue: databaseStub },
+        DbRefBuilder
       ]
     });
 

@@ -7,22 +7,17 @@ import { OutputMessage, OutputKind } from './models/output';
 import * as shortid from 'shortid';
 import * as firebase from 'firebase';
 
-import { DATABASE } from './app.tokens';
+import { DbRefBuilder } from './firebase/db-ref-builder';
 import { AuthService } from './auth';
 
 @Injectable()
 export class RemoteLabExecService {
 
-  constructor(@Inject(DATABASE) private db, private authService: AuthService) {
-  }
-
-  private childAddedAsObservable(ref: any) {
-    return Observable.fromEventPattern(handler => ref.on('child_added', handler),
-                                       handler => ref.off('child_added', handler));
+  constructor(private db: DbRefBuilder, private authService: AuthService) {
   }
 
   private processMessagesAsObservable(id: string) {
-    return this.childAddedAsObservable(this.db.ref(`process_messages/${id}`));
+    return this.db.processMessageRef(id).childAdded();
   }
 
 
@@ -44,8 +39,7 @@ export class RemoteLabExecService {
     
     let output$ = this.authService
                     .requireAuthOnce()
-                    .switchMap(login => {
-                      let res = this.db.ref(`runs/${context.id}`).set({
+                    .switchMap(login => this.db.runRef(context.id).set({
                         id: context.id,
                         user_id: login.uid,
                         timestamp: firebase.database.ServerValue.TIMESTAMP,
@@ -54,10 +48,7 @@ export class RemoteLabExecService {
                           id: context.lab.id,
                           files: context.lab.files
                         }
-                      });
-
-                      return Observable.fromPromise(res);
-                    })
+                    }))
                     .switchMap(_ => this.processMessagesAsObservable(context.id))
                     .map((snapshot:any) => snapshot.val())
                     .share();
@@ -79,10 +70,9 @@ export class RemoteLabExecService {
     context.status = ExecutionStatus.Stopped;
     return this.authService
       .requireAuthOnce()
-      .switchMap(_ => Observable.fromPromise(this.db.ref(`runs/${context.id}`).once('value')))
+      .switchMap(_ => this.db.runRef(context.id).onceValue())
       .map((snapshot: any) => snapshot.val())
-      .switchMap(data => Observable.fromPromise(this.db.ref(`runs/${context.id}`)
-                                   .set(Object.assign(data, { type: RunAction.Stop }))))
+      .switchMap(data => this.db.runRef(context.id).set(Object.assign(data, { type: RunAction.Stop })))
       .subscribe();
   }
 }
