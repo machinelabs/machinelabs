@@ -11,6 +11,7 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting
 } from '@angular/platform-browser-dynamic/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import './app/rx/rx.operators';
 
@@ -23,7 +24,7 @@ __karma__.loaded = function () {};
 
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(
-  BrowserDynamicTestingModule,
+  [BrowserDynamicTestingModule, NoopAnimationsModule],
   platformBrowserDynamicTesting()
 );
 // Then we find all the tests.

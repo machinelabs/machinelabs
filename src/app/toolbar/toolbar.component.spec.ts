@@ -3,8 +3,8 @@ import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MaterialModule } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
+import { MachineLabsMaterialModule } from '../ml-material.module';
 import { AuthService, dummyUser } from '../auth/';
 import { ToolbarComponent, ToolbarActionTypes } from './toolbar.component';
 import { LabExecutionContext, ExecutionStatus } from '../models/lab';
@@ -31,7 +31,7 @@ describe('ToolbarComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ToolbarComponent],
-      imports: [MaterialModule, CommonModule, FormsModule],
+      imports: [MachineLabsMaterialModule, CommonModule, FormsModule],
       providers: [{ provide: AuthService, useValue: authServiceStub }]
     })
 
