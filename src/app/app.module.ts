@@ -6,8 +6,9 @@ import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MaterialModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
+
+import { MachineLabsMaterialModule } from './ml-material.module';
 
 import { RemoteLabExecService } from './remote-lab-exec.service';
 import { LabStorageService } from './lab-storage.service';
@@ -55,8 +56,8 @@ export function databaseFactory() {
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule.forRoot(),
-    MaterialModule.forRoot(),
-    RouterModule.forRoot(APP_ROUTES)
+    RouterModule.forRoot(APP_ROUTES),
+    MachineLabsMaterialModule
   ],
   providers: [
     RemoteLabExecService,
