@@ -36,6 +36,6 @@ export class FirebaseDataSnapshotMock {
   constructor(private fbMock: FirebaseMock, private data: any) {}
 
   val() {
-    return this.data;
+    return this.data  || null;
   }
 }
