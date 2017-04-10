@@ -1,8 +1,9 @@
 import { Component, Input, Output, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { MdSnackBar } from '@angular/material';
 import { Lab, LabExecutionContext } from '../models/lab';
-import { LoginUser } from '../models/user';
+import { LoginUser, User } from '../models/user';
 import { AuthService } from '../auth/auth.service';
+import { UserService } from '../user/user.service';
 
 export enum ToolbarActionTypes {
   Run, Stop, Save, Fork, Create
@@ -26,7 +27,7 @@ export class ToolbarComponent implements OnInit {
 
   @Output() action = new EventEmitter<ToolbarAction>();
 
-  private user: LoginUser;
+  private user: User;
 
   private editing = false;
 
@@ -34,14 +35,20 @@ export class ToolbarComponent implements OnInit {
 
   @ViewChild('nameInput') nameInput;
 
-  constructor(private authService: AuthService, private snackBar: MdSnackBar) {}
+  constructor(private authService: AuthService,
+              private userService: UserService,
+              private snackBar: MdSnackBar) {}
 
   ngOnInit() {
-    this.authService.requireAuth().subscribe(user => this.user = user);
+    this.authService.requireAuth()
+                    .switchMap(loginUser => this.userService.createUserIfMissing())
+                    .subscribe(user => {
+                      this.user = user;
+                    });
   }
 
   userOwnsLab () {
-    return this.lab && this.user && this.lab.user_id === this.user.uid;
+    return this.lab && this.user && this.lab.user_id === this.user.id;
   }
 
   emitAction(action: ToolbarActionTypes, data?: any) {

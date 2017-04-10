@@ -7,6 +7,10 @@ import { ObservableDbRef } from './observable-db-ref'
 export class DbRefBuilder {
   constructor(@Inject(DATABASE) private db) {}
 
+  userRef(id: string) {
+    return new ObservableDbRef(this.db.ref(`users/${id}`));
+  }
+
   labRef(id: string) {
     return new ObservableDbRef(this.db.ref(`labs/${id}`));
   }
