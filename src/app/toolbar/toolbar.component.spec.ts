@@ -8,9 +8,14 @@ import { MachineLabsMaterialModule } from '../ml-material.module';
 import { AuthService, dummyUser } from '../auth/';
 import { ToolbarComponent, ToolbarActionTypes } from './toolbar.component';
 import { LabExecutionContext, ExecutionStatus } from '../models/lab';
+import { UserService } from '../user/user.service';
+import { DbRefBuilder } from '../firebase/db-ref-builder';
+import { DATABASE } from '../app.tokens';
+import { FirebaseMock } from '../../mocks/firebase-mock';
 
 let authServiceStub = {
   requireAuth: () => {},
+  requireAuthOnce: () => {},
   linkOrSignInWithGitHub: () => {}
 };
 
@@ -27,12 +32,20 @@ describe('ToolbarComponent', () => {
   let component: ToolbarComponent;
   let fixture: ComponentFixture<ToolbarComponent>;
   let authService: AuthService;
+  let userService: UserService;
+  let fbMock: FirebaseMock;
 
   beforeEach(() => {
+    fbMock = new FirebaseMock();
     TestBed.configureTestingModule({
       declarations: [ToolbarComponent],
       imports: [MachineLabsMaterialModule, CommonModule, FormsModule],
-      providers: [{ provide: AuthService, useValue: authServiceStub }]
+      providers: [
+          { provide: AuthService, useValue: authServiceStub },
+          { provide: DATABASE, useValue: fbMock.mockDb() },
+          DbRefBuilder,
+          UserService
+        ]
     })
 
     fixture = TestBed.createComponent(ToolbarComponent);
@@ -43,6 +56,7 @@ describe('ToolbarComponent', () => {
     component.context = new LabExecutionContext(lab);
     component.lab = lab;
     spyOn(authService, 'requireAuth').and.returnValue(Observable.of(dummyUser));
+    spyOn(authService, 'requireAuthOnce').and.returnValue(Observable.of(dummyUser));
     fixture.detectChanges();
   });
 
@@ -50,26 +64,30 @@ describe('ToolbarComponent', () => {
     expect(authService.requireAuth).toHaveBeenCalled();
   });
 
-  it('should render lab name or input', () => {
-    let lab = Object.assign({}, testLab);
-    // lab user id and user id have to be equal
-    lab.user_id = 'some unique id';
+  it('should render lab name or input', (done) => {
+    // The user will be available in the next tick hence the setTimeout
+    setTimeout(() =>{
+      let lab = Object.assign({}, testLab);
+      // lab user id and user id have to be equal
+      lab.user_id = 'some unique id';
 
-    component.context = new LabExecutionContext(lab);
-    component.lab = lab;
-    fixture.detectChanges();
+      component.context = new LabExecutionContext(lab);
+      component.lab = lab;
+      fixture.detectChanges();
 
-    let nameSpan = fixture.debugElement.query(By.css('.ml-toolbar__lab-name span'));
+      let nameSpan = fixture.debugElement.query(By.css('.ml-toolbar__lab-name span'));
 
-    expect(nameSpan).toBeDefined();
-    expect(nameSpan.nativeElement.textContent).toEqual(lab.name);
+      expect(nameSpan).toBeDefined();
+      expect(nameSpan.nativeElement.textContent).toEqual(lab.name);
 
-    let editButton = fixture.debugElement.query(By.css('.ml-toolbar__lab-name button'));
-    editButton.triggerEventHandler('click', null);
-    fixture.detectChanges();
+      let editButton = fixture.debugElement.query(By.css('.ml-toolbar__lab-name button'));
+      editButton.triggerEventHandler('click', null);
+      fixture.detectChanges();
 
-    let nameInput = fixture.debugElement.query(By.css('.ml-toolbar__lab-name input'));
-    expect(nameInput).toBeDefined();
+      let nameInput = fixture.debugElement.query(By.css('.ml-toolbar__lab-name input'));
+      expect(nameInput).toBeDefined();
+      done();
+    })
   });
 
   describe('Toolbar Actions', () => {
@@ -102,23 +120,27 @@ describe('ToolbarComponent', () => {
       stopButton.triggerEventHandler('click', null);
     });
 
-    it('should emit save action', () => {
-      let lab = Object.assign({}, testLab);
-      // lab user id and user id have to be equal
-      lab.user_id = 'some unique id';
+    it('should emit save action', (done) => {
+      // The user will be available in the next tick hence the setTimeout
+      setTimeout(() => {
+        let lab = Object.assign({}, testLab);
+        // lab user id and user id have to be equal
+        lab.user_id = 'some unique id';
 
-      component.context = new LabExecutionContext(lab);
-      component.lab = lab;
-      fixture.detectChanges();
+        component.context = new LabExecutionContext(lab);
+        component.lab = lab;
+        fixture.detectChanges();
 
-      // When lab isn't running, save button is the second
-      let saveButton = fixture.debugElement.queryAll(By.css('.ml-toolbar__cta-bar button'))[1];
+        // When lab isn't running, save button is the second
+        let saveButton = fixture.debugElement.queryAll(By.css('.ml-toolbar__cta-bar button'))[1];
 
-      component.action.subscribe(action => {
-        expect(action.type).toBe(ToolbarActionTypes.Save);
-      });
+        component.action.subscribe(action => {
+          expect(action.type).toBe(ToolbarActionTypes.Save);
+        });
 
-      saveButton.triggerEventHandler('click', null);
+        saveButton.triggerEventHandler('click', null);
+        done();
+      })
     });
 
     it('should emit fork action', () => {
