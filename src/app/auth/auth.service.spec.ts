@@ -11,7 +11,7 @@ import {
   dummyUser
 } from './index';
 
-import { User } from '../models/user';
+import { LoginUser } from '../models/user';
 
 describe('Auth services', () => {
 
@@ -28,7 +28,7 @@ describe('Auth services', () => {
   describe('FirebaseAuthService', () => {
 
     let authService: FirebaseAuthService;
-    let user: User = dummyUser;
+    let user: LoginUser = dummyUser;
 
     beforeEach(() => {
       TestBed.configureTestingModule({

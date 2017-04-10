@@ -4,14 +4,14 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { AuthService} from './auth.service';
-import { User } from '../models/user';
+import { LoginUser } from '../models/user';
 
 @Injectable()
 export class FirebaseAuthService extends AuthService {
 
-  auth$: Observable<User>;
+  auth$: Observable<LoginUser>;
 
-  requireAuth(): Observable<User> {
+  requireAuth(): Observable<LoginUser> {
     // `onAuthStateChanged()` always returns the latest logged-in user *or* null
     // if it's the very first time. If `user` is null, we make sure to sign in anonymously
     // so that a user is always logged-in in some way.
@@ -35,14 +35,14 @@ export class FirebaseAuthService extends AuthService {
     return Observable.fromPromise(<Promise<any>>firebase.auth().signOut());
   }
 
-  signInWithGitHub(): Observable<User> {
+  signInWithGitHub(): Observable<LoginUser> {
     let loginPromise = firebase.auth()
                                .signInWithPopup(new firebase.auth.GithubAuthProvider())
                                .then(result => result.user);
     return Observable.fromPromise(<Promise<any>>loginPromise);
   }
 
-  linkOrSignInWithGitHub(): Observable<User> {
+  linkOrSignInWithGitHub(): Observable<LoginUser> {
     let linkPromise = firebase.auth()
                               .currentUser
                               .linkWithPopup(new firebase.auth.GithubAuthProvider())

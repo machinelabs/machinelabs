@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { MdSnackBar } from '@angular/material';
 import { Lab, LabExecutionContext } from '../models/lab';
-import { User } from '../models/user';
+import { LoginUser } from '../models/user';
 import { AuthService } from '../auth/auth.service';
 
 export enum ToolbarActionTypes {
@@ -26,7 +26,7 @@ export class ToolbarComponent implements OnInit {
 
   @Output() action = new EventEmitter<ToolbarAction>();
 
-  private user: User;
+  private user: LoginUser;
 
   private editing = false;
 

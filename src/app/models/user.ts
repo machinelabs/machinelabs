@@ -1,4 +1,4 @@
-export interface User {
+export interface LoginUser {
   uid: string;
   displayName: string|null;
   email: string|null;
