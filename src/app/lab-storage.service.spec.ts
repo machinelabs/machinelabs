@@ -8,6 +8,7 @@ import { AuthService } from './auth';
 import { DATABASE } from './app.tokens';
 import { DbRefBuilder } from './firebase/db-ref-builder';
 import { LAB_TEMPLATES } from './data/lab-templates';
+import { FirebaseMock } from '../mocks/firebase-mock';
 
 let testLab = {
   id: 'some-id',
@@ -37,14 +38,18 @@ describe('LabStorageService', () => {
   let labTemplateService: LabTemplateService;
   let authService: AuthService;
   let db;
+  let fbMock;
 
   beforeEach(() => {
+
+    fbMock = new FirebaseMock();
+
     TestBed.configureTestingModule({
       providers: [
         LabStorageService,
         { provide: LabTemplateService, useClass: InMemoryLabTemplateService },
         { provide: AuthService, useValue: authServiceStub },
-        { provide: DATABASE, useValue: databaseStub },
+        { provide: DATABASE, useValue: fbMock.mockDb() },
         DbRefBuilder
       ]
     });
@@ -108,49 +113,29 @@ describe('LabStorageService', () => {
 
     it('should return lab by given id', (done) => {
 
-      function ref(str) {
-        return {
-          once: (str) => {
-            return new Promise(resolve => {
-              resolve({
-                val: () => {
-                  return Object.assign({}, testLab);
-                }
-              })
-            });
-          }
-        };
-      }
+        fbMock.data[`labs/${testLab.id}`] = testLab;
 
-      spyOn(db, 'ref').and.callFake(ref)
-
-      labStorageService.getLab('foo').subscribe(lab => {
-        expect(db.ref).toHaveBeenCalledWith('labs/foo');
-        expect(lab).toEqual(testLab);
-        done();
-      });
-    });
+        labStorageService.getLab(testLab.id)
+                         .subscribe(lab => {
+                           expect(lab).toEqual(testLab);
+                           done();
+                         });
   });
 
   describe('.saveLab()', () => {
 
     it('should save lab using firebase.database.set()', (done) => {
 
-      function ref(str) {
-        return {
-          set: (arg) => {
-            return Promise.resolve(Object.assign({}, testLab));
-          }
-        };
-      }
-
-      spyOn(db, 'ref').and.callFake(ref)
-
       labStorageService.saveLab(testLab).subscribe(lab => {
-        expect(db.ref).toHaveBeenCalledWith('labs/some-id');
-        expect(lab).toEqual(testLab);
-        done();
+                                    
+        labStorageService.getLab(testLab.id)
+                         .subscribe(lab => {
+                           //The returned lab should have its user_id changed
+                           expect(lab).toEqual(Object.assign({}, testLab, {user_id:'some-id'}));
+                           done();
+                         });
       });
     });
   });
 });
+
