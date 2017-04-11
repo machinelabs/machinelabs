@@ -28,7 +28,7 @@ export class UserService {
       displayName: fromUser.displayName,
       email: fromUser.email,
       isAnonymous: fromUser.isAnonymous,
-      photoUrl: fromUser.photoUrl || null
+      photoUrl: fromUser.photoURL || null
     };
   }
 

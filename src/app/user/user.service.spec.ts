@@ -19,7 +19,7 @@ describe('UserService', () => {
     displayName: 'foo',
     email: 'foo@bar.de',
     isAnonymous: true,
-    photoUrl: '/some/address'
+    photoURL: '/some/address'
   };
 
   let expectedUser = {

@@ -196,7 +196,7 @@ describe('Auth services', () => {
           expect(user.displayName).toEqual('Tony Stark');
           expect(user.email).toEqual('tony@starkindustries.com');
           expect(user.isAnonymous).toBe(true);
-          expect(user.photoUrl).toBe(null);
+          expect(user.photoURL).toBe(null);
         });
       });
     });
@@ -232,7 +232,7 @@ describe('Auth services', () => {
           expect(user.displayName).toEqual('Tony Stark');
           expect(user.email).toEqual('tony@starkindustries.com');
           expect(user.isAnonymous).toBe(false);
-          expect(user.photoUrl).toBe(null);
+          expect(user.photoURL).toBe(null);
         });
       });
     });
@@ -245,7 +245,7 @@ describe('Auth services', () => {
           expect(user.displayName).toEqual('Tony Stark');
           expect(user.email).toEqual('tony@starkindustries.com');
           expect(user.isAnonymous).toBe(false);
-          expect(user.photoUrl).toBe(null);
+          expect(user.photoURL).toBe(null);
         });
       });
     });

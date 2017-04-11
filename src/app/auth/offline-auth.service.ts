@@ -10,7 +10,7 @@ export let dummyUser = {
   displayName: 'Tony Stark',
   email: 'tony@starkindustries.com',
   isAnonymous: true,
-  photoUrl: null
+  photoURL: null
 };
 
 // We emulate the logged in user and its state of being

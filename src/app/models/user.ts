@@ -3,7 +3,7 @@ export interface LoginUser {
   displayName: string|null;
   email: string|null;
   isAnonymous: boolean;
-  photoUrl: string|null;
+  photoURL: string|null;
 }
 
 export interface User {
