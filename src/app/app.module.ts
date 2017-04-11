@@ -20,6 +20,7 @@ import { AppComponent } from './app.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { AceEditorComponent } from './ace-editor/ace-editor.component';
 import { PanelComponent } from './panel/panel.component';
+import { PanelTitleComponent } from './panel/panel-title.component';
 import { EditorViewComponent } from './editor-view/editor-view.component';
 import { FileNameDialogComponent } from './file-name-dialog/file-name-dialog.component';
 import { NavigationConfirmDialogComponent } from './navigation-confirm-dialog/navigation-confirm-dialog.component';
@@ -46,6 +47,7 @@ export function databaseFactory() {
     ToolbarComponent,
     AceEditorComponent,
     PanelComponent,
+    PanelTitleComponent,
     EditorViewComponent,
     FileNameDialogComponent,
     FileTreeComponent,

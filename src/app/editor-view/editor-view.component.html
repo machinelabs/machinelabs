@@ -14,7 +14,9 @@
           (removeFile)="deleteFile($event)"
           (editFile)="openFileNameDialog($event)"
           (addFile)="openFileNameDialog()"></ml-file-tree>
+        <ml-panel-title>Description</ml-panel-title>
         <p class="ml-lab-description">{{lab.description}}</p>
+        <ml-panel-title>Tags</ml-panel-title>
         <md-chip-list>
           <md-chip *ngFor="let tag of lab.tags">{{tag}}</md-chip>
         </md-chip-list>
