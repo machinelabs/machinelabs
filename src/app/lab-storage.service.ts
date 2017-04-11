@@ -25,7 +25,7 @@ export class LabStorageService {
           user_id: user.uid,
           name: lab ? `Fork of ${lab.name}` : 'Untitled',
           description: lab ? lab.description : '',
-          tags: lab ? lab.tags: [],
+          tags: lab ? lab.tags : [],
           files: lab ? lab.files : [{ name: 'main.py', content: '' }]
         };
       });

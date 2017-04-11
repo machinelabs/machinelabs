@@ -45,13 +45,13 @@ describe('Auth services', () => {
         spyOn(firebase.auth(), 'onAuthStateChanged').and.callFake(obs => obs.next(null));
         spyOn(firebase.auth(), 'signInAnonymously').and.returnValue(Promise.resolve(dummyUser));
 
-        authService.requireAuth().subscribe(user => {
+        authService.requireAuth().subscribe(loginUser => {
           expect(firebase.auth().onAuthStateChanged).toHaveBeenCalled();
           expect(firebase.auth().signInAnonymously).toHaveBeenCalled();
-          expect(user.uid).toEqual(dummyUser.uid);
-          expect(user.displayName).toEqual(dummyUser.displayName);
-          expect(user.email).toEqual(dummyUser.email);
-          expect(user.isAnonymous).toBe(true);
+          expect(loginUser.uid).toEqual(dummyUser.uid);
+          expect(loginUser.displayName).toEqual(dummyUser.displayName);
+          expect(loginUser.email).toEqual(dummyUser.email);
+          expect(loginUser.isAnonymous).toBe(true);
           done();
         });
       });
@@ -60,13 +60,13 @@ describe('Auth services', () => {
         spyOn(firebase.auth(), 'onAuthStateChanged').and.callFake(obs => obs.next(dummyUser));
         spyOn(firebase.auth(), 'signInAnonymously');
 
-        authService.requireAuth().subscribe(user => {
+        authService.requireAuth().subscribe(loginUser => {
           expect(firebase.auth().onAuthStateChanged).toHaveBeenCalled();
           expect(firebase.auth().signInAnonymously).not.toHaveBeenCalled();
-          expect(user.uid).toEqual(dummyUser.uid);
-          expect(user.displayName).toEqual(dummyUser.displayName);
-          expect(user.email).toEqual(dummyUser.email);
-          expect(user.isAnonymous).toBe(true);
+          expect(loginUser.uid).toEqual(dummyUser.uid);
+          expect(loginUser.displayName).toEqual(dummyUser.displayName);
+          expect(loginUser.email).toEqual(dummyUser.email);
+          expect(loginUser.isAnonymous).toBe(true);
         });
       });
     });
@@ -83,7 +83,7 @@ describe('Auth services', () => {
         });
         spyOn(firebase.auth(), 'signInAnonymously');
 
-        authService.requireAuthOnce().subscribe(_=> {
+        authService.requireAuthOnce().subscribe(_ => {
           counter++;
         });
 
@@ -117,12 +117,12 @@ describe('Auth services', () => {
 
         spyOn(firebase.auth(), 'signInWithPopup').and.returnValue(Promise.resolve(result));
 
-        authService.signInWithGitHub().subscribe(user => {
+        authService.signInWithGitHub().subscribe(loginUser => {
           expect(firebase.auth().signInWithPopup).toHaveBeenCalledWith(new firebase.auth.GithubAuthProvider());
-          expect(user.uid).toEqual(dummyUser.uid);
-          expect(user.displayName).toEqual(dummyUser.displayName);
-          expect(user.email).toEqual(dummyUser.email);
-          expect(user.isAnonymous).toBe(false);
+          expect(loginUser.uid).toEqual(dummyUser.uid);
+          expect(loginUser.displayName).toEqual(dummyUser.displayName);
+          expect(loginUser.email).toEqual(dummyUser.email);
+          expect(loginUser.isAnonymous).toBe(false);
           done();
         });
       });
@@ -143,9 +143,9 @@ describe('Auth services', () => {
 
         spyOn(firebase, 'auth').and.returnValue(currentUserStub);
 
-        authService.linkOrSignInWithGitHub().subscribe(user => {
+        authService.linkOrSignInWithGitHub().subscribe(loginUser => {
           expect(firebase.auth().currentUser.linkWithPopup).toHaveBeenCalledWith(new firebase.auth.GithubAuthProvider());
-          expect(user).toEqual(dummyUser);
+          expect(loginUser).toEqual(dummyUser);
           done();
         });
       });
@@ -163,9 +163,9 @@ describe('Auth services', () => {
 
         spyOn(firebase, 'auth').and.returnValue(currentUserStub);
 
-        authService.linkOrSignInWithGitHub().subscribe(user => {
+        authService.linkOrSignInWithGitHub().subscribe(loginUser => {
           expect(firebase.auth().signInWithPopup).toHaveBeenCalledWith(new firebase.auth.GithubAuthProvider());
-          expect(user).toEqual(dummyUser);
+          expect(loginUser).toEqual(dummyUser);
           done();
         });
       });
@@ -212,7 +212,7 @@ describe('Auth services', () => {
           return authObserver.asObservable();
         });
 
-        authService.requireAuthOnce().subscribe(_=> {
+        authService.requireAuthOnce().subscribe(_ => {
           counter++;
         });
 

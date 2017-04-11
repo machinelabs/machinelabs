@@ -54,7 +54,9 @@ export class FirebaseAuthService extends AuthService {
                                 // to be defined, we have to assign that value explicitely from the retreived
                                 // `providerData`.
                                 //
-                                // More info: http://stackoverflow.com/questions/42766440/why-does-firebase-linkwithpopup-not-set-the-user-photourl-in-firebase
+                                // More info:
+                                // http://stackoverflow.com/questions/42766440/
+                                // why-does-firebase-linkwithpopup-not-set-the-user-photourl-in-firebase
                                 let currentUser = firebase.auth().currentUser;
                                 currentUser.updateProfile({
                                   displayName: currentUser.providerData[0].displayName,

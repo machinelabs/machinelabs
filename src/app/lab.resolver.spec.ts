@@ -68,7 +68,7 @@ describe('LabResolver', () => {
 
       let activatedRouteSnapshotStub = new ActivatedRouteSnapshot();
       activatedRouteSnapshotStub.params = {};
-      activatedRouteSnapshotStub.queryParams = { tpl: BLANK_LAB_TPL_ID }
+      activatedRouteSnapshotStub.queryParams = { tpl: BLANK_LAB_TPL_ID };
 
       spyOn(labStorageService, 'createLab').and.returnValue(Observable.of(newLab));
 

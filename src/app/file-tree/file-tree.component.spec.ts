@@ -254,7 +254,7 @@ class TestComponent {
     this.logs = [];
   }
 
-  private log(type:string, file: File) {
-    this.logs.push({ type, message: file.name })
+  private log(type: string, file: File) {
+    this.logs.push({ type, message: file.name });
   }
 }

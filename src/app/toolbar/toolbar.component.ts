@@ -68,10 +68,10 @@ export class ToolbarComponent implements OnInit {
     });
 
     this.editLabDialogRef.afterClosed()
-        .filter(lab => lab !== undefined)
-        .subscribe(lab => {
+        .filter(_lab => _lab !== undefined)
+        .subscribe(_lab => {
           this.snackBar.open('Lab saved', 'Dismiss', { duration: 3000 });
-          this.router.navigateByUrl(`${lab.id}`);
+          this.router.navigateByUrl(`${_lab.id}`);
         });
   }
 

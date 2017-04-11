@@ -14,16 +14,16 @@ describe('UserService', () => {
   let db;
   let fbMock;
 
-  let loginUser = { 
-    uid: 'some-id', 
+  let loginUser = {
+    uid: 'some-id',
     displayName: 'foo',
     email: 'foo@bar.de',
     isAnonymous: true,
     photoUrl: '/some/address'
   };
 
-  let expectedUser = { 
-    id: 'some-id', 
+  let expectedUser = {
+    id: 'some-id',
     displayName: 'foo',
     email: 'foo@bar.de',
     isAnonymous: true,

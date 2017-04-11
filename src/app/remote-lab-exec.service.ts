@@ -25,7 +25,7 @@ export class RemoteLabExecService {
    * Executes code on the server. Returns an Observable<string>
    * where `string` is each line that was printed to STDOUT.
    */
-  run (context: LabExecutionContext, lab: Lab) : Observable<OutputMessage> {
+  run (context: LabExecutionContext, lab: Lab): Observable<OutputMessage> {
 
     // This shouldn't really happen in practice because the UI forbids this.
     // But semantically it makes sense to check for it.
@@ -36,7 +36,7 @@ export class RemoteLabExecService {
     let id = `${Date.now()}-${shortid.generate()}`;
     context.setData(lab, id);
     context.status = ExecutionStatus.Running;
-    
+
     let output$ = this.authService
                     .requireAuthOnce()
                     .switchMap(login => this.db.runRef(context.id).set({
@@ -50,16 +50,16 @@ export class RemoteLabExecService {
                         }
                     }))
                     .switchMap(_ => this.processMessagesAsObservable(context.id))
-                    .map((snapshot:any) => snapshot.val())
+                    .map((snapshot: any) => snapshot.val())
                     .share();
 
-    // we create a stream that - based on a filter - will only ever start producing 
+    // we create a stream that - based on a filter - will only ever start producing
     // messages if the output was redirected
     let redirectedOutput$ = output$.filter(msg => msg.kind === OutputKind.OutputRedirected)
                                    .switchMap(msg => this.processMessagesAsObservable(msg.data))
-                                   .map((msg:any) => msg.val());
+                                   .map((msg: any) => msg.val());
 
-    //we combine the regular stream with the redirected one (which may never be used)
+    // we combine the regular stream with the redirected one (which may never be used)
     return output$
             .merge(redirectedOutput$)
             .takeWhileInclusive(msg => msg.kind !== OutputKind.ExecutionFinished && msg.kind !== OutputKind.ExecutionRejected)

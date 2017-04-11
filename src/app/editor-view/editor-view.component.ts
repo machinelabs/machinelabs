@@ -81,11 +81,9 @@ export class EditorViewComponent implements OnInit {
                       .do(msg => {
                         if (msg.kind === OutputKind.ExecutionFinished) {
                           this.notifySnackBar(`Process finished`);
-                        }
-                        else if (msg.kind === OutputKind.OutputRedirected) {
+                        } else if (msg.kind === OutputKind.OutputRedirected) {
                           this.notifySnackBar(`Replaying cached run: ${msg.data}`);
-                        }
-                        else if (msg.kind === OutputKind.ExecutionRejected) {
+                        } else if (msg.kind === OutputKind.ExecutionRejected) {
                           // TODO: Better show something with more info.
                           // Tell the user to create an account etc.
                           this.notifySnackBar('Execution rejected');
@@ -101,8 +99,8 @@ export class EditorViewComponent implements OnInit {
   }
 
   fork(lab: Lab) {
-    this.labStorageService.createLab(lab).subscribe(lab => {
-      this.lab = lab;
+    this.labStorageService.createLab(lab).subscribe(_lab => {
+      this.lab = _lab;
       this.save(this.lab, true);
     });
   }
@@ -126,7 +124,7 @@ export class EditorViewComponent implements OnInit {
         this.location.go(`/?tpl=${BLANK_LAB_TPL_ID}`);
         this.initLab(lab);
         this.notifySnackBar('New lab created.');
-      })
+      });
   }
 
   toggleSidebar() {
@@ -147,8 +145,8 @@ export class EditorViewComponent implements OnInit {
   }
 
   updateFile(file: File, newFile: File) {
-    const index = this.lab.files.findIndex(f => f.name == file.name);
-    if (index != -1) {
+    const index = this.lab.files.findIndex(f => f.name === file.name);
+    if (index !== -1) {
       this.lab.files[index] = newFile;
     }
   }

@@ -10,7 +10,7 @@ export class ObservableDbRef {
   }
 
   once(eventType: string): Observable<firebase.database.DataSnapshot> {
-    return Observable.fromPromise(this.ref.once(eventType))
+    return Observable.fromPromise(this.ref.once(eventType));
   }
 
   onceValue(): Observable<firebase.database.DataSnapshot> {
@@ -26,3 +26,4 @@ export class ObservableDbRef {
                                        handler => this.ref.off('child_added', handler));
   }
 }
+

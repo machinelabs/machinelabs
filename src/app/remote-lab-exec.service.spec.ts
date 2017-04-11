@@ -18,7 +18,7 @@ let testLab = {
   files: []
 };
 
-let context = new LabExecutionContext()
+let context = new LabExecutionContext();
 
 let authServiceStub = {
   requireAuthOnce: () => {}
@@ -27,9 +27,9 @@ let authServiceStub = {
 let databaseStub = {
   ref: (arg) => {
     return {
-      once: (arg) => {},
-      set: (arg) => Promise.resolve(arg)
-    }
+      once: (_arg) => {},
+      set: (_arg) => Promise.resolve(_arg)
+    };
   }
 };
 
@@ -74,14 +74,14 @@ describe('RemoteLabExecService', () => {
             // which seems to be the only way to properly test this.
             done();
           };
-      })
+      });
 
-      //FIXME This is really fragile. If we return undefined the test throws but passes
+      // FIXME This is really fragile. If we return undefined the test throws but passes
       spyOn(rleService, 'processMessagesAsObservable')
         .and.callFake((id) => {
           if (id === context.id) {
             return messages$;
-          } 
+          }
         });
 
       let actualMessages = [];
@@ -107,14 +107,14 @@ describe('RemoteLabExecService', () => {
             // which seems to be the only way to properly test this.
             done();
           };
-      })
+      });
 
-      //FIXME This is really fragile. If we return undefined the test throws but passes
+      // FIXME This is really fragile. If we return undefined the test throws but passes
       spyOn(rleService, 'processMessagesAsObservable')
         .and.callFake((id) => {
           if (id === context.id) {
             return messages$;
-          } 
+          }
         });
 
       let actualMessages = [];
@@ -142,7 +142,7 @@ describe('RemoteLabExecService', () => {
             // which seems to be the only way to properly test this.
             callDone();
           };
-      })
+      });
 
       let redirectedMessages$ = new Observable(obs => {
           obs.next(createSnapshot(OutputKind.Stdout, 'some-text'));
@@ -154,15 +154,14 @@ describe('RemoteLabExecService', () => {
             // which seems to be the only way to properly test this.
             callDone();
           };
-      })
+      });
 
-      //FIXME This is really fragile. If we return undefined the test throws but passes
+      // FIXME This is really fragile. If we return undefined the test throws but passes
       spyOn(rleService, 'processMessagesAsObservable')
         .and.callFake((id) => {
           if (id === context.id) {
             return messages$;
-          }
-          else if (id == 2) {
+          } else if (id === '2') {
             return redirectedMessages$;
           }
         });
@@ -175,7 +174,7 @@ describe('RemoteLabExecService', () => {
                     { kind: 3, data: '2' },
                     { kind: 0, data: 'some-text' },
                     { kind: 0, data: 'other-text' },
-                    { kind: 2, data: '' } 
+                    { kind: 2, data: '' }
                   ]);
                 })
                 .subscribe();

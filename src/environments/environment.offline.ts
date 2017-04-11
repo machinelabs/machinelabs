@@ -4,4 +4,5 @@ export const environment = {
   firebaseConfig: {
     databaseURL: 'ws://127.0.1:52100'
   }
-}
+};
+

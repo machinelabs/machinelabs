@@ -34,7 +34,7 @@ export class EditLabDialogComponent implements OnInit {
   submit(data) {
     this.lab.name = data.name;
     this.lab.description = data.description;
-    this.lab.tags = data.tags.split(',').filter(tag => tag.trim() !== '')
+    this.lab.tags = data.tags.split(',').filter(tag => tag.trim() !== '');
 
     this.labStorageService
         .saveLab(this.lab)

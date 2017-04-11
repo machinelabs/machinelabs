@@ -28,18 +28,18 @@ export class LabExecutionContext {
   private _lab: Lab;
   status: ExecutionStatus;
 
-  constructor (lab: Lab = null, id: string = '') {
+  constructor (lab: Lab = null, id = '') {
     this._id = id;
     this._lab = lab;
     this.status = ExecutionStatus.Pristine;
   }
 
   get id () {
-    return this._id
+    return this._id;
   }
 
   get lab () {
-    return this._lab
+    return this._lab;
   }
 
   clone () {

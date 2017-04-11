@@ -32,7 +32,7 @@ let testLab = {
 
 let routerStub = {
   navigateByUrl: (str) => {}
-}
+};
 
 describe('ToolbarComponent', () => {
   let component: ToolbarComponent;
@@ -59,7 +59,7 @@ describe('ToolbarComponent', () => {
         UserService
       ],
       schemas: [NO_ERRORS_SCHEMA]
-    })
+    });
 
     fixture = TestBed.createComponent(ToolbarComponent);
     component = fixture.componentInstance;
@@ -162,7 +162,7 @@ describe('ToolbarComponent', () => {
 
         saveButton.triggerEventHandler('click', null);
         done();
-      })
+      });
     });
 
     it('should emit fork action', () => {
