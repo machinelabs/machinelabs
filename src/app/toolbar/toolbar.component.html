@@ -4,15 +4,7 @@
 
     <div fxFlex class="ml-toolbar__lab-name">
       <span [class.hidden]="editing">{{lab.name}}</span>
-      <md-input-container [class.hidden]="!editing">
-        <input
-          mdInput
-          (blur)="editing = false"
-          (keydown.enter)="editing = false"
-          [(ngModel)]="lab.name"
-          #nameInput>
-      </md-input-container>
-      <button *ngIf="userOwnsLab()" md-icon-button type="button" (click)="toggleAndFocus();"><md-icon>edit</md-icon></button>
+      <button *ngIf="userOwnsLab()" md-icon-button type="button" (click)="openEditLabDialog(lab)"><md-icon>edit</md-icon></button>
     </div>
 
     <div fxLayout fxLayoutAlign="end">

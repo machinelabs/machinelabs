@@ -1,8 +1,9 @@
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { MachineLabsMaterialModule } from '../ml-material.module';
 import { AuthService, dummyUser } from '../auth/';
@@ -12,6 +13,7 @@ import { UserService } from '../user/user.service';
 import { DbRefBuilder } from '../firebase/db-ref-builder';
 import { DATABASE } from '../app.tokens';
 import { FirebaseMock } from '../../mocks/firebase-mock';
+import { EditLabDialogComponent } from '../edit-lab-dialog/edit-lab-dialog.component';
 
 let authServiceStub = {
   requireAuth: () => {},
@@ -28,6 +30,10 @@ let testLab = {
   files: []
 };
 
+let routerStub = {
+  navigateByUrl: (str) => {}
+}
+
 describe('ToolbarComponent', () => {
   let component: ToolbarComponent;
   let fixture: ComponentFixture<ToolbarComponent>;
@@ -39,13 +45,20 @@ describe('ToolbarComponent', () => {
     fbMock = new FirebaseMock();
     TestBed.configureTestingModule({
       declarations: [ToolbarComponent],
-      imports: [MachineLabsMaterialModule, CommonModule, FormsModule],
+      imports: [
+        TestModule,
+        MachineLabsMaterialModule,
+        CommonModule,
+        FormsModule
+      ],
       providers: [
-          { provide: AuthService, useValue: authServiceStub },
-          { provide: DATABASE, useValue: fbMock.mockDb() },
-          DbRefBuilder,
-          UserService
-        ]
+        { provide: AuthService, useValue: authServiceStub },
+        { provide: DATABASE, useValue: fbMock.mockDb() },
+        { provide: Router, useValue: routerStub },
+        DbRefBuilder,
+        UserService
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
 
     fixture = TestBed.createComponent(ToolbarComponent);
@@ -64,9 +77,23 @@ describe('ToolbarComponent', () => {
     expect(authService.requireAuth).toHaveBeenCalled();
   });
 
-  it('should render lab name or input', (done) => {
+  it('should render lab name', () => {
     // The user will be available in the next tick hence the setTimeout
-    setTimeout(() =>{
+    let lab = Object.assign({}, testLab);
+
+    component.context = new LabExecutionContext(lab);
+    component.lab = lab;
+    fixture.detectChanges();
+
+    let nameSpan = fixture.debugElement.query(By.css('.ml-toolbar__lab-name span'));
+
+    expect(nameSpan).toBeDefined();
+    expect(nameSpan.nativeElement.textContent).toEqual(lab.name);
+  });
+
+  it('should open edit lab dialog when edit button is clicked', (done) => {
+    // The user will be available in the next tick hence the setTimeout
+    setTimeout(_ => {
       let lab = Object.assign({}, testLab);
       // lab user id and user id have to be equal
       lab.user_id = 'some unique id';
@@ -75,19 +102,14 @@ describe('ToolbarComponent', () => {
       component.lab = lab;
       fixture.detectChanges();
 
-      let nameSpan = fixture.debugElement.query(By.css('.ml-toolbar__lab-name span'));
-
-      expect(nameSpan).toBeDefined();
-      expect(nameSpan.nativeElement.textContent).toEqual(lab.name);
+      spyOn(component, 'openEditLabDialog');
 
       let editButton = fixture.debugElement.query(By.css('.ml-toolbar__lab-name button'));
       editButton.triggerEventHandler('click', null);
-      fixture.detectChanges();
 
-      let nameInput = fixture.debugElement.query(By.css('.ml-toolbar__lab-name input'));
-      expect(nameInput).toBeDefined();
+      expect(component.openEditLabDialog).toHaveBeenCalledWith(lab);
       done();
-    })
+    });
   });
 
   describe('Toolbar Actions', () => {
@@ -166,3 +188,11 @@ describe('ToolbarComponent', () => {
     });
   });
 });
+
+@NgModule({
+  imports: [CommonModule],
+  declarations: [EditLabDialogComponent],
+  entryComponents: [EditLabDialogComponent],
+  schemas: [NO_ERRORS_SCHEMA]
+})
+class TestModule {}

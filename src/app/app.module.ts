@@ -25,6 +25,7 @@ import { FileNameDialogComponent } from './file-name-dialog/file-name-dialog.com
 import { NavigationConfirmDialogComponent } from './navigation-confirm-dialog/navigation-confirm-dialog.component';
 import { FileTreeComponent } from './file-tree/file-tree.component';
 import { ExecutionStatusComponent } from './execution-status/execution-status.component';
+import { EditLabDialogComponent } from './edit-lab-dialog/edit-lab-dialog.component';
 
 import { APP_ROUTES } from './app.routes';
 import { LabResolver } from './lab.resolver';
@@ -49,7 +50,8 @@ export function databaseFactory() {
     FileNameDialogComponent,
     FileTreeComponent,
     NavigationConfirmDialogComponent,
-    ExecutionStatusComponent
+    ExecutionStatusComponent,
+    EditLabDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -73,7 +75,8 @@ export function databaseFactory() {
   ],
   entryComponents: [
     FileNameDialogComponent,
-    NavigationConfirmDialogComponent
+    NavigationConfirmDialogComponent,
+    EditLabDialogComponent
   ],
   bootstrap: [AppComponent]
 })
