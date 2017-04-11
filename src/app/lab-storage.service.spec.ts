@@ -20,14 +20,14 @@ let testLab = {
 };
 
 let authServiceStub = {
-  requireAuthOnce: () => {}
+  requireAuthOnce: () => { }
 };
 
 let databaseStub = {
   ref: (arg) => {
     return {
-      once: (arg) => {},
-      set: (arg) => {}
+      once: (arg) => { },
+      set: (arg) => { }
     }
   }
 };
@@ -113,27 +113,29 @@ describe('LabStorageService', () => {
 
     it('should return lab by given id', (done) => {
 
-        fbMock.data[`labs/${testLab.id}`] = testLab;
+      fbMock.data[`labs/${testLab.id}`] = testLab;
 
-        labStorageService.getLab(testLab.id)
-                         .subscribe(lab => {
-                           expect(lab).toEqual(testLab);
-                           done();
-                         });
-  });
+      labStorageService.getLab(testLab.id)
+        .subscribe(lab => {
+          expect(lab).toEqual(testLab);
+          done();
+        });
+    });
 
-  describe('.saveLab()', () => {
+    describe('.saveLab()', () => {
 
-    it('should save lab using firebase.database.set()', (done) => {
+      it('should save lab using firebase.database.set()', (done) => {
 
-      labStorageService.saveLab(testLab).subscribe(lab => {
-                                    
-        labStorageService.getLab(testLab.id)
-                         .subscribe(lab => {
-                           //The returned lab should have its user_id changed
-                           expect(lab).toEqual(Object.assign({}, testLab, {user_id:'some-id'}));
-                           done();
-                         });
+        labStorageService.saveLab(testLab).subscribe(lab => {
+
+          labStorageService.getLab(testLab.id)
+            .subscribe(lab => {
+              //The returned lab should have its user_id changed
+              expect(lab).toEqual(Object.assign({}, testLab, { user_id: 'some-id' }));
+              done();
+            });
+        });
+
       });
     });
   });
