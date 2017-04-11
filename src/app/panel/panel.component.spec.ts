@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { PanelComponent } from './panel.component';
+import { PanelTitleComponent } from './panel-title.component';
 
 describe('PanelComponent', () => {
   let component: PanelComponent;
@@ -9,7 +10,7 @@ describe('PanelComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [PanelComponent]
+      declarations: [PanelComponent, PanelTitleComponent]
     });
 
     fixture = TestBed.createComponent(PanelComponent);
@@ -20,9 +21,8 @@ describe('PanelComponent', () => {
   it('should render panel title', () => {
     component.panelTitle = 'Panel title';
 
-    let titleElement = fixture.debugElement.query(By.css('h2')).nativeElement;
-
     fixture.detectChanges();
+    let titleElement = fixture.debugElement.query(By.css('ml-panel-title')).nativeElement;
     expect(titleElement.textContent).toContain('Panel title');
   });
 });
