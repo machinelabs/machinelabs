@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { environment } from 'environments/environment';
 import { DATABASE } from 'app/app.tokens';
-import { ObservableDbRef } from './observable-db-ref'
+import { ObservableDbRef } from './observable-db-ref';
 
 @Injectable()
 export class DbRefBuilder {
@@ -23,3 +23,4 @@ export class DbRefBuilder {
     return new ObservableDbRef(this.db.ref(`process_messages/${id}`));
   }
 }
+

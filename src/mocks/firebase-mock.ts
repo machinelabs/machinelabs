@@ -12,7 +12,7 @@ export class FireBaseDbMock {
 
   constructor(private fbMock: FirebaseMock) {}
 
-  ref(ref: string) { 
+  ref(ref: string) {
     return new FirebaseDbRefMock(this.fbMock, ref);
   }
 }
@@ -23,11 +23,11 @@ export class FirebaseDbRefMock {
 
   set(data: any) {
     this.fbMock.data[this.ref] = data;
-    return Promise.resolve(new FirebaseDataSnapshotMock(this.fbMock, data))
+    return Promise.resolve(new FirebaseDataSnapshotMock(this.fbMock, data));
   }
 
   once(eventType: string) {
-    return Promise.resolve(new FirebaseDataSnapshotMock(this.fbMock, this.fbMock.data[this.ref]))
+    return Promise.resolve(new FirebaseDataSnapshotMock(this.fbMock, this.fbMock.data[this.ref]));
   }
 }
 

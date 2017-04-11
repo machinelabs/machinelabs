@@ -6,7 +6,8 @@ import {
   Output,
   EventEmitter,
   AfterViewInit,
-  ElementRef
+  ElementRef,
+  OnChanges
 } from '@angular/core';
 
 declare var ace: any;
@@ -22,7 +23,7 @@ const ACE_EDITOR_MODE_PREFIX = 'ace/mode/';
   `,
   styleUrls: ['./ace-editor.component.scss']
 })
-export class AceEditorComponent implements AfterViewInit {
+export class AceEditorComponent implements AfterViewInit, OnChanges {
 
   private editor;
   private _mode;
@@ -51,7 +52,7 @@ export class AceEditorComponent implements AfterViewInit {
     // we need to check if editor is defined because ngOnChanges
     // runs before ngAfterViewInit(). Is there a better way?
     if (this.editor !== undefined) {
-      if (changes.value 
+      if (changes.value
           && this.value !== null
           && this.value !== this.editor.getValue()) {
         this.editor.setValue(this.value, 1);

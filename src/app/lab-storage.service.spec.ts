@@ -26,9 +26,9 @@ let authServiceStub = {
 let databaseStub = {
   ref: (arg) => {
     return {
-      once: (arg) => { },
-      set: (arg) => { }
-    }
+      once: (_arg) => { },
+      set: (_arg) => { }
+    };
   }
 };
 
@@ -129,9 +129,9 @@ describe('LabStorageService', () => {
         labStorageService.saveLab(testLab).subscribe(lab => {
 
           labStorageService.getLab(testLab.id)
-            .subscribe(lab => {
-              //The returned lab should have its user_id changed
-              expect(lab).toEqual(Object.assign({}, testLab, { user_id: 'some-id' }));
+            .subscribe(_lab => {
+              // The returned lab should have its user_id changed
+              expect(_lab).toEqual(Object.assign({}, testLab, { user_id: 'some-id' }));
               done();
             });
         });

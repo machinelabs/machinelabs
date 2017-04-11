@@ -7,12 +7,12 @@ export enum RunAction {
 
 export interface Lab {
   id: string;
-  files: File[]
+  files: File[];
 }
 
 export interface Run {
-  id: string,
-  timestamp: number,
-  type: RunAction,
-  lab: Lab
+  id: string;
+  timestamp: number;
+  type: RunAction;
+  lab: Lab;
 }

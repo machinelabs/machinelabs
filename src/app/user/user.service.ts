@@ -7,8 +7,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class UserService {
 
-  constructor(private db: DbRefBuilder, private authService: AuthService) { 
-  }
+  constructor(private db: DbRefBuilder, private authService: AuthService) { }
 
   createUserIfMissing(): Observable<User> {
     return this.authService
@@ -18,19 +17,19 @@ export class UserService {
                                                       .map(snapshot => snapshot.val())
                                                       .map(existingUser => ({existingUser, user})))
                 // TODO: if the user exists but the provider changed, update it
-               .switchMap(data => !data.existingUser 
+               .switchMap(data => !data.existingUser
                                     ? this.saveUser(this.createUserFromLoginUser(data.user))
                                     : Observable.of(data.existingUser));
   }
 
-  createUserFromLoginUser(fromUser: LoginUser) : User {
+  createUserFromLoginUser(fromUser: LoginUser): User {
     return {
       id: fromUser.uid,
       displayName: fromUser.displayName,
       email: fromUser.email,
       isAnonymous: fromUser.isAnonymous,
       photoUrl: fromUser.photoUrl || null
-    }
+    };
   }
 
   saveUser(user: User) {

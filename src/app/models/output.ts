@@ -7,8 +7,9 @@ export enum OutputKind {
 }
 
 export interface OutputMessage {
-  id: string,
-  data: string,
-  kind: OutputKind,
-  timestamp: number
+  id: string;
+  data: string;
+  kind: OutputKind;
+  timestamp: number;
 }
+
