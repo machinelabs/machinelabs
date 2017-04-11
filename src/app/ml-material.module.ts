@@ -9,7 +9,8 @@ import {
   MdSlideToggleModule,
   MdSidenavModule,
   MdToolbarModule,
-  MdButtonModule
+  MdButtonModule,
+  MdChipsModule
 } from '@angular/material';
 
 @NgModule({
@@ -23,7 +24,8 @@ import {
     MdSlideToggleModule,
     MdSidenavModule,
     MdToolbarModule,
-    MdButtonModule
+    MdButtonModule,
+    MdChipsModule
   ]
 })
 export class MachineLabsMaterialModule {}
