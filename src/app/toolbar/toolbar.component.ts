@@ -1,5 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, ViewChild } from '@angular/core';
-import { MdSnackBar } from '@angular/material';
+import { Router } from '@angular/router';
+import { MdSnackBar, MdDialogRef, MdDialog } from '@angular/material';
+import { EditLabDialogComponent } from '../edit-lab-dialog/edit-lab-dialog.component';
 import { Lab, LabExecutionContext } from '../models/lab';
 import { LoginUser, User } from '../models/user';
 import { AuthService } from '../auth/auth.service';
@@ -29,14 +31,16 @@ export class ToolbarComponent implements OnInit {
 
   private user: User;
 
-  private editing = false;
-
   ToolbarActionTypes = ToolbarActionTypes;
+
+  editLabDialogRef: MdDialogRef<EditLabDialogComponent>;
 
   @ViewChild('nameInput') nameInput;
 
   constructor(private authService: AuthService,
               private userService: UserService,
+              private router: Router,
+              private dialog: MdDialog,
               private snackBar: MdSnackBar) {}
 
   ngOnInit() {
@@ -55,13 +59,20 @@ export class ToolbarComponent implements OnInit {
     this.action.emit({ type: action, data });
   }
 
-  toggleAndFocus() {
-    this.editing = !this.editing;
-    if (this.editing) {
-      // We need to run `.focus()` in the next tick because the input element
-      // isn't visible yet and therefore can't be focussed.
-      setTimeout(() => this.nameInput.nativeElement.focus());
-    }
+  openEditLabDialog(lab: Lab) {
+    this.editLabDialogRef = this.dialog.open(EditLabDialogComponent, {
+      disableClose: false,
+      data: {
+        lab: lab
+      }
+    });
+
+    this.editLabDialogRef.afterClosed()
+        .filter(lab => lab !== undefined)
+        .subscribe(lab => {
+          this.snackBar.open('Lab saved', 'Dismiss', { duration: 3000 });
+          this.router.navigateByUrl(`${lab.id}`);
+        });
   }
 
   loginWithGitHub() {
