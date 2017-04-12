@@ -1,10 +1,10 @@
-<div fxLayout="column" style="min-height: 100vh;">
+<div fxLayout="column" style="flex: 1;">
   <ml-toolbar
     [lab]="lab"
     [context]="context"
     (action)="toolbarAction($event)"
     ></ml-toolbar>
-  <div fxFlex="1" style="background: yellow;">
+  <div fxFlex="1">
     <md-sidenav-container>
       <md-sidenav opened="true" mode="side" #sidenav class="ml-sidebar">
         <ml-panel panelTitle="Files">
@@ -23,7 +23,7 @@
           </md-chip-list>
         </ml-panel>
       </md-sidenav>
-      <div role="main" style="min-height: 86vh;">
+      <div role="main" style="flex: 1;">
         <ml-panel [panelTitle]="activeFile.name" fxFlex="50">
           <ml-ace-editor
             #editor
