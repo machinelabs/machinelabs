@@ -31,6 +31,10 @@ export class FirebaseAuthService extends AuthService {
     return this.requireAuth().take(1);
   }
 
+  refreshToken() {
+    return Observable.fromPromise(<Promise<any>>firebase.auth().currentUser.getToken(true));
+  }
+
   signOut(): Observable<any> {
     return Observable.fromPromise(<Promise<any>>firebase.auth().signOut());
   }
@@ -39,6 +43,7 @@ export class FirebaseAuthService extends AuthService {
     let loginPromise = firebase.auth()
                                .signInWithPopup(new firebase.auth.GithubAuthProvider())
                                .then(result => result.user);
+
     return Observable.fromPromise(<Promise<any>>loginPromise);
   }
 
@@ -46,29 +51,15 @@ export class FirebaseAuthService extends AuthService {
     let linkPromise = firebase.auth()
                               .currentUser
                               .linkWithPopup(new firebase.auth.GithubAuthProvider())
-                              .then(result => {
-                                // `linkWithPopup()` doesn't actually update the top-level properties
-                                // of the authenticated user object. It only adds `providerData` for the
-                                // dedicated provider (GitHub) to that object. This is because it's possible
-                                // to link an account with multiple providers. If we want `user.photoURL`
-                                // to be defined, we have to assign that value explicitely from the retreived
-                                // `providerData`.
-                                //
-                                // More info:
-                                // http://stackoverflow.com/questions/42766440/
-                                // why-does-firebase-linkwithpopup-not-set-the-user-photourl-in-firebase
-                                let currentUser = firebase.auth().currentUser;
-                                currentUser.updateProfile({
-                                  displayName: currentUser.providerData[0].displayName,
-                                  photoURL: currentUser.providerData[0].photoURL
-                                });
-                                return currentUser;
-                              });
+                              .then(data => data.user);
 
     // If a user has been permanentely linked/authenticated already and tries
     // to link again, firebase will throw an error. That's when we know that
     // user credentials do already exist and we can simply sign in using GitHub.
-    return Observable.fromPromise(<Promise<any>>linkPromise).catch(error => this.signInWithGitHub());
+    return Observable.fromPromise(<Promise<any>>linkPromise)
+                     .switchMap(loginUser  => this.refreshToken().map(_ => loginUser))
+                     .catch(error => this.signInWithGitHub());
+
   }
 }
 

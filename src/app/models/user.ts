@@ -4,6 +4,7 @@ export interface LoginUser {
   email: string|null;
   isAnonymous: boolean;
   photoURL: string|null;
+  providerData?: Array<any>;
 }
 
 export interface User {

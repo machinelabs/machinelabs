@@ -64,12 +64,24 @@ describe('UserService', () => {
     });
 
     it(`should not create a user if it already exist`, (done) => {
-      fbMock.data[`users/${loginUser.uid}`] = 'foobar';
+      let existingUser = Object.assign({}, expectedUser);
+      fbMock.data[`users/${loginUser.uid}`] = existingUser;
       userService.createUserIfMissing()
                  .subscribe(() => {
                    // if it had overwritten the user it would be the `expectedUser`
-                   // and not a simple string.
-                   expect(fbMock.data[`users/${loginUser.uid}`]).toEqual('foobar');
+                   // and not the `existingUser`
+                   expect(fbMock.data[`users/${loginUser.uid}`]).toEqual(existingUser);
+                   done();
+                 });
+    });
+
+    it(`should patch up the user when the LoginUser has changed`, (done) => {
+      let existingUser = Object.assign({}, expectedUser);
+      existingUser.isAnonymous = false;
+      fbMock.data[`users/${loginUser.uid}`] = existingUser;
+      userService.createUserIfMissing()
+                 .subscribe(() => {
+                   expect(fbMock.data[`users/${loginUser.uid}`]).toEqual(expectedUser);
                    done();
                  });
     });

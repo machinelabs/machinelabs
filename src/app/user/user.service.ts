@@ -3,6 +3,7 @@ import { AuthService } from 'app/auth';
 import { DbRefBuilder } from '../firebase/db-ref-builder';
 import { LoginUser, User } from '../models/user';
 import { Observable } from 'rxjs/Observable';
+import { Lang } from '../util/lang';
 
 @Injectable()
 export class UserService {
@@ -16,23 +17,42 @@ export class UserService {
                                                       .onceValue()
                                                       .map(snapshot => snapshot.val())
                                                       .map(existingUser => ({existingUser, user})))
-                // TODO: if the user exists but the provider changed, update it
-               .switchMap(data => !data.existingUser
-                                    ? this.saveUser(this.createUserFromLoginUser(data.user))
-                                    : Observable.of(data.existingUser));
+               .switchMap(data => !data.existingUser || this.isDifferent(data.user, data.existingUser)
+                                    ? this.saveUser(this.mapUserToLoginUser(data.user))
+                                    : Observable.of(data.existingUser)
+                                  );
   }
 
-  createUserFromLoginUser(fromUser: LoginUser): User {
+  private isDifferent(loginUser: LoginUser, user: User) {
+    return Lang.isDifferent(user.email, loginUser.email) ||
+           Lang.isDifferent(user.isAnonymous, loginUser.isAnonymous) ||
+           Lang.isDifferent(user.photoUrl, this.getPhotoUrl(loginUser)) ||
+           Lang.isDifferent(user.displayName, this.getDisplayName(loginUser));
+  }
+
+  userHasProviderData(loginUser: LoginUser) {
+    return loginUser.providerData && loginUser.providerData.length;
+  }
+
+  getDisplayName (loginUser: LoginUser) {
+    return this.userHasProviderData(loginUser) ? loginUser.providerData[0].displayName : loginUser.displayName;
+  }
+
+  getPhotoUrl (loginUser: LoginUser) {
+    return this.userHasProviderData(loginUser) ? loginUser.providerData[0].photoURL : loginUser.photoURL;
+  }
+
+  mapUserToLoginUser(fromUser: LoginUser): User {
     return {
       id: fromUser.uid,
-      displayName: fromUser.displayName,
+      displayName: this.getDisplayName(fromUser),
       email: fromUser.email,
       isAnonymous: fromUser.isAnonymous,
-      photoUrl: fromUser.photoURL || null
+      photoUrl: this.getPhotoUrl(fromUser)
     };
   }
 
-  saveUser(user: User) {
+  saveUser(user: User): Observable<User> {
     return this.authService.requireAuthOnce()
                            .switchMap(_ => this.db.userRef(user.id).set(user))
                            .map(_ => user);
@@ -43,6 +63,11 @@ export class UserService {
                            .switchMap(_ => this.db.userRef(id).onceValue())
                            .map(snapshot => snapshot.val());
 
+  }
+
+  observeUserChanges(): Observable<User> {
+    return this.authService.requireAuth()
+                           .map(loginUser => this.mapUserToLoginUser(loginUser));
   }
 
 }
