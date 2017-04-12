@@ -61,7 +61,7 @@ export function databaseFactory() {
     HttpModule,
     FormsModule,
     ReactiveFormsModule,
-    FlexLayoutModule.forRoot(),
+    FlexLayoutModule,
     RouterModule.forRoot(APP_ROUTES),
     MachineLabsMaterialModule
   ],
