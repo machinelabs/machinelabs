@@ -1,0 +1,40 @@
+// TODO styling is temp for now
+$ocean-blue: #2196f3;
+
+.profile {
+  margin: 2em auto;
+  width: 70%;
+
+  .details {
+    text-align: center;
+
+    .avatar {
+      width: 15rem;
+      border-radius: 8px;
+    }
+  }
+
+  .labs {
+    h2, md-card-title a {
+      color: $ocean-blue;
+    }
+
+    md-card-title {
+      a {
+        text-decoration: none;
+      }
+    }
+
+    .no-labs {
+      color: gray;
+      font-style: italic;
+      text-align: center;
+      margin: 2em auto;
+      width: 70%;
+
+      a {
+        color: $ocean-blue;
+      }
+    }
+  }
+}

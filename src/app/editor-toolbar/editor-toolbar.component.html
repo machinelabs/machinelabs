@@ -12,7 +12,8 @@
       <ng-template #userInfo>
         <span class="ml-toolbar__user-info">
           <ng-container *ngIf="(labOwner | async); else anonymousUser; let user;">
-            created by {{user.displayName}}
+            created by <a title="{{user.displayName}}'s profile" 
+                          [routerLink]="['/user', user.id]">{{user.displayName}}</a>
           </ng-container>
         </span>
       </ng-template>

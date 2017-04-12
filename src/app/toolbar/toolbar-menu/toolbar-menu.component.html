@@ -5,6 +5,10 @@
 
 <md-menu #menu="mdMenu">
   <button md-menu-item *ngIf="user?.isAnonymous" (click)="loginWithGitHub()"><md-icon>perm_identity</md-icon>Login with GitHub</button>
+  <a md-menu-item title="Your MachineLabs profile" *ngIf="user && !user.isAnonymous" 
+    [routerLink]="['/user', user.id]">
+    <md-icon>perm_identity</md-icon> My Profile
+  </a>
   <button *ngIf="!user?.isAnonymous" (click)="logout()" md-menu-item><md-icon>exit_to_app</md-icon>Sign Out</button>
 </md-menu>
 

@@ -22,5 +22,9 @@ export class DbRefBuilder {
   processMessageRef(id: string) {
     return new ObservableDbRef(this.db.ref(`process_messages/${id}`));
   }
+
+  userLabsRef(id: string) {
+    return new ObservableDbRef(this.db.ref(`labs`).orderByChild('user_id').equalTo(id));
+  }
 }
 
