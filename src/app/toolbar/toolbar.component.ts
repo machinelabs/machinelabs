@@ -44,11 +44,8 @@ export class ToolbarComponent implements OnInit {
               private snackBar: MdSnackBar) {}
 
   ngOnInit() {
-    this.authService.requireAuth()
-                    .switchMap(loginUser => this.userService.createUserIfMissing())
-                    .subscribe(user => {
-                      this.user = user;
-                    });
+    this.userService.observeUserChanges()
+                    .subscribe(user => this.user = user);
   }
 
   userOwnsLab () {
@@ -76,7 +73,9 @@ export class ToolbarComponent implements OnInit {
   }
 
   loginWithGitHub() {
-    this.authService.linkOrSignInWithGitHub().subscribe(user => {
+    this.authService.linkOrSignInWithGitHub()
+                    .switchMap(loginUser => this.userService.createUserIfMissing())
+                    .subscribe(user => {
       this.snackBar.open(`Logged in as ${user.displayName}`, 'Dismiss', { duration: 3000 });
     });
   }
