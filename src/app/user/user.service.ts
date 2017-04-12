@@ -70,4 +70,9 @@ export class UserService {
                            .map(loginUser => this.mapUserToLoginUser(loginUser));
   }
 
+  isLoggedInUser(id: string): Observable <boolean> {
+    return this.authService.requireAuthOnce()
+                           .map(sessionUser => id === sessionUser.uid);
+  };
+
 }

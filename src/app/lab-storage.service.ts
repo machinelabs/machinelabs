@@ -59,4 +59,11 @@ export class LabStorageService {
                 }));
   }
 
+  getLabsFromUser(userId: string): Observable<Array<Lab>> {
+    return this.db.userLabsRef(userId)
+              .onceValue()
+              .map((snapshot: any) => snapshot.val())
+              .map((labs) => Object.keys(labs || {}).map((key) => labs[key]));
+  }
+
 }

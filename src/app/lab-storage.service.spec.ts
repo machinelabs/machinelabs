@@ -121,22 +121,22 @@ describe('LabStorageService', () => {
           done();
         });
     });
+  });
 
-    describe('.saveLab()', () => {
+  describe('.saveLab()', () => {
 
-      it('should save lab using firebase.database.set()', (done) => {
+    it('should save lab using firebase.database.set()', (done) => {
 
-        labStorageService.saveLab(testLab).subscribe(lab => {
+      labStorageService.saveLab(testLab).subscribe(lab => {
 
-          labStorageService.getLab(testLab.id)
-            .subscribe(_lab => {
-              // The returned lab should have its user_id changed
-              expect(_lab).toEqual(Object.assign({}, testLab, { user_id: 'some-id' }));
-              done();
-            });
-        });
-
+        labStorageService.getLab(testLab.id)
+          .subscribe(_lab => {
+            // The returned lab should have its user_id changed
+            expect(_lab).toEqual(Object.assign({}, testLab, { user_id: 'some-id' }));
+            done();
+          });
       });
+
     });
   });
 });

@@ -1,0 +1,40 @@
+<ml-toolbar></ml-toolbar>
+
+<div fxLayout="row" class="profile">
+  <!--
+    USER DETAILS
+  -->
+  <div fxFlex="30" class="details">
+    <img class="avatar" [src]="user.photoUrl">
+    <p class="name">{{user.displayName}}</p>
+  </div>
+
+  <!--
+    USER LABS & FAVORITES
+  -->
+  <div fxFlex class="labs">
+    <h2>Hey there you!</h2>
+    <md-tab-group>
+      <md-tab label="Labs">
+        <a title="Create a new lab" *ngIf="isSelf" 
+           [routerLink]="['/']" [queryParams]="{tpl: 'blank'}">Create Lab</a>
+        <div *ngIf="labs.length; else hasNoLabs">
+          <md-card *ngFor="let lab of labs">
+            <md-card-title>
+              <a [routerLink]="['/', lab.id]">{{lab.name}}</a>
+            </md-card-title>
+            <md-card-content>{{lab.description}}</md-card-content>
+          </md-card>
+        </div>  
+
+        <ng-template #hasNoLabs>
+          <div class="no-labs">
+            Hmmm...No sparks of genious here just yet, but no worries. 
+            We know you can do it, so go ahead and 
+            <a [routerLink]="['/']" title="Create a new lab">get started</a>
+          </div>
+        </ng-template>
+      </md-tab>
+    </md-tab-group>
+  </div>
+</div>
