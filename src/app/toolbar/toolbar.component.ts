@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MdSnackBar, MdDialogRef, MdDialog } from '@angular/material';
 import { EditLabDialogComponent } from '../edit-lab-dialog/edit-lab-dialog.component';
@@ -34,8 +34,6 @@ export class ToolbarComponent implements OnInit {
   ToolbarActionTypes = ToolbarActionTypes;
 
   editLabDialogRef: MdDialogRef<EditLabDialogComponent>;
-
-  @ViewChild('nameInput') nameInput;
 
   constructor(private authService: AuthService,
               private userService: UserService,
