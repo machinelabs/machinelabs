@@ -137,6 +137,10 @@ export class EditorViewComponent implements OnInit {
 
   openFile(file: File) {
     this.activeFile = file;
+    this.router.navigate(['.'], {
+      relativeTo: this.route,
+      queryParams: { file: file.name }
+    });
   }
 
   deleteFile(file: File) {
@@ -174,6 +178,10 @@ export class EditorViewComponent implements OnInit {
 
   initLab(lab) {
     this.lab = lab;
-    this.openFile(this.lab.files[0]);
+
+    // try query param file name first
+    const file = this.lab.files.find(f => f.name === this.router.parseUrl(this.location.path(false)).queryParams.file);
+
+    this.openFile(file || this.lab.files[0]);
   }
 }
