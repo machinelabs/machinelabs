@@ -2,14 +2,15 @@ export enum OutputKind {
   Stdout,
   Stderr,
   ProcessFinished,
-  OutputRedirected
+  OutputRedirected,
+  ExecutionRejected
 }
 
 export interface OutputMessage {
-  id: string,
+  id?: string,
   data: string,
   kind: OutputKind,
-  timestamp: number
+  timestamp?: number | object
 }
 
 export function toOutputKind(kind: string) {
