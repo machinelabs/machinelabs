@@ -13,7 +13,8 @@ import {
 declare var ace: any;
 
 
-const ACE_EDITOR_THEME = 'ace/theme/github';
+const ACE_EDITOR_THEME_PREFIX = 'ace/theme/';
+const ACE_EDITOR_THEME_DEFAULT = `${ACE_EDITOR_THEME_PREFIX}github`;
 const ACE_EDITOR_MODE_PREFIX = 'ace/mode/';
 
 @Component({
@@ -27,6 +28,7 @@ export class AceEditorComponent implements AfterViewInit, OnChanges {
 
   private editor;
   private _mode;
+  private _theme;
 
   @ViewChild('editor') editorElement: ElementRef;
 
@@ -37,6 +39,16 @@ export class AceEditorComponent implements AfterViewInit, OnChanges {
   @Input() showGutter = true;
 
   @Input() hlActiveLine = false;
+
+  @Input() showPrintMargin = false;
+
+  @Input() set theme(value) {
+    this._theme = ACE_EDITOR_THEME_PREFIX + value;
+  }
+
+  get theme() {
+    return this._theme;
+  }
 
   @Input() set mode(value) {
     this._mode = ACE_EDITOR_MODE_PREFIX + value;
@@ -66,6 +78,14 @@ export class AceEditorComponent implements AfterViewInit, OnChanges {
         this.editor.getSession().setMode(this.mode);
       }
 
+      if (changes.theme) {
+        this.editor.setTheme(this.theme);
+      }
+
+      if (changes.showPrintMargin) {
+        this.editor.setShowPrintMargin(this.showPrintMargin);
+      }
+
       if (changes.hlActiveLine) {
         this.editor.setHighlightActiveLine(this.hlActiveLine);
       }
@@ -75,9 +95,10 @@ export class AceEditorComponent implements AfterViewInit, OnChanges {
   ngAfterViewInit() {
     this.editor = ace.edit(this.editorElement.nativeElement);
 
-    this.editor.setTheme(ACE_EDITOR_THEME);
+    this.editor.setTheme(this.theme);
     this.editor.setReadOnly(this.readOnly);
     this.editor.setHighlightActiveLine(this.hlActiveLine);
+    this.editor.setShowPrintMargin(this.showPrintMargin);
 
     this.editor.getSession().setMode(this.mode);
     this.editor.renderer.setShowGutter(this.showGutter);
