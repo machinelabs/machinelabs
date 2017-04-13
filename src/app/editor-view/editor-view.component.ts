@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
+import { MdDialog, MdDialogRef, MdSnackBar, MdTabGroup } from '@angular/material';
 import { FileNameDialogComponent } from '../file-name-dialog/file-name-dialog.component';
 import { NavigationConfirmDialogComponent } from '../navigation-confirm-dialog/navigation-confirm-dialog.component';
 import { RemoteLabExecService } from '../remote-lab-exec.service';
@@ -11,6 +11,11 @@ import { Observable } from 'rxjs/Observable';
 import { Lab, LabExecutionContext, File } from '../models/lab';
 import { OutputMessage, OutputKind } from '../models/output';
 import { ToolbarAction, ToolbarActionTypes } from '../toolbar/toolbar.component';
+
+enum TabIndex {
+  Editor,
+  Console
+}
 
 @Component({
   selector: 'ml-editor-view',
@@ -32,6 +37,8 @@ export class EditorViewComponent implements OnInit {
   fileNameDialogRef: MdDialogRef<FileNameDialogComponent>;
 
   navigationConfirmDialogRef: MdDialogRef<NavigationConfirmDialogComponent>;
+
+  @ViewChild(MdTabGroup) tabGroup: MdTabGroup;
 
   constructor (private rleService: RemoteLabExecService,
                private labStorageService: LabStorageService,
@@ -63,7 +70,7 @@ export class EditorViewComponent implements OnInit {
   }
 
   run(lab: Lab) {
-
+    this.tabGroup.selectedIndex = TabIndex.Console;
     // we want to have this immutable. Shared instances make it hard
     // to reason about things when code is executed asynchronously.
     // E.g. if some async handler has a reference to a context it needs
