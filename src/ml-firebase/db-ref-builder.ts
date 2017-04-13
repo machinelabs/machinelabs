@@ -16,8 +16,16 @@ export class DbRefBuilder {
     return new ObservableDbRef(db.ref(`runs/${id}`));
   }
 
-  processMessageRef(id: string) {
+  runMetaRef(id: string) {
+    return new ObservableDbRef(db.ref(`runs_meta/${id}`));
+  }
+
+  processMessagesRef(id: string) {
     return new ObservableDbRef(db.ref(`process_messages/${id}`));
+  }
+
+  processMessageRef(processId: string, messageId: string) {
+    return new ObservableDbRef(db.ref(`process_messages/${processId}/${messageId}`));
   }
 }
 

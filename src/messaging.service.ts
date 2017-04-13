@@ -1,6 +1,6 @@
 import * as firebase from 'firebase';
 import { Crypto } from './util/crypto';
-import { db, AuthService } from './ml-firebase';
+import { db, AuthService, DbRefBuilder } from './ml-firebase';
 import { CodeRunner, ProcessStreamData } from './code-runner/code-runner';
 import { Observable } from '@reactivex/rxjs';
 import { Run, RunAction } from './models/run';
@@ -9,6 +9,8 @@ import { RulesService } from 'rules.service';
 
 
 export class MessagingService {
+
+  db = new DbRefBuilder();
 
   constructor(private authService: AuthService,
               private rulesService: RulesService,
@@ -53,7 +55,7 @@ export class MessagingService {
                                 if (approval.canRun) {
                                   // if we get the approval, create the meta data
                                   // and execute the code
-                                  db.ref(`runs_meta/${run.id}`).set({
+                                  this.db.runMetaRef(run.id).set({
                                     id: run.id,
                                     file_set_hash: hash
                                   });
@@ -130,6 +132,6 @@ export class MessagingService {
     let id = db.ref().push().key;
     data.id = id;
     data.timestamp = firebase.database.ServerValue.TIMESTAMP;
-    return Observable.fromPromise(<Promise<any>>db.ref(`process_messages/${run.id}/${id}`).set(data));
+    return this.db.processMessageRef(run.id, id).set(data);
   }
 }
