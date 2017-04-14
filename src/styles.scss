@@ -36,6 +36,11 @@ img {
   vertical-align: middle;
 }
 
+.mat-tab-header {
+  z-index: 2;
+  box-shadow: 0 -1px 5px rgba(0,0,0,.24);
+}
+
 
 .ace_editor {
   height: 680px;
