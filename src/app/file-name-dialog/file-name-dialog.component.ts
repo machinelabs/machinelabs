@@ -11,8 +11,8 @@ import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
         <md-hint *ngIf="!form.valid && !form.pristine" align="start">This field is required.</md-hint>
       </md-input-container>
       <div style="margin-top: 1em; text-align: center;">
-        <button md-raised-button [disabled]="!form.valid" type="submit">Ok</button>
-        <button md-raised-button type="button" (click)="dialogRef.close()">Cancel</button>
+        <button md-button [disabled]="!form.valid" type="submit">Ok</button>
+        <button md-button type="button" (click)="dialogRef.close()">Cancel</button>
       </div>
     </form>
   `
