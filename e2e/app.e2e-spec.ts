@@ -1,4 +1,5 @@
 import { MachinelabsClientPage } from './app.po';
+import { browser } from 'protractor';
 
 describe('machinelabs-client App', function() {
   let page: MachinelabsClientPage;
@@ -7,8 +8,7 @@ describe('machinelabs-client App', function() {
     page = new MachinelabsClientPage();
   });
 
-  it('should display message saying app works', () => {
-    page.navigateTo();
-    expect(page.getParagraphText()).toEqual('app works!');
+  it('should work', () => {
+    browser.get('/');
   });
 });
