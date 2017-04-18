@@ -44,21 +44,8 @@
   .ml-toolbar__user-info {
     vertical-align: -5%;
     font-size: 0.7em;
-    margin-left: 0.5em;
-
-    img {
-      border-radius: 50%;
-      width: 1.4em;
-      vertical-align: top;
-    }
-
-    md-icon {
-      vertical-align: -25%;
-      height: 19px;
-      width: 19px;
-    }
+    display: block;
   }
-
 }
 
 .ml-toolbar__cta-bar {

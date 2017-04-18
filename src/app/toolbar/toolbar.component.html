@@ -12,13 +12,13 @@
       <ng-template #userInfo>
         <span class="ml-toolbar__user-info">
           <ng-container *ngIf="(labOwner | async); else anonymousUser; let user;">
-            Created by <img [src]="user.photoUrl"> {{user.displayName}}
+            created by {{user.displayName}}
           </ng-container>
         </span>
       </ng-template>
 
       <ng-template #anonymousUser>
-        Created by <md-icon>account_circle</md-icon> anonymous user
+        created by anonymous user
       </ng-template>
     </div>
 
