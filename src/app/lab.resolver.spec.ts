@@ -123,5 +123,28 @@ describe('LabResolver', () => {
         expect(lab).toEqual(existingLab);
       });
     });
+
+    it('should resolve with empty lab if labid is given but resolves to null (lab doesn\'t exist', () => {
+
+      let emptyLab: Lab = {
+        id: 'new-lab',
+        user_id: 'user-id',
+        name: 'New Lab',
+        description: 'this is a new lab',
+        tags: [],
+        files: []
+      };
+
+      let activatedRouteSnapshotStub = new ActivatedRouteSnapshot();
+      activatedRouteSnapshotStub.params = { labid: 'some-id' };
+
+      spyOn(labStorageService, 'getLab').and.returnValue(Observable.of(null));
+      spyOn(labStorageService, 'createLab').and.returnValue(Observable.of(emptyLab));
+
+      labResolver.resolve(activatedRouteSnapshotStub).subscribe(lab => {
+        expect(labStorageService.createLab).toHaveBeenCalled();
+        expect(lab).toEqual(emptyLab);
+      });
+    });
   });
 });
