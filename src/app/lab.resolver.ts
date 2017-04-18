@@ -18,7 +18,7 @@ export class LabResolver implements Resolve<Lab> {
       // a new empty lab if no lab with the given id exists.
       return this.labStorageService
                   .getLab(route.paramMap.get('labid'))
-                  .map(lab => lab ? lab : this.labStorageService.createLab());
+                  .switchMap(lab => lab ? Observable.of(lab) : this.labStorageService.createLab());
     }
 
     // If a template id is specified, create a lab from that template,
