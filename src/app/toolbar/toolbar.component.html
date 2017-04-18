@@ -4,7 +4,22 @@
 
     <div fxFlex class="ml-toolbar__lab-name">
       <span [class.hidden]="editing">{{lab.name}}</span>
-      <button *ngIf="userOwnsLab()" md-icon-button type="button" (click)="openEditLabDialog(lab)"><md-icon>edit</md-icon></button>
+
+      <ng-container *ngIf="userOwnsLab(); else userInfo">
+        <button md-icon-button type="button" (click)="openEditLabDialog(lab)"><md-icon>edit</md-icon></button>
+      </ng-container>
+
+      <ng-template #userInfo>
+        <span class="ml-toolbar__user-info">
+          <ng-container *ngIf="(labOwner | async); else anonymousUser; let user;">
+            Created by <img [src]="user.photoUrl"> {{user.displayName}}
+          </ng-container>
+        </span>
+      </ng-template>
+
+      <ng-template #anonymousUser>
+        Created by <md-icon>account_circle</md-icon> anonymous user
+      </ng-template>
     </div>
 
     <div fxLayout fxLayoutAlign="end">

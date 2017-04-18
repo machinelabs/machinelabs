@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
 import { MdSnackBar, MdDialogRef, MdDialog } from '@angular/material';
 import { EditLabDialogComponent } from '../edit-lab-dialog/edit-lab-dialog.component';
 import { Lab, LabExecutionContext } from '../models/lab';
@@ -29,6 +30,8 @@ export class ToolbarComponent implements OnInit {
 
   @Output() action = new EventEmitter<ToolbarAction>();
 
+  labOwner: Observable<User>;
+
   private user: User;
 
   ToolbarActionTypes = ToolbarActionTypes;
@@ -44,6 +47,8 @@ export class ToolbarComponent implements OnInit {
   ngOnInit() {
     this.userService.observeUserChanges()
                     .subscribe(user => this.user = user);
+
+    this.labOwner = this.userService.getUser(this.lab.user_id);
   }
 
   userOwnsLab () {

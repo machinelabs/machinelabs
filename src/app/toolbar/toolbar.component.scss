@@ -29,7 +29,7 @@
   > span {
     display: inline-block;
     vertical-align: -10%;
-    font-size: 0.8em;
+    font-size: 1em;
   }
 
   margin-left: 4.5em;
@@ -40,6 +40,25 @@
   md-icon {
     font-size: 1.4em;
   }
+
+  .ml-toolbar__user-info {
+    vertical-align: -5%;
+    font-size: 0.7em;
+    margin-left: 0.5em;
+
+    img {
+      border-radius: 50%;
+      width: 1.4em;
+      vertical-align: top;
+    }
+
+    md-icon {
+      vertical-align: -25%;
+      height: 19px;
+      width: 19px;
+    }
+  }
+
 }
 
 .ml-toolbar__cta-bar {
