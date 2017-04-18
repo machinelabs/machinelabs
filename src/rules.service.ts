@@ -15,7 +15,7 @@ export class RulesService {
                   .onceValue()
                   .map(snapshot => snapshot.val())
                   .switchMap(user => {
-                    let approval = user.isAnonymous ? this.rejectAnonymous(run) : this.allow(run);
+                    let approval = !user || user.isAnonymous ? this.rejectAnonymous(run) : this.allow(run);
                     return Observable.of(approval);
                   });
   }
