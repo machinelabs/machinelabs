@@ -27,7 +27,8 @@ let testLab = {
   name: 'Existing lab',
   description: '',
   tags: ['existing'],
-  files: []
+  files: [],
+  has_cached_run: false
 };
 
 let routerStub = {

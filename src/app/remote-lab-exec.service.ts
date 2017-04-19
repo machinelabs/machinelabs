@@ -13,11 +13,13 @@ import { AuthService } from './auth';
 @Injectable()
 export class RemoteLabExecService {
 
+  MAX_CACHE_MESSAGES = 5000;
+
   constructor(private db: DbRefBuilder, private authService: AuthService) {
   }
 
-  private processMessagesAsObservable(id: string) {
-    return this.db.processMessageRef(id).childAdded();
+  private processMessagesAsObservable(id: string, limitToLast = 0) {
+    return this.db.processMessageRef(id, limitToLast).childAdded();
   }
 
 
@@ -56,8 +58,13 @@ export class RemoteLabExecService {
     // we create a stream that - based on a filter - will only ever start producing
     // messages if the output was redirected
     let redirectedOutput$ = output$.filter(msg => msg.kind === OutputKind.OutputRedirected)
-                                   .switchMap(msg => this.processMessagesAsObservable(msg.data))
-                                   .map((msg: any) => msg.val());
+                                   .switchMap(msg => this.processMessagesAsObservable(msg.data, this.MAX_CACHE_MESSAGES)
+                                                         .map((snapshot: any) => snapshot.val())
+                                                         .merge(Observable.of({
+                                                              kind: OutputKind.Stderr,
+                                                              data: `This is a cached run. You are looking at a truncated response.`
+                                                            })));
+
 
     // we combine the regular stream with the redirected one (which may never be used)
     return output$
