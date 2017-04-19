@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { CommonModule } from '@angular/common';
 import { MachineLabsMaterialModule } from '../ml-material.module';
 
@@ -12,7 +13,11 @@ const TOOLBAR_DIRECTIVES = [
 ];
 
 @NgModule({
-  imports: [MachineLabsMaterialModule, CommonModule],
+  imports: [
+    MachineLabsMaterialModule,
+    CommonModule,
+    FlexLayoutModule
+  ],
   declarations: TOOLBAR_DIRECTIVES,
   exports: TOOLBAR_DIRECTIVES
 })
