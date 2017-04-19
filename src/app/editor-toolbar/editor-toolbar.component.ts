@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { MdSnackBar, MdDialogRef, MdDialog } from '@angular/material';
 import { EditLabDialogComponent } from '../edit-lab-dialog/edit-lab-dialog.component';
@@ -41,6 +41,7 @@ export class EditorToolbarComponent implements OnInit {
   constructor(private authService: AuthService,
               private userService: UserService,
               private router: Router,
+              private route: ActivatedRoute,
               private dialog: MdDialog,
               private snackBar: MdSnackBar) {}
 
@@ -71,7 +72,10 @@ export class EditorToolbarComponent implements OnInit {
         .filter(_lab => _lab !== undefined)
         .subscribe(_lab => {
           this.snackBar.open('Lab saved', 'Dismiss', { duration: 3000 });
-          this.router.navigateByUrl(`${_lab.id}`);
+          this.router.navigate(['./', _lab.id], {
+            relativeTo: this.route,
+            queryParamsHandling: 'preserve'
+          });
         });
   }
 }

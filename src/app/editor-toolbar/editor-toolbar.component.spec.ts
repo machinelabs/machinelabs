@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { MachineLabsMaterialModule } from '../ml-material.module';
 import { AuthService, dummyUser } from '../auth/';
@@ -34,6 +34,12 @@ let routerStub = {
   navigateByUrl: (str) => {}
 };
 
+let activatedRouteStub = {
+  snapShot: {},
+  params: {},
+  data: {}
+};
+
 describe('EditorToolbarComponent', () => {
   let component: EditorToolbarComponent;
   let fixture: ComponentFixture<EditorToolbarComponent>;
@@ -55,6 +61,7 @@ describe('EditorToolbarComponent', () => {
         { provide: AuthService, useValue: authServiceStub },
         { provide: DATABASE, useValue: fbMock.mockDb() },
         { provide: Router, useValue: routerStub },
+        { provide: ActivatedRoute, useValue: activatedRouteStub },
         DbRefBuilder,
         UserService
       ],
