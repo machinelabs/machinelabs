@@ -8,33 +8,33 @@ import { LoginUser, User } from '../models/user';
 import { AuthService } from '../auth/auth.service';
 import { UserService } from '../user/user.service';
 
-export enum ToolbarActionTypes {
+export enum EditorToolbarActionTypes {
   Run, Stop, Save, Fork, Create
 }
 
-export interface ToolbarAction {
-  type: ToolbarActionTypes;
+export interface EditorToolbarAction {
+  type: EditorToolbarActionTypes;
   data?: any;
 }
 
 @Component({
   selector: 'ml-toolbar',
-  templateUrl: './toolbar.component.html',
-  styleUrls: ['./toolbar.component.scss']
+  templateUrl: './editor-toolbar.component.html',
+  styleUrls: ['./editor-toolbar.component.scss']
 })
-export class ToolbarComponent implements OnInit {
+export class EditorToolbarComponent implements OnInit {
 
   @Input() lab = null as Lab;
 
   @Input() context: LabExecutionContext;
 
-  @Output() action = new EventEmitter<ToolbarAction>();
+  @Output() action = new EventEmitter<EditorToolbarAction>();
 
   labOwner: Observable<User>;
 
   private user: User;
 
-  ToolbarActionTypes = ToolbarActionTypes;
+  EditorToolbarActionTypes = EditorToolbarActionTypes;
 
   editLabDialogRef: MdDialogRef<EditLabDialogComponent>;
 
@@ -55,7 +55,7 @@ export class ToolbarComponent implements OnInit {
     return this.lab && this.user && this.lab.user_id === this.user.id;
   }
 
-  emitAction(action: ToolbarActionTypes, data?: any) {
+  emitAction(action: EditorToolbarActionTypes, data?: any) {
     this.action.emit({ type: action, data });
   }
 
