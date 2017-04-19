@@ -6,11 +6,13 @@ import { AuthService } from './auth.service';
 import { Observable } from 'rxjs/Observable';
 
 export let dummyUser = {
+  id: 'some unique id',
   uid: 'some unique id',
   displayName: 'Tony Stark',
   email: 'tony@starkindustries.com',
   isAnonymous: true,
-  photoURL: null
+  photoURL: null,
+  photoUrl: null,
 };
 
 // We emulate the logged in user and its state of being

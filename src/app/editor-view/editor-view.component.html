@@ -1,9 +1,9 @@
 <div fxLayout="column" style="height: 100%;">
-<ml-toolbar
-  [lab]="lab"
-  [context]="context"
-  (action)="toolbarAction($event)"
-  ></ml-toolbar>
+  <ml-editor-toolbar
+    [lab]="lab"
+    [context]="context"
+    (action)="toolbarAction($event)"
+    ></ml-editor-toolbar>
   <md-tab-group>
     <md-tab label="Editor">
       <md-sidenav-container>

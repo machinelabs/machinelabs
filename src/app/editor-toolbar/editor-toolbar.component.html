@@ -1,6 +1,6 @@
 <md-toolbar color="primary" class="ml-toolbar">
   <div fxLayout fxLayoutAlign="space-between center" fxFlex class="padded">
-    <span class="ml-logo">Machine<span>Labs</span></span>
+    <ml-toolbar-logo></ml-toolbar-logo>
 
     <div fxFlex class="ml-toolbar__lab-name">
       <span [class.hidden]="editing">{{lab.name}}</span>
@@ -31,15 +31,7 @@
         <button md-button (click)="emitAction(EditorToolbarActionTypes.Create)"><md-icon>add</md-icon> New</button>
       </div>
 
-      <button md-icon-button [md-menu-trigger-for]="menu">
-        <md-icon *ngIf="user?.isAnonymous">more_vert</md-icon>
-        <img *ngIf="user && user.photoUrl" [src]="user.photoUrl" alt="{{user.displayName}} profile picture" class="ml-login-avatar">
-      </button>
-
-      <md-menu #menu="mdMenu">
-        <button md-menu-item *ngIf="user?.isAnonymous" (click)="loginWithGitHub()"><md-icon>perm_identity</md-icon>Login with GitHub</button>
-        <button *ngIf="!user?.isAnonymous" (click)="logout()" md-menu-item><md-icon>exit_to_app</md-icon>Sign Out</button>
-      </md-menu>
+      <ml-toolbar-menu [user]="user"></ml-toolbar-menu>
     </div>
   </div>
 </md-toolbar>
