@@ -203,12 +203,16 @@ export class EditorViewComponent implements OnInit {
       });
   }
 
-  initLab(lab) {
+  initLab(lab: Lab) {
     this.lab = lab;
 
     // try query param file name first
     const file = this.lab.files.find(f => f.name === this.router.parseUrl(this.location.path(false)).queryParams.file);
 
     this.openFile(file || this.lab.files[0]);
+
+    if (lab.has_cached_run) {
+      this.run(lab);
+    }
   }
 }

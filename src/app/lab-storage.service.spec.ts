@@ -16,7 +16,8 @@ let testLab = {
   name: 'Existing lab',
   description: '',
   tags: ['existing'],
-  files: []
+  files: [],
+  has_cached_run: false
 };
 
 let authServiceStub = {
@@ -127,12 +128,17 @@ describe('LabStorageService', () => {
 
     it('should save lab using firebase.database.set()', (done) => {
 
+      let expectedLab = Object.assign({}, testLab, { user_id: 'some-id' });
+      // Since `has_cached_run` is only written by the server, the
+      // returned lab should actually not have this property
+      delete expectedLab.has_cached_run;
+
       labStorageService.saveLab(testLab).subscribe(lab => {
 
         labStorageService.getLab(testLab.id)
           .subscribe(_lab => {
             // The returned lab should have its user_id changed
-            expect(_lab).toEqual(Object.assign({}, testLab, { user_id: 'some-id' }));
+            expect(_lab).toEqual(expectedLab);
             done();
           });
       });

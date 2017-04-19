@@ -41,7 +41,8 @@ describe('LabResolver', () => {
         name: 'New Lab',
         description: 'this is a new lab',
         tags: [],
-        files: []
+        files: [],
+        has_cached_run: false
       };
 
       let activatedRouteSnapshotStub =  new ActivatedRouteSnapshot();
@@ -63,7 +64,8 @@ describe('LabResolver', () => {
         name: 'New Lab',
         description: 'this is a new lab',
         tags: [],
-        files: []
+        files: [],
+        has_cached_run: false,
       };
 
       let activatedRouteSnapshotStub = new ActivatedRouteSnapshot();
@@ -86,7 +88,8 @@ describe('LabResolver', () => {
         name: 'New Lab',
         description: 'this is a new lab',
         tags: [],
-        files: []
+        files: [],
+        has_cached_run: false
       };
 
       let activatedRouteSnapshotStub = new ActivatedRouteSnapshot();
@@ -109,7 +112,8 @@ describe('LabResolver', () => {
         name: 'New Lab',
         description: 'this is a new lab',
         tags: [],
-        files: []
+        files: [],
+        has_cached_run: false
       };
 
       let activatedRouteSnapshotStub = new ActivatedRouteSnapshot();
@@ -132,7 +136,8 @@ describe('LabResolver', () => {
         name: 'New Lab',
         description: 'this is a new lab',
         tags: [],
-        files: []
+        files: [],
+        has_cached_run: false
       };
 
       let activatedRouteSnapshotStub = new ActivatedRouteSnapshot();

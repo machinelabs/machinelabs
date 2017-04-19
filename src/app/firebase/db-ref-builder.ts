@@ -19,8 +19,12 @@ export class DbRefBuilder {
     return new ObservableDbRef(this.db.ref(`runs/${id}`));
   }
 
-  processMessageRef(id: string) {
-    return new ObservableDbRef(this.db.ref(`process_messages/${id}`));
+  processMessageRef(id: string, limitToLast = 0) {
+    if (limitToLast > 0) {
+      return new ObservableDbRef(this.db.ref(`process_messages/${id}`).limitToLast(limitToLast));
+    } else {
+      return new ObservableDbRef(this.db.ref(`process_messages/${id}`));
+    }
   }
 
   userLabsRef(id: string) {
