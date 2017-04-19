@@ -9,6 +9,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule } from '@angular/router';
 
 import { MachineLabsMaterialModule } from './ml-material.module';
+import { ToolbarModule } from './toolbar/toolbar.module';
 
 import { RemoteLabExecService } from './remote-lab-exec.service';
 import { LabStorageService } from './lab-storage.service';
@@ -63,7 +64,8 @@ export function databaseFactory() {
     ReactiveFormsModule,
     FlexLayoutModule,
     RouterModule.forRoot(APP_ROUTES),
-    MachineLabsMaterialModule
+    MachineLabsMaterialModule,
+    ToolbarModule
   ],
   providers: [
     RemoteLabExecService,
