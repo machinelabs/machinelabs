@@ -3,6 +3,7 @@ import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdDialog, MdDialogRef, MdSnackBar, MdTabGroup } from '@angular/material';
 import { FileNameDialogComponent } from '../file-name-dialog/file-name-dialog.component';
+import { EditLabDialogComponent } from '../edit-lab-dialog/edit-lab-dialog.component';
 import { NavigationConfirmDialogComponent } from '../navigation-confirm-dialog/navigation-confirm-dialog.component';
 import { RemoteLabExecService } from '../remote-lab-exec.service';
 import { LabStorageService } from '../lab-storage.service';
@@ -39,6 +40,8 @@ export class EditorViewComponent implements OnInit {
   navigationConfirmDialogRef: MdDialogRef<NavigationConfirmDialogComponent>;
 
   @ViewChild(MdTabGroup) tabGroup: MdTabGroup;
+
+  editLabDialogRef: MdDialogRef<EditLabDialogComponent>;
 
   constructor (private rleService: RemoteLabExecService,
                private labStorageService: LabStorageService,
@@ -114,8 +117,25 @@ export class EditorViewComponent implements OnInit {
 
   save(lab: Lab, forking = false) {
     this.labStorageService.saveLab(lab).subscribe(() => {
-      this.notifySnackBar(`Lab ${forking ? 'forked' : 'saved' }.`);
-      this.router.navigateByUrl(`${lab.id}`);
+      this.router.navigate(['./', lab.id], {
+        relativeTo: this.route,
+        queryParamsHandling: 'preserve'
+      });
+
+      if (forking) {
+        this.editLabDialogRef = this.dialog.open(EditLabDialogComponent, {
+          disableClose: false,
+          data: {
+            lab: lab
+          }
+        });
+
+        this.editLabDialogRef
+            .afterClosed()
+            .subscribe(_ => this.notifySnackBar('Lab forked.'));
+      } else {
+        this.notifySnackBar('Lab saved.');
+      }
     });
   }
 
