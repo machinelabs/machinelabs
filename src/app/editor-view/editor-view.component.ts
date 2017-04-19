@@ -10,7 +10,7 @@ import { BLANK_LAB_TPL_ID } from '../lab-template.service';
 import { Observable } from 'rxjs/Observable';
 import { Lab, LabExecutionContext, File } from '../models/lab';
 import { OutputMessage, OutputKind } from '../models/output';
-import { ToolbarAction, ToolbarActionTypes } from '../toolbar/toolbar.component';
+import { EditorToolbarAction, EditorToolbarActionTypes } from '../editor-toolbar/editor-toolbar.component';
 
 enum TabIndex {
   Editor,
@@ -55,13 +55,13 @@ export class EditorViewComponent implements OnInit {
               .subscribe(lab =>  this.initLab(lab));
   }
 
-  toolbarAction(action: ToolbarAction) {
+  toolbarAction(action: EditorToolbarAction) {
     switch (action.type) {
-      case ToolbarActionTypes.Run: this.run(action.data); break;
-      case ToolbarActionTypes.Stop: this.stop(action.data); break;
-      case ToolbarActionTypes.Save: this.save(action.data); break;
-      case ToolbarActionTypes.Fork: this.fork(action.data); break;
-      case ToolbarActionTypes.Create: this.create(); break;
+      case EditorToolbarActionTypes.Run: this.run(action.data); break;
+      case EditorToolbarActionTypes.Stop: this.stop(action.data); break;
+      case EditorToolbarActionTypes.Save: this.save(action.data); break;
+      case EditorToolbarActionTypes.Fork: this.fork(action.data); break;
+      case EditorToolbarActionTypes.Create: this.create(); break;
     }
   }
 

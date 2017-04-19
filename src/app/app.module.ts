@@ -17,7 +17,7 @@ import { AuthService, FirebaseAuthService, OfflineAuthService } from './auth';
 import { LabTemplateService, InMemoryLabTemplateService } from './lab-template.service';
 
 import { AppComponent } from './app.component';
-import { ToolbarComponent } from './toolbar/toolbar.component';
+import { EditorToolbarComponent } from './editor-toolbar/editor-toolbar.component';
 import { AceEditorComponent } from './ace-editor/ace-editor.component';
 import { PanelComponent } from './panel/panel.component';
 import { PanelTitleComponent } from './panel/panel-title.component';
@@ -44,7 +44,7 @@ export function databaseFactory() {
 @NgModule({
   declarations: [
     AppComponent,
-    ToolbarComponent,
+    EditorToolbarComponent,
     AceEditorComponent,
     PanelComponent,
     PanelTitleComponent,

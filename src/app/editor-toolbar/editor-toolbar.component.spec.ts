@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { MachineLabsMaterialModule } from '../ml-material.module';
 import { AuthService, dummyUser } from '../auth/';
-import { ToolbarComponent, ToolbarActionTypes } from './toolbar.component';
+import { EditorToolbarComponent, EditorToolbarActionTypes } from './editor-toolbar.component';
 import { LabExecutionContext, ExecutionStatus } from '../models/lab';
 import { UserService } from '../user/user.service';
 import { DbRefBuilder } from '../firebase/db-ref-builder';
@@ -34,9 +34,9 @@ let routerStub = {
   navigateByUrl: (str) => {}
 };
 
-describe('ToolbarComponent', () => {
-  let component: ToolbarComponent;
-  let fixture: ComponentFixture<ToolbarComponent>;
+describe('EditorToolbarComponent', () => {
+  let component: EditorToolbarComponent;
+  let fixture: ComponentFixture<EditorToolbarComponent>;
   let authService: AuthService;
   let userService: UserService;
   let fbMock: FirebaseMock;
@@ -44,7 +44,7 @@ describe('ToolbarComponent', () => {
   beforeEach(() => {
     fbMock = new FirebaseMock();
     TestBed.configureTestingModule({
-      declarations: [ToolbarComponent],
+      declarations: [EditorToolbarComponent],
       imports: [
         TestModule,
         MachineLabsMaterialModule,
@@ -61,7 +61,7 @@ describe('ToolbarComponent', () => {
       schemas: [NO_ERRORS_SCHEMA]
     });
 
-    fixture = TestBed.createComponent(ToolbarComponent);
+    fixture = TestBed.createComponent(EditorToolbarComponent);
     component = fixture.componentInstance;
     authService = TestBed.get(AuthService);
 
@@ -118,7 +118,7 @@ describe('ToolbarComponent', () => {
       let runButton = fixture.debugElement.queryAll(By.css('.ml-toolbar__cta-bar button'))[0];
 
       component.action.subscribe(action => {
-        expect(action.type).toBe(ToolbarActionTypes.Run);
+        expect(action.type).toBe(EditorToolbarActionTypes.Run);
       });
 
       runButton.triggerEventHandler('click', null);
@@ -136,7 +136,7 @@ describe('ToolbarComponent', () => {
       let stopButton = fixture.debugElement.queryAll(By.css('.ml-toolbar__cta-bar button'))[0];
 
       component.action.subscribe(action => {
-        expect(action.type).toBe(ToolbarActionTypes.Stop);
+        expect(action.type).toBe(EditorToolbarActionTypes.Stop);
       });
 
       stopButton.triggerEventHandler('click', null);
@@ -157,7 +157,7 @@ describe('ToolbarComponent', () => {
         let saveButton = fixture.debugElement.queryAll(By.css('.ml-toolbar__cta-bar button'))[1];
 
         component.action.subscribe(action => {
-          expect(action.type).toBe(ToolbarActionTypes.Save);
+          expect(action.type).toBe(EditorToolbarActionTypes.Save);
         });
 
         saveButton.triggerEventHandler('click', null);
@@ -170,7 +170,7 @@ describe('ToolbarComponent', () => {
       let forkButton = fixture.debugElement.queryAll(By.css('.ml-toolbar__cta-bar button'))[1];
 
       component.action.subscribe(action => {
-        expect(action.type).toBe(ToolbarActionTypes.Fork);
+        expect(action.type).toBe(EditorToolbarActionTypes.Fork);
       });
 
       forkButton.triggerEventHandler('click', null);
@@ -181,7 +181,7 @@ describe('ToolbarComponent', () => {
       let createButton = fixture.debugElement.queryAll(By.css('.ml-toolbar__cta-bar button'))[2];
 
       component.action.subscribe(action => {
-        expect(action.type).toBe(ToolbarActionTypes.Create);
+        expect(action.type).toBe(EditorToolbarActionTypes.Create);
       });
 
       createButton.triggerEventHandler('click', null);

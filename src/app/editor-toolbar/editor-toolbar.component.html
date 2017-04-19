@@ -24,11 +24,11 @@
 
     <div fxLayout fxLayoutAlign="end">
       <div fxLayout class="ml-toolbar__cta-bar">
-        <button md-button (click)="emitAction(ToolbarActionTypes.Run, lab)" *ngIf="!context.isRunning()"><md-icon>cached</md-icon> Run</button>
-        <button md-button (click)="emitAction(ToolbarActionTypes.Stop, context)" *ngIf="context.isRunning()"><md-icon>stop</md-icon> Stop</button>
-        <button md-button (click)="emitAction(ToolbarActionTypes.Save, lab)" *ngIf="userOwnsLab()"><md-icon>save</md-icon> Save</button>
-        <button md-button (click)="emitAction(ToolbarActionTypes.Fork, lab)"><md-icon>share</md-icon> Fork</button>
-        <button md-button (click)="emitAction(ToolbarActionTypes.Create)"><md-icon>add</md-icon> New</button>
+        <button md-button (click)="emitAction(EditorToolbarActionTypes.Run, lab)" *ngIf="!context.isRunning()"><md-icon>cached</md-icon> Run</button>
+        <button md-button (click)="emitAction(EditorToolbarActionTypes.Stop, context)" *ngIf="context.isRunning()"><md-icon>stop</md-icon> Stop</button>
+        <button md-button (click)="emitAction(EditorToolbarActionTypes.Save, lab)" *ngIf="userOwnsLab()"><md-icon>save</md-icon> Save</button>
+        <button md-button (click)="emitAction(EditorToolbarActionTypes.Fork, lab)"><md-icon>share</md-icon> Fork</button>
+        <button md-button (click)="emitAction(EditorToolbarActionTypes.Create)"><md-icon>add</md-icon> New</button>
       </div>
 
       <button md-icon-button [md-menu-trigger-for]="menu">
