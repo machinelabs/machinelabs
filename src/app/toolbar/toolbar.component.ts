@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MdSnackBar } from '@angular/material';
 import { AuthService } from '../auth/auth.service';
 import { UserService } from '../user/user.service';
