@@ -12,7 +12,7 @@
       <ng-template #userInfo>
         <span class="ml-toolbar__user-info">
           <ng-container *ngIf="(labOwner | async); else anonymousUser; let user;">
-            created by <a title="{{user.displayName}}'s profile" 
+            by <img src="{{user.photoUrl}}"> <a title="{{user.displayName}}'s profile"
                           [routerLink]="['/user', user.id]">{{user.displayName}}</a>
           </ng-container>
         </span>

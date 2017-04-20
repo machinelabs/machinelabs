@@ -28,10 +28,28 @@
     font-size: 1.4em;
   }
 
+  img {
+    width: 1.4em;
+    border-radius: 50%;
+  }
+
   .ml-toolbar__user-info {
     vertical-align: -5%;
     font-size: 0.7em;
     display: block;
+  }
+
+  a {
+    color: #fff;
+    text-decoration: none;
+    vertical-align: -8%;
+    border-bottom: 1px dotted #fff;
+
+    &:hover,
+    &:focus,
+    &:active {
+      border-bottom: 1px solid #fff;
+    }
   }
 }
 
