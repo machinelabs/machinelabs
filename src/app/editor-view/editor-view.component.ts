@@ -117,8 +117,7 @@ export class EditorViewComponent implements OnInit {
 
   save(lab: Lab, forking = false) {
     this.labStorageService.saveLab(lab).subscribe(() => {
-      this.router.navigate(['./', lab.id], {
-        relativeTo: this.route,
+      this.router.navigate([lab.id], {
         queryParamsHandling: 'preserve'
       });
 
