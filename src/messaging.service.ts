@@ -54,12 +54,8 @@ export class MessagingService {
                               .switchMap(approval => {
                                 if (approval.canRun) {
                                   // if we get the approval, create the meta data
+                                  this.createRunMetaAndUpdateLabs(run, hash);
                                   // and execute the code
-                                  this.db.runMetaRef(run.id).set({
-                                    id: run.id,
-                                    file_set_hash: hash
-                                  });
-
                                   return this.codeRunner
                                             .run(run)
                                             .map(data => this.processStreamDataToOutputMessage(data))
@@ -80,6 +76,28 @@ export class MessagingService {
               .map(output => ({output, run}));
   }
 
+  createRunMetaAndUpdateLabs(run: Run, hash: string) {
+    this.db.runMetaRef(run.id)
+      .set({
+        id: run.id,
+        file_set_hash: hash
+      })
+      .switchMap(_ => this.db.labsForHashRef(hash).onceValue())
+      .map(snapshot => snapshot.val())
+      .subscribe(labs => {
+
+        let updates = Object.keys(labs || {})
+          .map(key => labs[key])
+          .reduce((prev, lab) => (prev[`/labs/${lab.id}/has_cached_run`] = true) && prev, {});
+
+        let updateCount = Object.keys(updates).length;
+
+        console.log(`Updating ${updateCount} labs with associated run`);
+        // This updates all labs at once
+        this.db.rootRef().update(updates);
+      });
+
+  }
 
   /**
    * Gets an Observable<Output> that emits once with either null or an existing output 

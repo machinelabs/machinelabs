@@ -21,6 +21,10 @@ export class ObservableDbRef {
     return Observable.fromPromise(this.ref.set(data));
   }
 
+  update(data: any): Observable<firebase.database.DataSnapshot> {
+    return Observable.fromPromise(this.ref.update(data));
+  }
+
   childAdded(): Observable<firebase.database.DataSnapshot> {
     return Observable.fromEventPattern(handler => this.ref.on('child_added', handler),
                                        handler => this.ref.off('child_added', handler));

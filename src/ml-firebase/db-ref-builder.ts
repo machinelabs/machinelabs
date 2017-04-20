@@ -4,12 +4,20 @@ import { db, ObservableDbRef } from '../ml-firebase';
 export class DbRefBuilder {
   constructor() {}
 
+  rootRef() {
+    return new ObservableDbRef(db.ref());
+  }
+
   userRef(id: string) {
     return new ObservableDbRef(db.ref(`users/${id}`));
   }
 
   labRef(id: string) {
     return new ObservableDbRef(db.ref(`labs/${id}`));
+  }
+
+  labsForHashRef(hash: string) {
+    return new ObservableDbRef(db.ref(`labs`).orderByChild('file_set_hash').equalTo(hash));
   }
 
   runRef(id: string) {
