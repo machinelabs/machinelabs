@@ -72,7 +72,7 @@ export class EditorToolbarComponent implements OnInit {
         .filter(_lab => _lab !== undefined)
         .subscribe(_lab => {
           this.snackBar.open('Lab saved', 'Dismiss', { duration: 3000 });
-          this.router.navigate([_lab.id], {
+          this.router.navigate(['.'], {
             relativeTo: this.route,
             queryParamsHandling: 'preserve'
           });

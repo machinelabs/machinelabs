@@ -131,7 +131,10 @@ export class EditorViewComponent implements OnInit {
 
         this.editLabDialogRef
             .afterClosed()
-            .subscribe(_ => this.notifySnackBar('Lab forked.'));
+            .subscribe(_lab => {
+              this.lab = _lab;
+              this.notifySnackBar('Lab forked.');
+            });
       } else {
         this.notifySnackBar('Lab saved.');
       }
