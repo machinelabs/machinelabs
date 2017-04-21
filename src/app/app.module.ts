@@ -6,7 +6,7 @@ import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { RouterModule } from '@angular/router';
+import { RouterModule, PreloadAllModules } from '@angular/router';
 
 import { MachineLabsMaterialModule } from './ml-material.module';
 import { ToolbarModule } from './toolbar/toolbar.module';
@@ -63,7 +63,7 @@ export function databaseFactory() {
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-    RouterModule.forRoot(APP_ROUTES),
+    RouterModule.forRoot(APP_ROUTES, { preloadingStrategy: PreloadAllModules }),
     MachineLabsMaterialModule,
     ToolbarModule
   ],
