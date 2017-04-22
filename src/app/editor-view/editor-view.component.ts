@@ -65,6 +65,7 @@ export class EditorViewComponent implements OnInit {
       case EditorToolbarActionTypes.Save: this.save(action.data); break;
       case EditorToolbarActionTypes.Fork: this.fork(action.data); break;
       case EditorToolbarActionTypes.Create: this.create(); break;
+      case EditorToolbarActionTypes.Edit: this.save(action.data, true); break;
     }
   }
 
@@ -111,17 +112,17 @@ export class EditorViewComponent implements OnInit {
   fork(lab: Lab) {
     this.labStorageService.createLab(lab).subscribe(_lab => {
       this.lab = _lab;
-      this.save(this.lab, true);
+      this.save(this.lab, true, 'Lab forked');
     });
   }
 
-  save(lab: Lab, forking = false) {
+  save(lab: Lab, showEditDialog = false, msg = 'Lab saved') {
     this.labStorageService.saveLab(lab).subscribe(() => {
       this.router.navigate([lab.id], {
         queryParamsHandling: 'preserve'
       });
 
-      if (forking) {
+      if (showEditDialog) {
         this.editLabDialogRef = this.dialog.open(EditLabDialogComponent, {
           disableClose: false,
           data: {
@@ -133,10 +134,10 @@ export class EditorViewComponent implements OnInit {
             .afterClosed()
             .subscribe(_lab => {
               this.lab = _lab;
-              this.notifySnackBar('Lab forked.');
+              this.notifySnackBar(msg);
             });
       } else {
-        this.notifySnackBar('Lab saved.');
+        this.notifySnackBar(msg);
       }
     });
   }

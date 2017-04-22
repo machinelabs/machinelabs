@@ -99,28 +99,29 @@ describe('EditorToolbarComponent', () => {
     expect(nameSpan.nativeElement.textContent).toEqual(lab.name);
   });
 
-  it('should open edit lab dialog when edit button is clicked', (done) => {
-    // The user will be available in the next tick hence the setTimeout
-    setTimeout(_ => {
-      let lab = Object.assign({}, testLab);
-      // lab user id and user id have to be equal
-      lab.user_id = 'some unique id';
-
-      component.context = new LabExecutionContext(lab);
-      component.lab = lab;
-      fixture.detectChanges();
-
-      spyOn(component, 'openEditLabDialog');
-
-      let editButton = fixture.debugElement.query(By.css('.ml-toolbar__lab-name button'));
-      editButton.triggerEventHandler('click', null);
-
-      expect(component.openEditLabDialog).toHaveBeenCalledWith(lab);
-      done();
-    });
-  });
-
   describe('Toolbar Actions', () => {
+
+    it('should emit edit action', (done) => {
+      // The user will be available in the next tick hence the setTimeout
+      setTimeout(_ => {
+        let lab = Object.assign({}, testLab);
+        // lab user id and user id have to be equal
+        lab.user_id = 'some unique id';
+
+        component.context = new LabExecutionContext(lab);
+        component.lab = lab;
+        fixture.detectChanges();
+
+        let editButton = fixture.debugElement.query(By.css('.ml-toolbar__lab-name button'));
+
+        component.action.subscribe(action => {
+          expect(action.type).toBe(EditorToolbarActionTypes.Edit);
+        });
+
+        editButton.triggerEventHandler('click', null);
+        done();
+      });
+    });
 
     it('should emit run action', () => {
       let runButton = fixture.debugElement.queryAll(By.css('.ml-toolbar__cta-bar button'))[0];
