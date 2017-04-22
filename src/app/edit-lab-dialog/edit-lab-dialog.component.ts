@@ -18,7 +18,6 @@ export class EditLabDialogComponent implements OnInit {
   constructor(
     private dialogRef: MdDialogRef<EditLabDialogComponent>,
     private formBuilder: FormBuilder,
-    private labStorageService: LabStorageService,
     @Inject(MD_DIALOG_DATA) private data: any
   ) { }
 
@@ -35,9 +34,10 @@ export class EditLabDialogComponent implements OnInit {
     this.lab.name = data.name;
     this.lab.description = data.description;
     this.lab.tags = data.tags.split(',').filter(tag => tag.trim() !== '');
+    this.close(this.lab, true);
+  }
 
-    this.labStorageService
-        .saveLab(this.lab)
-        .subscribe(_ => this.dialogRef.close(this.lab));
+  close(lab: Lab, shouldSave: boolean) {
+    this.dialogRef.close({ lab, shouldSave});
   }
 }

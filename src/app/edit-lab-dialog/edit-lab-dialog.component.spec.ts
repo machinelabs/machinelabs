@@ -77,7 +77,7 @@ describe('EditLabDialogComponent', () => {
     expect(component.form.value.tags).toEqual(lab.tags.join(','));
   });
 
-  it('should save lab when submitting the form and close dialog', (done) => {
+  it('should close dialog with right params on submit', (done) => {
     let dialogRef = dialog.open(EditLabDialogComponent, {
       data: {
         lab: lab
@@ -89,13 +89,10 @@ describe('EditLabDialogComponent', () => {
     component = dialogRef.componentInstance;
     component.ngOnInit();
 
-    fbMock.data[`labs/${lab.id}`] = lab;
-
     component.form.value.name = 'foo';
     component.submit(component.form.value);
     setTimeout(_ => {
-      expect(fbMock.data[`labs/${lab.id}`].name).toEqual('foo');
-      expect(dialogRef.close).toHaveBeenCalledWith(component.lab);
+      expect(dialogRef.close).toHaveBeenCalledWith({ lab: component.lab, shouldSave: true});
       done();
     });
   });

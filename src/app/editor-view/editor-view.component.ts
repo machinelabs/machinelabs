@@ -65,7 +65,7 @@ export class EditorViewComponent implements OnInit {
       case EditorToolbarActionTypes.Save: this.save(action.data); break;
       case EditorToolbarActionTypes.Fork: this.fork(action.data); break;
       case EditorToolbarActionTypes.Create: this.create(); break;
-      case EditorToolbarActionTypes.Edit: this.save(action.data, true); break;
+      case EditorToolbarActionTypes.Edit: this.edit(action.data); break;
     }
   }
 
@@ -110,36 +110,54 @@ export class EditorViewComponent implements OnInit {
   }
 
   fork(lab: Lab) {
-    this.labStorageService.createLab(lab).subscribe(_lab => {
-      this.lab = _lab;
-      this.save(this.lab, true, 'Lab forked');
+    this.labStorageService.createLab(lab).subscribe(createdLab => {
+      this.lab = createdLab;
+      this.showEditDialog(createdLab)
+          .subscribe(info => {
+            // we allways need to save after forking but either the
+            // version from before the dialog or the one after
+            this.save(info.shouldSave ? info.lab : createdLab, 'Lab forked');
+          });
     });
   }
 
-  save(lab: Lab, showEditDialog = false, msg = 'Lab saved') {
+  save(lab: Lab, msg = 'Lab saved') {
     this.labStorageService.saveLab(lab).subscribe(() => {
       this.router.navigate([lab.id], {
         queryParamsHandling: 'preserve'
       });
 
-      if (showEditDialog) {
-        this.editLabDialogRef = this.dialog.open(EditLabDialogComponent, {
+      this.notifySnackBar(msg);
+    });
+  }
+
+  edit(lab: Lab) {
+    this.showEditDialog(lab)
+        .subscribe(info => {
+          if (info.shouldSave) {
+            this.save(info.lab);
+          }
+        });
+  }
+
+  showEditDialog(lab: Lab) {
+    this.editLabDialogRef = this.dialog.open(EditLabDialogComponent, {
           disableClose: false,
           data: {
             lab: lab
           }
         });
 
-        this.editLabDialogRef
+    return this.editLabDialogRef
             .afterClosed()
-            .subscribe(_lab => {
-              this.lab = _lab;
-              this.notifySnackBar(msg);
+            // if it doesn't have an info it was closed by ESC
+            // TODO: any way to handle this from inside the EditDialog?
+            .map(info => info || { shouldSave: false, lab: null })
+            .do(info => {
+              if (info.shouldSave) {
+                this.lab = info.lab;
+              }
             });
-      } else {
-        this.notifySnackBar(msg);
-      }
-    });
   }
 
   create() {
