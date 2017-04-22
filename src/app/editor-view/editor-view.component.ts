@@ -18,6 +18,10 @@ enum TabIndex {
   Console
 }
 
+interface EditLabDialogOptions {
+  hideCancelButton: boolean;
+}
+
 @Component({
   selector: 'ml-editor-view',
   templateUrl: './editor-view.component.html',
@@ -112,12 +116,13 @@ export class EditorViewComponent implements OnInit {
   fork(lab: Lab) {
     this.labStorageService.createLab(lab).subscribe(createdLab => {
       this.lab = createdLab;
-      this.showEditDialog(createdLab)
-          .subscribe(info => {
-            // we allways need to save after forking but either the
-            // version from before the dialog or the one after
-            this.save(info.shouldSave ? info.lab : createdLab, 'Lab forked');
-          });
+      this.showEditDialog(createdLab, {
+        hideCancelButton: true
+      }).subscribe(info => {
+        // we allways need to save after forking but either the
+        // version from before the dialog or the one after
+        this.save(info.shouldSave ? info.lab : createdLab, 'Lab forked');
+      });
     });
   }
 
@@ -140,11 +145,14 @@ export class EditorViewComponent implements OnInit {
         });
   }
 
-  showEditDialog(lab: Lab) {
+  showEditDialog(lab: Lab, options: EditLabDialogOptions = {
+    hideCancelButton: false
+  }) {
     this.editLabDialogRef = this.dialog.open(EditLabDialogComponent, {
           disableClose: false,
           data: {
-            lab: lab
+            lab: lab,
+            options
           }
         });
 

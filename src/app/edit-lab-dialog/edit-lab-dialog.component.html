@@ -12,6 +12,6 @@
   </md-input-container>
   <div style="text-align: center;">
     <button md-button [disabled]="!form.valid" type="submit">Save</button>
-    <button md-button type="button" (click)="close(form.value, false)">Cancel</button>
+    <button md-button *ngIf="!data.options.hideCancelButton" type="button" (click)="close(form.value, false)">Cancel</button>
   </div>
 </form>
