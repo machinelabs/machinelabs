@@ -6,10 +6,14 @@ import { Observable } from '@reactivex/rxjs';
 import { Run, RunAction } from './models/run';
 import { OutputMessage, OutputKind, toOutputKind } from './models/output';
 import { RulesService } from 'rules.service';
+import { ExecutionStatus } from './models/run-meta';
 
 export class MessagingService {
 
   db = new DbRefBuilder();
+
+  // TODO: Move the infos somewhere else as soon as we start providing different stacks
+  SERVER_INFO = '1 vCPU Intel Ivy Bridge';
 
   constructor(private authService: AuthService,
               private rulesService: RulesService,
@@ -62,10 +66,7 @@ export class MessagingService {
                                   return this.codeRunner
                                             .run(run)
                                             .map(data => this.processStreamDataToOutputMessage(data))
-                                            .concat(Observable.of({
-                                              kind: OutputKind.ProcessFinished,
-                                              data: ''
-                                            }));
+                                            .concat(this.completeExecution(run));
                                 }
 
                                 // if we don't get an approval, reject it
@@ -83,7 +84,10 @@ export class MessagingService {
     this.db.runMetaRef(run.id)
       .set({
         id: run.id,
-        file_set_hash: hash
+        file_set_hash: hash,
+        server_info: this.SERVER_INFO,
+        started_at: firebase.database.ServerValue.TIMESTAMP,
+        user_id: run.user_id
       })
       .switchMap(_ => this.db.labsForHashRef(hash).onceValue())
       .map(snapshot => snapshot.val())
@@ -99,7 +103,20 @@ export class MessagingService {
         // This updates all labs at once
         this.db.rootRef().update(updates);
       });
+  }
 
+  completeExecution(run: Run) {
+
+    this.db.runMetaRef(run.id)
+      .update({
+        finished_at: firebase.database.ServerValue.TIMESTAMP,
+        status: ExecutionStatus.Finished
+      });
+
+    return Observable.of({
+      kind: OutputKind.ProcessFinished,
+      data: ''
+    });
   }
 
   /**
