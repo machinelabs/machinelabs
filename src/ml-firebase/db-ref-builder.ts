@@ -24,8 +24,22 @@ export class DbRefBuilder {
     return new ObservableDbRef(db.ref(`runs/${id}`));
   }
 
+  runsRef() {
+    return new ObservableDbRef(db.ref(`runs`));
+  }
+
+  newRunsRef() {
+    return new ObservableDbRef(db.ref('runs').orderByChild('timestamp').startAt(Date.now()));
+  }
+
   runMetaRef(id: string) {
     return new ObservableDbRef(db.ref(`runs_meta/${id}`));
+  }
+
+  runMetaByHashRef(hash: string) {
+    return new ObservableDbRef(db.ref(`runs_meta`)
+                                 .orderByChild('file_set_hash')
+                                 .equalTo(hash));
   }
 
   processMessagesRef(id: string) {

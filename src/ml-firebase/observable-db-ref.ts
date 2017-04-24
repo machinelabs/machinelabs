@@ -29,5 +29,10 @@ export class ObservableDbRef {
     return Observable.fromEventPattern(handler => this.ref.on('child_added', handler),
                                        handler => this.ref.off('child_added', handler));
   }
+
+  childChanged(): Observable<firebase.database.DataSnapshot> {
+    return Observable.fromEventPattern(handler => this.ref.on('child_changed', handler),
+                                       handler => this.ref.off('child_changed', handler));
+  }
 }
 

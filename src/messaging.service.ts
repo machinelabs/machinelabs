@@ -7,7 +7,6 @@ import { Run, RunAction } from './models/run';
 import { OutputMessage, OutputKind, toOutputKind } from './models/output';
 import { RulesService } from 'rules.service';
 
-
 export class MessagingService {
 
   db = new DbRefBuilder();
@@ -18,12 +17,16 @@ export class MessagingService {
   }
 
   init() {
-    this.getNewRunsAsObservable()
+    // Listen on all incoming runs to do the right thing
+    this.db.newRunsRef().childAdded()
+        .map(snapshot => snapshot.val())
         .switchMap(run => this.getOutputAsObservable(run))
         .switchMap(data => this.writeOutputMessage(data.output, data.run))
         .subscribe();
 
-    this.getChangedRunsAsObservable()
+    // Listen on all changed runs to get notified about stops
+    this.db.runsRef().childChanged()
+        .map(snapshot => snapshot.val())
         .filter(run => run.type === RunAction.Stop)
         .subscribe(run => this.codeRunner.stop(run));
   }
@@ -37,14 +40,14 @@ export class MessagingService {
 
     // check if we have existing output for the requested run
     let hash = Crypto.hashLabFiles(run.lab);
-    return this.getExistingOutputAsObservable(hash)
-               .switchMap(output => {
+    return this.getExistingRunMetaAsObservable(hash)
+               .switchMap(runMeta => {
                   // if we do have output, send a redirect message
-                  if (output) {
+                  if (runMeta) {
                     console.log('redirecting output');
                     return Observable.of({
                               kind: OutputKind.OutputRedirected,
-                              data: '' + output.id
+                              data: '' + runMeta.id
                             });
                   }
 
@@ -100,50 +103,20 @@ export class MessagingService {
   }
 
   /**
-   * Gets an Observable<Output> that emits once with either null or an existing output 
+   * Gets an Observable<RunMeta> that emits once with either null or an existing output 
    */
-  getExistingOutputAsObservable(fileSetHash: string) : Observable<any> {
-    return Observable.fromPromise(<Promise<any>>db.ref('runs_meta')
-                                   .orderByChild('file_set_hash')
-                                   .equalTo(fileSetHash)
-                                   .once('value'))
-                                   .map(snapshot => snapshot.val())
-                                   .map(val => val ? val[Object.keys(val)[0]] : null);
-  }
-
-
-  /**
-   * Gets an Observable<Run> that emits every time a new run was added 
-   */
-  getNewRunsAsObservable() : Observable<Run> {
-    return this.getEventAsObservable('child_added', db.ref('runs').orderByChild('timestamp').startAt(Date.now()));
-  }
-
-  /**
-   * Gets an Observable<Run> that emits every time a run was changed (e.g stopped)
-   */
-  getChangedRunsAsObservable() : Observable<Run> {
-    return this.getEventAsObservable('child_changed', db.ref('runs'));
-  }
-
-  /**
-   * Gets an Observable<any> based on an event name from any given ref
-   */
-  getEventAsObservable(event: string, ref: any) : Observable<any> {
-    return this.authService
-               .authenticate()
-               .switchMap(_ => {
-                  return Observable.fromEventPattern(handler => ref.on(event, handler),
-                                                     handler => ref.off(event, handler));
-               })
-               .map((data:any) => data.val());
+  getExistingRunMetaAsObservable(fileSetHash: string) : Observable<any> {
+    return this.db.runMetaByHashRef(fileSetHash)
+                  .onceValue()
+                  .map(snapshot => snapshot.val())
+                  .map(val => val ? val[Object.keys(val)[0]] : null);
   }
 
   processStreamDataToOutputMessage(data: ProcessStreamData): OutputMessage {
     return {
       data: data.str,
       kind: toOutputKind(data.origin)
-    }
+    };
   }
 
   writeOutputMessage(data: OutputMessage, run: Run) {
