@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { User } from '../models/user';
-import { Lab } from '../models/run';
+import { Lab } from '../models/lab';
 
 import { LabStorageService } from '../lab-storage.service';
 import { UserService } from '../user/user.service';

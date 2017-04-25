@@ -7,7 +7,7 @@ import { AuthService } from './auth';
 import { DATABASE } from './app.tokens';
 import { DbRefBuilder } from './firebase/db-ref-builder';
 import { LabExecutionContext, Lab } from './models/lab';
-import { OutputKind } from 'app/models/output';
+import { MessageKind } from 'app/models/execution-message';
 
 let testLab = {
   id: '1',
@@ -66,10 +66,10 @@ describe('RemoteLabExecService', () => {
     it('should handle ProcessFinished gracefully', (done) => {
 
       let messages$ = new Observable(obs => {
-          obs.next(createSnapshot(OutputKind.Stdout, 'some-text'));
-          obs.next(createSnapshot(OutputKind.Stdout, 'other-text'));
-          obs.next(createSnapshot(OutputKind.ExecutionFinished, ''));
-          obs.next(createSnapshot(OutputKind.Stdout, 'other-text'));
+          obs.next(createSnapshot(MessageKind.Stdout, 'some-text'));
+          obs.next(createSnapshot(MessageKind.Stdout, 'other-text'));
+          obs.next(createSnapshot(MessageKind.ExecutionFinished, ''));
+          obs.next(createSnapshot(MessageKind.Stdout, 'other-text'));
           return () => {
             // in case the cleanup does not run, the test won't complete
             // which seems to be the only way to properly test this.
@@ -78,7 +78,7 @@ describe('RemoteLabExecService', () => {
       });
 
       // FIXME This is really fragile. If we return undefined the test throws but passes
-      spyOn(rleService, 'processMessagesAsObservable')
+      spyOn(rleService, 'executionMessagesAsObservable')
         .and.callFake((id) => {
           if (id === context.id) {
             return messages$;
@@ -102,7 +102,7 @@ describe('RemoteLabExecService', () => {
     it('should handle ExecutionRejected gracefully', (done) => {
 
       let messages$ = new Observable(obs => {
-          obs.next(createSnapshot(OutputKind.ExecutionRejected, 'not allowed'));
+          obs.next(createSnapshot(MessageKind.ExecutionRejected, 'not allowed'));
           return () => {
             // in case the cleanup does not run, the test won't complete
             // which seems to be the only way to properly test this.
@@ -111,7 +111,7 @@ describe('RemoteLabExecService', () => {
       });
 
       // FIXME This is really fragile. If we return undefined the test throws but passes
-      spyOn(rleService, 'processMessagesAsObservable')
+      spyOn(rleService, 'executionMessagesAsObservable')
         .and.callFake((id) => {
           if (id === context.id) {
             return messages$;
@@ -137,7 +137,7 @@ describe('RemoteLabExecService', () => {
       let callDone = () => doneCount === expectedDone - 1 ? done() : doneCount++;
 
       let messages$ = new Observable(obs => {
-          obs.next(createSnapshot(OutputKind.OutputRedirected, '2'));
+          obs.next(createSnapshot(MessageKind.OutputRedirected, '2'));
           return () => {
             // in case the cleanup does not run, the test won't complete
             // which seems to be the only way to properly test this.
@@ -146,10 +146,10 @@ describe('RemoteLabExecService', () => {
       });
 
       let redirectedMessages$ = new Observable(obs => {
-          obs.next(createSnapshot(OutputKind.Stdout, 'some-text'));
-          obs.next(createSnapshot(OutputKind.Stdout, 'other-text'));
-          obs.next(createSnapshot(OutputKind.ExecutionFinished, ''));
-          obs.next(createSnapshot(OutputKind.Stdout, 'other-text'));
+          obs.next(createSnapshot(MessageKind.Stdout, 'some-text'));
+          obs.next(createSnapshot(MessageKind.Stdout, 'other-text'));
+          obs.next(createSnapshot(MessageKind.ExecutionFinished, ''));
+          obs.next(createSnapshot(MessageKind.Stdout, 'other-text'));
           return () => {
             // in case the cleanup does not run, the test won't complete
             // which seems to be the only way to properly test this.
@@ -158,7 +158,7 @@ describe('RemoteLabExecService', () => {
       });
 
       // FIXME This is really fragile. If we return undefined the test throws but passes
-      spyOn(rleService, 'processMessagesAsObservable')
+      spyOn(rleService, 'executionMessagesAsObservable')
         .and.callFake((id) => {
           if (id === context.id) {
             return messages$;

@@ -2,8 +2,8 @@ import { Injectable, Inject } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Lab, ExecutionStatus, LabExecutionContext } from './models/lab';
-import { Run, RunAction } from './models/run';
-import { OutputMessage, OutputKind } from './models/output';
+import { Invocation, InvocationType } from './models/invocation';
+import { ExecutionMessage, MessageKind } from './models/execution-message';
 import * as shortid from 'shortid';
 import * as firebase from 'firebase';
 
@@ -18,8 +18,8 @@ export class RemoteLabExecService {
   constructor(private db: DbRefBuilder, private authService: AuthService) {
   }
 
-  private processMessagesAsObservable(id: string, limitToLast = 0) {
-    return this.db.processMessageRef(id, limitToLast).childAdded();
+  private executionMessagesAsObservable(id: string, limitToLast = 0) {
+    return this.db.executionMessageRef(id, limitToLast).childAdded();
   }
 
 
@@ -27,7 +27,7 @@ export class RemoteLabExecService {
    * Executes code on the server. Returns an Observable<string>
    * where `string` is each line that was printed to STDOUT.
    */
-  run (context: LabExecutionContext, lab: Lab): Observable<OutputMessage> {
+  run (context: LabExecutionContext, lab: Lab): Observable<ExecutionMessage> {
 
     // This shouldn't really happen in practice because the UI forbids this.
     // But semantically it makes sense to check for it.
@@ -41,35 +41,35 @@ export class RemoteLabExecService {
 
     let output$ = this.authService
                     .requireAuthOnce()
-                    .switchMap(login => this.db.runRef(context.id).set({
+                    .switchMap(login => this.db.invocationRef(context.id).set({
                         id: context.id,
                         user_id: login.uid,
                         timestamp: firebase.database.ServerValue.TIMESTAMP,
-                        type: RunAction.Run,
-                        lab: {
+                        type: InvocationType.StartExecution,
+                        data: {
                           id: context.lab.id,
                           files: context.lab.files
                         }
                     }))
-                    .switchMap(_ => this.processMessagesAsObservable(context.id))
+                    .switchMap(_ => this.executionMessagesAsObservable(context.id))
                     .map((snapshot: any) => snapshot.val())
                     .share();
 
     // we create a stream that - based on a filter - will only ever start producing
     // messages if the output was redirected
-    let redirectedOutput$ = output$.filter(msg => msg.kind === OutputKind.OutputRedirected)
-                                   .switchMap(msg => this.processMessagesAsObservable(msg.data, this.MAX_CACHE_MESSAGES)
+    let redirectedOutput$ = output$.filter(msg => msg.kind === MessageKind.OutputRedirected)
+                                   .switchMap(msg => this.executionMessagesAsObservable(msg.data, this.MAX_CACHE_MESSAGES)
                                                          .map((snapshot: any) => snapshot.val())
                                                          .merge(Observable.of({
-                                                              kind: OutputKind.Stderr,
-                                                              data: `This is a cached run. You are looking at a truncated response.`
+                                                              kind: MessageKind.Stderr,
+                                                              data: `This is a cached execution. You are looking at a truncated response.`
                                                             })));
 
 
     // we combine the regular stream with the redirected one (which may never be used)
     return output$
             .merge(redirectedOutput$)
-            .takeWhileInclusive(msg => msg.kind !== OutputKind.ExecutionFinished && msg.kind !== OutputKind.ExecutionRejected)
+            .takeWhileInclusive(msg => msg.kind !== MessageKind.ExecutionFinished && msg.kind !== MessageKind.ExecutionRejected)
             .finally(() => context.status = ExecutionStatus.Done);
   }
 
@@ -77,9 +77,9 @@ export class RemoteLabExecService {
     context.status = ExecutionStatus.Stopped;
     return this.authService
       .requireAuthOnce()
-      .switchMap(_ => this.db.runRef(context.id).onceValue())
+      .switchMap(_ => this.db.invocationRef(context.id).onceValue())
       .map((snapshot: any) => snapshot.val())
-      .switchMap(data => this.db.runRef(context.id).set(Object.assign(data, { type: RunAction.Stop })))
+      .switchMap(data => this.db.invocationRef(context.id).set(Object.assign(data, { type: InvocationType.StopExecution })))
       .subscribe();
   }
 }

@@ -15,15 +15,15 @@ export class DbRefBuilder {
     return new ObservableDbRef(this.db.ref(`labs/${id}`));
   }
 
-  runRef(id: string) {
-    return new ObservableDbRef(this.db.ref(`runs/${id}`));
+  invocationRef(id: string) {
+    return new ObservableDbRef(this.db.ref(`invocations/${id}`));
   }
 
-  processMessageRef(id: string, limitToLast = 0) {
+  executionMessageRef(id: string, limitToLast = 0) {
     if (limitToLast > 0) {
-      return new ObservableDbRef(this.db.ref(`process_messages/${id}`).limitToLast(limitToLast));
+      return new ObservableDbRef(this.db.ref(`executions_messages/${id}`).limitToLast(limitToLast));
     } else {
-      return new ObservableDbRef(this.db.ref(`process_messages/${id}`));
+      return new ObservableDbRef(this.db.ref(`executions_messages/${id}`));
     }
   }
 

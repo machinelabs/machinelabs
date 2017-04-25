@@ -1,4 +1,4 @@
-export enum OutputKind {
+export enum MessageKind {
   Stdout,
   Stderr,
   ExecutionFinished,
@@ -6,10 +6,10 @@ export enum OutputKind {
   ExecutionRejected
 }
 
-export interface OutputMessage {
+export interface ExecutionMessage {
   id: string;
   data: string;
-  kind: OutputKind;
+  kind: MessageKind;
   timestamp: number;
 }
 
