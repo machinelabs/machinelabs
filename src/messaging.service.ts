@@ -22,14 +22,18 @@ export class MessagingService {
 
   init() {
     // Listen on all incoming runs to do the right thing
-    this.db.newRunsRef().childAdded()
+    this.authService
+        .authenticate()
+        .switchMap(_ => this.db.newRunsRef().childAdded())
         .map(snapshot => snapshot.val())
         .switchMap(run => this.getOutputAsObservable(run))
         .switchMap(data => this.writeOutputMessage(data.output, data.run))
         .subscribe();
 
     // Listen on all changed runs to get notified about stops
-    this.db.runsRef().childChanged()
+    this.authService
+        .authenticate()
+        .switchMap(_ =>this.db.runsRef().childChanged())
         .map(snapshot => snapshot.val())
         .filter(run => run.type === RunAction.Stop)
         .subscribe(run => this.codeRunner.stop(run));
