@@ -10,7 +10,7 @@ import { LabStorageService } from '../lab-storage.service';
 import { BLANK_LAB_TPL_ID } from '../lab-template.service';
 import { Observable } from 'rxjs/Observable';
 import { Lab, LabExecutionContext, File } from '../models/lab';
-import { OutputMessage, OutputKind } from '../models/output';
+import { ExecutionMessage, MessageKind } from '../models/execution-message';
 import { EditorToolbarAction, EditorToolbarActionTypes } from '../editor-toolbar/editor-toolbar.component';
 
 enum TabIndex {
@@ -94,17 +94,17 @@ export class EditorViewComponent implements OnInit {
     // in all scenarios.
     this.output = this.rleService.run(this.context, lab)
                       .do(msg => {
-                        if (msg.kind === OutputKind.ExecutionFinished) {
+                        if (msg.kind === MessageKind.ExecutionFinished) {
                           this.notifySnackBar(`Process finished`);
-                        } else if (msg.kind === OutputKind.OutputRedirected) {
+                        } else if (msg.kind === MessageKind.OutputRedirected) {
                           this.notifySnackBar(`Replaying cached run: ${msg.data}`);
-                        } else if (msg.kind === OutputKind.ExecutionRejected) {
+                        } else if (msg.kind === MessageKind.ExecutionRejected) {
                           // TODO: Better show something with more info.
                           // Tell the user to create an account etc.
                           this.notifySnackBar('Execution rejected');
                         }
                       })
-                      .filter(msg => msg.kind === OutputKind.Stdout || msg.kind === OutputKind.Stderr)
+                      .filter(msg => msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr)
                       .scan((acc, current) => `${acc}\n${current.data}`, '');
   }
 
