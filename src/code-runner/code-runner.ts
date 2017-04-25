@@ -1,5 +1,5 @@
 import { Observable } from '@reactivex/rxjs';
-import { Run } from '../models/run';
+import { Invocation } from '../models/invocation';
 
 export interface ProcessStreamData {
   origin: string,
@@ -8,6 +8,6 @@ export interface ProcessStreamData {
 }
 
 export interface CodeRunner {
-  run (run: Run) : Observable<ProcessStreamData>
-  stop (run: Run) : void
+  run (invocation: Invocation) : Observable<ProcessStreamData>
+  stop (invocation: Invocation) : void
 }

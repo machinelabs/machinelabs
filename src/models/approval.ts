@@ -1,8 +1,8 @@
-import { Run } from './run';
+import { Invocation } from './invocation';
 
 export interface Approval {
-  canRun: boolean;
+  allowExecution: boolean;
   maxTime: number,
   message: string;
-  run: Run;
+  invocation: Invocation;
 }

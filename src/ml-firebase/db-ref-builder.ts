@@ -20,34 +20,34 @@ export class DbRefBuilder {
     return new ObservableDbRef(db.ref(`labs`).orderByChild('file_set_hash').equalTo(hash));
   }
 
-  runRef(id: string) {
-    return new ObservableDbRef(db.ref(`runs/${id}`));
+  invocationRef(id: string) {
+    return new ObservableDbRef(db.ref(`invocations/${id}`));
   }
 
-  runsRef() {
-    return new ObservableDbRef(db.ref(`runs`));
+  invocationsRef() {
+    return new ObservableDbRef(db.ref(`invocations`));
   }
 
-  newRunsRef() {
-    return new ObservableDbRef(db.ref('runs').orderByChild('timestamp').startAt(Date.now()));
+  newInvocationsRef() {
+    return new ObservableDbRef(db.ref('invocations').orderByChild('timestamp').startAt(Date.now()));
   }
 
-  runMetaRef(id: string) {
-    return new ObservableDbRef(db.ref(`runs_meta/${id}`));
+  executionRef(id: string) {
+    return new ObservableDbRef(db.ref(`executions/${id}`));
   }
 
-  runMetaByHashRef(hash: string) {
-    return new ObservableDbRef(db.ref(`runs_meta`)
+  executionByHashRef(hash: string) {
+    return new ObservableDbRef(db.ref(`executions`)
                                  .orderByChild('file_set_hash')
                                  .equalTo(hash));
   }
 
-  processMessagesRef(id: string) {
-    return new ObservableDbRef(db.ref(`process_messages/${id}`));
+  executionMessagesRef(id: string) {
+    return new ObservableDbRef(db.ref(`executions_messages/${id}`));
   }
 
-  processMessageRef(processId: string, messageId: string) {
-    return new ObservableDbRef(db.ref(`process_messages/${processId}/${messageId}`));
+  executionMessageRef(executionId: string, messageId: string) {
+    return new ObservableDbRef(db.ref(`executions_messages/${executionId}/${messageId}`));
   }
 }
 

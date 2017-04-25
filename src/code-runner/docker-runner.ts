@@ -4,13 +4,13 @@ import { Observable } from '@reactivex/rxjs';
 import { ProcessUtil } from '../util/process';
 import { CodeRunner, ProcessStreamData } from './code-runner';
 import { Lab, File } from '../models/lab';
-import { Run } from '../models/run';
+import { Invocation } from '../models/invocation';
 
 /**
  * This is the Docker Runner that takes the code and runs it on a isolated docker container
  */
 export class DockerRunner implements CodeRunner {
-  run(run: Run): Observable<ProcessStreamData> {
+  run(invocation: Invocation): Observable<ProcessStreamData> {
 
     // construct a shell command to create all files.
     // The `&` makes sure that file creation happens asynchronously rather than sequentially.
@@ -20,7 +20,7 @@ export class DockerRunner implements CodeRunner {
 
     // ATTENTION: The formatting is important here. We have to use a Here Doc because of multi line strings
     // http://stackoverflow.com/questions/2953081/how-can-i-write-a-here-doc-to-a-file-in-bash-script/2954835#2954835
-    let writeCommand = run.lab.files.map((file: File) =>`{ cat <<'EOL' > ${file.name}
+    let writeCommand = invocation.data.files.map((file: File) =>`{ cat <<'EOL' > ${file.name}
 ${file.content}
 EOL
 }`)
@@ -35,7 +35,7 @@ EOL
                                 '-i',
                                 '--rm',
                                 `--name`,
-                                run.id,
+                                invocation.id,
                                 'thoughtram/keras',
                                 '/bin/bash',
                                 '-c',
@@ -45,10 +45,10 @@ EOL
     return ProcessUtil.toObservableProcess(ps);
   }
 
-  stop (run: Run, attempt = 0) {
-    console.log(`Stopping container with name: ${run.id}`);
+  stop (invocation: Invocation, attempt = 0) {
+    console.log(`Stopping container with name: ${invocation.id}`);
     
-    exec(`docker kill $(docker ps -a -q --filter="name=${run.id}")`, (error, stdout, stderr) => {
+    exec(`docker kill $(docker ps -a -q --filter="name=${invocation.id}")`, (error, stdout, stderr) => {
         if (error) {
 
           // If this errored it means the `docker ps` did not return a container and
@@ -66,13 +66,13 @@ EOL
           // TODO: We need to investigate how that scales under load. If processes take really long to spawn
           // this system may fall apart again.
           if (attempt >= 10) {
-            console.log(`Giving up on ${run.id}. (Container doesn't run anymore)`);
+            console.log(`Giving up on ${invocation.id}. (Container doesn't run anymore)`);
             return;
           }
           
           let currentAttempt = attempt + 1;
-          console.log(`Failed to stop ${run.id}....rescheduling for stopping (${currentAttempt} attempt)`);
-          setTimeout(() => this.stop(run, currentAttempt), 1000)
+          console.log(`Failed to stop ${invocation.id}....rescheduling for stopping (${currentAttempt} attempt)`);
+          setTimeout(() => this.stop(invocation, currentAttempt), 1000)
           return;
         }
       });

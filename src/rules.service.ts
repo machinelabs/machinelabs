@@ -1,6 +1,6 @@
 import { DbRefBuilder } from './ml-firebase';
 import { Observable } from '@reactivex/rxjs';
-import { Run} from './models/run';
+import { Invocation} from './models/invocation';
 import { Approval } from './models/approval';
 
 export class RulesService {
@@ -10,30 +10,30 @@ export class RulesService {
   constructor() {
   }
 
-  getApproval(run: Run) : Observable<Approval> {
-    return this.db.userRef(run.user_id)
+  getApproval(invocation: Invocation) : Observable<Approval> {
+    return this.db.userRef(invocation.user_id)
                   .onceValue()
                   .map(snapshot => snapshot.val())
                   .switchMap(user => {
-                    let approval = !user || user.isAnonymous ? this.rejectAnonymous(run) : this.allow(run);
+                    let approval = !user || user.isAnonymous ? this.rejectAnonymous(invocation) : this.allow(invocation);
                     return Observable.of(approval);
                   });
   }
 
-  private rejectAnonymous(run: Run) : Approval {
+  private rejectAnonymous(invocation: Invocation) : Approval {
     return {
-      run: run,
+      invocation: invocation,
       message: 'Anonymous user can only replay existing runs.',
-      canRun: false,
+      allowExecution: false,
       maxTime: 0
     }
   }
 
-  private allow(run: Run) : Approval {
+  private allow(invocation: Invocation) : Approval {
     return {
-      run: run,
+      invocation: invocation,
       message: 'ok',
-      canRun: true,
+      allowExecution: true,
       //TODO: Maybe some sort of limit would make sense? Don't know
       maxTime: Number.POSITIVE_INFINITY
     }

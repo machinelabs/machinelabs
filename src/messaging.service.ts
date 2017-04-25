@@ -3,10 +3,9 @@ import { Crypto } from './util/crypto';
 import { db, AuthService, DbRefBuilder } from './ml-firebase';
 import { CodeRunner, ProcessStreamData } from './code-runner/code-runner';
 import { Observable } from '@reactivex/rxjs';
-import { Run, RunAction } from './models/run';
-import { OutputMessage, OutputKind, toOutputKind } from './models/output';
+import { Invocation, InvocationType } from './models/invocation';
+import { Execution, ExecutionStatus, ExecutionMessage, MessageKind, toMessageKind } from './models/execution';
 import { RulesService } from 'rules.service';
-import { ExecutionStatus } from './models/run-meta';
 
 export class MessagingService {
 
@@ -24,74 +23,75 @@ export class MessagingService {
     // Listen on all incoming runs to do the right thing
     this.authService
         .authenticate()
-        .switchMap(_ => this.db.newRunsRef().childAdded())
+        .switchMap(_ => this.db.newInvocationsRef().childAdded())
         .map(snapshot => snapshot.val())
-        .switchMap(run => this.getOutputAsObservable(run))
-        .switchMap(data => this.writeOutputMessage(data.output, data.run))
+        .switchMap(invocation => this.getOutputAsObservable(invocation))
+        .switchMap(data => this.writeExecutionMessage(data.output, data.invocation))
         .subscribe();
 
     // Listen on all changed runs to get notified about stops
     this.authService
         .authenticate()
-        .switchMap(_ =>this.db.runsRef().childChanged())
+        .switchMap(_ =>this.db.invocationsRef().childChanged())
         .map(snapshot => snapshot.val())
-        .filter(run => run.type === RunAction.Stop)
-        .subscribe(run => this.codeRunner.stop(run));
+        .filter(execution => execution.type === InvocationType.StopExecution)
+        .subscribe(execution => this.codeRunner.stop(execution));
   }
 
   /**
    * Take a run and observe the output. The run maybe cached or rejected
    * but it is guaranteed to get some message back.
    */
-  getOutputAsObservable(run: Run) : Observable<any> {
-    console.log(`Starting new run ${run.id}`);
+  getOutputAsObservable(invocation: Invocation) : Observable<any> {
+    console.log(`Starting new run ${invocation.id}`);
 
     // check if we have existing output for the requested run
-    let hash = Crypto.hashLabFiles(run.lab);
-    return this.getExistingRunMetaAsObservable(hash)
-               .switchMap(runMeta => {
+    let hash = Crypto.hashLabFiles(invocation.data);
+    return this.getExistingExecutionAsObservable(hash)
+               .switchMap(execution => {
                   // if we do have output, send a redirect message
-                  if (runMeta) {
+                  if (execution) {
                     console.log('redirecting output');
                     return Observable.of({
-                              kind: OutputKind.OutputRedirected,
-                              data: '' + runMeta.id
+                              kind: MessageKind.OutputRedirected,
+                              data: '' + execution.id
                             });
                   }
 
                   // otherwise, try to get approval
                   return this.rulesService
-                              .getApproval(run)
+                              .getApproval(invocation)
                               .switchMap(approval => {
-                                if (approval.canRun) {
+                                if (approval.allowExecution) {
                                   // if we get the approval, create the meta data
-                                  this.createRunMetaAndUpdateLabs(run, hash);
+                                  this.createExecutionAndUpdateLabs(invocation, hash);
                                   // and execute the code
                                   return this.codeRunner
-                                            .run(run)
-                                            .map(data => this.processStreamDataToOutputMessage(data))
-                                            .concat(this.completeExecution(run));
+                                            .run(invocation)
+                                            .map(data => this.processStreamDataToExecutionMessage(data))
+                                            .concat(this.completeExecution(invocation));
                                 }
 
                                 // if we don't get an approval, reject it
                                 return Observable.of({
-                                  kind: OutputKind.ExecutionRejected,
+                                  kind: MessageKind.ExecutionRejected,
                                   data: approval.message
                                 });
                               });
 
               })
-              .map(output => ({output, run}));
+              .map(output => ({output, invocation}));
   }
 
-  createRunMetaAndUpdateLabs(run: Run, hash: string) {
-    this.db.runMetaRef(run.id)
+  createExecutionAndUpdateLabs(invocation: Invocation, hash: string) {
+    this.db.executionRef(invocation.id)
       .set({
-        id: run.id,
+        id: invocation.id,
         file_set_hash: hash,
         server_info: this.SERVER_INFO,
         started_at: firebase.database.ServerValue.TIMESTAMP,
-        user_id: run.user_id
+        user_id: invocation.user_id,
+        lab_id: invocation.data.id
       })
       .switchMap(_ => this.db.labsForHashRef(hash).onceValue())
       .map(snapshot => snapshot.val())
@@ -109,41 +109,41 @@ export class MessagingService {
       });
   }
 
-  completeExecution(run: Run) {
+  completeExecution(run: Invocation) {
 
-    this.db.runMetaRef(run.id)
+    this.db.executionRef(run.id)
       .update({
         finished_at: firebase.database.ServerValue.TIMESTAMP,
         status: ExecutionStatus.Finished
       });
 
     return Observable.of({
-      kind: OutputKind.ProcessFinished,
+      kind: MessageKind.ProcessFinished,
       data: ''
     });
   }
 
   /**
-   * Gets an Observable<RunMeta> that emits once with either null or an existing output 
+   * Gets an Observable<Execution> that emits once with either null or an existing output 
    */
-  getExistingRunMetaAsObservable(fileSetHash: string) : Observable<any> {
-    return this.db.runMetaByHashRef(fileSetHash)
+  getExistingExecutionAsObservable(fileSetHash: string) : Observable<Execution> {
+    return this.db.executionByHashRef(fileSetHash)
                   .onceValue()
                   .map(snapshot => snapshot.val())
                   .map(val => val ? val[Object.keys(val)[0]] : null);
   }
 
-  processStreamDataToOutputMessage(data: ProcessStreamData): OutputMessage {
+  processStreamDataToExecutionMessage(data: ProcessStreamData): ExecutionMessage {
     return {
       data: data.str,
-      kind: toOutputKind(data.origin)
+      kind: toMessageKind(data.origin)
     };
   }
 
-  writeOutputMessage(data: OutputMessage, run: Run) {
+  writeExecutionMessage(data: ExecutionMessage, run: Invocation) {
     let id = db.ref().push().key;
     data.id = id;
     data.timestamp = firebase.database.ServerValue.TIMESTAMP;
-    return this.db.processMessageRef(run.id, id).set(data);
+    return this.db.executionMessageRef(run.id, id).set(data);
   }
 }
