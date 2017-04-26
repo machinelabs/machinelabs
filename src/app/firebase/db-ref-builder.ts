@@ -19,6 +19,10 @@ export class DbRefBuilder {
     return new ObservableDbRef(this.db.ref(`invocations/${id}`));
   }
 
+  executionRef(id: string) {
+    return new ObservableDbRef(this.db.ref(`executions/${id}`));
+  }
+
   executionMessageRef(id: string, limitToLast = 0) {
     if (limitToLast > 0) {
       return new ObservableDbRef(this.db.ref(`executions_messages/${id}`).limitToLast(limitToLast));

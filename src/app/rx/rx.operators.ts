@@ -13,4 +13,6 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/skipWhile';
 import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/last';
 import './takeWhileInclusive';

@@ -10,7 +10,7 @@ import { LabStorageService } from '../lab-storage.service';
 import { BLANK_LAB_TPL_ID } from '../lab-template.service';
 import { Observable } from 'rxjs/Observable';
 import { Lab, LabExecutionContext, File } from '../models/lab';
-import { ExecutionMessage, MessageKind } from '../models/execution-message';
+import { ExecutionMessage, MessageKind } from '../models/execution';
 import { EditorToolbarAction, EditorToolbarActionTypes } from '../editor-toolbar/editor-toolbar.component';
 
 enum TabIndex {
