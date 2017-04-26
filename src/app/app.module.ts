@@ -11,7 +11,7 @@ import { RouterModule, PreloadAllModules } from '@angular/router';
 import { MachineLabsMaterialModule } from './ml-material.module';
 import { ToolbarModule } from './toolbar/toolbar.module';
 
-import { RemoteLabExecService } from './remote-lab-exec.service';
+import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.service';
 import { LabStorageService } from './lab-storage.service';
 import { UserService } from 'app/user/user.service';
 import { AuthService, FirebaseAuthService, OfflineAuthService } from './auth';
