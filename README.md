@@ -1,6 +1,6 @@
 ## MachineLabs server
 
-This the server powering machinelabs.ai
+This is the server powering machinelabs.ai
 
 ### Repository layout
 
