@@ -5,7 +5,7 @@ import { MdDialog, MdDialogRef, MdSnackBar, MdTabGroup } from '@angular/material
 import { FileNameDialogComponent } from '../file-name-dialog/file-name-dialog.component';
 import { EditLabDialogComponent } from '../edit-lab-dialog/edit-lab-dialog.component';
 import { NavigationConfirmDialogComponent } from '../navigation-confirm-dialog/navigation-confirm-dialog.component';
-import { RemoteLabExecService } from '../remote-lab-exec.service';
+import { RemoteLabExecService } from '../remote-code-execution/remote-lab-exec.service';
 import { LabStorageService } from '../lab-storage.service';
 import { BLANK_LAB_TPL_ID } from '../lab-template.service';
 import { Observable } from 'rxjs/Observable';

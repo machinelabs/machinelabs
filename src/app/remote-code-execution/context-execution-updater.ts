@@ -37,7 +37,6 @@ export class ContextExecutionUpdater {
   }
 
   private connect() {
-
     if (this.output && this.executionId) {
       this.db.executionRef(this.executionId).value()
              .takeUntil(this.output.last())
