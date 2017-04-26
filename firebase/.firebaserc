@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "machinelabs-dev",
+    "machinelabs-staging": "machinelabs-a73cd"
+  }
+}

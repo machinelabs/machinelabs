@@ -1,0 +1,98 @@
+{
+    "rules": {
+        ".read": "auth != null",
+        ".write": "auth != null",
+        "labs": {
+            "$id": {
+                // labs need to have a user_id and it must match the authenticated user
+                // existing labs can only be overwritten by the user who created it,
+
+                ".validate": "data.exists() ? (data.child('user_id').val() === auth.uid && newData.child('user_id').val() === auth.uid) || auth.uid === 'faOzzX4RasUHjhUFI5APaDF7bT62' : newData.child('user_id').val() === auth.uid",
+                //TODO: Check all these. Basically users can write anything here I guess
+                "id": { ".validate": true },
+                "user_id": { ".validate": true },
+                "name" : { ".validate": true },
+                "description" : { ".validate": true },
+                "status" : { ".validate": true },
+                "has_cached_run" : { ".validate": true },
+                "file_set_hash" : { ".validate": true },
+                "files": {
+                    "$id": {
+                        "content" : { ".validate": true },
+                        "name" : { ".validate": true },
+                        "$other": { ".validate": false }
+                    }
+                },
+                "tags": { ".validate": true },
+                "$other": { ".validate": false }
+            }
+        },
+        "invocations": {
+            "$id": {
+                ".validate": "data.exists() ? (data.child('user_id').val() === auth.uid && newData.child('user_id').val() === auth.uid) || auth.uid === 'faOzzX4RasUHjhUFI5APaDF7bT62' : newData.child('user_id').val() === auth.uid",
+                "id": { ".validate": true },
+                "user_id": { ".validate": true },
+                "timestamp": { ".validate": true },
+                "type": { ".validate": true },
+                "data": {
+                    "id": { ".validate": true },
+                    "files": {
+                        "$id": {
+                            "content" : { ".validate": true },
+                            "name" : { ".validate": true },
+                            "$other": { ".validate": false }
+                        }
+                    }
+                },
+                "$other": {
+                    ".validate": false
+                }
+            },
+            ".indexOn": "timestamp"
+        },
+        "executions": {
+            "$id": {
+                ".validate": "auth.uid === 'faOzzX4RasUHjhUFI5APaDF7bT62'",
+                "id": { ".validate": true },
+                "file_set_hash": { ".validate": true },
+                "started_at": { ".validate": true },
+                "finished_at": { ".validate": true },
+                "server_info": { ".validate": true },
+                "user_id": { ".validate": true },
+                "lab_id": { ".validate": true },
+                "status": { ".validate": true },
+                "$other": {
+                    ".validate": false
+                }
+            },
+            ".indexOn": "file_set_hash"
+        },
+        "executions_messages": {
+            "$id": {
+                "$id": {
+                ".validate": "auth.uid === 'faOzzX4RasUHjhUFI5APaDF7bT62'",
+                "id": { ".validate": true },
+                "timestamp": { ".validate": true },
+                "data": { ".validate": true },
+                "kind": { ".validate": true },
+                "$other": { ".validate": false }
+            	}
+            }
+        },
+        "users": {
+            "$id": {
+                ".validate": "data.exists() ? data.child('id').val() === auth.uid && newData.child('id').val() === auth.uid : newData.child('id').val() === auth.uid",
+                "id": { ".validate": true },
+               	"isAnonymous": { 
+                  ".validate": "newData.isBoolean() && (newData.val() === false && auth.provider !== 'anonymous' || newData.val() === true && auth.provider === 'anonymous')"
+                },
+                "displayName": { ".validate": true },
+                "photoUrl": { ".validate": true },
+                "email": { ".validate": true },
+                "$other": { ".validate": false }   
+          	}
+        },
+        "$other": { ".validate": false }
+    }
+
+}
