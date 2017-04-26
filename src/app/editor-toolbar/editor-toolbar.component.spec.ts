@@ -8,7 +8,8 @@ import { Observable } from 'rxjs/Observable';
 import { MachineLabsMaterialModule } from '../ml-material.module';
 import { AuthService, dummyUser } from '../auth/';
 import { EditorToolbarComponent, EditorToolbarActionTypes } from './editor-toolbar.component';
-import { LabExecutionContext, ExecutionStatus } from '../models/lab';
+import { LabExecutionContext } from '../models/lab';
+import { ExecutionStatus } from '../models/execution';
 import { UserService } from '../user/user.service';
 import { DbRefBuilder } from '../firebase/db-ref-builder';
 import { DATABASE } from '../app.tokens';
@@ -137,7 +138,7 @@ describe('EditorToolbarComponent', () => {
       let lab = Object.assign({}, testLab);
 
       component.context = new LabExecutionContext(lab);
-      component.context.status = ExecutionStatus.Running;
+      component.context.execution.status = ExecutionStatus.Executing;
       component.lab = lab;
       fixture.detectChanges();
 

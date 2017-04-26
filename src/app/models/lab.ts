@@ -1,10 +1,4 @@
-export enum ExecutionStatus {
-  Pristine,
-  Running,
-  Done,
-  Stopped,
-  Error
-}
+import { Execution, ExecutionStatus } from './execution';
 
 export interface File {
   name: string;
@@ -27,12 +21,14 @@ export interface Lab extends LabTemplate {
 export class LabExecutionContext {
   private _id: string;
   private _lab: Lab;
-  status: ExecutionStatus;
+  execution: Execution;
 
   constructor (lab: Lab = null, id = '') {
     this._id = id;
     this._lab = lab;
-    this.status = ExecutionStatus.Pristine;
+    this.execution = {
+      status: ExecutionStatus.Pristine
+    };
   }
 
   get id () {
@@ -45,7 +41,7 @@ export class LabExecutionContext {
 
   clone () {
     let context = new LabExecutionContext(this.lab, this.id);
-    context.status = this.status;
+    context.execution = this.execution;
     return context;
   }
 
@@ -59,6 +55,6 @@ export class LabExecutionContext {
   }
 
   isRunning () {
-    return this.status === ExecutionStatus.Running;
+    return this.execution.status === ExecutionStatus.Executing;
   }
 }

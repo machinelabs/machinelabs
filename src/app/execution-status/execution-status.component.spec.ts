@@ -3,7 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { ExecutionStatusComponent } from './execution-status.component';
-import { LabExecutionContext, ExecutionStatus } from '../models/lab';
+import { LabExecutionContext } from '../models/lab';
+import { ExecutionStatus } from '../models/execution';
 
 describe('ExecutionStatusComponent', () => {
   let component: ExecutionStatusComponent;
@@ -32,29 +33,29 @@ describe('ExecutionStatusComponent', () => {
   it('should show status message based on status type', () => {
     let statusMessage;
 
-    context.status = ExecutionStatus.Running;
+    context.execution.status = ExecutionStatus.Executing;
     fixture.detectChanges();
     statusMessage = fixture.debugElement.query(By.css('.ml-status-message'));
     expect(statusMessage.nativeElement.textContent).toContain('Running...');
 
-    context.status = ExecutionStatus.Done;
+    context.execution.status = ExecutionStatus.Finished;
     fixture.detectChanges();
     statusMessage = fixture.debugElement.query(By.css('.ml-status-message'));
     expect(statusMessage.nativeElement.textContent).toContain('Done');
 
-    context.status = ExecutionStatus.Stopped;
+    context.execution.status = ExecutionStatus.Stopped;
     fixture.detectChanges();
     statusMessage = fixture.debugElement.query(By.css('.ml-status-message'));
     expect(statusMessage.nativeElement.textContent).toContain('Stopped');
 
-    context.status = ExecutionStatus.Error;
+    context.execution.status = ExecutionStatus.Failed;
     fixture.detectChanges();
     statusMessage = fixture.debugElement.query(By.css('.ml-status-message'));
     expect(statusMessage.nativeElement.textContent).toContain('Errored');
   });
 
   it('should render progress bar when lab is running', () => {
-    context.status = ExecutionStatus.Running;
+    context.execution.status = ExecutionStatus.Executing;
     fixture.detectChanges();
 
     let progressBar = fixture.debugElement.query(By.css('md-progress-bar'));

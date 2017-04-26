@@ -1,9 +1,10 @@
 import { Injectable, Inject } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { Lab, ExecutionStatus, LabExecutionContext } from './models/lab';
+import { Lab, LabExecutionContext } from './models/lab';
 import { Invocation, InvocationType } from './models/invocation';
-import { ExecutionMessage, MessageKind } from './models/execution-message';
+import { Execution, ExecutionStatus, ExecutionMessage, MessageKind } from './models/execution';
+import { ContextExecutionUpdater } from './remote-code-execution/context-execution-updater';
 import * as shortid from 'shortid';
 import * as firebase from 'firebase';
 
@@ -31,14 +32,14 @@ export class RemoteLabExecService {
 
     // This shouldn't really happen in practice because the UI forbids this.
     // But semantically it makes sense to check for it.
-    if (context.status === ExecutionStatus.Running) {
+    if (context.execution.status === ExecutionStatus.Executing) {
       this.stop(context.clone());
     }
 
     let id = `${Date.now()}-${shortid.generate()}`;
     context.setData(lab, id);
-    context.status = ExecutionStatus.Running;
 
+    let contextUpdater = new ContextExecutionUpdater(this.db, context);
     let output$ = this.authService
                     .requireAuthOnce()
                     .switchMap(login => this.db.invocationRef(context.id).set({
@@ -55,9 +56,15 @@ export class RemoteLabExecService {
                     .map((snapshot: any) => snapshot.val())
                     .share();
 
+    // if the first message isn't a redirect, set this execution on the context
+    output$.take(1)
+           .filter(msg => msg.kind !== MessageKind.OutputRedirected)
+           .subscribe(_ => contextUpdater.executionId = id);
+
     // we create a stream that - based on a filter - will only ever start producing
     // messages if the output was redirected
     let redirectedOutput$ = output$.filter(msg => msg.kind === MessageKind.OutputRedirected)
+                                   .do(msg => contextUpdater.executionId = msg.data)
                                    .switchMap(msg => this.executionMessagesAsObservable(msg.data, this.MAX_CACHE_MESSAGES)
                                                          .map((snapshot: any) => snapshot.val())
                                                          .merge(Observable.of({
@@ -67,14 +74,18 @@ export class RemoteLabExecService {
 
 
     // we combine the regular stream with the redirected one (which may never be used)
-    return output$
+    let outputWithRedirects$ = output$
             .merge(redirectedOutput$)
             .takeWhileInclusive(msg => msg.kind !== MessageKind.ExecutionFinished && msg.kind !== MessageKind.ExecutionRejected)
-            .finally(() => context.status = ExecutionStatus.Done);
+            .share();
+
+    contextUpdater.output = outputWithRedirects$;
+
+    return outputWithRedirects$;
   }
 
   stop(context: LabExecutionContext) {
-    context.status = ExecutionStatus.Stopped;
+    context.execution.status = ExecutionStatus.Stopped;
     return this.authService
       .requireAuthOnce()
       .switchMap(_ => this.db.invocationRef(context.id).onceValue())

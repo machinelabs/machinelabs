@@ -7,34 +7,56 @@ import { AuthService } from './auth';
 import { DATABASE } from './app.tokens';
 import { DbRefBuilder } from './firebase/db-ref-builder';
 import { LabExecutionContext, Lab } from './models/lab';
-import { MessageKind } from 'app/models/execution-message';
+import { MessageKind, ExecutionStatus } from './models/execution';
 
-let testLab = {
-  id: '1',
-  user_id: 'user id',
-  name: 'Existing lab',
-  description: '',
-  tags: ['existing'],
-  files: [],
-  has_cached_run: false
-};
-
-let context = new LabExecutionContext();
-
-let authServiceStub = {
-  requireAuthOnce: () => {}
-};
-
-let databaseStub = {
-  ref: (arg) => {
-    return {
-      once: (_arg) => {},
-      set: (_arg) => Promise.resolve(_arg)
-    };
-  }
-};
 
 let createSnapshot = (kind, data) => ({ val: () => ({kind: kind, data: data})});
+
+let testLab, context, authServiceStub, user,
+    databaseStub, obsDbRefStub, snapshotStub, execution;
+
+// it's important to recreate the stubs for every test to not
+// have one test cause side effects for another test
+function createStubs () {
+  testLab = {
+    id: '1',
+    user_id: 'user id',
+    name: 'Existing lab',
+    description: '',
+    tags: ['existing'],
+    files: [],
+    has_cached_run: false
+  };
+
+    user = { uid: 'some-id' };
+    execution = { status: ExecutionStatus.Executing };
+
+
+  context = new LabExecutionContext();
+
+  authServiceStub = {
+    requireAuthOnce: () => {}
+  };
+
+  databaseStub = {
+    ref: (arg) => {
+      return {
+        once: (_arg) => {},
+        set: (_arg) => Promise.resolve(_arg),
+        on: () => {}
+      };
+    }
+  };
+
+  obsDbRefStub = {
+    value: () => {}
+  };
+
+  snapshotStub = {
+    val: () => {}
+  };
+}
+
 
 describe('RemoteLabExecService', () => {
 
@@ -43,6 +65,9 @@ describe('RemoteLabExecService', () => {
   let rleService: RemoteLabExecService;
 
   beforeEach(() => {
+
+    createStubs();
+
     TestBed.configureTestingModule({
       providers: [
         RemoteLabExecService,
@@ -53,12 +78,14 @@ describe('RemoteLabExecService', () => {
     });
 
     authService = TestBed.get(AuthService);
-    db = TestBed.get(DATABASE);
+    db = TestBed.get(DbRefBuilder);
     rleService = TestBed.get(RemoteLabExecService);
 
-    let user = { uid: 'some-id' };
-
     spyOn(authService, 'requireAuthOnce').and.returnValue(Observable.of(user));
+    let executionRef = {
+      value: () => Observable.of({val: () => execution})
+    };
+    spyOn(db, 'executionRef').and.returnValue(executionRef);
   });
 
   describe('.run()', () => {
