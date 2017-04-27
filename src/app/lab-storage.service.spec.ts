@@ -8,7 +8,7 @@ import { AuthService } from './auth';
 import { DATABASE } from './app.tokens';
 import { DbRefBuilder } from './firebase/db-ref-builder';
 import { LAB_TEMPLATES } from './data/lab-templates';
-import { FirebaseMock } from '../mocks/firebase-mock';
+import { FirebaseMock } from '../test-helper/firebase-mock';
 
 let testLab = {
   id: 'some-id',

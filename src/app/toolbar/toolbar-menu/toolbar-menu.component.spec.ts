@@ -9,7 +9,7 @@ import { MachineLabsMaterialModule } from '../../ml-material.module';
 import { AuthService, dummyUser } from '../../auth/';
 import { UserService } from '../../user/user.service';
 import { DATABASE } from '../../app.tokens';
-import { FirebaseMock } from '../../../mocks/firebase-mock';
+import { FirebaseMock } from '../../../test-helper/firebase-mock';
 import { DbRefBuilder } from '../../firebase/db-ref-builder';
 
 let authServiceStub = {
