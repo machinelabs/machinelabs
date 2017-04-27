@@ -64,7 +64,10 @@ export class RemoteLabExecService {
     // we create a stream that - based on a filter - will only ever start producing
     // messages if the output was redirected
     let redirectedOutput$ = output$.filter(msg => msg.kind === MessageKind.OutputRedirected)
-                                   .do(msg => contextUpdater.executionId = msg.data)
+                                   .do(msg => {
+                                     contextUpdater.executionId = msg.data;
+                                     context.execution.redirected = true;
+                                    })
                                    .switchMap(msg => this.executionMessagesAsObservable(msg.data, this.MAX_CACHE_MESSAGES)
                                                          .map((snapshot: any) => snapshot.val())
                                                          .merge(Observable.of({

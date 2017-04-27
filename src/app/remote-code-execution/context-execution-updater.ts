@@ -41,7 +41,9 @@ export class ContextExecutionUpdater {
       this.db.executionRef(this.executionId).value()
              .takeUntil(this.output.last())
              .map(snapshot => snapshot.val())
-             .subscribe(execution => this._context.execution = execution);
+             .subscribe(execution => {
+               this._context.execution = Object.assign(this._context.execution, execution);
+              });
     }
   }
 }

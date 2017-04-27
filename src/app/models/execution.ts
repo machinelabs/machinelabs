@@ -14,6 +14,7 @@ export interface Execution {
   server_info?: string;
   user_id?: string;
   lab_id?: string;
+  redirected: boolean;
   status: ExecutionStatus;
 }
 

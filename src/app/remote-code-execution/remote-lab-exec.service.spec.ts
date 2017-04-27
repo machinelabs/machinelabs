@@ -31,7 +31,6 @@ function createStubs () {
   };
 
     user = { uid: 'some-id' };
-    execution = { status: ExecutionStatus.Executing };
 
 
   context = new LabExecutionContext();
@@ -62,7 +61,8 @@ function createStubs () {
 function spyOnExecutionAndCallDone(db, doneWhen) {
      let executionRef = {
       value: () => new Observable(obs => {
-        obs.next(createSnapshot(execution));
+        setTimeout(() => obs.next(createSnapshot({ status: ExecutionStatus.Executing })), 50);
+        setTimeout(() => obs.next(createSnapshot({ status: ExecutionStatus.Finished })), 150);
         return () => doneWhen.call();
       })
     };
@@ -185,10 +185,16 @@ describe('RemoteLabExecService', () => {
       });
 
       let redirectedMessages$ = new Observable(obs => {
-          obs.next(createMessageSnapshot(MessageKind.Stdout, 'some-text'));
-          obs.next(createMessageSnapshot(MessageKind.Stdout, 'other-text'));
-          obs.next(createMessageSnapshot(MessageKind.ExecutionFinished, ''));
-          obs.next(createMessageSnapshot(MessageKind.Stdout, 'other-text'));
+          setTimeout(() => {
+            obs.next(createMessageSnapshot(MessageKind.Stdout, 'some-text'));
+            obs.next(createMessageSnapshot(MessageKind.Stdout, 'other-text'));
+          }, 100);
+
+          setTimeout(() => {
+            obs.next(createMessageSnapshot(MessageKind.ExecutionFinished, ''));
+            obs.next(createMessageSnapshot(MessageKind.Stdout, 'other-text'));
+          }, 200);
+
           return () => {
             // in case the cleanup does not run, the test won't complete
             // which seems to be the only way to properly test this.
@@ -214,12 +220,17 @@ describe('RemoteLabExecService', () => {
                 .finally(() => {
                   expect(actualMessages).toEqual([
                     { kind: 3, data: '2' },
+                    { kind: 1, data: 'This is a cached execution. You are looking at a truncated response.' },
                     { kind: 0, data: 'some-text' },
                     { kind: 0, data: 'other-text' },
                     { kind: 2, data: '' }
                   ]);
                 })
                 .subscribe();
+
+      doneWhen.assertBeforeDone(() => {
+        expect(context.execution.redirected).toBeTruthy();
+      });
 
     });
 
