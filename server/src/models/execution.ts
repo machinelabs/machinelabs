@@ -1,7 +1,9 @@
 export enum ExecutionStatus {
-  Started,
+  Pristine,
+  Executing,
   Finished,
-  Stopped
+  Stopped,
+  Failed
 }
 
 export interface Execution {

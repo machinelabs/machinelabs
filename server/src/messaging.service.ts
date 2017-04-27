@@ -69,7 +69,15 @@ export class MessagingService {
                                   return this.codeRunner
                                             .run(invocation)
                                             .map(data => this.processStreamDataToExecutionMessage(data))
-                                            .concat(this.completeExecution(invocation));
+                                            .concat(Observable.of({
+                                              kind: MessageKind.ProcessFinished,
+                                              data: ''
+                                            }))
+                                            .do(msg => {
+                                              if (msg.kind === MessageKind.ProcessFinished){
+                                                this.completeExecution(invocation);
+                                              }
+                                            })
                                 }
 
                                 // if we don't get an approval, reject it
@@ -91,7 +99,8 @@ export class MessagingService {
         server_info: this.SERVER_INFO,
         started_at: firebase.database.ServerValue.TIMESTAMP,
         user_id: invocation.user_id,
-        lab_id: invocation.data.id
+        lab_id: invocation.data.id,
+        status: ExecutionStatus.Executing
       })
       .switchMap(_ => this.db.labsForHashRef(hash).onceValue())
       .map(snapshot => snapshot.val())
@@ -110,17 +119,11 @@ export class MessagingService {
   }
 
   completeExecution(run: Invocation) {
-
     this.db.executionRef(run.id)
       .update({
         finished_at: firebase.database.ServerValue.TIMESTAMP,
         status: ExecutionStatus.Finished
       });
-
-    return Observable.of({
-      kind: MessageKind.ProcessFinished,
-      data: ''
-    });
   }
 
   /**
