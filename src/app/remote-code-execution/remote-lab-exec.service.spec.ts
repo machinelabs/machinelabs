@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { Inject } from '@angular/core';
+import { DoneWhen } from '../../test-helper/doneWhen';
 import { Observable } from 'rxjs/Observable';
 
 import { RemoteLabExecService } from './remote-lab-exec.service';
@@ -10,7 +11,8 @@ import { LabExecutionContext, Lab } from '../models/lab';
 import { MessageKind, ExecutionStatus } from 'app/models/execution';
 
 
-let createSnapshot = (kind, data) => ({ val: () => ({kind: kind, data: data})});
+let createSnapshot = data => ({ val: () => data });
+let createMessageSnapshot = (kind, data) => createSnapshot({kind, data});
 
 let testLab, context, authServiceStub, user,
     databaseStub, obsDbRefStub, snapshotStub, execution;
@@ -57,6 +59,16 @@ function createStubs () {
   };
 }
 
+function spyOnExecutionAndCallDone(db, doneWhen) {
+     let executionRef = {
+      value: () => new Observable(obs => {
+        obs.next(createSnapshot(execution));
+        return () => doneWhen.call();
+      })
+    };
+    spyOn(db, 'executionRef').and.returnValue(executionRef);
+}
+
 
 describe('RemoteLabExecService', () => {
 
@@ -82,25 +94,22 @@ describe('RemoteLabExecService', () => {
     rleService = TestBed.get(RemoteLabExecService);
 
     spyOn(authService, 'requireAuthOnce').and.returnValue(Observable.of(user));
-    let executionRef = {
-      value: () => Observable.of({val: () => execution})
-    };
-    spyOn(db, 'executionRef').and.returnValue(executionRef);
   });
 
   describe('.run()', () => {
 
     it('should handle ProcessFinished gracefully', (done) => {
+      let doneWhen = new DoneWhen(done).calledNTimes(2);
 
       let messages$ = new Observable(obs => {
-          obs.next(createSnapshot(MessageKind.Stdout, 'some-text'));
-          obs.next(createSnapshot(MessageKind.Stdout, 'other-text'));
-          obs.next(createSnapshot(MessageKind.ExecutionFinished, ''));
-          obs.next(createSnapshot(MessageKind.Stdout, 'other-text'));
+          obs.next(createMessageSnapshot(MessageKind.Stdout, 'some-text'));
+          obs.next(createMessageSnapshot(MessageKind.Stdout, 'other-text'));
+          obs.next(createMessageSnapshot(MessageKind.ExecutionFinished, ''));
+          obs.next(createMessageSnapshot(MessageKind.Stdout, 'other-text'));
           return () => {
             // in case the cleanup does not run, the test won't complete
             // which seems to be the only way to properly test this.
-            done();
+            doneWhen.call();
           };
       });
 
@@ -111,6 +120,8 @@ describe('RemoteLabExecService', () => {
             return messages$;
           }
         });
+
+      spyOnExecutionAndCallDone(db, doneWhen);
 
       let actualMessages = [];
       rleService.run(context, testLab)
@@ -127,13 +138,14 @@ describe('RemoteLabExecService', () => {
     });
 
     it('should handle ExecutionRejected gracefully', (done) => {
+      let doneWhen = new DoneWhen(done).calledNTimes(2);
 
       let messages$ = new Observable(obs => {
-          obs.next(createSnapshot(MessageKind.ExecutionRejected, 'not allowed'));
+          obs.next(createMessageSnapshot(MessageKind.ExecutionRejected, 'not allowed'));
           return () => {
             // in case the cleanup does not run, the test won't complete
             // which seems to be the only way to properly test this.
-            done();
+            doneWhen.call();
           };
       });
 
@@ -144,6 +156,8 @@ describe('RemoteLabExecService', () => {
             return messages$;
           }
         });
+
+      spyOnExecutionAndCallDone(db, doneWhen);
 
       let actualMessages = [];
       rleService.run(context, testLab)
@@ -159,28 +173,26 @@ describe('RemoteLabExecService', () => {
 
     it('should handle OutputRedirected gracefully', (done) => {
 
-      let doneCount = 0;
-      let expectedDone = 2;
-      let callDone = () => doneCount === expectedDone - 1 ? done() : doneCount++;
+      let doneWhen = new DoneWhen(done).calledNTimes(3);
 
       let messages$ = new Observable(obs => {
-          obs.next(createSnapshot(MessageKind.OutputRedirected, '2'));
+          obs.next(createMessageSnapshot(MessageKind.OutputRedirected, '2'));
           return () => {
             // in case the cleanup does not run, the test won't complete
             // which seems to be the only way to properly test this.
-            callDone();
+            doneWhen.call();
           };
       });
 
       let redirectedMessages$ = new Observable(obs => {
-          obs.next(createSnapshot(MessageKind.Stdout, 'some-text'));
-          obs.next(createSnapshot(MessageKind.Stdout, 'other-text'));
-          obs.next(createSnapshot(MessageKind.ExecutionFinished, ''));
-          obs.next(createSnapshot(MessageKind.Stdout, 'other-text'));
+          obs.next(createMessageSnapshot(MessageKind.Stdout, 'some-text'));
+          obs.next(createMessageSnapshot(MessageKind.Stdout, 'other-text'));
+          obs.next(createMessageSnapshot(MessageKind.ExecutionFinished, ''));
+          obs.next(createMessageSnapshot(MessageKind.Stdout, 'other-text'));
           return () => {
             // in case the cleanup does not run, the test won't complete
             // which seems to be the only way to properly test this.
-            callDone();
+            doneWhen.call();
           };
       });
 
@@ -193,6 +205,8 @@ describe('RemoteLabExecService', () => {
             return redirectedMessages$;
           }
         });
+
+      spyOnExecutionAndCallDone(db, doneWhen);
 
       let actualMessages = [];
       rleService.run(context, testLab)
