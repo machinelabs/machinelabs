@@ -13,7 +13,7 @@ import { ExecutionStatus } from '../models/execution';
 import { UserService } from '../user/user.service';
 import { DbRefBuilder } from '../firebase/db-ref-builder';
 import { DATABASE } from '../app.tokens';
-import { FirebaseMock } from '../../mocks/firebase-mock';
+import { FirebaseMock } from '../../test-helper/firebase-mock';
 import { EditLabDialogComponent } from '../edit-lab-dialog/edit-lab-dialog.component';
 
 let authServiceStub = {
