@@ -1,0 +1,6 @@
+describe('MachineLabs', () => {
+
+  it('should work', () => {
+    expect(true).toBe(true);
+  });
+});
