@@ -9,10 +9,23 @@
     "@reactivex/rxjs": "^5.0.0-rc.5",
     "firebase": "^3.7.1"
   },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "testPathIgnorePatterns": ["/node_modules/", "/dist/"],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ]
+  },
   "scripts": {
     "build": "gulp build",
-    "serve": "gulp build && node dist/index.js",
-    "test": "node scripts/run-tests.js",
+    "serve": "node gulp build && node dist/index.js",
+    "test": "./node_modules/jest/bin/jest.js",
     "tslint": "tslint -c config/tslint.json src/**/*.ts"
   },
   "devDependencies": {
@@ -20,6 +33,7 @@
     "@types/glob": "^5.0.29",
     "@types/gulp": "^3.8.29",
     "@types/jasmine": "^2.2.34",
+    "@types/jest": "^19.2.2",
     "@types/merge2": "0.0.28",
     "@types/minimist": "^1.1.28",
     "@types/node": "^6.0.45",
@@ -39,6 +53,7 @@
     "gulp-sourcemaps": "^1.6.0",
     "gulp-typescript": "^2.13.6",
     "jasmine": "^2.4.1",
+    "jest": "^19.0.2",
     "merge": "^1.2.0",
     "merge2": "^1.0.2",
     "readline-sync": "^1.4.4",
@@ -46,6 +61,7 @@
     "resolve-bin": "^0.4.0",
     "run-sequence": "^1.2.2",
     "ts-helpers": "1.1.2",
+    "ts-jest": "^19.0.14",
     "ts-node": "^0.9.3",
     "tslint": "^3.13.0",
     "typescript": "^2.2.1",
