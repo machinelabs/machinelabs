@@ -1,40 +1,45 @@
 // TODO styling is temp for now
 $ocean-blue: #2196f3;
 
-.profile {
+.ml-user-profile {
+  margin: 2em auto;
+  max-width: 960px;
+}
+
+.ml-user-profile__details {
+  text-align: center;
+}
+
+.ml-user-profile__details-avatar {
+  width: 15rem;
+}
+
+.ml-user-profile__lab-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    &:first-child {
+      margin-top: 0;
+    }
+    margin-top: 2em;
+  }
+
+  md-card-title a {
+    color: $ocean-blue;
+    text-decoration: none;
+  }
+}
+
+.ml-user-profile__no-labs-msg {
+  color: gray;
+  font-style: italic;
+  text-align: center;
   margin: 2em auto;
   width: 70%;
 
-  .details {
-    text-align: center;
-
-    .avatar {
-      width: 15rem;
-      border-radius: 8px;
-    }
-  }
-
-  .labs {
-    h2, md-card-title a {
-      color: $ocean-blue;
-    }
-
-    md-card-title {
-      a {
-        text-decoration: none;
-      }
-    }
-
-    .no-labs {
-      color: gray;
-      font-style: italic;
-      text-align: center;
-      margin: 2em auto;
-      width: 70%;
-
-      a {
-        color: $ocean-blue;
-      }
-    }
+  a {
+    color: $ocean-blue;
   }
 }
