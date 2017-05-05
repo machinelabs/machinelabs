@@ -2,8 +2,8 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { LabStorageService } from '../lab-storage.service';
-import { Lab } from '../models/lab';
+import { LabStorageService } from '../../lab-storage.service';
+import { Lab } from '../../models/lab';
 
 @Component({
   selector: 'ml-edit-lab-dialog',

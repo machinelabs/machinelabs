@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Observable';
-import { ExecutionMessage } from '../models/execution';
-import { LabExecutionContext } from '../models/lab';
-import { DbRefBuilder } from '../firebase/db-ref-builder';
+import { ExecutionMessage } from '../../models/execution';
+import { LabExecutionContext } from '../../models/lab';
+import { DbRefBuilder } from '../../firebase/db-ref-builder';
 
 
 /**

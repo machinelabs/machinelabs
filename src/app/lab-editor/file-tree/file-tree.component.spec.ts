@@ -3,7 +3,7 @@ import { By } from '@angular/platform-browser';
 
 import { NO_ERRORS_SCHEMA, Component, Input } from '@angular/core';
 
-import { File } from '../models/lab';
+import { File } from '../../models/lab';
 import { FileTreeComponent } from './file-tree.component';
 
 describe('FileTreeComponent', () => {

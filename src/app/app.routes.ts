@@ -1,27 +1,26 @@
-import { UserResolver, UserLabsResolver } from './user-profile/user.resolver';
 import { Routes } from '@angular/router';
-
-import { EditorViewComponent } from './editor-view/editor-view.component';
-import { UserProfileComponent } from './user-profile/user-profile.component';
-import { LabResolver } from './lab.resolver';
 
 export const APP_ROUTES: Routes = [
   {
-    component: EditorViewComponent,
     path: '',
-    resolve: {
-      lab: LabResolver
-    }
+    pathMatch: 'full',
+    redirectTo: 'editor'
+  },
+  {
+    path: 'editor',
+    loadChildren: './lab-editor/lab-editor.module#LabEditorModule',
+  },
+  {
+    path: ':id',
+    pathMatch: 'full',
+    redirectTo: 'editor/:id',
   },
   {
     path: 'user/:userId',
     loadChildren: './user-profile/user-profile.module#UserProfileModule'
   },
   {
-    path: ':labid',
-    component: EditorViewComponent,
-    resolve: {
-      lab: LabResolver
-    }
+    path: '**',
+    redirectTo: 'editor'
   }
 ];

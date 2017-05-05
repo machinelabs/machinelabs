@@ -5,15 +5,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { MachineLabsMaterialModule } from '../ml-material.module';
-import { AuthService, dummyUser } from '../auth/';
+import { MachineLabsMaterialModule } from '../../ml-material.module';
+import { AuthService, dummyUser } from '../../auth/';
 import { EditorToolbarComponent, EditorToolbarActionTypes } from './editor-toolbar.component';
-import { LabExecutionContext } from '../models/lab';
-import { ExecutionStatus } from '../models/execution';
-import { UserService } from '../user/user.service';
-import { DbRefBuilder } from '../firebase/db-ref-builder';
-import { DATABASE } from '../app.tokens';
-import { FirebaseMock } from '../../test-helper/firebase-mock';
+import { LabExecutionContext } from '../../models/lab';
+import { ExecutionStatus } from '../../models/execution';
+import { UserService } from '../../user/user.service';
+import { DbRefBuilder } from '../../firebase/db-ref-builder';
+import { DATABASE } from '../../app.tokens';
+import { FirebaseMock } from '../../../test-helper/firebase-mock';
 import { EditLabDialogComponent } from '../edit-lab-dialog/edit-lab-dialog.component';
 
 let authServiceStub = {

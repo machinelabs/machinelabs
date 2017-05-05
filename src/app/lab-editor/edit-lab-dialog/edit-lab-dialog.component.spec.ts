@@ -7,12 +7,12 @@ import { Observable } from 'rxjs/Observable';
 
 import { EditLabDialogComponent } from './edit-lab-dialog.component';
 
-import { LabStorageService } from '../lab-storage.service';
-import { DATABASE } from '../app.tokens';
-import { DbRefBuilder } from '../firebase/db-ref-builder';
-import { FirebaseMock } from '../../test-helper/firebase-mock';
-import { LabTemplateService, InMemoryLabTemplateService } from '../lab-template.service';
-import { AuthService } from '../auth';
+import { LabStorageService } from '../../lab-storage.service';
+import { DATABASE } from '../../app.tokens';
+import { DbRefBuilder } from '../../firebase/db-ref-builder';
+import { FirebaseMock } from '../../../test-helper/firebase-mock';
+import { LabTemplateService, InMemoryLabTemplateService } from '../../lab-template.service';
+import { AuthService } from '../../auth';
 
 let loginUser = {
   uid: 'some-id',

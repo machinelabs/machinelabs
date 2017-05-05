@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { LabExecutionContext } from '../models/lab';
-import { ExecutionStatus } from '../models/execution';
+import { LabExecutionContext } from '../../models/lab';
+import { ExecutionStatus } from '../../models/execution';
 
 @Component({
   selector: 'ml-execution-status',

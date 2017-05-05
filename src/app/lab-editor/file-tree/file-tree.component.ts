@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { File } from '../models/lab';
+import { File } from '../../models/lab';
 
 const MAIN_PYTHON_FILENAME = 'main.py';
 
