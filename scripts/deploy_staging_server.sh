@@ -21,7 +21,7 @@ gcloud compute copy-files ./machinelabs-server.tar.gz root@machinelabs-staging:/
 
 # unzip and run
 echo "Unzipping and restarting services"
-gcloud compute --project "machinelabs-a73cd" ssh --zone "asia-east1-a" "root@machinelabs-staging" --command "cd /var && tar -zxvf machinelabs-server.tar.gz && pm2 restart all"
+gcloud compute --project "machinelabs-a73cd" ssh --zone "asia-east1-a" "root@machinelabs-staging" --command "cd /var && tar -zxvf machinelabs-server.tar.gz && rm -rf machinelabs-server && mv server machinelabs-server && pm2 restart all"
 
 echo "Cleaning up"
 # Cleanup
