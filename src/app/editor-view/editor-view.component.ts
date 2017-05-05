@@ -7,6 +7,7 @@ import { EditLabDialogComponent } from '../edit-lab-dialog/edit-lab-dialog.compo
 import { NavigationConfirmDialogComponent } from '../navigation-confirm-dialog/navigation-confirm-dialog.component';
 import { RejectionDialogComponent } from '../rejection-dialog/rejection-dialog.component';
 import { RemoteLabExecService } from '../remote-code-execution/remote-lab-exec.service';
+import { EditorSnackbarService } from '../editor-snackbar.service';
 import { LabStorageService } from '../lab-storage.service';
 import { BLANK_LAB_TPL_ID } from '../lab-template.service';
 import { Observable } from 'rxjs/Observable';
@@ -54,7 +55,7 @@ export class EditorViewComponent implements OnInit {
                private labStorageService: LabStorageService,
                private route: ActivatedRoute,
                private dialog: MdDialog,
-               private snackBar: MdSnackBar,
+               private editorSnackbar: EditorSnackbarService,
                private location: Location,
                private router: Router) {
   }
@@ -76,10 +77,6 @@ export class EditorViewComponent implements OnInit {
     }
   }
 
-  notifySnackBar(text: string) {
-    this.snackBar.open(text, 'Dismiss', { duration: 3000 });
-  }
-
   run(lab: Lab) {
     this.tabGroup.selectedIndex = TabIndex.Console;
     // we want to have this immutable. Shared instances make it hard
@@ -98,9 +95,9 @@ export class EditorViewComponent implements OnInit {
     this.output = this.rleService.run(this.context, lab)
                       .do(msg => {
                         if (msg.kind === MessageKind.ExecutionFinished) {
-                          this.notifySnackBar(`Process finished`);
+                          this.editorSnackbar.notifyExecutionFinished();
                         } else if (msg.kind === MessageKind.OutputRedirected) {
-                          this.notifySnackBar(`Replaying cached run: ${msg.data}`);
+                          this.editorSnackbar.notifyCacheReplay(msg.data);
                         } else if (msg.kind === MessageKind.ExecutionRejected) {
                           this.openRejectionDialog();
                         }
@@ -111,7 +108,7 @@ export class EditorViewComponent implements OnInit {
 
   stop(context: LabExecutionContext) {
     this.rleService.stop(context);
-    this.notifySnackBar('Lab stopped');
+    this.editorSnackbar.notifyLabStopped();
   }
 
   fork(lab: Lab) {
@@ -133,7 +130,7 @@ export class EditorViewComponent implements OnInit {
         queryParamsHandling: 'preserve'
       });
 
-      this.notifySnackBar(msg);
+      this.editorSnackbar.notify(msg);
     });
   }
 
@@ -180,7 +177,7 @@ export class EditorViewComponent implements OnInit {
       .subscribe(lab => {
         this.location.go(`/?tpl=${BLANK_LAB_TPL_ID}`);
         this.initLab(lab);
-        this.notifySnackBar('New lab created.');
+        this.editorSnackbar.notifyLabCreated();
       });
   }
 

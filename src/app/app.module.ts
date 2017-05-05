@@ -17,6 +17,7 @@ import { LabStorageService } from './lab-storage.service';
 import { UserService } from 'app/user/user.service';
 import { AuthService, FirebaseAuthService, OfflineAuthService } from './auth';
 import { LabTemplateService, InMemoryLabTemplateService } from './lab-template.service';
+import { EditorSnackbarService } from './editor-snackbar.service';
 
 import { AppComponent } from './app.component';
 import { EditorToolbarComponent } from './editor-toolbar/editor-toolbar.component';
@@ -88,7 +89,8 @@ export function databaseFactory() {
     DbRefBuilder,
     { provide: DATABASE, useFactory: databaseFactory },
     { provide: AuthService, useClass: environment.offline ? OfflineAuthService : FirebaseAuthService },
-    { provide: LabTemplateService, useClass: InMemoryLabTemplateService }
+    { provide: LabTemplateService, useClass: InMemoryLabTemplateService },
+    EditorSnackbarService
   ],
   entryComponents: [
     FileNameDialogComponent,
