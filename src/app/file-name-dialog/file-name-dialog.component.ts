@@ -5,17 +5,29 @@ import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 @Component({
   selector: 'ml-file-name-dialog',
   template: `
+    <ml-dialog-header>Add new file</ml-dialog-header>
     <form [formGroup]="form" (ngSubmit)="submit(form)">
-    <md-input-container>
-        <input mdInput placeholder="File name" formControlName="filename">
-        <md-hint *ngIf="!form.valid && !form.pristine" align="start">This field is required.</md-hint>
-      </md-input-container>
-      <div style="margin-top: 1em; text-align: center;">
+      <ml-dialog-content>
+        <md-input-container>
+          <input mdInput placeholder="File name" formControlName="filename">
+          <md-hint *ngIf="!form.valid && !form.pristine" align="start">This field is required.</md-hint>
+        </md-input-container>
+      </ml-dialog-content>
+      <ml-dialog-cta-bar>
         <button md-button [disabled]="!form.valid" type="submit">Ok</button>
         <button md-button type="button" (click)="dialogRef.close()">Cancel</button>
-      </div>
+      </ml-dialog-cta-bar>
     </form>
-  `
+  `,
+  styles: [`
+    :host {
+      display: block;
+      width: 500px;
+    }
+    md-input-container {
+      width: 100%;
+    }
+  `]
 })
 export class FileNameDialogComponent implements OnInit {
 

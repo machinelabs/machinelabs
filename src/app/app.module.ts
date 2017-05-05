@@ -30,6 +30,12 @@ import { FileTreeComponent } from './file-tree/file-tree.component';
 import { ExecutionStatusComponent } from './execution-status/execution-status.component';
 import { EditLabDialogComponent } from './edit-lab-dialog/edit-lab-dialog.component';
 
+import {
+  DialogHeaderComponent,
+  DialogContentComponent,
+  DialogCtaBarComponent
+} from './dialog/dialog.component';
+
 import { APP_ROUTES } from './app.routes';
 import { LabResolver } from './lab.resolver';
 
@@ -55,7 +61,10 @@ export function databaseFactory() {
     FileTreeComponent,
     NavigationConfirmDialogComponent,
     ExecutionStatusComponent,
-    EditLabDialogComponent
+    EditLabDialogComponent,
+    DialogHeaderComponent,
+    DialogContentComponent,
+    DialogCtaBarComponent
   ],
   imports: [
     BrowserModule,
