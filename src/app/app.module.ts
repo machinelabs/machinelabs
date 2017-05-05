@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule, PreloadAllModules } from '@angular/router';
 
+import { SharedModule } from './shared.module';
 import { MachineLabsMaterialModule } from './ml-material.module';
 import { ToolbarModule } from './toolbar/toolbar.module';
 
@@ -63,6 +64,7 @@ export function databaseFactory() {
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
+    SharedModule,
     RouterModule.forRoot(APP_ROUTES, { preloadingStrategy: PreloadAllModules }),
     MachineLabsMaterialModule,
     ToolbarModule
