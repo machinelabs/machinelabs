@@ -1,14 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { Inject } from '@angular/core';
-import { DoneWhen } from '../../test-helper/doneWhen';
+import { DoneWhen } from '../../../test-helper/doneWhen';
 import { Observable } from 'rxjs/Observable';
 
 import { RemoteLabExecService } from './remote-lab-exec.service';
-import { AuthService } from '../auth';
-import { DATABASE } from '../app.tokens';
-import { DbRefBuilder } from '../firebase/db-ref-builder';
-import { LabExecutionContext, Lab } from '../models/lab';
-import { MessageKind, ExecutionStatus } from 'app/models/execution';
+import { AuthService } from '../../auth';
+import { DATABASE } from '../../app.tokens';
+import { DbRefBuilder } from '../../firebase/db-ref-builder';
+import { LabExecutionContext, Lab } from '../../models/lab';
+import { MessageKind, ExecutionStatus } from '../../models/execution';
 
 
 let createSnapshot = data => ({ val: () => data });

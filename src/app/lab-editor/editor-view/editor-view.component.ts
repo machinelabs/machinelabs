@@ -8,11 +8,11 @@ import { NavigationConfirmDialogComponent } from '../navigation-confirm-dialog/n
 import { RejectionDialogComponent } from '../rejection-dialog/rejection-dialog.component';
 import { RemoteLabExecService } from '../remote-code-execution/remote-lab-exec.service';
 import { EditorSnackbarService } from '../editor-snackbar.service';
-import { LabStorageService } from '../lab-storage.service';
-import { BLANK_LAB_TPL_ID } from '../lab-template.service';
+import { LabStorageService } from '../../lab-storage.service';
+import { BLANK_LAB_TPL_ID } from '../../lab-template.service';
 import { Observable } from 'rxjs/Observable';
-import { Lab, LabExecutionContext, File } from '../models/lab';
-import { ExecutionMessage, MessageKind } from '../models/execution';
+import { Lab, LabExecutionContext, File } from '../../models/lab';
+import { ExecutionMessage, MessageKind } from '../../models/execution';
 import { EditorToolbarAction, EditorToolbarActionTypes } from '../editor-toolbar/editor-toolbar.component';
 
 enum TabIndex {

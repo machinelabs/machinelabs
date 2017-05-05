@@ -1,10 +1,10 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { Lab, LabExecutionContext } from '../models/lab';
-import { User } from '../models/user';
-import { AuthService } from '../auth/auth.service';
-import { UserService } from '../user/user.service';
+import { Lab, LabExecutionContext } from '../../models/lab';
+import { User } from '../../models/user';
+import { AuthService } from '../../auth/auth.service';
+import { UserService } from '../../user/user.service';
 
 export enum EditorToolbarActionTypes {
   Run, Stop, Save, Fork, Create, Edit

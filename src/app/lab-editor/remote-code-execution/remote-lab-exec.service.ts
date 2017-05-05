@@ -1,15 +1,15 @@
 import { Injectable, Inject } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { Lab, LabExecutionContext } from '../models/lab';
-import { Invocation, InvocationType } from '../models/invocation';
-import { Execution, ExecutionStatus, ExecutionMessage, MessageKind } from '../models/execution';
-import { ContextExecutionUpdater } from '../remote-code-execution/context-execution-updater';
+import { Lab, LabExecutionContext } from '../../models/lab';
+import { Invocation, InvocationType } from '../../models/invocation';
+import { Execution, ExecutionStatus, ExecutionMessage, MessageKind } from '../../models/execution';
+import { ContextExecutionUpdater } from './context-execution-updater';
 import * as shortid from 'shortid';
 import * as firebase from 'firebase';
 
-import { DbRefBuilder } from '../firebase/db-ref-builder';
-import { AuthService } from '../auth';
+import { DbRefBuilder } from '../../firebase/db-ref-builder';
+import { AuthService } from '../../auth';
 
 @Injectable()
 export class RemoteLabExecService {

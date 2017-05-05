@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { ExecutionStatusComponent } from './execution-status.component';
-import { LabExecutionContext } from '../models/lab';
-import { ExecutionStatus } from '../models/execution';
+import { LabExecutionContext } from '../../models/lab';
+import { ExecutionStatus } from '../../models/execution';
 
 describe('ExecutionStatusComponent', () => {
   let component: ExecutionStatusComponent;

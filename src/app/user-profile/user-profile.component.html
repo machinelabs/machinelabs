@@ -5,7 +5,7 @@
     <div fxFlex="30" class="ml-user-profile__details">
       <img class="ml-user-profile__details-avatar" alt="Avatar of {{user.displayName}}" [src]="user.photoUrl">
       <h3>{{user.displayName}}</h3>
-      <a md-button routerLink="/" [queryParams]="{tpl: 'blank'}" title="Create new lab"><md-icon>add</md-icon> Create lab</a>
+      <a md-button routerLink="/editor" [queryParams]="{tpl: 'blank'}" title="Create new lab"><md-icon>add</md-icon> Create lab</a>
     </div>
 
     <div fxFlex>
@@ -13,7 +13,7 @@
         <li *ngFor="let lab of labs">
           <md-card>
             <md-card-title>
-              <a title="{{lab.name}}" [routerLink]="['/', lab.id]">{{lab.name}}</a>
+              <a title="{{lab.name}}" [routerLink]="['/editor', lab.id]">{{lab.name}}</a>
             </md-card-title>
             <md-card-content>{{lab.description}}</md-card-content>
             <ml-tag-list [tags]="lab.tags"></ml-tag-list>
@@ -21,7 +21,7 @@
         </li>
       </ul>
       <ng-template #noLabsMessage>
-        <p class="ml-user-profile__no-labs-msg">Hmmm...No sparks of genious here just yet, but no worries. We know you can do it, so go ahead and <a routerLink="/" [queryParams]="{tpl: 'blank'}" title="Create a new lab">get started</a>!</p>
+        <p class="ml-user-profile__no-labs-msg">Hmmm...No sparks of genious here just yet, but no worries. We know you can do it, so go ahead and <a routerLink="/editor" [queryParams]="{tpl: 'blank'}" title="Create a new lab">get started</a>!</p>
       </ng-template>
     </div>
 </div>
