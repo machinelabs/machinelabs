@@ -29,6 +29,7 @@ import { NavigationConfirmDialogComponent } from './navigation-confirm-dialog/na
 import { FileTreeComponent } from './file-tree/file-tree.component';
 import { ExecutionStatusComponent } from './execution-status/execution-status.component';
 import { EditLabDialogComponent } from './edit-lab-dialog/edit-lab-dialog.component';
+import { RejectionDialogComponent } from './rejection-dialog/rejection-dialog.component';
 
 import {
   DialogHeaderComponent,
@@ -62,6 +63,7 @@ export function databaseFactory() {
     NavigationConfirmDialogComponent,
     ExecutionStatusComponent,
     EditLabDialogComponent,
+    RejectionDialogComponent,
     DialogHeaderComponent,
     DialogContentComponent,
     DialogCtaBarComponent
@@ -91,7 +93,8 @@ export function databaseFactory() {
   entryComponents: [
     FileNameDialogComponent,
     NavigationConfirmDialogComponent,
-    EditLabDialogComponent
+    EditLabDialogComponent,
+    RejectionDialogComponent
   ],
   bootstrap: [AppComponent]
 })

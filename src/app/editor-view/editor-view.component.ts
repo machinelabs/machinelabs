@@ -5,6 +5,7 @@ import { MdDialog, MdDialogRef, MdSnackBar, MdTabGroup } from '@angular/material
 import { FileNameDialogComponent } from '../file-name-dialog/file-name-dialog.component';
 import { EditLabDialogComponent } from '../edit-lab-dialog/edit-lab-dialog.component';
 import { NavigationConfirmDialogComponent } from '../navigation-confirm-dialog/navigation-confirm-dialog.component';
+import { RejectionDialogComponent } from '../rejection-dialog/rejection-dialog.component';
 import { RemoteLabExecService } from '../remote-code-execution/remote-lab-exec.service';
 import { LabStorageService } from '../lab-storage.service';
 import { BLANK_LAB_TPL_ID } from '../lab-template.service';
@@ -46,6 +47,8 @@ export class EditorViewComponent implements OnInit {
   @ViewChild(MdTabGroup) tabGroup: MdTabGroup;
 
   editLabDialogRef: MdDialogRef<EditLabDialogComponent>;
+
+  rejectionDialogRef: MdDialogRef<RejectionDialogComponent>;
 
   constructor (private rleService: RemoteLabExecService,
                private labStorageService: LabStorageService,
@@ -99,9 +102,7 @@ export class EditorViewComponent implements OnInit {
                         } else if (msg.kind === MessageKind.OutputRedirected) {
                           this.notifySnackBar(`Replaying cached run: ${msg.data}`);
                         } else if (msg.kind === MessageKind.ExecutionRejected) {
-                          // TODO: Better show something with more info.
-                          // Tell the user to create an account etc.
-                          this.notifySnackBar('Execution rejected');
+                          this.openRejectionDialog();
                         }
                       })
                       .filter(msg => msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr)
@@ -230,6 +231,10 @@ export class EditorViewComponent implements OnInit {
           this.updateFile(file, { name, content: file.content});
         }
       });
+  }
+
+  openRejectionDialog() {
+    this.rejectionDialogRef = this.dialog.open(RejectionDialogComponent);
   }
 
   initLab(lab: Lab) {
