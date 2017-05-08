@@ -1,0 +1,35 @@
+<md-card class="ml-lab-status">
+  <h4 class="ml-lab-status__headline"><md-icon>info</md-icon> Execution status</h4>
+  <md-card-content class="ml-lab-status__content">
+    <table>
+      <tr>
+        <td>Status:</td>
+        <td>{{ execution.status | executionStatusLabel }}</td>
+      </tr>
+      <tr>
+        <td>Started:</td>
+        <td>{{ (execution.started_at | date: 'medium') || '-' }}</td>
+      </tr>
+      <tr>
+        <td>Finished:</td>
+        <td>{{ (execution.finished_at | date: 'medium') || '-' }}</td>
+      </tr>
+      <tr>
+        <td>Duration:</td>
+        <td>
+          <ng-container *ngIf="execution.finished_at; else notAvailable">
+            {{execution.started_at | distanceInWordsStrict: execution.finished_at}}</ng-container>
+          <ng-template #notAvailable>-</ng-template>
+        </td>
+      </tr>
+      <tr class="ml-lab-status__user-info">
+        <td>Executed by:</td>
+        <td>
+          <ng-container *ngIf="executer; else notAvailable">
+            <img [src]="executer.photoUrl"> <a title="{{executer.displayName}}'s profile" [routerLink]="['/user', executer.id]">{{executer.displayName}}</a>
+          </ng-container>
+        </td>
+      </tr>
+    </table>
+  </md-card-content>
+</md-card>

@@ -5,7 +5,7 @@
 
 md-sidenav {
   width: 350px;
-  box-shadow: 1px 0 5px rgba(0,0,0,.24);
+  box-shadow: 0 0 8px rgba(0,0,0,.24);
 }
 
 md-sidenav-container { height: 100% }
@@ -45,5 +45,5 @@ ml-tag-list { padding: 0em 2em 2em; }
 }
 
 .mat-slide-toggle {
-  margin-left: 20px;
+  margin-right: 20px;
 }

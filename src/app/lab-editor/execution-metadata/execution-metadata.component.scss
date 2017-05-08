@@ -1,0 +1,51 @@
+.ml-lab-status {
+  padding: 0;
+  margin: 1.2em;
+}
+
+.ml-lab-status__headline {
+  margin: 0;
+  padding: 1em 1.5em;
+  background: rgba(3, 169, 244, 1);
+  color: #fff;
+  line-height: 1;
+
+  md-icon {
+    vertical-align: -20%;
+    font-size: 22px;
+  }
+}
+
+.ml-lab-status__content {
+  padding: 1em 1.5em;
+
+  tr {
+    &:first-child {
+      td { margin-top: 0; }
+    }
+    td {
+      vertical-align: top;
+      margin-top: 0.5em;
+      display: inline-block;
+      &:first-child {
+        width: 95px;
+        font-weight: 500;
+      }
+    }
+  }
+
+  a {
+    text-decoration: none;
+    color: #ff9800;
+    border-bottom: 1px dotted #ff9800;
+  }
+}
+
+.ml-lab-status__user-info {
+  img {
+    width: 1.4em;
+    border-radius: 50%;
+  }
+}
+
+

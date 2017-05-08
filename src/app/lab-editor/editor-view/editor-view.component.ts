@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MdDialog, MdDialogRef, MdSnackBar, MdTabGroup } from '@angular/material';
+import { MdDialog, MdDialogRef, MdSnackBar, MdTabGroup, MdSidenav } from '@angular/material';
 import { FileNameDialogComponent } from '../file-name-dialog/file-name-dialog.component';
 import { EditLabDialogComponent } from '../edit-lab-dialog/edit-lab-dialog.component';
 import { NavigationConfirmDialogComponent } from '../navigation-confirm-dialog/navigation-confirm-dialog.component';
@@ -10,6 +10,8 @@ import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
 import { RemoteLabExecService } from '../remote-code-execution/remote-lab-exec.service';
 import { EditorSnackbarService } from '../editor-snackbar.service';
 import { LabStorageService } from '../../lab-storage.service';
+import { UserService } from '../../user/user.service';
+import { User } from '../../models/user';
 import { BLANK_LAB_TPL_ID } from '../../lab-template.service';
 import { Observable } from 'rxjs/Observable';
 import { Lab, LabExecutionContext, File } from '../../models/lab';
@@ -48,11 +50,15 @@ export class EditorViewComponent implements OnInit {
 
   @ViewChild(MdTabGroup) tabGroup: MdTabGroup;
 
+  @ViewChild('executionMetadataSidebar') executionMetadataSidebar: MdSidenav;
+
   editLabDialogRef: MdDialogRef<EditLabDialogComponent>;
 
   rejectionDialogRef: MdDialogRef<RejectionDialogComponent>;
 
   shareDialogRef: MdDialogRef<ShareDialogComponent>;
+
+  labExecuter: Observable<User>;
 
   constructor (private rleService: RemoteLabExecService,
                private labStorageService: LabStorageService,
@@ -60,7 +66,8 @@ export class EditorViewComponent implements OnInit {
                private dialog: MdDialog,
                private editorSnackbar: EditorSnackbarService,
                private location: Location,
-               private router: Router) {
+               private router: Router,
+               private userService: UserService) {
   }
 
   ngOnInit () {
@@ -99,6 +106,7 @@ export class EditorViewComponent implements OnInit {
                       .do(msg => {
                         if (msg.kind === MessageKind.ExecutionFinished) {
                           this.editorSnackbar.notifyExecutionFinished();
+                          this.labExecuter = this.userService.getUser(this.context.execution.user_id);
                         } else if (msg.kind === MessageKind.OutputRedirected) {
                           this.editorSnackbar.notifyCacheReplay(msg.data);
                         } else if (msg.kind === MessageKind.ExecutionRejected) {
@@ -107,6 +115,10 @@ export class EditorViewComponent implements OnInit {
                       })
                       .filter(msg => msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr)
                       .scan((acc, current) => `${acc}\n${current.data}`, '');
+
+    setTimeout(() => {
+      this.executionMetadataSidebar.open();
+    }, 600);
   }
 
   stop(context: LabExecutionContext) {
@@ -186,10 +198,6 @@ export class EditorViewComponent implements OnInit {
         this.initLab(lab);
         this.editorSnackbar.notifyLabCreated();
       });
-  }
-
-  toggleSidebar() {
-    this.sidebarToggled = !this.sidebarToggled;
   }
 
   log(value) {
