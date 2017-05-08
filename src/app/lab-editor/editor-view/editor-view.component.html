@@ -4,55 +4,69 @@
     [context]="context"
     (action)="toolbarAction($event)"
     ></ml-editor-toolbar>
-  <md-tab-group>
-    <md-tab label="Editor">
-      <md-sidenav-container>
-        <md-sidenav opened="true" mode="side" #sidenav class="ml-sidebar">
-          <ml-panel panelTitle="Files">
-            <ml-file-tree
-              [files]="lab.files"
-              [selectedFile]="activeFile"
-              (selectFile)="openFile($event)"
-              (removeFile)="deleteFile($event)"
-              (editFile)="openFileNameDialog($event)"
-              (addFile)="openFileNameDialog()"></ml-file-tree>
-            <ml-panel-title>Description</ml-panel-title>
-            <p class="ml-lab-description">{{lab.description}}</p>
-            <ml-panel-title>Tags</ml-panel-title>
-            <ml-tag-list [tags]="lab.tags"></ml-tag-list>
-          </ml-panel>
-        </md-sidenav>
-        <div role="main">
-          <ml-panel>
-            <ml-ace-editor
-              #editor
-              [(value)]="activeFile.content"
-              mode="python"></ml-ace-editor>
-          </ml-panel>
-        </div>
-      </md-sidenav-container>
-    </md-tab>
-    <md-tab label="Console">
-      <ml-ace-editor
-        [value]="output | async"
-        [readOnly]="true"
-        theme="terminal"
-        mode="sh"></ml-ace-editor>
-    </md-tab>
-  </md-tab-group>
+  <md-sidenav-container>
+    <div>
+      <md-tab-group>
+        <md-tab label="Editor">
+          <md-sidenav-container>
+            <md-sidenav opened="true" mode="side" class="ml-sidebar">
+              <ml-panel panelTitle="Files">
+                <ml-file-tree
+                  [files]="lab.files"
+                  [selectedFile]="activeFile"
+                  (selectFile)="openFile($event)"
+                  (removeFile)="deleteFile($event)"
+                  (editFile)="openFileNameDialog($event)"
+                  (addFile)="openFileNameDialog()"></ml-file-tree>
+                <ml-panel-title>Description</ml-panel-title>
+                <p class="ml-lab-description">{{lab.description}}</p>
+                <ml-panel-title>Tags</ml-panel-title>
+                <ml-tag-list [tags]="lab.tags"></ml-tag-list>
+              </ml-panel>
+            </md-sidenav>
+            <div role="main">
+              <ml-panel>
+                <ml-ace-editor
+                  #editor
+                  [(value)]="activeFile.content"
+                  mode="python"></ml-ace-editor>
+              </ml-panel>
+            </div>
+          </md-sidenav-container>
+        </md-tab>
+        <md-tab label="Console">
+          <ml-ace-editor
+            [value]="output | async"
+            [readOnly]="true"
+            theme="terminal"
+            mode="sh"></ml-ace-editor>
+        </md-tab>
+      </md-tab-group>
+    </div>
+    <md-sidenav
+        (open)="sidebarToggled = true"
+        (close)="sidebarToggled = false"
+        mode="side"
+        align="end"
+        #executionMetadataSidebar
+        class="ml-sidebar"
+        >
+      <ml-execution-metadata [execution]="context.execution" [executer]="labExecuter | async"></ml-execution-metadata>
+    </md-sidenav>
+  </md-sidenav-container>
   <div class="ml-footer">
     <div fxLayout="row" fxLayoutAlign="space-between center">
-      <md-slide-toggle
-        color="accent"
-        [checked]="true"
-        (click)="sidenav.toggle()">File browser</md-slide-toggle>
-      <div class="ml-footer__status">
-        <ml-execution-status [executionContext]="context"></ml-execution-status>
-      </div>
       <div>
         <button md-button md-raised-button md-primary class="elevated" (click)="openShareDialog()">Share</button>
         <button disabled md-button md-raised-button md-primary class="elevated">Embed</button>
       </div>
+      <div class="ml-footer__status">
+        <ml-execution-status [executionContext]="context"></ml-execution-status>
+      </div>
+      <md-slide-toggle
+        color="accent"
+        [checked]="sidebarToggled"
+        (click)="executionMetadataSidebar.toggle()">Show lab status</md-slide-toggle>
     </div>
   </div>
 </div>

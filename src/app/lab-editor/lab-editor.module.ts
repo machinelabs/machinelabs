@@ -20,12 +20,16 @@ import { PanelComponent } from './panel/panel.component';
 import { PanelTitleComponent } from './panel/panel-title.component';
 import { FileTreeComponent } from './file-tree/file-tree.component';
 import { ExecutionStatusComponent } from './execution-status/execution-status.component';
+import { ExecutionMetadataComponent } from './execution-metadata/execution-metadata.component';
 
 import { FileNameDialogComponent } from './file-name-dialog/file-name-dialog.component';
 import { NavigationConfirmDialogComponent } from './navigation-confirm-dialog/navigation-confirm-dialog.component';
 import { EditLabDialogComponent } from './edit-lab-dialog/edit-lab-dialog.component';
 import { RejectionDialogComponent } from './rejection-dialog/rejection-dialog.component';
 import { ShareDialogComponent } from './share-dialog/share-dialog.component';
+
+import { DistanceInWordsStrictPipe } from './distance-in-words-strict.pipe';
+import { ExecutionStatusPipe } from './execution-status.pipe';
 
 @NgModule({
   imports: [
@@ -49,7 +53,10 @@ import { ShareDialogComponent } from './share-dialog/share-dialog.component';
     EditLabDialogComponent,
     ExecutionStatusComponent,
     RejectionDialogComponent,
-    ShareDialogComponent
+    ShareDialogComponent,
+    DistanceInWordsStrictPipe,
+    ExecutionStatusPipe,
+    ExecutionMetadataComponent
   ],
   providers: [
     LabResolver,
