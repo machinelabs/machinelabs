@@ -25,6 +25,7 @@ import { FileNameDialogComponent } from './file-name-dialog/file-name-dialog.com
 import { NavigationConfirmDialogComponent } from './navigation-confirm-dialog/navigation-confirm-dialog.component';
 import { EditLabDialogComponent } from './edit-lab-dialog/edit-lab-dialog.component';
 import { RejectionDialogComponent } from './rejection-dialog/rejection-dialog.component';
+import { ShareDialogComponent } from './share-dialog/share-dialog.component';
 
 @NgModule({
   imports: [
@@ -47,7 +48,8 @@ import { RejectionDialogComponent } from './rejection-dialog/rejection-dialog.co
     NavigationConfirmDialogComponent,
     EditLabDialogComponent,
     ExecutionStatusComponent,
-    RejectionDialogComponent
+    RejectionDialogComponent,
+    ShareDialogComponent
   ],
   providers: [
     LabResolver,
@@ -58,7 +60,8 @@ import { RejectionDialogComponent } from './rejection-dialog/rejection-dialog.co
     NavigationConfirmDialogComponent,
     EditLabDialogComponent,
     FileNameDialogComponent,
-    RejectionDialogComponent
+    RejectionDialogComponent,
+    ShareDialogComponent
   ]
 })
 export class LabEditorModule {}
