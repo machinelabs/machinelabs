@@ -1,5 +1,7 @@
 import * as firebase from 'firebase';
 
+import { WindowRef } from './window-ref.service';
+
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
@@ -50,6 +52,7 @@ export function databaseFactory() {
     DbRefBuilder,
     { provide: DATABASE, useFactory: databaseFactory },
     { provide: AuthService, useClass: environment.offline ? OfflineAuthService : FirebaseAuthService },
+    WindowRef
   ],
   bootstrap: [AppComponent]
 })
