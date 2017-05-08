@@ -243,6 +243,7 @@ export class EditorViewComponent implements OnInit {
 
   initLab(lab: Lab) {
     this.lab = lab;
+    this.tabGroup.selectedIndex = TabIndex.Editor;
 
     // try query param file name first
     const file = this.lab.files.find(f => f.name === this.router.parseUrl(this.location.path(false)).queryParams.file);
