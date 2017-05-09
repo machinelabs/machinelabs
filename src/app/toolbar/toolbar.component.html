@@ -1,9 +1,17 @@
 <md-toolbar color="primary" class="ml-toolbar">
-  <div fxLayout fxLayoutAlign="space-between center" fxFlex class="padded">
-    <ml-toolbar-logo></ml-toolbar-logo>
+  <div fxLayout fxLayoutAlign="space-between center" fxFlex class="ml-toolbar-layout">
+    <ng-content select="ml-toolbar-logo, [ml-toolbar-logo]"></ng-content>
 
-    <div fxLayout fxLayoutAlign="end">
-      <ml-toolbar-menu [user]="user"></ml-toolbar-menu>
+    <div fxFlex>
+      <ng-content select="ml-toolbar-content"></ng-content>
+    </div>
+
+    <div fxFlex fxLayoutAlign="end" class="ml-toolbar-cta-bar">
+      <ng-content select="ml-toolbar-cta-bar"></ng-content>
+    </div>
+
+    <div fxLayoutAlign="end" class="ml-toolbar-menu">
+      <ng-content select="ml-toolbar-menu, [ml-toolbar-menu]"></ng-content>
     </div>
   </div>
 </md-toolbar>

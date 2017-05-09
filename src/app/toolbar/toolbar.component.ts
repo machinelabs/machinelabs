@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Directive, Component, OnInit } from '@angular/core';
 import { MdSnackBar } from '@angular/material';
 import { AuthService } from '../auth/auth.service';
 import { UserService } from '../user/user.service';
@@ -30,3 +30,13 @@ export class ToolbarComponent implements OnInit {
 })
 export class ToolbarLogoComponent {}
 
+/* tslint:disable:directive-selector */
+@Directive({
+  selector: 'ml-toolbar-content, [ml-toolbar-content]'
+})
+export class ToolbarContentDirective {}
+
+@Directive({
+  selector: 'ml-toolbar-cta-bar, [ml-toolbar-cta-bar]'
+})
+export class ToolbarCtaBarDirective {}
