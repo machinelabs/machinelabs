@@ -1,27 +1,35 @@
-:host {
-  z-index: 3;
-  box-shadow: 0 -1px 8px rgba(0,0,0,.5);
+:host { z-index: 1; }
+
+.ml-toolbar-lab-info { margin-left: 7em; }
+
+.ml-toolbar-lab-name {
+  display: inline-block;
+  vertical-align: -10%;
+  font-size: 1em;
 }
 
-.padded {
-  padding-right: 20px;
-}
-
-.ml-toolbar__lab-name {
-
-  > span {
-    display: inline-block;
-    vertical-align: -10%;
-    font-size: 1em;
-  }
-
-  margin-left: 4.5em;
-  input {
-    font-size: 0.75em;
-  }
-
+.ml-toolbar-edit-button {
   md-icon {
     font-size: 1.4em;
+  }
+}
+
+.ml-toolbar-user-info {
+  vertical-align: -5%;
+  font-size: 0.7em;
+  display: block;
+
+  a {
+    color: currentColor;
+    text-decoration: none;
+    vertical-align: -8%;
+    border-bottom: 1px dotted currentColor;
+
+    &:hover,
+    &:focus,
+    &:active {
+      border-bottom: 1px solid currentColor;
+    }
   }
 
   img {
@@ -29,39 +37,14 @@
     border-radius: 50%;
   }
 
-  .ml-toolbar__user-info {
-    vertical-align: -5%;
-    font-size: 0.7em;
-    display: block;
-  }
-
-  a {
-    color: #fff;
-    text-decoration: none;
-    vertical-align: -8%;
-    border-bottom: 1px dotted #fff;
-
-    &:hover,
-    &:focus,
-    &:active {
-      border-bottom: 1px solid #fff;
-    }
+  md-icon {
+    font-size: 1.5em;
+    width: 1em;
+    vertical-align: -30%;
   }
 }
 
-.ml-toolbar__cta-bar {
-  margin-right: 0.4em;
-  [md-button] {
-    margin-left: 0.2em;
-
-    &:first-child {
-      margin-left: 0;
-    }
-  }
-}
-
-.ml-login-avatar {
-  border-radius: 50%;
-  width: 2.5em;
+ml-toolbar-menu {
+  margin-left: 0.4em;
 }
 

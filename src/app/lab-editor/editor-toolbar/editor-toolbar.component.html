@@ -1,38 +1,40 @@
-<md-toolbar color="primary" class="ml-toolbar">
-  <div fxLayout fxLayoutAlign="space-between center" fxFlex class="padded">
-    <ml-toolbar-logo></ml-toolbar-logo>
-
-    <div fxFlex class="ml-toolbar__lab-name">
-      <span [class.hidden]="editing">{{lab.name}}</span>
+<ml-toolbar>
+  <ml-toolbar-logo></ml-toolbar-logo>
+  <ml-toolbar-content>
+    <div class="ml-toolbar-lab-info">
+      <span class="ml-toolbar-lab-name">{{lab.name}}</span>
 
       <ng-container *ngIf="userOwnsLab(); else userInfo">
-        <button md-icon-button type="button" (click)="emitAction(EditorToolbarActionTypes.Edit, lab)"><md-icon>edit</md-icon></button>
+        <button
+          md-icon-button
+          type="button"
+          (click)="emitAction(EditorToolbarActionTypes.Edit, lab)"
+          class="ml-toolbar-edit-button">
+          <md-icon>edit</md-icon>
+        </button>
       </ng-container>
 
       <ng-template #userInfo>
-        <span class="ml-toolbar__user-info">
+        <span class="ml-toolbar-user-info">
           <ng-container *ngIf="(labOwner | async); else anonymousUser; let user;">
-            by <img src="{{user.photoUrl}}"> <a title="{{user.displayName}}'s profile"
-                          [routerLink]="['/user', user.id]">{{user.displayName}}</a>
+            by <img src="{{user.photoUrl}}" alt="User profile picture"> <a title="{{user.displayName}}'s profile" [routerLink]="['/user', user.id]">{{user.displayName}}</a>
           </ng-container>
         </span>
       </ng-template>
 
       <ng-template #anonymousUser>
-        created by anonymous user
+        created by <md-icon>account_circle</md-icon> anonymous user
       </ng-template>
     </div>
+  </ml-toolbar-content>
 
-    <div fxLayout fxLayoutAlign="end">
-      <div fxLayout class="ml-toolbar__cta-bar">
-        <button md-button (click)="emitAction(EditorToolbarActionTypes.Run, lab)" *ngIf="!context.isRunning()"><md-icon>cached</md-icon> Run</button>
-        <button md-button (click)="emitAction(EditorToolbarActionTypes.Stop, context)" *ngIf="context.isRunning()"><md-icon>stop</md-icon> Stop</button>
-        <button md-button (click)="emitAction(EditorToolbarActionTypes.Save, lab)" *ngIf="userOwnsLab()"><md-icon>save</md-icon> Save</button>
-        <button md-button (click)="emitAction(EditorToolbarActionTypes.Fork, lab)"><md-icon>share</md-icon> Fork</button>
-        <button md-button (click)="emitAction(EditorToolbarActionTypes.Create)"><md-icon>add</md-icon> New</button>
-      </div>
+  <ml-toolbar-cta-bar>
+    <button md-button (click)="emitAction(EditorToolbarActionTypes.Run, lab)" *ngIf="!context.isRunning()"><md-icon>cached</md-icon> Run</button>
+    <button md-button (click)="emitAction(EditorToolbarActionTypes.Stop, context)" *ngIf="context.isRunning()"><md-icon>stop</md-icon> Stop</button>
+    <button md-button (click)="emitAction(EditorToolbarActionTypes.Save, lab)" *ngIf="userOwnsLab()"><md-icon>save</md-icon> Save</button>
+    <button md-button (click)="emitAction(EditorToolbarActionTypes.Fork, lab)"><md-icon>share</md-icon> Fork</button>
+    <button md-button (click)="emitAction(EditorToolbarActionTypes.Create)"><md-icon>add</md-icon> New</button>
+  </ml-toolbar-cta-bar>
+  <ml-toolbar-menu [user]="user"></ml-toolbar-menu>
 
-      <ml-toolbar-menu [user]="user"></ml-toolbar-menu>
-    </div>
-  </div>
-</md-toolbar>
+</ml-toolbar>

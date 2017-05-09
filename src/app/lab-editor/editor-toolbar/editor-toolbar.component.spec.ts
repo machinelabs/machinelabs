@@ -94,7 +94,7 @@ describe('EditorToolbarComponent', () => {
     component.lab = lab;
     fixture.detectChanges();
 
-    let nameSpan = fixture.debugElement.query(By.css('.ml-toolbar__lab-name span'));
+    let nameSpan = fixture.debugElement.query(By.css('.ml-toolbar-lab-name'));
 
     expect(nameSpan).toBeDefined();
     expect(nameSpan.nativeElement.textContent).toEqual(lab.name);
@@ -113,7 +113,7 @@ describe('EditorToolbarComponent', () => {
         component.lab = lab;
         fixture.detectChanges();
 
-        let editButton = fixture.debugElement.query(By.css('.ml-toolbar__lab-name button'));
+        let editButton = fixture.debugElement.query(By.css('.ml-toolbar-edit-button'));
 
         component.action.subscribe(action => {
           expect(action.type).toBe(EditorToolbarActionTypes.Edit);
@@ -125,7 +125,7 @@ describe('EditorToolbarComponent', () => {
     });
 
     it('should emit run action', () => {
-      let runButton = fixture.debugElement.queryAll(By.css('.ml-toolbar__cta-bar button'))[0];
+      let runButton = fixture.debugElement.queryAll(By.css('ml-toolbar-cta-bar button'))[0];
 
       component.action.subscribe(action => {
         expect(action.type).toBe(EditorToolbarActionTypes.Run);
@@ -143,7 +143,7 @@ describe('EditorToolbarComponent', () => {
       fixture.detectChanges();
 
       // When lab is running, stop button is the first
-      let stopButton = fixture.debugElement.queryAll(By.css('.ml-toolbar__cta-bar button'))[0];
+      let stopButton = fixture.debugElement.queryAll(By.css('ml-toolbar-cta-bar button'))[0];
 
       component.action.subscribe(action => {
         expect(action.type).toBe(EditorToolbarActionTypes.Stop);
@@ -164,7 +164,7 @@ describe('EditorToolbarComponent', () => {
         fixture.detectChanges();
 
         // When lab isn't running, save button is the second
-        let saveButton = fixture.debugElement.queryAll(By.css('.ml-toolbar__cta-bar button'))[1];
+        let saveButton = fixture.debugElement.queryAll(By.css('ml-toolbar-cta-bar button'))[1];
 
         component.action.subscribe(action => {
           expect(action.type).toBe(EditorToolbarActionTypes.Save);
@@ -177,7 +177,7 @@ describe('EditorToolbarComponent', () => {
 
     it('should emit fork action', () => {
       // When user doesn't own lab and lab isn't running, fork button is second
-      let forkButton = fixture.debugElement.queryAll(By.css('.ml-toolbar__cta-bar button'))[1];
+      let forkButton = fixture.debugElement.queryAll(By.css('ml-toolbar-cta-bar button'))[1];
 
       component.action.subscribe(action => {
         expect(action.type).toBe(EditorToolbarActionTypes.Fork);
@@ -188,7 +188,7 @@ describe('EditorToolbarComponent', () => {
 
     it('should emit create action', () => {
       // When user doesn't own lab and lab isn't running, add button is third
-      let createButton = fixture.debugElement.queryAll(By.css('.ml-toolbar__cta-bar button'))[2];
+      let createButton = fixture.debugElement.queryAll(By.css('ml-toolbar-cta-bar button'))[2];
 
       component.action.subscribe(action => {
         expect(action.type).toBe(EditorToolbarActionTypes.Create);
