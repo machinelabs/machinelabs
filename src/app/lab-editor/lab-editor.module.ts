@@ -21,6 +21,7 @@ import { PanelTitleComponent } from './panel/panel-title.component';
 import { FileTreeComponent } from './file-tree/file-tree.component';
 import { ExecutionStatusComponent } from './execution-status/execution-status.component';
 import { ExecutionMetadataComponent } from './execution-metadata/execution-metadata.component';
+import { FooterComponent } from './editor-footer/editor-footer.component';
 
 import { FileNameDialogComponent } from './file-name-dialog/file-name-dialog.component';
 import { NavigationConfirmDialogComponent } from './navigation-confirm-dialog/navigation-confirm-dialog.component';
@@ -56,7 +57,8 @@ import { ExecutionStatusPipe } from './execution-status.pipe';
     ShareDialogComponent,
     DistanceInWordsStrictPipe,
     ExecutionStatusPipe,
-    ExecutionMetadataComponent
+    ExecutionMetadataComponent,
+    FooterComponent
   ],
   providers: [
     LabResolver,

@@ -1,0 +1,37 @@
+:host {
+  display: block;
+  z-index: 2;
+}
+
+.ml-editor-footer {
+  width: 100%;
+  height: 48px;
+  font-size:  0.8em;
+  box-shadow: 0 -1px 5px rgba(0,0,0,.24);
+}
+
+.ml-editor-footer-layout {
+  padding-left: 36px;
+  padding-right: 36px;
+}
+
+.ml-editor-footer-content {
+  width: 500px;
+  height: 20px;
+  margin-right: 12em;
+}
+
+.ml-editor-footer-cta-bar {
+  [md-button] {
+    margin: 1em 0.5em;
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+}
+
+.elevated {
+  line-height: 12px;
+  padding: 0.5em;
+  vertical-align: middle;
+}
