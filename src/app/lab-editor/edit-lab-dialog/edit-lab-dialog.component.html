@@ -1,17 +1,19 @@
 <ml-dialog-header>Edit lab</ml-dialog-header>
   <form [formGroup]="form" (ngSubmit)="submit(form.value)">
-  <ml-dialog-content  fxLayout="column">
-    <md-input-container fxFlex>
-      <input mdInput placeholder="Name" formControlName="name">
-      <md-hint *ngIf="!form.valid && !form.pristine && form.get('name').errors" align="end">This field is required.</md-hint>
-    </md-input-container>
-    <md-input-container fxFlex>
-      <textarea mdInput placeholder="Description" formControlName="description">
-      </textarea>
-    </md-input-container>
-    <md-input-container fxFlex>
-      <input mdInput placeholder="Tags" formControlName="tags">
-    </md-input-container>
+  <ml-dialog-content>
+    <div fxLayout="column">
+      <md-input-container fxFlex>
+        <input mdInput placeholder="Name" formControlName="name">
+        <md-hint *ngIf="!form.valid && !form.pristine && form.get('name').errors" align="end">This field is required.</md-hint>
+      </md-input-container>
+      <md-input-container fxFlex>
+        <textarea mdInput placeholder="Description" formControlName="description">
+        </textarea>
+      </md-input-container>
+      <md-input-container fxFlex>
+        <input mdInput placeholder="Tags" formControlName="tags">
+      </md-input-container>
+    </div>
   </ml-dialog-content>
   <ml-dialog-cta-bar>
     <button md-button [disabled]="!form.valid" type="submit">Save</button>
