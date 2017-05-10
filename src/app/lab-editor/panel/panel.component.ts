@@ -4,7 +4,7 @@ import { Component, Input } from '@angular/core';
   selector: 'ml-panel',
   template: `
     <ml-panel-title *ngIf="panelTitle">{{panelTitle}}</ml-panel-title>
-    <div class="ml-panel__content">
+    <div class="ml-panel-content">
       <ng-content></ng-content>
     </div>
   `,
