@@ -3,6 +3,7 @@
 @import 'app/dialog/dialog-theme.scss';
 @import 'app/lab-editor/editor-footer/editor-footer-theme.scss';
 @import 'app/lab-editor/execution-status/execution-status-theme.scss';
+@import 'app/lab-editor/execution-metadata/execution-metadata-theme.scss';
 
 @include mat-core();
 
@@ -17,6 +18,7 @@ $ml-app-theme: mat-light-theme($ml-app-primary, $ml-app-accent, $ml-app-warn);
 @mixin machine-labs-theme($theme) {
   @include ml-editor-footer-theme($theme);
   @include ml-execution-status-theme($theme);
+  @include ml-execution-metadata-theme($theme);
   @include ml-dialog-theme($theme);
 }
 
