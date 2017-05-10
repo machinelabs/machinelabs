@@ -1,0 +1,17 @@
+@import '../../../node_modules/@angular/material/theming';
+
+@mixin ml-dialog-theme($theme) {
+
+  $primary: map-get($theme, primary);
+  $foreground: map-get($theme, foreground);
+
+  .ml-dialog-headline {
+    background-color: mat-color($primary);
+    color: mat-color($primary, default-contrast);
+  }
+
+  .ml-dialog-content {
+    color: mat-color($foreground, text);
+  }
+}
+
