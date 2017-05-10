@@ -1,0 +1,39 @@
+@import '../../../../node_modules/@angular/material/theming';
+
+@mixin ml-file-tree-theme($theme) {
+
+  $primary: map-get($theme, primary);
+  $warn: map-get($theme, warn);
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+
+  .ml-file-list {
+    border-bottom: 1px solid mat-color($foreground, divider);
+  }
+
+  .ml-file-list-item {
+
+    &:hover, &:active, &:focus {
+      background-color: mat-color($background, hover);
+    }
+
+    &.selected {
+      background-color: mat-color($primary, lighter, 0.5);
+      color: mat-color($foreground, text);
+    }
+  }
+
+  .ml-file-list-item-button {
+
+    &.edit md-icon {
+      color: mat-color($foreground, text);
+    }
+
+    &.delete md-icon {
+      color: mat-color($warn);
+    }
+  }
+}
+
+
+
