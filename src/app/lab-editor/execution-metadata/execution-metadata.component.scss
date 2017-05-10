@@ -1,13 +1,11 @@
-.ml-lab-status {
+.ml-execution-metadata {
   padding: 0;
   margin: 1.2em;
 }
 
-.ml-lab-status__headline {
+.ml-execution-metadata-headline {
   margin: 0;
   padding: 1em 1.5em;
-  background: rgba(3, 169, 244, 1);
-  color: #fff;
   line-height: 1;
 
   md-icon {
@@ -16,7 +14,7 @@
   }
 }
 
-.ml-lab-status__content {
+.ml-execution-metadata-content {
   padding: 1em 1.5em;
 
   tr {
@@ -36,12 +34,12 @@
 
   a {
     text-decoration: none;
-    color: #ff9800;
-    border-bottom: 1px dotted #ff9800;
+    color: currentColor;
+    border-bottom: 1px dotted currentColor;
   }
 }
 
-.ml-lab-status__user-info {
+.ml-execution-metadata-user-info {
   img {
     width: 1.4em;
     border-radius: 50%;

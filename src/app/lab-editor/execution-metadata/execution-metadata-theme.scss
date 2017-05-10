@@ -1,0 +1,13 @@
+@import '../../../../node_modules/@angular/material/theming';
+
+@mixin ml-execution-metadata-theme($theme) {
+
+  $primary: map-get($theme, primary);
+
+  .ml-execution-metadata-headline {
+    background: mat-color($primary);
+    color: mat-color($primary, default-contrast);
+  }
+}
+
+

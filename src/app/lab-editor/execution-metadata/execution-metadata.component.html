@@ -1,6 +1,6 @@
-<md-card class="ml-lab-status">
-  <h4 class="ml-lab-status__headline"><md-icon>info</md-icon> Execution status</h4>
-  <md-card-content class="ml-lab-status__content">
+<md-card class="ml-execution-metadata">
+  <h4 class="ml-execution-metadata-headline"><md-icon>info</md-icon> Execution status</h4>
+  <md-card-content class="ml-execution-metadata-content">
     <table>
       <tr>
         <td>Status:</td>
@@ -22,7 +22,7 @@
           <ng-template #notAvailable>-</ng-template>
         </td>
       </tr>
-      <tr class="ml-lab-status__user-info">
+      <tr class="ml-execution-metadata-user-info">
         <td>Executed by:</td>
         <td>
           <ng-container *ngIf="executer; else notAvailable">
