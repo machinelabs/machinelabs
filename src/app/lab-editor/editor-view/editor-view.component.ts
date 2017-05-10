@@ -6,7 +6,6 @@ import { FileNameDialogComponent } from '../file-name-dialog/file-name-dialog.co
 import { EditLabDialogComponent } from '../edit-lab-dialog/edit-lab-dialog.component';
 import { NavigationConfirmDialogComponent } from '../navigation-confirm-dialog/navigation-confirm-dialog.component';
 import { RejectionDialogComponent } from '../rejection-dialog/rejection-dialog.component';
-import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
 import { RemoteLabExecService } from '../remote-code-execution/remote-lab-exec.service';
 import { EditorSnackbarService } from '../editor-snackbar.service';
 import { LabStorageService } from '../../lab-storage.service';
@@ -56,7 +55,6 @@ export class EditorViewComponent implements OnInit {
 
   rejectionDialogRef: MdDialogRef<RejectionDialogComponent>;
 
-  shareDialogRef: MdDialogRef<ShareDialogComponent>;
 
   labExecuter: Observable<User>;
 
@@ -179,10 +177,6 @@ export class EditorViewComponent implements OnInit {
                 this.lab = info.lab;
               }
             });
-  }
-
-  openShareDialog() {
-    this.shareDialogRef = this.dialog.open(ShareDialogComponent);
   }
 
   create() {

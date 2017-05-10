@@ -54,19 +54,9 @@
       <ml-execution-metadata [execution]="context.execution" [executer]="labExecuter | async"></ml-execution-metadata>
     </md-sidenav>
   </md-sidenav-container>
-  <div class="ml-footer">
-    <div fxLayout="row" fxLayoutAlign="space-between center">
-      <div>
-        <button md-button md-raised-button md-primary class="elevated" (click)="openShareDialog()">Share</button>
-        <button disabled md-button md-raised-button md-primary class="elevated">Embed</button>
-      </div>
-      <div class="ml-footer__status">
-        <ml-execution-status [executionContext]="context"></ml-execution-status>
-      </div>
-      <md-slide-toggle
-        color="accent"
-        [checked]="sidebarToggled"
-        (click)="executionMetadataSidebar.toggle()">Show lab status</md-slide-toggle>
-    </div>
-  </div>
+  <ml-footer
+    [executionContext]="context"
+    [slideToggleChecked]="sidebarToggled"
+    (slideToggleClick)="executionMetadataSidebar.toggle()"
+    ></ml-footer>
 </div>
