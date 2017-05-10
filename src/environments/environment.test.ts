@@ -1,6 +1,7 @@
 export const environment = {
   production: false,
   offline: false,
+  testing: false,
   firebaseConfig: {
     apiKey: 'AIzaSyDegzorhSxWcXV7Nl1bf-mIjGRgGb5dCCY',
     authDomain: 'machinelabs-test.firebaseapp.com',

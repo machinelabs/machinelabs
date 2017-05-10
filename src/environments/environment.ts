@@ -6,6 +6,7 @@
 export const environment = {
   production: false,
   offline: false,
+  testing: false,
   // None of this is sensitive. It will be all in the public client.
   // No need to hide it from the repository
   firebaseConfig: {

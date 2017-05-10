@@ -3,7 +3,7 @@ import * as firebase from 'firebase';
 import { WindowRef } from './window-ref.service';
 
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -31,19 +31,21 @@ export function databaseFactory() {
   return firebase.initializeApp(environment.firebaseConfig).database();
 }
 
+const AnimationsModule = [environment.testing ? NoopAnimationsModule : BrowserAnimationsModule];
+
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
+    ... AnimationsModule,
     BrowserModule,
-    BrowserAnimationsModule,
     HttpModule,
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-    SharedModule,
     RouterModule.forRoot(APP_ROUTES, { preloadingStrategy: PreloadAllModules }),
+    SharedModule
   ],
   providers: [
     LabStorageService,
