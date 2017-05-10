@@ -6,7 +6,7 @@
   $foreground: map-get($theme, foreground);
 
   .ml-editor-footer {
-    background-color: mat-color($background, background);
+    background-color: mat-color($background, dialog);
   }
 
   md-slide-toggle {
