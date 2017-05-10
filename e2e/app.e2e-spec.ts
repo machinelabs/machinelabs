@@ -1,4 +1,4 @@
-import { MachinelabsClientPage } from './app.po';
+import { MachinelabsClientPage } from './app.page-object';
 import { browser } from 'protractor';
 
 describe('machinelabs-client App', function() {

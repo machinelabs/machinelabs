@@ -1,6 +1,7 @@
 export const environment = {
   production: true,
   offline: false,
+  testing: false,
   // This is currently the exact same configuration we use for
   // development. We might want to change that.
   // None of this is sensitive. It will be all in the public client.
