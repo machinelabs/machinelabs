@@ -69,7 +69,7 @@ describe('FileTreeComponent', () => {
     describe('Event emitters', () => {
 
       it('should emit selectFile event when list item is clicked', () => {
-        let items = fixture.debugElement.queryAll(By.css('.ml-file-list__item'));
+        let items = fixture.debugElement.queryAll(By.css('.ml-file-list-item'));
 
         let subscription = component.selectFile.subscribe((file) => {
           expect(file).toBeDefined();
@@ -89,7 +89,7 @@ describe('FileTreeComponent', () => {
       });
 
       it('should emit removeFile event when remove button is clicked', () => {
-        let items = fixture.debugElement.queryAll(By.css('.ml-file-tree__cta--delete'));
+        let items = fixture.debugElement.queryAll(By.css('.ml-file-list-item-button.delete'));
 
         // `main.py` isn't removable, hence only two items expected
         expect(items.length).toBe(2);
@@ -112,7 +112,7 @@ describe('FileTreeComponent', () => {
       });
 
       it('should emit addFile event when add button is clicked', () => {
-        let item = fixture.debugElement.query(By.css('.ml-file-tree__cta--add'));
+        let item = fixture.debugElement.query(By.css('.ml-file-tree-cta'));
         let emitted = false;
 
         component.addFile.subscribe(() => {
@@ -124,7 +124,7 @@ describe('FileTreeComponent', () => {
       });
 
       it('should emit editFile event when edit button is clicked', () => {
-        let item = fixture.debugElement.query(By.css('.ml-file-tree__cta--edit'));
+        let item = fixture.debugElement.query(By.css('.ml-file-list-item-button.edit'));
         let emitted = false;
 
         component.editFile.subscribe(() => {
@@ -136,8 +136,8 @@ describe('FileTreeComponent', () => {
       });
 
       it('shouldn\'t emit selectFile event when delete or edit button is clicked', () => {
-        let editButton = fixture.debugElement.query(By.css('.ml-file-tree__cta--edit'));
-        let deleteButton = fixture.debugElement.query(By.css('.ml-file-tree__cta--delete'));
+        let editButton = fixture.debugElement.query(By.css('.ml-file-list-item-button.edit'));
+        let deleteButton = fixture.debugElement.query(By.css('.ml-file-list-item-button.delete'));
 
         let emitted = false;
 
@@ -189,7 +189,7 @@ describe('FileTreeComponent', () => {
     });
 
     it('should select file', () => {
-      let items = fixture.debugElement.queryAll(By.css('.ml-file-list__item'));
+      let items = fixture.debugElement.queryAll(By.css('.ml-file-list-item'));
 
       items[0].triggerEventHandler('click', { target: { nodeName: 'LI' }});
       expect(component.logs).toEqual([
@@ -198,7 +198,7 @@ describe('FileTreeComponent', () => {
     });
 
     it('should remove file', () => {
-      let items = fixture.debugElement.queryAll(By.css('.ml-file-tree__cta--delete'));
+      let items = fixture.debugElement.queryAll(By.css('.ml-file-list-item-button.delete'));
 
       items[0].triggerEventHandler('click', null);
       expect(component.files.length).toEqual(2);
@@ -208,7 +208,7 @@ describe('FileTreeComponent', () => {
     });
 
     it('should add file', () => {
-      let item = fixture.debugElement.query(By.css('.ml-file-tree__cta--add'));
+      let item = fixture.debugElement.query(By.css('.ml-file-tree-cta'));
       item.triggerEventHandler('click', null);
 
       expect(component.files.length).toEqual(4);

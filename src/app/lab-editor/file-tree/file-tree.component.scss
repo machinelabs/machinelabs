@@ -16,77 +16,57 @@
   padding-right: 2em;
   padding-top: 1.2em;
   padding-bottom: 1.2em;
-  border-bottom: 1px solid rgb(244, 245, 247);
+}
 
-  &__item {
-    font-size: 0.9em;
-    font-weight: 400;
-    padding: 0.4em 0.4em;
-    line-height: 1.4;
-    position: relative;
+.ml-file-list-item {
+  font-size: 0.9em;
+  font-weight: 400;
+  padding: 0.4em 0.4em;
+  line-height: 1.4;
+  position: relative;
 
-    md-icon {
-      font-size: 1.2em;
-      vertical-align: -22%;
-      height: 18px;
-      width: 18px;
-      color: rgb(173, 183, 185);
-    }
+  md-icon {
+    font-size: 1.2em;
+    vertical-align: -22%;
+    height: 18px;
+    width: 18px;
+  }
 
-    &:hover {
-      cursor: pointer;
-      background-color: #fcfcfc;
+  &:hover {
+    cursor: pointer;
 
-      .ml-file-tree__cta {
-        display: block;
-      }
-    }
-
-    &.selected {
-      background-color: rgb(223, 237, 245);
-      color: rgb(48, 129, 216);
-
-      md-icon {
-        color: rgb(48, 129, 216);
-      }
-    }
-
-    .ml-file-tree__cta {
-      background: transparent;
-      border: none;
-      position: absolute;
-      cursor: pointer;
-      display: none;
-
-      md-icon { font-size: 1.6em; }
-
-      &--edit {
-        right: 28px;
-        top: 3px;
-        md-icon { color: #888; }
-
-        &:hover {
-          md-icon { color: #222; }
-        }
-      }
-
-      &--delete {
-        right: 2px;
-        top: 4px;
-
-        md-icon { color: palevioletred; }
-
-        &:hover {
-          md-icon { color: darkred; }
-        }
-      }
+    .ml-file-list-item-button {
+      display: block;
     }
   }
 }
 
-.ml-file-tree__cta {
+.ml-file-list-item-button {
+  background: transparent;
+  border: none;
+  position: absolute;
+  cursor: pointer;
+  display: none;
+
+  md-icon { font-size: 1.6em; }
+
+  &.edit {
+    right: 28px;
+    top: 5px;
+  }
+
+  &.delete {
+    right: 2px;
+    top: 6px;
+  }
+}
+
+.ml-file-tree-cta-bar {
+  padding: 0.8em 1.2em;
+}
+
+.ml-file-tree-cta {
   font-size: 0.9em;
-  color: rgb(48, 129, 216);
 
   md-icon {
     font-size: 1.2em;

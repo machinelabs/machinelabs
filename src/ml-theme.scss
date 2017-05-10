@@ -5,6 +5,7 @@
 @import 'app/lab-editor/execution-status/execution-status-theme.scss';
 @import 'app/lab-editor/execution-metadata/execution-metadata-theme.scss';
 @import 'app/lab-editor/panel/panel-theme.scss';
+@import 'app/lab-editor/file-tree/file-tree-theme.scss';
 
 @include mat-core();
 
@@ -22,6 +23,7 @@ $ml-app-theme: mat-light-theme($ml-app-primary, $ml-app-accent, $ml-app-warn);
   @include ml-execution-metadata-theme($theme);
   @include ml-dialog-theme($theme);
   @include ml-panel-theme($theme);
+  @include ml-file-tree-theme($theme);
 }
 
 @include angular-material-theme($ml-app-theme);
