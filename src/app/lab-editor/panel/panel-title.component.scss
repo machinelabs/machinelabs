@@ -1,10 +1,11 @@
 :host {
   display: block;
-  color: #444;
+}
+
+.ml-panel-title {
   font-size: .9em;
   font-weight: 400;
   margin: 0;
   padding: 0.8em 2.4em;
-  border-bottom: 1px solid rgb(244, 245, 247);
-  border-top: 1px solid rgb(244, 245, 247);
+  color: currentColor;
 }
