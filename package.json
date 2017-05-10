@@ -6,7 +6,7 @@
   "scripts": {
     "start": "ng serve",
     "lint": "tslint \"src/**/*.ts\"",
-    "test": "npm run lint && ng test --single-run",
+    "test": "npm run lint && ng test --single-run && ng e2e --serve false",
     "pree2e": "webdriver-manager update",
     "e2e": "protractor"
   },
