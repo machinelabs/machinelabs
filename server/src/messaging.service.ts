@@ -1,38 +1,47 @@
 import * as firebase from 'firebase';
 import { Crypto } from './util/crypto';
+import { environment } from './environments/environment';
 import { db, DbRefBuilder } from './ml-firebase';
 import { CodeRunner, ProcessStreamData } from './code-runner/code-runner';
 import { Observable } from '@reactivex/rxjs';
 import { Invocation, InvocationType } from './models/invocation';
 import { Execution, ExecutionStatus, ExecutionMessage, MessageKind, toMessageKind } from './models/execution';
 import { RulesService } from 'rules.service';
+import { Server } from 'models/server';
 
 export class MessagingService {
 
   db = new DbRefBuilder();
-
-  // TODO: Move the infos somewhere else as soon as we start providing different stacks
-  SERVER_INFO = '1 vCPU Intel Ivy Bridge';
+  server: Server;
 
   constructor(private rulesService: RulesService,
               private codeRunner: CodeRunner) {
   }
 
   init() {
+
+    this.db.serverRef(environment.serverId).onceValue()
+        .map(snapshot => snapshot.val())
+        .subscribe(server => {
+          this.server = server;
+          this.initMessaging();
+        });
+  }
+
+  initMessaging () {
     // Listen on all incoming runs to do the right thing
-  this.db.newInvocationsRef().childAdded()
-         .map(snapshot => snapshot.val())
-         .switchMap(invocation => this.getOutputAsObservable(invocation))
-         .switchMap(data => this.writeExecutionMessage(data.output, data.invocation))
-         .subscribe();
+    this.db.newInvocationsForServerRef(this.server.id).childAdded()
+        .map(snapshot => snapshot.val())
+        .switchMap(invocation => this.getOutputAsObservable(invocation))
+        .switchMap(data => this.writeExecutionMessage(data.output, data.invocation))
+        .subscribe();
 
     // Listen on all changed runs to get notified about stops
     this.db.invocationsRef().childChanged()
-           .map(snapshot => snapshot.val())
-           .filter(execution => execution.type === InvocationType.StopExecution)
-           .subscribe(execution => this.codeRunner.stop(execution));
+        .map(snapshot => snapshot.val())
+        .filter(execution => execution.type === InvocationType.StopExecution)
+        .subscribe(execution => this.codeRunner.stop(execution));
   }
-
 
   /**
    * Take a run and observe the output. The run maybe cached or rejected
@@ -92,7 +101,7 @@ export class MessagingService {
       .set({
         id: invocation.id,
         file_set_hash: hash,
-        server_info: this.SERVER_INFO,
+        server_info: this.server.info || '',
         started_at: firebase.database.ServerValue.TIMESTAMP,
         user_id: invocation.user_id,
         lab_id: invocation.data.id,

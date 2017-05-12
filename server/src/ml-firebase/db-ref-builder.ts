@@ -20,6 +20,10 @@ export class DbRefBuilder {
     return new ObservableDbRef(db.ref(`labs`).orderByChild('file_set_hash').equalTo(hash));
   }
 
+  serverRef(id: string) {
+    return new ObservableDbRef(db.ref(`servers/${id}`));
+  }
+
   invocationRef(id: string) {
     return new ObservableDbRef(db.ref(`invocations/${id}`));
   }
@@ -30,6 +34,10 @@ export class DbRefBuilder {
 
   newInvocationsRef() {
     return new ObservableDbRef(db.ref('invocations').orderByChild('timestamp').startAt(Date.now()));
+  }
+
+  newInvocationsForServerRef(server: string) {
+    return new ObservableDbRef(db.ref('invocations').orderByChild(`server/${server}/timestamp`).startAt(Date.now()));
   }
 
   executionRef(id: string) {
