@@ -7,14 +7,18 @@
   "license": "ISC",
   "dependencies": {
     "@reactivex/rxjs": "^5.0.0-rc.5",
-    "firebase": "^3.7.1"
+    "firebase": "^3.7.1",
+    "minimist": "1.2.0"
   },
   "jest": {
     "transform": {
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "testPathIgnorePatterns": ["/node_modules/", "/dist/"],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
+    ],
     "moduleFileExtensions": [
       "ts",
       "tsx",
