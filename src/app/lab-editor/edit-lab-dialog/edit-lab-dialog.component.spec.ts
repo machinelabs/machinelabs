@@ -46,7 +46,7 @@ describe('EditLabDialogComponent', () => {
     fbMock = new FirebaseMock();
 
     TestBed.configureTestingModule({
-      imports: [MdDialogModule.forRoot(), DialogTestModule],
+      imports: [MdDialogModule, DialogTestModule],
       providers: [
         LabStorageService,
         { provide: LabTemplateService, useClass: InMemoryLabTemplateService },
