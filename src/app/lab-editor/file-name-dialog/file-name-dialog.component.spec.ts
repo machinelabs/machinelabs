@@ -16,7 +16,7 @@ describe('FileNameDialogComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [MdDialogModule.forRoot(), DialogTestModule],
+      imports: [MdDialogModule, DialogTestModule],
       schemas: [NO_ERRORS_SCHEMA]
     });
   });
