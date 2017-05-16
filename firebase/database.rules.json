@@ -29,7 +29,7 @@
         },
         "invocations": {
             "$id": {
-                ".validate": "data.exists() ? (data.child('user_id').val() === auth.uid && newData.child('user_id').val() === auth.uid) || auth.uid === 'execution-server' : newData.child('user_id').val() === auth.uid",
+                ".validate": "data.exists() ? (data.child('user_id').val() === auth.uid && newData.child('user_id').val() === auth.uid) || auth.uid === 'execution-server' || auth.uid === 'cloud-fn-assign-server' : newData.child('user_id').val() === auth.uid",
                 "id": { ".validate": true },
                 "user_id": { ".validate": true },
                 "timestamp": { ".validate": true },
@@ -43,6 +43,9 @@
                             "$other": { ".validate": false }
                         }
                     }
+                },
+                "server": {
+                    ".validate":"auth.uid === 'cloud-fn-assign-server'"
                 },
                 "$other": {
                     ".validate": false

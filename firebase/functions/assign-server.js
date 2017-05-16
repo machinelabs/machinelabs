@@ -5,8 +5,16 @@ const sample = require('lodash.sample');
 
 const DEFAULT_HARDWARE_TYPE = 'economy';
 
+let config = Object.assign({}, functions.config().firebase, {
+    databaseAuthVariableOverride: {
+      uid: 'cloud-fn-assign-server'
+    }
+  });
+
+let app = admin.initializeApp(config, 'cloud-fn-assign-server');
+
 function getServerForHardwareType(hardwareType) {
-  return admin.database()
+  return app.database()
        .ref('servers')
        .orderByChild('hardware_type')
        .equalTo(hardwareType)
@@ -23,7 +31,7 @@ function assignServer(invocation, server) {
     return Promise.resolve();
   }
 
-  return admin.database()
+  return app.database()
               .ref(`/invocations/${invocation.id}`)
               .update({
                 server: {
