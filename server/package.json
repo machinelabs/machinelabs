@@ -8,6 +8,7 @@
   "dependencies": {
     "@reactivex/rxjs": "^5.0.0-rc.5",
     "firebase": "^3.7.1",
+    "firebase-admin": "^4.2.1",
     "minimist": "1.2.0"
   },
   "jest": {

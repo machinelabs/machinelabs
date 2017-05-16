@@ -1,6 +1,6 @@
 import * as firebase from 'firebase';
 import { Crypto } from './util/crypto';
-import { db, AuthService, DbRefBuilder } from './ml-firebase';
+import { db, DbRefBuilder } from './ml-firebase';
 import { CodeRunner, ProcessStreamData } from './code-runner/code-runner';
 import { Observable } from '@reactivex/rxjs';
 import { Invocation, InvocationType } from './models/invocation';
@@ -14,29 +14,25 @@ export class MessagingService {
   // TODO: Move the infos somewhere else as soon as we start providing different stacks
   SERVER_INFO = '1 vCPU Intel Ivy Bridge';
 
-  constructor(private authService: AuthService,
-              private rulesService: RulesService,
+  constructor(private rulesService: RulesService,
               private codeRunner: CodeRunner) {
   }
 
   init() {
     // Listen on all incoming runs to do the right thing
-    this.authService
-        .authenticate()
-        .switchMap(_ => this.db.newInvocationsRef().childAdded())
-        .map(snapshot => snapshot.val())
-        .switchMap(invocation => this.getOutputAsObservable(invocation))
-        .switchMap(data => this.writeExecutionMessage(data.output, data.invocation))
-        .subscribe();
+  this.db.newInvocationsRef().childAdded()
+         .map(snapshot => snapshot.val())
+         .switchMap(invocation => this.getOutputAsObservable(invocation))
+         .switchMap(data => this.writeExecutionMessage(data.output, data.invocation))
+         .subscribe();
 
     // Listen on all changed runs to get notified about stops
-    this.authService
-        .authenticate()
-        .switchMap(_ =>this.db.invocationsRef().childChanged())
-        .map(snapshot => snapshot.val())
-        .filter(execution => execution.type === InvocationType.StopExecution)
-        .subscribe(execution => this.codeRunner.stop(execution));
+    this.db.invocationsRef().childChanged()
+           .map(snapshot => snapshot.val())
+           .filter(execution => execution.type === InvocationType.StopExecution)
+           .subscribe(execution => this.codeRunner.stop(execution));
   }
+
 
   /**
    * Take a run and observe the output. The run maybe cached or rejected

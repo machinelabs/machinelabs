@@ -4,8 +4,8 @@
  */
 
 export class Config {
-  static readonly ENV_USERNAME = 'MACHINELABS_FB_BOT_USERNAME';
-  static readonly ENV_PASSWORD = 'MACHINELABS_FB_BOT_PASSWORD';
+  static readonly ENV_PRIVATE_KEY = 'MACHINELABS_FB_PRIVATE_KEY';
+  static readonly ENV_CLIENT_EMAIL = 'MACHINELABS_FB_CLIENT_EMAIL';
 
   static getEnv (name: string) {
     if (!process.env[name]){
