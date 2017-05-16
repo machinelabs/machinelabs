@@ -66,11 +66,11 @@ export class MessagingService {
                                             .run(invocation)
                                             .map(data => this.processStreamDataToExecutionMessage(data))
                                             .concat(Observable.of({
-                                              kind: MessageKind.ProcessFinished,
+                                              kind: MessageKind.ExecutionFinished,
                                               data: ''
                                             }))
                                             .do(msg => {
-                                              if (msg.kind === MessageKind.ProcessFinished){
+                                              if (msg.kind === MessageKind.ExecutionFinished){
                                                 this.completeExecution(invocation);
                                               }
                                             })

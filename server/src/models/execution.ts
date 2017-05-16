@@ -20,7 +20,7 @@ export interface Execution {
 export enum MessageKind {
   Stdout,
   Stderr,
-  ProcessFinished,
+  ExecutionFinished,
   OutputRedirected,
   ExecutionRejected
 }
@@ -39,7 +39,7 @@ export function toMessageKind(kind: string) {
     case 'stderr':
       return MessageKind.Stderr;
     case 'process_finished':
-      return MessageKind.ProcessFinished;
+      return MessageKind.ExecutionFinished;
     case 'output_redirected':
       return MessageKind.OutputRedirected
     default:
