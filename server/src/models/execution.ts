@@ -20,6 +20,7 @@ export interface Execution {
 export enum MessageKind {
   Stdout,
   Stderr,
+  ExecutionStarted,
   ExecutionFinished,
   OutputRedirected,
   ExecutionRejected
@@ -33,16 +34,5 @@ export interface ExecutionMessage {
 }
 
 export function toMessageKind(kind: string) {
-  switch (kind.toLowerCase()) {
-    case 'stdout':
-      return MessageKind.Stdout;
-    case 'stderr':
-      return MessageKind.Stderr;
-    case 'process_finished':
-      return MessageKind.ExecutionFinished;
-    case 'output_redirected':
-      return MessageKind.OutputRedirected
-    default:
-      return MessageKind.Stdout;
-  }
+  return kind.toLowerCase() === 'stderr' ? MessageKind.Stderr : MessageKind.Stdout;
 }

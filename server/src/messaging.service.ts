@@ -74,6 +74,10 @@ export class MessagingService {
                                   return this.codeRunner
                                             .run(invocation)
                                             .map(data => this.processStreamDataToExecutionMessage(data))
+                                            .startWith({
+                                              kind: MessageKind.ExecutionStarted,
+                                              data: ''
+                                            })
                                             .concat(Observable.of({
                                               kind: MessageKind.ExecutionFinished,
                                               data: ''
