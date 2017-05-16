@@ -7,7 +7,7 @@
                 // labs need to have a user_id and it must match the authenticated user
                 // existing labs can only be overwritten by the user who created it,
 
-                ".validate": "data.exists() ? (data.child('user_id').val() === auth.uid && newData.child('user_id').val() === auth.uid) || auth.uid === 'faOzzX4RasUHjhUFI5APaDF7bT62' : newData.child('user_id').val() === auth.uid",
+                ".validate": "data.exists() ? (data.child('user_id').val() === auth.uid && newData.child('user_id').val() === auth.uid) || auth.uid === 'execution-server' : newData.child('user_id').val() === auth.uid",
                 //TODO: Check all these. Basically users can write anything here I guess
                 "id": { ".validate": true },
                 "user_id": { ".validate": true },
@@ -29,7 +29,7 @@
         },
         "invocations": {
             "$id": {
-                ".validate": "data.exists() ? (data.child('user_id').val() === auth.uid && newData.child('user_id').val() === auth.uid) || auth.uid === 'faOzzX4RasUHjhUFI5APaDF7bT62' : newData.child('user_id').val() === auth.uid",
+                ".validate": "data.exists() ? (data.child('user_id').val() === auth.uid && newData.child('user_id').val() === auth.uid) || auth.uid === 'execution-server' : newData.child('user_id').val() === auth.uid",
                 "id": { ".validate": true },
                 "user_id": { ".validate": true },
                 "timestamp": { ".validate": true },
@@ -52,7 +52,7 @@
         },
         "executions": {
             "$id": {
-                ".validate": "auth.uid === 'faOzzX4RasUHjhUFI5APaDF7bT62'",
+                ".validate": "auth.uid === 'execution-server'",
                 "id": { ".validate": true },
                 "file_set_hash": { ".validate": true },
                 "started_at": { ".validate": true },
@@ -70,7 +70,7 @@
         "executions_messages": {
             "$id": {
                 "$id": {
-                ".validate": "auth.uid === 'faOzzX4RasUHjhUFI5APaDF7bT62'",
+                ".validate": "auth.uid === 'execution-server'",
                 "id": { ".validate": true },
                 "timestamp": { ".validate": true },
                 "data": { ".validate": true },
