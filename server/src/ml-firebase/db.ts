@@ -1,4 +1,5 @@
 import * as admin from 'firebase-admin';
+import { environment } from '../environments/environment';
 import { Config } from '../util/config';
 
 admin.initializeApp({
@@ -6,7 +7,7 @@ admin.initializeApp({
     "private_key": Config.getEnv(Config.ENV_PRIVATE_KEY),
     "client_email": Config.getEnv(Config.ENV_CLIENT_EMAIL),
   }),
-  databaseURL: 'https://machinelabs-dev.firebaseio.com',
+  databaseURL: environment.firebaseConfig.databaseURL,
   databaseAuthVariableOverride: {
     uid: 'execution-server'
   }
