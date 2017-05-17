@@ -1,0 +1,1 @@
+gcloud compute --project "machinelabs-a73cd" ssh --zone "asia-east1-a" "root@machinelabs-staging"
