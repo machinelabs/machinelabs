@@ -5,7 +5,7 @@ fi
 
 # run the build
 echo "Running build"
-(cd ./server; gulp build --staging)
+(cd ./server; gulp build --env=staging)
 
 # With our current setup transferring the ./dist isn't enough
 # We have to zip the entire directory (takes ages otherwise)
