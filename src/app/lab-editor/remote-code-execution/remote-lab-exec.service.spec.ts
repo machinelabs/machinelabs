@@ -130,7 +130,7 @@ describe('RemoteLabExecService', () => {
                   expect(actualMessages).toEqual([
                     { kind: 0, data: 'some-text' },
                     { kind: 0, data: 'other-text' },
-                    { kind: 2, data: '' }
+                    { kind: 3, data: '' }
                   ]);
                 })
                 .subscribe();
@@ -164,7 +164,7 @@ describe('RemoteLabExecService', () => {
                 .do(data => actualMessages.push(data))
                 .finally(() => {
                   expect(actualMessages).toEqual([
-                    { kind: 4, data: 'not allowed' }
+                    { kind: 5, data: 'not allowed' }
                   ]);
                 })
                 .subscribe();
@@ -219,11 +219,11 @@ describe('RemoteLabExecService', () => {
                 .do(data => actualMessages.push(data))
                 .finally(() => {
                   expect(actualMessages).toEqual([
-                    { kind: 3, data: '2' },
+                    { kind: 4, data: '2' },
                     { kind: 1, data: 'This is a cached execution. You are looking at a truncated response.' },
                     { kind: 0, data: 'some-text' },
                     { kind: 0, data: 'other-text' },
-                    { kind: 2, data: '' }
+                    { kind: 3, data: '' }
                   ]);
                 })
                 .subscribe();

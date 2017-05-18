@@ -21,6 +21,7 @@ export interface Execution {
 export enum MessageKind {
   Stdout,
   Stderr,
+  ExecutionStarted,
   ExecutionFinished,
   OutputRedirected,
   ExecutionRejected
