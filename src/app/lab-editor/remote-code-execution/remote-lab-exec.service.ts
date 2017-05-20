@@ -93,7 +93,7 @@ export class RemoteLabExecService {
       .requireAuthOnce()
       .switchMap(_ => this.db.invocationRef(context.id).onceValue())
       .map((snapshot: any) => snapshot.val())
-      .switchMap(data => this.db.invocationRef(context.id).set(Object.assign(data, { type: InvocationType.StopExecution })))
+      .switchMap(data => this.db.invocationRef(context.id).update({type: InvocationType.StopExecution}))
       .subscribe();
   }
 }
