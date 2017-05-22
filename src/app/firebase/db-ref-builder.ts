@@ -8,31 +8,31 @@ export class DbRefBuilder {
   constructor(@Inject(DATABASE) private db) {}
 
   userRef(id: string) {
-    return new ObservableDbRef(this.db.ref(`users/${id}`));
+    return new ObservableDbRef(this.db.ref(`users/${id}/common`));
   }
 
   labRef(id: string) {
-    return new ObservableDbRef(this.db.ref(`labs/${id}`));
+    return new ObservableDbRef(this.db.ref(`labs/${id}/common`));
   }
 
   invocationRef(id: string) {
-    return new ObservableDbRef(this.db.ref(`invocations/${id}`));
+    return new ObservableDbRef(this.db.ref(`invocations/${id}/common`));
   }
 
   executionRef(id: string) {
-    return new ObservableDbRef(this.db.ref(`executions/${id}`));
+    return new ObservableDbRef(this.db.ref(`executions/${id}/common`));
   }
 
   executionMessageRef(id: string, limitToLast = 0) {
     if (limitToLast > 0) {
-      return new ObservableDbRef(this.db.ref(`executions_messages/${id}`).limitToLast(limitToLast));
+      return new ObservableDbRef(this.db.ref(`executions/${id}/messages`).limitToLast(limitToLast));
     } else {
-      return new ObservableDbRef(this.db.ref(`executions_messages/${id}`));
+      return new ObservableDbRef(this.db.ref(`executions/${id}/messages`));
     }
   }
 
   userLabsRef(id: string) {
-    return new ObservableDbRef(this.db.ref(`labs`).orderByChild('user_id').equalTo(id));
+    return new ObservableDbRef(this.db.ref(`labs`).orderByChild('common/user_id').equalTo(id));
   }
 }
 

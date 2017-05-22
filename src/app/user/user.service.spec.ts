@@ -58,19 +58,19 @@ describe('UserService', () => {
     it(`should create a user if it doesn't exist`, (done) => {
       userService.createUserIfMissing()
                  .subscribe(() => {
-                   expect(fbMock.data[`users/${loginUser.uid}`]).toEqual(expectedUser);
+                   expect(fbMock.data[`users/${loginUser.uid}/common`]).toEqual(expectedUser);
                    done();
                  });
     });
 
     it(`should not create a user if it already exist`, (done) => {
       let existingUser = Object.assign({}, expectedUser);
-      fbMock.data[`users/${loginUser.uid}`] = existingUser;
+      fbMock.data[`users/${loginUser.uid}/common`] = existingUser;
       userService.createUserIfMissing()
                  .subscribe(() => {
                    // if it had overwritten the user it would be the `expectedUser`
                    // and not the `existingUser`
-                   expect(fbMock.data[`users/${loginUser.uid}`]).toEqual(existingUser);
+                   expect(fbMock.data[`users/${loginUser.uid}/common`]).toEqual(existingUser);
                    done();
                  });
     });
@@ -78,10 +78,10 @@ describe('UserService', () => {
     it(`should patch up the user when the LoginUser has changed`, (done) => {
       let existingUser = Object.assign({}, expectedUser);
       existingUser.isAnonymous = false;
-      fbMock.data[`users/${loginUser.uid}`] = existingUser;
+      fbMock.data[`users/${loginUser.uid}/common`] = existingUser;
       userService.createUserIfMissing()
                  .subscribe(() => {
-                   expect(fbMock.data[`users/${loginUser.uid}`]).toEqual(expectedUser);
+                   expect(fbMock.data[`users/${loginUser.uid}/common`]).toEqual(expectedUser);
                    done();
                  });
     });
@@ -91,7 +91,7 @@ describe('UserService', () => {
     it(`should save the user`, (done) => {
       userService.saveUser(expectedUser)
                  .subscribe(() => {
-                   expect(fbMock.data[`users/${expectedUser.id}`]).toEqual(expectedUser);
+                   expect(fbMock.data[`users/${expectedUser.id}/common`]).toEqual(expectedUser);
                    done();
                  });
     });
@@ -107,7 +107,7 @@ describe('UserService', () => {
     });
 
     it(`should return the user if it exists`, (done) => {
-      fbMock.data[`users/${expectedUser.id}`] = expectedUser;
+      fbMock.data[`users/${expectedUser.id}/common`] = expectedUser;
       userService.getUser(expectedUser.id)
                  .subscribe((user) => {
                    expect(user).toEqual(expectedUser);
