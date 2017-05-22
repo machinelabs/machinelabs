@@ -29,7 +29,6 @@
   },
   "scripts": {
     "build": "gulp build",
-    "serve": "node gulp build && node dist/index.js",
     "test": "./node_modules/jest/bin/jest.js",
     "tslint": "tslint -c config/tslint.json src/**/*.ts"
   },
