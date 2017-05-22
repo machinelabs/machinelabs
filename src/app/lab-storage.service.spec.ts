@@ -114,7 +114,7 @@ describe('LabStorageService', () => {
 
     it('should return lab by given id', (done) => {
 
-      fbMock.data[`labs/${testLab.id}`] = testLab;
+      fbMock.data[`labs/${testLab.id}/common`] = testLab;
 
       labStorageService.getLab(testLab.id)
         .subscribe(lab => {
