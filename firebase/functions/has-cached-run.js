@@ -7,7 +7,7 @@ function hashFiles(files) {
   return hasher.update(JSON.stringify(files)).digest('hex');
 }
 
-module.exports = functions.database.ref('/labs/{id}/files')
+module.exports = functions.database.ref('/labs/{id}/common/files')
   .onWrite(event => {
     const data = event.data.val();
 
@@ -15,18 +15,20 @@ module.exports = functions.database.ref('/labs/{id}/files')
                  ${JSON.stringify(data)}`);
 
     const hash = hashFiles(data);
-    console.log(`Looking for hash: ${hash}`);
+    console.log(`Looking for hash: ${hash} of lab ${event.params.id}`);
 
     return admin.database().ref('executions')
-                    .orderByChild('file_set_hash')
+                    .orderByChild('common/file_set_hash')
                     .equalTo(hash)
                     .once('value')
                     .then(snapshot => snapshot.val())
                     .then(val => {
                       console.log(`Found hash: ${val}`);
-                      return event.data.ref.parent.update({
-                        'has_cached_run': val ? true : false,
-                        'file_set_hash': hash
-                      });
+                      return admin.database()
+                        .ref(`/labs/${event.params.id}/common`)
+                        .update({
+                          'has_cached_run': val ? true : false,
+                          'file_set_hash': hash
+                        });
                     });
   });

@@ -50,10 +50,7 @@ type Invocation {
   user_id: String,
   timestamp: Number,
   type: Number,
-  data: InvocationLab,
-  // This has to be Any | NUll since the assigned server
-  // uses dynamic properties
-  server: Any | Null
+  data: InvocationLab
 }
 
 type Execution {
@@ -97,44 +94,45 @@ path / {
   write() { false }
 }
 
-path /labs/{id} is Lab {
+path /labs/{id}/common is Lab {
   read() { true }
   write() { isOwningUserOrExecutionServerOrAssignFn(this) }
 }
 
 path /labs {
-  index() { ['file_set_hash'] }
+  index() { ['common/file_set_hash'] }
 }
 
-path /invocations/{id} is Invocation {
+path /invocations/{id}/common is Invocation {
   read() { isCurrentUser(data.child('user_id').val()) || isAssignServerFn() }
   write() { isOwningUserOrExecutionServerOrAssignFn(this) }
 }
 
 path /invocations/{id}/server {
-  validate() { isAssignServerFn() }
+  read() { isAssignServerFn() || isExecutionServer() }
+  write() { isAssignServerFn() }
 }
 
-path /executions/{id} is Execution {
+path /executions/{id}/common is Execution {
   read() { true }
   write() { isExecutionServer() }
 }
 
 path /executions {
-  index() { ['file_set_hash']}
+  index() { ['common/file_set_hash']}
 }
 
-path /executions_messages/{id} {
+path /executions/{id}/messages {
   read() { true }
   write() { isExecutionServer() }
 }
 
-path /executions_messages/{id}/{mid} is ExecutionMessage {
+path /executions/{id}/messages/{mid} is ExecutionMessage {
   read() { true }
   write() { isExecutionServer() }
 }
 
-path /users/{id} is User {
+path /users/{id}/common is User {
   read() { true }
   write() { isOwningUser(this, 'id') }
 }

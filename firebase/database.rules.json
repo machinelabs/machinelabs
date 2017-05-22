@@ -3,75 +3,31 @@
     ".read": "auth.uid == 'execution-server'",
     "labs": {
       "$id": {
-        ".validate": "newData.hasChildren(['id', 'user_id', 'name', 'description'])",
-        "id": {
-          ".validate": "newData.isString()"
-        },
-        "user_id": {
-          ".validate": "newData.isString()"
-        },
-        "name": {
-          ".validate": "newData.isString()"
-        },
-        "description": {
-          ".validate": "newData.isString()"
-        },
-        "has_cached_run": {
-          ".validate": "newData.isBoolean()"
-        },
-        "file_set_hash": {
-          ".validate": "newData.isString()"
-        },
-        "tags": {
-          "$key1": {
-            ".validate": "newData.isString()"
-          },
-          ".validate": "newData.hasChildren()"
-        },
-        "files": {
-          "$key2": {
-            ".validate": "newData.hasChildren(['name', 'content'])",
-            "name": {
-              ".validate": "newData.isString()"
-            },
-            "content": {
-              ".validate": "newData.isString()"
-            },
-            "$other": {
-              ".validate": "false"
-            }
-          },
-          ".validate": "newData.hasChildren()"
-        },
-        "$other": {
-          ".validate": "false"
-        },
-        ".read": "true",
-        ".write": "data.val() != null ? auth != null && auth.uid == data.child('user_id').val() && (auth != null && auth.uid == newData.child('user_id').val()) || auth.uid == 'execution-server' || auth.uid == 'cloud-fn-assign-server' : auth != null && auth.uid == newData.child('user_id').val()"
-      },
-      ".indexOn": [
-        "file_set_hash"
-      ]
-    },
-    "invocations": {
-      "$id": {
-        ".validate": "newData.hasChildren(['id', 'user_id', 'timestamp', 'type', 'data'])",
-        "id": {
-          ".validate": "newData.isString()"
-        },
-        "user_id": {
-          ".validate": "newData.isString()"
-        },
-        "timestamp": {
-          ".validate": "newData.isNumber()"
-        },
-        "type": {
-          ".validate": "newData.isNumber()"
-        },
-        "data": {
-          ".validate": "newData.hasChildren(['id'])",
+        "common": {
+          ".validate": "newData.hasChildren(['id', 'user_id', 'name', 'description'])",
           "id": {
             ".validate": "newData.isString()"
+          },
+          "user_id": {
+            ".validate": "newData.isString()"
+          },
+          "name": {
+            ".validate": "newData.isString()"
+          },
+          "description": {
+            ".validate": "newData.isString()"
+          },
+          "has_cached_run": {
+            ".validate": "newData.isBoolean()"
+          },
+          "file_set_hash": {
+            ".validate": "newData.isString()"
+          },
+          "tags": {
+            "$key1": {
+              ".validate": "newData.isString()"
+            },
+            ".validate": "newData.hasChildren()"
           },
           "files": {
             "$key2": {
@@ -90,71 +46,93 @@
           },
           "$other": {
             ".validate": "false"
-          }
-        },
-        "server": {
-          ".validate": "auth.uid == 'cloud-fn-assign-server'"
-        },
-        "$other": {
-          ".validate": "false"
-        },
-        ".read": "auth != null && auth.uid == data.child('user_id').val() || auth.uid == 'cloud-fn-assign-server'",
-        ".write": "data.val() != null ? auth != null && auth.uid == data.child('user_id').val() && (auth != null && auth.uid == newData.child('user_id').val()) || auth.uid == 'execution-server' || auth.uid == 'cloud-fn-assign-server' : auth != null && auth.uid == newData.child('user_id').val()"
-      }
-    },
-    "executions": {
-      "$id": {
-        ".validate": "newData.hasChildren(['id', 'file_set_hash', 'started_at', 'server_info', 'user_id', 'lab_id', 'status'])",
-        "id": {
-          ".validate": "newData.isString()"
-        },
-        "file_set_hash": {
-          ".validate": "newData.isString()"
-        },
-        "started_at": {
-          ".validate": "newData.isNumber()"
-        },
-        "finished_at": {
-          ".validate": "newData.isNumber()"
-        },
-        "server_info": {
-          ".validate": "newData.isString()"
-        },
-        "user_id": {
-          ".validate": "newData.isString()"
-        },
-        "lab_id": {
-          ".validate": "newData.isString()"
-        },
-        "status": {
-          ".validate": "newData.isNumber()"
-        },
-        "$other": {
-          ".validate": "false"
-        },
-        ".read": "true",
-        ".write": "auth.uid == 'execution-server'"
+          },
+          ".read": "true",
+          ".write": "data.val() != null ? auth != null && auth.uid == data.child('user_id').val() && (auth != null && auth.uid == newData.child('user_id').val()) || auth.uid == 'execution-server' || auth.uid == 'cloud-fn-assign-server' : auth != null && auth.uid == newData.child('user_id').val()"
+        }
       },
       ".indexOn": [
-        "file_set_hash"
+        "common/file_set_hash"
       ]
     },
-    "executions_messages": {
+    "invocations": {
       "$id": {
-        ".read": "true",
-        ".write": "auth.uid == 'execution-server'",
-        "$mid": {
-          ".validate": "newData.hasChildren(['id', 'timestamp', 'data', 'kind'])",
+        "common": {
+          ".validate": "newData.hasChildren(['id', 'user_id', 'timestamp', 'type', 'data'])",
           "id": {
+            ".validate": "newData.isString()"
+          },
+          "user_id": {
             ".validate": "newData.isString()"
           },
           "timestamp": {
             ".validate": "newData.isNumber()"
           },
+          "type": {
+            ".validate": "newData.isNumber()"
+          },
           "data": {
+            ".validate": "newData.hasChildren(['id'])",
+            "id": {
+              ".validate": "newData.isString()"
+            },
+            "files": {
+              "$key2": {
+                ".validate": "newData.hasChildren(['name', 'content'])",
+                "name": {
+                  ".validate": "newData.isString()"
+                },
+                "content": {
+                  ".validate": "newData.isString()"
+                },
+                "$other": {
+                  ".validate": "false"
+                }
+              },
+              ".validate": "newData.hasChildren()"
+            },
+            "$other": {
+              ".validate": "false"
+            }
+          },
+          "$other": {
+            ".validate": "false"
+          },
+          ".read": "auth != null && auth.uid == data.child('user_id').val() || auth.uid == 'cloud-fn-assign-server'",
+          ".write": "data.val() != null ? auth != null && auth.uid == data.child('user_id').val() && (auth != null && auth.uid == newData.child('user_id').val()) || auth.uid == 'execution-server' || auth.uid == 'cloud-fn-assign-server' : auth != null && auth.uid == newData.child('user_id').val()"
+        },
+        "server": {
+          ".read": "auth.uid == 'cloud-fn-assign-server' || auth.uid == 'execution-server'",
+          ".write": "auth.uid == 'cloud-fn-assign-server'"
+        }
+      }
+    },
+    "executions": {
+      "$id": {
+        "common": {
+          ".validate": "newData.hasChildren(['id', 'file_set_hash', 'started_at', 'server_info', 'user_id', 'lab_id', 'status'])",
+          "id": {
             ".validate": "newData.isString()"
           },
-          "kind": {
+          "file_set_hash": {
+            ".validate": "newData.isString()"
+          },
+          "started_at": {
+            ".validate": "newData.isNumber()"
+          },
+          "finished_at": {
+            ".validate": "newData.isNumber()"
+          },
+          "server_info": {
+            ".validate": "newData.isString()"
+          },
+          "user_id": {
+            ".validate": "newData.isString()"
+          },
+          "lab_id": {
+            ".validate": "newData.isString()"
+          },
+          "status": {
             ".validate": "newData.isNumber()"
           },
           "$other": {
@@ -162,32 +140,61 @@
           },
           ".read": "true",
           ".write": "auth.uid == 'execution-server'"
+        },
+        "messages": {
+          ".read": "true",
+          ".write": "auth.uid == 'execution-server'",
+          "$mid": {
+            ".validate": "newData.hasChildren(['id', 'timestamp', 'data', 'kind'])",
+            "id": {
+              ".validate": "newData.isString()"
+            },
+            "timestamp": {
+              ".validate": "newData.isNumber()"
+            },
+            "data": {
+              ".validate": "newData.isString()"
+            },
+            "kind": {
+              ".validate": "newData.isNumber()"
+            },
+            "$other": {
+              ".validate": "false"
+            },
+            ".read": "true",
+            ".write": "auth.uid == 'execution-server'"
+          }
         }
-      }
+      },
+      ".indexOn": [
+        "common/file_set_hash"
+      ]
     },
     "users": {
       "$id": {
-        ".validate": "newData.hasChildren(['id', 'isAnonymous', 'displayName', 'photoUrl', 'email'])",
-        "id": {
-          ".validate": "newData.isString()"
-        },
-        "isAnonymous": {
-          ".validate": "newData.isBoolean() && newData.val() == (auth.provider == 'anonymous')"
-        },
-        "displayName": {
-          ".validate": "newData.isString()"
-        },
-        "photoUrl": {
-          ".validate": "newData.isString()"
-        },
-        "email": {
-          ".validate": "newData.isString()"
-        },
-        "$other": {
-          ".validate": "false"
-        },
-        ".read": "true",
-        ".write": "data.val() != null ? auth != null && auth.uid == data.child('id').val() && (auth != null && auth.uid == newData.child('id').val()) : auth != null && auth.uid == newData.child('id').val()"
+        "common": {
+          ".validate": "newData.hasChildren(['id', 'isAnonymous', 'displayName', 'photoUrl', 'email'])",
+          "id": {
+            ".validate": "newData.isString()"
+          },
+          "isAnonymous": {
+            ".validate": "newData.isBoolean() && newData.val() == (auth.provider == 'anonymous')"
+          },
+          "displayName": {
+            ".validate": "newData.isString()"
+          },
+          "photoUrl": {
+            ".validate": "newData.isString()"
+          },
+          "email": {
+            ".validate": "newData.isString()"
+          },
+          "$other": {
+            ".validate": "false"
+          },
+          ".read": "true",
+          ".write": "data.val() != null ? auth != null && auth.uid == data.child('id').val() && (auth != null && auth.uid == newData.child('id').val()) : auth != null && auth.uid == newData.child('id').val()"
+        }
       }
     },
     "servers": {

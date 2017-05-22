@@ -9,15 +9,15 @@ export class DbRefBuilder {
   }
 
   userRef(id: string) {
-    return new ObservableDbRef(db.ref(`users/${id}`));
+    return new ObservableDbRef(db.ref(`users/${id}/common`));
   }
 
   labRef(id: string) {
-    return new ObservableDbRef(db.ref(`labs/${id}`));
+    return new ObservableDbRef(db.ref(`labs/${id}/common`));
   }
 
   labsForHashRef(hash: string) {
-    return new ObservableDbRef(db.ref(`labs`).orderByChild('file_set_hash').equalTo(hash));
+    return new ObservableDbRef(db.ref(`labs`).orderByChild('common/file_set_hash').equalTo(hash));
   }
 
   serverRef(id: string) {
@@ -25,7 +25,7 @@ export class DbRefBuilder {
   }
 
   invocationRef(id: string) {
-    return new ObservableDbRef(db.ref(`invocations/${id}`));
+    return new ObservableDbRef(db.ref(`invocations/${id}/common`));
   }
 
   invocationsRef() {
@@ -33,7 +33,7 @@ export class DbRefBuilder {
   }
 
   newInvocationsRef() {
-    return new ObservableDbRef(db.ref('invocations').orderByChild('timestamp').startAt(Date.now()));
+    return new ObservableDbRef(db.ref('invocations').orderByChild('common/timestamp').startAt(Date.now()));
   }
 
   newInvocationsForServerRef(server: string) {
@@ -41,21 +41,21 @@ export class DbRefBuilder {
   }
 
   executionRef(id: string) {
-    return new ObservableDbRef(db.ref(`executions/${id}`));
+    return new ObservableDbRef(db.ref(`executions/${id}/common`));
   }
 
   executionByHashRef(hash: string) {
     return new ObservableDbRef(db.ref(`executions`)
-                                 .orderByChild('file_set_hash')
+                                 .orderByChild('common/file_set_hash')
                                  .equalTo(hash));
   }
 
   executionMessagesRef(id: string) {
-    return new ObservableDbRef(db.ref(`executions_messages/${id}`));
+    return new ObservableDbRef(db.ref(`executions/${id}/messages`));
   }
 
   executionMessageRef(executionId: string, messageId: string) {
-    return new ObservableDbRef(db.ref(`executions_messages/${executionId}/${messageId}`));
+    return new ObservableDbRef(db.ref(`executions/${executionId}/messages/${messageId}`));
   }
 }
 

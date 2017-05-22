@@ -31,14 +31,14 @@ export class MessagingService {
   initMessaging () {
     // Listen on all incoming runs to do the right thing
     this.db.newInvocationsForServerRef(this.server.id).childAdded()
-        .map(snapshot => snapshot.val())
+        .map(snapshot => snapshot.val().common)
         .switchMap(invocation => this.getOutputAsObservable(invocation))
         .switchMap(data => this.writeExecutionMessage(data.output, data.invocation))
         .subscribe();
 
     // Listen on all changed runs to get notified about stops
     this.db.invocationsRef().childChanged()
-        .map(snapshot => snapshot.val())
+        .map(snapshot => snapshot.val().common)
         .filter(execution => execution.type === InvocationType.StopExecution)
         .subscribe(execution => this.codeRunner.stop(execution));
   }
@@ -117,7 +117,7 @@ export class MessagingService {
 
         let updates = Object.keys(labs || {})
           .map(key => labs[key])
-          .reduce((prev, lab) => (prev[`/labs/${lab.id}/has_cached_run`] = true) && prev, {});
+          .reduce((prev, lab) => (prev[`/labs/${lab.id}/common/has_cached_run`] = true) && prev, {});
 
         let updateCount = Object.keys(updates).length;
 
@@ -142,7 +142,7 @@ export class MessagingService {
     return this.db.executionByHashRef(fileSetHash)
                   .onceValue()
                   .map(snapshot => snapshot.val())
-                  .map(val => val ? val[Object.keys(val)[0]] : null);
+                  .map(val => val ? val[Object.keys(val)[0]].common : null);
   }
 
   processStreamDataToExecutionMessage(data: ProcessStreamData): ExecutionMessage {

@@ -45,7 +45,7 @@ function assignServer(invocation, server) {
 
 module.exports = functions.database.ref('/invocations/{id}/')
   .onWrite(event => {
-    const invocation = event.data.val();
+    const invocationWrapper = event.data.val();
 
     // Setting the server will invoke the same cloud function again,
     // hence we need to break the cycle here. We could also listen for
@@ -53,9 +53,11 @@ module.exports = functions.database.ref('/invocations/{id}/')
     // seperately.
 
     // Another issue is that the invocation may be null for whatever reasons
-    if (!invocation || invocation.server) {
+    if (!invocationWrapper || invocationWrapper.server) {
       return Promise.resolve();
     }
+
+    const invocation = invocationWrapper.common;
 
     return getServerForHardwareType(invocation.hardware_type || DEFAULT_HARDWARE_TYPE)
               .then(server => assignServer(invocation, server));
