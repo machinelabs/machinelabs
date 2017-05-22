@@ -31,8 +31,8 @@ export class DbRefBuilder {
     }
   }
 
-  userLabsRef(id: string) {
-    return new ObservableDbRef(this.db.ref(`labs`).orderByChild('common/user_id').equalTo(id));
+  userLabsIdsRef(id: string) {
+    return new ObservableDbRef(this.db.ref(`user_labs/${id}`));
   }
 }
 

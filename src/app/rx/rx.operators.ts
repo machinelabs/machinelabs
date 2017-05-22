@@ -1,3 +1,4 @@
+import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/observable/fromEventPattern';
 import 'rxjs/add/observable/of';
