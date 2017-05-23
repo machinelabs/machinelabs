@@ -2,8 +2,8 @@ const admin = require('firebase-admin');
 const functions = require('firebase-functions');
 admin.initializeApp(functions.config().firebase);
 
-const setHasCachedRun = require('./has-cached-run');
 const assignServer = require('./assign-server');
+const postLabWrite = require('./post-lab-write');
 
-exports.setHasCachedRun = setHasCachedRun;
 exports.assignServer = assignServer;
+exports.postLabWrite = postLabWrite;

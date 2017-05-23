@@ -217,6 +217,11 @@
           ".validate": "false"
         }
       }
+    },
+    "user_labs": {
+      "$id": {
+        ".read": "true"
+      }
     }
   }
 }
