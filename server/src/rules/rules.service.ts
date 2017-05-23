@@ -4,12 +4,14 @@ import { Invocation} from '../models/invocation';
 import { Approval } from '../models/approval';
 import { allow } from './rules/rule';
 import { NoAnonymousRule } from './rules/no-anonymous';
+import { HasPlanRule } from './rules/has-plan';
 
 export class RulesService {
 
   db = new DbRefBuilder();
   rules = [
-    new NoAnonymousRule()
+    new NoAnonymousRule(),
+    new HasPlanRule()
   ];
 
   constructor() {
