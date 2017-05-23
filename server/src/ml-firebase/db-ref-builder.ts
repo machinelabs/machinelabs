@@ -28,8 +28,8 @@ export class DbRefBuilder {
     return new ObservableDbRef(db.ref(`invocations/${id}/common`));
   }
 
-  invocationsRef() {
-    return new ObservableDbRef(db.ref(`invocations`));
+  invocationsForServerRef(server:string) {
+    return new ObservableDbRef(db.ref('invocations').orderByChild(`server/id`).equalTo(server));
   }
 
   newInvocationsRef() {

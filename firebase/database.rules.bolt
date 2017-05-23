@@ -113,6 +113,10 @@ path /invocations/{id}/server {
   write() { isAssignServerFn() }
 }
 
+path /invocations {
+  index() { ['server/id'] }
+}
+
 path /executions/{id}/common is Execution {
   read() { true }
   write() { isExecutionServer() }

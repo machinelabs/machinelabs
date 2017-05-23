@@ -37,7 +37,7 @@ export class MessagingService {
         .subscribe();
 
     // Listen on all changed runs to get notified about stops
-    this.db.invocationsRef().childChanged()
+    this.db.invocationsForServerRef(this.server.id).childChanged()
         .map(snapshot => snapshot.val().common)
         .filter(execution => execution.type === InvocationType.StopExecution)
         .subscribe(execution => this.codeRunner.stop(execution));

@@ -105,7 +105,10 @@
           ".read": "auth.uid == 'cloud-fn-assign-server' || auth.uid == 'execution-server'",
           ".write": "auth.uid == 'cloud-fn-assign-server'"
         }
-      }
+      },
+      ".indexOn": [
+        "server/id"
+      ]
     },
     "executions": {
       "$id": {
