@@ -6,8 +6,8 @@ export class EditorSnackbarService {
 
   constructor(private snackBar: MdSnackBar) {}
 
-  notify(text: string) {
-    this.snackBar.open(text, 'Dismiss', { duration: 3000 });
+  notify(text: string, config = { actionLabel: 'Dismiss', duration: 3000 }) {
+    return this.snackBar.open(text, config.actionLabel, { duration: config.duration });
   }
 
   notifyLabCreated() {
@@ -24,5 +24,12 @@ export class EditorSnackbarService {
 
   notifyCacheReplay(data) {
     this.notify(`Replaying cached execution: ${data}`);
+  }
+
+  notifyLateExecution() {
+    return this.notify('The server doesn\'t seem responding', {
+      actionLabel: 'Stop waiting',
+      duration: 0
+    });
   }
 }

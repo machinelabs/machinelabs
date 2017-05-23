@@ -26,6 +26,8 @@ interface EditLabDialogOptions {
   hideCancelButton: boolean;
 }
 
+const EXECUTION_START_TIMEOUT = 5000;
+
 @Component({
   selector: 'ml-editor-view',
   templateUrl: './editor-view.component.html',
@@ -101,18 +103,24 @@ export class EditorViewComponent implements OnInit {
     // Unsubscribing. The returned Observable may not auto complete
     // in all scenarios.
     this.output = this.rleService.run(this.context, lab)
-                      .do(msg => {
-                        if (msg.kind === MessageKind.ExecutionFinished) {
-                          this.editorSnackbar.notifyExecutionFinished();
-                          this.labExecuter = this.userService.getUser(this.context.execution.user_id);
-                        } else if (msg.kind === MessageKind.OutputRedirected) {
-                          this.editorSnackbar.notifyCacheReplay(msg.data);
-                        } else if (msg.kind === MessageKind.ExecutionRejected) {
-                          this.openRejectionDialog();
-                        }
-                      })
-                      .filter(msg => msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr)
-                      .scan((acc, current) => `${acc}\n${current.data}`, '');
+                    .do(msg => {
+                      if (msg.kind === MessageKind.ExecutionFinished) {
+                        this.editorSnackbar.notifyExecutionFinished();
+                        this.labExecuter = this.userService.getUser(this.context.execution.user_id);
+                      } else if (msg.kind === MessageKind.OutputRedirected) {
+                        this.editorSnackbar.notifyCacheReplay(msg.data);
+                      } else if (msg.kind === MessageKind.ExecutionRejected) {
+                        this.openRejectionDialog();
+                      }
+                    })
+                    .filter(msg => msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr)
+                    .scan((acc, current) => `${acc}\n${current.data}`, '');
+
+
+    Observable.timer(EXECUTION_START_TIMEOUT)
+              .takeUntil(this.output)
+              .switchMap(_ => this.editorSnackbar.notifyLateExecution().afterDismissed())
+              .subscribe(_ => this.stop(this.context));
 
     setTimeout(() => {
       this.executionMetadataSidebar.open();
