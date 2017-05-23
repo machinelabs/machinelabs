@@ -1,7 +1,7 @@
 import { DummyRunner } from './code-runner/dummy-runner.js';
 import { DockerRunner } from './code-runner/docker-runner.js';
 import { MessagingService } from './messaging.service';
-import { RulesService } from './rules.service';
+import { RulesService } from './rules/rules.service';
 import { environment } from './environments/environment';
 
 const DUMMY_RUNNER = process.argv.includes('--dummy-runner');

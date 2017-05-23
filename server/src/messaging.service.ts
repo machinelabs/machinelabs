@@ -6,7 +6,7 @@ import { CodeRunner, ProcessStreamData } from './code-runner/code-runner';
 import { Observable } from '@reactivex/rxjs';
 import { Invocation, InvocationType } from './models/invocation';
 import { Execution, ExecutionStatus, ExecutionMessage, MessageKind, toMessageKind } from './models/execution';
-import { RulesService } from 'rules.service';
+import { RulesService } from './rules/rules.service';
 import { Server } from 'models/server';
 
 export class MessagingService {

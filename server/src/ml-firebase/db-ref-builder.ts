@@ -9,7 +9,7 @@ export class DbRefBuilder {
   }
 
   userRef(id: string) {
-    return new ObservableDbRef(db.ref(`users/${id}/common`));
+    return new ObservableDbRef(db.ref(`users/${id}`));
   }
 
   labRef(id: string) {
