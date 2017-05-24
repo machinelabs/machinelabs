@@ -60,9 +60,6 @@ export class EditorViewComponent implements OnInit {
 
   rejectionDialogRef: MdDialogRef<RejectionDialogComponent>;
 
-
-  labExecuter: Observable<User>;
-
   constructor (private rleService: RemoteLabExecService,
                private labStorageService: LabStorageService,
                private route: ActivatedRoute,
@@ -112,7 +109,6 @@ export class EditorViewComponent implements OnInit {
                       if (msg.kind === MessageKind.ExecutionFinished) {
                         this.context.clientExecutionState = ClientExecutionState.NotExecuting;
                         this.editorSnackbar.notifyExecutionFinished();
-                        this.labExecuter = this.userService.getUser(this.context.execution.user_id);
                       } else if (msg.kind === MessageKind.OutputRedirected) {
                         this.editorSnackbar.notifyCacheReplay(msg.data);
                       } else if (msg.kind === MessageKind.ExecutionRejected) {

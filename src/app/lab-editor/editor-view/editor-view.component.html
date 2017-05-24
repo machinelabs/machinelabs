@@ -52,7 +52,7 @@
         #executionMetadataSidebar
         class="ml-sidebar"
         >
-      <ml-execution-metadata [execution]="context.execution" [executer]="labExecuter | async"></ml-execution-metadata>
+      <ml-execution-metadata [execution]="context.execution$"></ml-execution-metadata>
     </md-sidenav>
   </md-sidenav-container>
   <ml-footer
