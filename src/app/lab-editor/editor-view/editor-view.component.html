@@ -36,6 +36,7 @@
         </md-tab>
         <md-tab label="Console">
           <ml-ace-editor
+            #outputPanel
             [value]="output | async"
             [readOnly]="true"
             theme="terminal"
