@@ -9,7 +9,7 @@ import { MachineLabsMaterialModule } from '../../ml-material.module';
 import { AuthService, dummyUser } from '../../auth/';
 import { EditorToolbarComponent, EditorToolbarActionTypes } from './editor-toolbar.component';
 import { LabExecutionContext } from '../../models/lab';
-import { ExecutionStatus } from '../../models/execution';
+import { ExecutionStatus, ClientExecutionState } from '../../models/execution';
 import { UserService } from '../../user/user.service';
 import { DbRefBuilder } from '../../firebase/db-ref-builder';
 import { DATABASE } from '../../app.tokens';
@@ -138,6 +138,7 @@ describe('EditorToolbarComponent', () => {
       let lab = Object.assign({}, testLab);
 
       component.context = new LabExecutionContext(lab);
+      component.context.clientExecutionState = ClientExecutionState.Executing;
       component.context.execution.status = ExecutionStatus.Executing;
       component.lab = lab;
       fixture.detectChanges();

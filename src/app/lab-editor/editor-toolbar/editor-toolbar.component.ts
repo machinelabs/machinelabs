@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Lab, LabExecutionContext } from '../../models/lab';
+import { ClientExecutionState } from '../../models/execution';
 import { User } from '../../models/user';
 import { AuthService } from '../../auth/auth.service';
 import { UserService } from '../../user/user.service';
@@ -31,6 +32,8 @@ export class EditorToolbarComponent implements OnInit {
   labOwner: Observable<User>;
 
   private user: User;
+
+  ClientExecutionState = ClientExecutionState;
 
   EditorToolbarActionTypes = EditorToolbarActionTypes;
 
