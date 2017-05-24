@@ -102,8 +102,9 @@ export class EditorViewComponent implements OnInit {
     // Don't make this a manual subscription without dealing with
     // Unsubscribing. The returned Observable may not auto complete
     // in all scenarios.
-    this.output = this.rleService.run(this.context, lab)
-                    .do(msg => {
+    let messages = this.rleService.run(this.context, lab);
+
+    this.output = messages.do(msg => {
                       if (msg.kind === MessageKind.ExecutionFinished) {
                         this.editorSnackbar.notifyExecutionFinished();
                         this.labExecuter = this.userService.getUser(this.context.execution.user_id);
@@ -116,9 +117,8 @@ export class EditorViewComponent implements OnInit {
                     .filter(msg => msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr)
                     .scan((acc, current) => `${acc}\n${current.data}`, '');
 
-
     Observable.timer(EXECUTION_START_TIMEOUT)
-              .takeUntil(this.output)
+              .takeUntil(messages)
               .switchMap(_ => this.editorSnackbar.notifyLateExecution().afterDismissed())
               .subscribe(_ => this.stop(this.context));
 
