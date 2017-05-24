@@ -19,9 +19,9 @@ import { UserService } from '../user/user.service';
   styleUrls: ['./user-profile.component.scss']
 })
 export class UserProfileComponent implements OnInit {
+
   labs: Observable<Array<Lab>>;
   user: User;
-  isSelf = false;
 
   constructor(private route: ActivatedRoute,
               private labStorage: LabStorageService,
@@ -30,8 +30,5 @@ export class UserProfileComponent implements OnInit {
   ngOnInit() {
     this.user = this.route.snapshot.data['user'];
     this.labs = this.route.snapshot.data['labs'];
-    this.userService.observeUserChanges()
-                    .switchMap(_ => this.userService.isLoggedInUser(this.user.id))
-                    .subscribe(self => this.isSelf = self);
   }
 }
