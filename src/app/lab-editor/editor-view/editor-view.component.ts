@@ -15,7 +15,7 @@ import { User } from '../../models/user';
 import { BLANK_LAB_TPL_ID } from '../../lab-template.service';
 import { Observable } from 'rxjs/Observable';
 import { Lab, LabExecutionContext, File } from '../../models/lab';
-import { ExecutionMessage, MessageKind } from '../../models/execution';
+import { ExecutionMessage, MessageKind, ClientExecutionState } from '../../models/execution';
 import { EditorToolbarAction, EditorToolbarActionTypes } from '../editor-toolbar/editor-toolbar.component';
 
 enum TabIndex {
@@ -101,7 +101,7 @@ export class EditorViewComponent implements OnInit {
     // However, we want to give information about the previous context to
     // the rleService, hence we clone the current context and pass it on.
     this.context = this.context.clone();
-
+    this.context.clientExecutionState = ClientExecutionState.Executing;
     // Scan the notifications and build up a string with line breaks
     // Don't make this a manual subscription without dealing with
     // Unsubscribing. The returned Observable may not auto complete
@@ -110,11 +110,13 @@ export class EditorViewComponent implements OnInit {
 
     this.output = messages.do(msg => {
                       if (msg.kind === MessageKind.ExecutionFinished) {
+                        this.context.clientExecutionState = ClientExecutionState.NotExecuting;
                         this.editorSnackbar.notifyExecutionFinished();
                         this.labExecuter = this.userService.getUser(this.context.execution.user_id);
                       } else if (msg.kind === MessageKind.OutputRedirected) {
                         this.editorSnackbar.notifyCacheReplay(msg.data);
                       } else if (msg.kind === MessageKind.ExecutionRejected) {
+                        this.context.clientExecutionState = ClientExecutionState.NotExecuting;
                         this.openRejectionDialog();
                       }
                     })
@@ -132,6 +134,7 @@ export class EditorViewComponent implements OnInit {
   }
 
   stop(context: LabExecutionContext) {
+    context.clientExecutionState = ClientExecutionState.NotExecuting;
     this.rleService.stop(context);
     this.editorSnackbar.notifyLabStopped();
   }

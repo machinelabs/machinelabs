@@ -29,7 +29,6 @@ export class RemoteLabExecService {
    * where `string` is each line that was printed to STDOUT.
    */
   run (context: LabExecutionContext, lab: Lab): Observable<ExecutionMessage> {
-
     // This shouldn't really happen in practice because the UI forbids this.
     // But semantically it makes sense to check for it.
     if (context.execution.status === ExecutionStatus.Executing) {

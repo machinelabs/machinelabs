@@ -1,4 +1,4 @@
-import { Execution, ExecutionStatus } from './execution';
+import { Execution, ExecutionStatus, ClientExecutionState } from './execution';
 
 export interface File {
   name: string;
@@ -22,6 +22,7 @@ export class LabExecutionContext {
   private _id: string;
   private _lab: Lab;
   execution: Execution;
+  clientExecutionState = ClientExecutionState.NotExecuting;
 
   constructor (lab: Lab = null, id = '') {
     this._id = id;
