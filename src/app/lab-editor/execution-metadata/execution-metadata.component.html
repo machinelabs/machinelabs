@@ -1,4 +1,4 @@
-<md-card class="ml-execution-metadata">
+<md-card class="ml-execution-metadata" *ngIf="execution | async as execution;">
   <h4 class="ml-execution-metadata-headline"><md-icon>info</md-icon> Execution status</h4>
   <md-card-content class="ml-execution-metadata-content">
     <table>
@@ -25,7 +25,7 @@
       <tr class="ml-execution-metadata-user-info">
         <td>Executed by:</td>
         <td>
-          <ng-container *ngIf="executer; else notAvailable">
+          <ng-container *ngIf="executer | async as executer; else notAvailable">
             <img [src]="executer.photoUrl"> <a title="{{executer.displayName}}'s profile" [routerLink]="['/user', executer.id]">{{executer.displayName}}</a>
           </ng-container>
         </td>

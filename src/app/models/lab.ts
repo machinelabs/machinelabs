@@ -1,4 +1,6 @@
 import { Execution, ExecutionStatus, ClientExecutionState } from './execution';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 
 export interface File {
   name: string;
@@ -19,17 +21,24 @@ export interface Lab extends LabTemplate {
 }
 
 export class LabExecutionContext {
+  private _execution$: BehaviorSubject<Execution>;
   private _id: string;
   private _lab: Lab;
-  execution: Execution;
   clientExecutionState = ClientExecutionState.NotExecuting;
+  _execution: Execution;
+  execution$: Observable<Execution>;
 
   constructor (lab: Lab = null, id = '') {
-    this._id = id;
-    this._lab = lab;
-    this.execution = {
-      status: ExecutionStatus.Pristine
-    };
+    this.setData(lab, id);
+  }
+
+  set execution (val: Execution) {
+    this._execution = val;
+    this._execution$.next(val);
+  }
+
+  get execution () {
+    return this._execution;
   }
 
   get id () {
@@ -46,13 +55,22 @@ export class LabExecutionContext {
     return context;
   }
 
-  setData(lab: Lab, id: string) {
+  resetData(lab: Lab, id: string) {
     if (!lab || !id) {
       throw new Error('Providing lab and id is mandatory');
     }
+    this.setData(lab, id);
+  }
 
+  private setData(lab: Lab, id: string) {
     this._lab = lab;
     this._id = id;
+    this._execution = {
+      status: ExecutionStatus.Pristine
+    };
+
+    this._execution$ = new BehaviorSubject<Execution>(this._execution);
+    this.execution$ = this._execution$.asObservable();
   }
 
   isRunning () {

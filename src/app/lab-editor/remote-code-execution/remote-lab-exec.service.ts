@@ -36,7 +36,7 @@ export class RemoteLabExecService {
     }
 
     let id = `${Date.now()}-${shortid.generate()}`;
-    context.setData(lab, id);
+    context.resetData(lab, id);
 
     let contextUpdater = new ContextExecutionUpdater(this.db, context);
     let output$ = this.authService
