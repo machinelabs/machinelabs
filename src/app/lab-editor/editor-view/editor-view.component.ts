@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdDialog, MdDialogRef, MdSnackBar, MdTabGroup, MdSidenav } from '@angular/material';
+import { AceEditorComponent } from '../ace-editor/ace-editor.component';
 import { FileNameDialogComponent } from '../file-name-dialog/file-name-dialog.component';
 import { EditLabDialogComponent } from '../edit-lab-dialog/edit-lab-dialog.component';
 import { NavigationConfirmDialogComponent } from '../navigation-confirm-dialog/navigation-confirm-dialog.component';
@@ -53,6 +54,8 @@ export class EditorViewComponent implements OnInit {
 
   @ViewChild('executionMetadataSidebar') executionMetadataSidebar: MdSidenav;
 
+  @ViewChild('outputPanel') outputPanel: AceEditorComponent;
+
   editLabDialogRef: MdDialogRef<EditLabDialogComponent>;
 
   rejectionDialogRef: MdDialogRef<RejectionDialogComponent>;
@@ -88,6 +91,7 @@ export class EditorViewComponent implements OnInit {
   }
 
   run(lab: Lab) {
+    this.outputPanel.clear();
     this.tabGroup.selectedIndex = TabIndex.Console;
     // we want to have this immutable. Shared instances make it hard
     // to reason about things when code is executed asynchronously.
