@@ -35,4 +35,4 @@ testem.log
 Thumbs.db
 
 # allow everyone to use their own local config
-/src/environments/environment.personal.ts
+/src/environments/environment.personal*.ts
