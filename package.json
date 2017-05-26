@@ -19,7 +19,7 @@
     "@angular/flex-layout": "2.0.0-beta.8",
     "@angular/forms": "4.2.0-rc.0",
     "@angular/http": "4.2.0-rc.0",
-    "@angular/material": "2.0.0-beta.5",
+    "@angular/material": "2.0.0-beta.6",
     "@angular/platform-browser": "4.2.0-rc.0",
     "@angular/platform-browser-dynamic": "4.2.0-rc.0",
     "@angular/router": "4.2.0-rc.0",
@@ -34,7 +34,7 @@
     "zone.js": "0.8.10"
   },
   "devDependencies": {
-    "@angular/cli": "1.1.0-rc.0",
+    "@angular/cli": "1.1.0-rc.2",
     "@angular/compiler-cli": "4.2.0-rc.0",
     "@types/jasmine": "2.5.38",
     "@types/node": "6.0.60",
