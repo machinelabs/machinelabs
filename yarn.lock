@@ -6,12 +6,12 @@
   version "4.2.0-rc.0"
   resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-4.2.0-rc.0.tgz#a4f0bc1decf8dc91169200ce90c3375b8f1b776d"
 
-"@angular/cli@1.1.0-rc.0":
-  version "1.1.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@angular/cli/-/cli-1.1.0-rc.0.tgz#126232fc9f5b3e1b170c0c04e27d2171a0497853"
+"@angular/cli@1.1.0-rc.2":
+  version "1.1.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@angular/cli/-/cli-1.1.0-rc.2.tgz#c246b143b233dac57630bec7f63d6288f4a2d8a4"
   dependencies:
-    "@ngtools/json-schema" "1.1.0-beta.0"
-    "@ngtools/webpack" "1.3.1"
+    "@ngtools/json-schema" "1.1.0-rc.1"
+    "@ngtools/webpack" "1.4.0-rc.2"
     autoprefixer "^6.5.3"
     chalk "^1.1.3"
     common-tags "^1.3.1"
@@ -37,6 +37,7 @@
     less "^2.7.2"
     less-loader "^4.0.2"
     lodash "^4.11.1"
+    memory-fs "^0.4.1"
     minimatch "^3.0.3"
     node-modules-path "^1.0.0"
     nopt "^4.0.1"
@@ -101,9 +102,11 @@
   version "4.2.0-rc.0"
   resolved "https://registry.yarnpkg.com/@angular/http/-/http-4.2.0-rc.0.tgz#614e5e70adc231ba43dd1fb9764c9f88cad3f76b"
 
-"@angular/material@2.0.0-beta.5":
-  version "2.0.0-beta.5"
-  resolved "https://registry.yarnpkg.com/@angular/material/-/material-2.0.0-beta.5.tgz#712141ebfa77e3ace3ec8e32b5953b355e773965"
+"@angular/material@2.0.0-beta.6":
+  version "2.0.0-beta.6"
+  resolved "https://registry.yarnpkg.com/@angular/material/-/material-2.0.0-beta.6.tgz#83bfdf00f540a8c7db900a1e7b8ed2cff49df821"
+  dependencies:
+    tslib "^1.7.1"
 
 "@angular/platform-browser-dynamic@4.2.0-rc.0":
   version "4.2.0-rc.0"
@@ -123,13 +126,13 @@
   dependencies:
     tsickle "^0.21.0"
 
-"@ngtools/json-schema@1.1.0-beta.0":
-  version "1.1.0-beta.0"
-  resolved "https://registry.yarnpkg.com/@ngtools/json-schema/-/json-schema-1.1.0-beta.0.tgz#6e1e91f26fc46bd5afc8671501560c94e5fc7c4d"
+"@ngtools/json-schema@1.1.0-rc.1":
+  version "1.1.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@ngtools/json-schema/-/json-schema-1.1.0-rc.1.tgz#daa78e76953819249aa081e1d8ea3fd1719419a2"
 
-"@ngtools/webpack@1.3.1":
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-1.3.1.tgz#12149b6b9cb3bf858f4b2ae9650456e17674d2eb"
+"@ngtools/webpack@1.4.0-rc.2":
+  version "1.4.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-1.4.0-rc.2.tgz#c624e4b90ca6bc009e08c45d265b6c5c64d26aad"
   dependencies:
     enhanced-resolve "^3.1.0"
     loader-utils "^1.0.2"
@@ -3228,7 +3231,7 @@ media-typer@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
 
-memory-fs@^0.4.0, memory-fs@~0.4.1:
+memory-fs@^0.4.0, memory-fs@^0.4.1, memory-fs@~0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/memory-fs/-/memory-fs-0.4.1.tgz#3a9a20b8462523e447cfbc7e8bb80ed667bfc552"
   dependencies:
@@ -5166,6 +5169,10 @@ tsickle@^0.21.0:
     mkdirp "^0.5.1"
     source-map "^0.5.6"
     source-map-support "^0.4.2"
+
+tslib@^1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.7.1.tgz#bc8004164691923a79fe8378bbeb3da2017538ec"
 
 tslint@4.4.2:
   version "4.4.2"
