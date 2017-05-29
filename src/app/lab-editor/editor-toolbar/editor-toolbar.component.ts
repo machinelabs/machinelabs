@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/Observable';
 import { Lab, LabExecutionContext } from '../../models/lab';
 import { ClientExecutionState } from '../../models/execution';
 import { User } from '../../models/user';
-import { AuthService } from '../../auth/auth.service';
 import { UserService } from '../../user/user.service';
 
 export enum EditorToolbarActionTypes {
@@ -37,8 +36,7 @@ export class EditorToolbarComponent implements OnInit {
 
   EditorToolbarActionTypes = EditorToolbarActionTypes;
 
-  constructor(private authService: AuthService,
-              private userService: UserService,
+  constructor(private userService: UserService,
               private router: Router,
               private route: ActivatedRoute) {}
 
