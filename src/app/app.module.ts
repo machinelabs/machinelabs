@@ -10,7 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule, PreloadAllModules } from '@angular/router';
 
-import { SharedModule } from './shared.module';
+import { SharedModule } from './shared/shared.module';
 
 import { LabStorageService } from './lab-storage.service';
 import { LabTemplateService, InMemoryLabTemplateService } from './lab-template.service';

@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MachineLabsMaterialModule } from './ml-material.module';
+import { MachineLabsMaterialModule } from '../ml-material.module';
 import { TagListComponent } from './tag-list/tag-list.component';
 import {
   DialogHeaderComponent,
   DialogContentComponent,
   DialogCtaBarComponent
 } from './dialog/dialog.component';
+import { TruncateWordsPipe } from './truncate-words.pipe';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import {
     TagListComponent,
     DialogHeaderComponent,
     DialogContentComponent,
-    DialogCtaBarComponent
+    DialogCtaBarComponent,
+    TruncateWordsPipe
   ],
   imports: [MachineLabsMaterialModule, CommonModule],
   exports: [
@@ -22,7 +24,8 @@ import {
     TagListComponent,
     DialogHeaderComponent,
     DialogContentComponent,
-    DialogCtaBarComponent
+    DialogCtaBarComponent,
+    TruncateWordsPipe
   ]
 })
 export class SharedModule {}
