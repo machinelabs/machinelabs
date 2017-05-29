@@ -1,0 +1,22 @@
+@import '../../../node_modules/@angular/material/theming';
+
+@mixin ml-user-profile-theme($theme) {
+
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $foreground: map-get($theme, foreground);
+
+  .ml-user-profile-lab-actions {
+    a {
+      color: mat-color($accent);
+    }
+  }
+
+  .ml-user-profile-no-labs-msg {
+    color: mat-color($foreground, secondary-text);
+    a {
+      color: mat-color($accent);
+    }
+  }
+}
+

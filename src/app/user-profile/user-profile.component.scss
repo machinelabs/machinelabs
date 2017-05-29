@@ -1,23 +1,40 @@
-// TODO styling is temp for now
-$ocean-blue: #2196f3;
-
 .ml-user-profile {
   margin: 2em auto;
   max-width: 960px;
 }
 
-.ml-user-profile__details {
+.ml-user-profile-details {
   text-align: center;
 }
 
-.ml-user-profile__details-avatar {
-  width: 15rem;
+.ml-user-profile-content {
+  padding-left: 2em;
+  padding-right: 2em;
 }
 
-.ml-user-profile__lab-list {
+.ml-user-profile-content-action-bar {
+  text-align: right;
+
+  [md-raised-button],[md-button] {
+    md-icon {
+      font-size: 1.4em;
+      height: initial;
+      width: initial;
+      vertical-align: -25%;
+    }
+  }
+}
+
+.ml-user-profile-avatar {
+  width: 15rem;
+  border-radius: 0.3em;
+}
+
+.ml-user-profile-lab-list {
   list-style: none;
   padding: 0;
   margin: 0;
+  margin-top: 1em;
 
   li {
     &:first-child {
@@ -27,19 +44,13 @@ $ocean-blue: #2196f3;
   }
 
   md-card-title a {
-    color: $ocean-blue;
     text-decoration: none;
   }
 }
 
-.ml-user-profile__no-labs-msg {
-  color: gray;
+.ml-user-profile-no-labs-msg {
   font-style: italic;
   text-align: center;
   margin: 2em auto;
   width: 70%;
-
-  a {
-    color: $ocean-blue;
-  }
 }
