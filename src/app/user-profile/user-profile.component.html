@@ -19,7 +19,7 @@
             <md-card-title>
               <a title="{{lab.name}}" [routerLink]="['/editor', lab.id]">{{lab.name}}</a>
             </md-card-title>
-            <md-card-content>{{lab.description}}</md-card-content>
+            <md-card-content>{{lab.description | words:30}}</md-card-content>
             <ml-tag-list [tags]="lab.tags"></ml-tag-list>
           </md-card>
         </li>
