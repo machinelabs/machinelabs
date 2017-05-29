@@ -27,6 +27,7 @@ interface EditLabDialogOptions {
   hideCancelButton: boolean;
 }
 
+const METADATA_SIDEBAR_OPEN_TIMEOUT = 600;
 const EXECUTION_START_TIMEOUT = 5000;
 
 @Component({
@@ -126,7 +127,7 @@ export class EditorViewComponent implements OnInit {
 
     setTimeout(() => {
       this.executionMetadataSidebar.open();
-    }, 600);
+    }, METADATA_SIDEBAR_OPEN_TIMEOUT);
   }
 
   stop(context: LabExecutionContext) {
