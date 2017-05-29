@@ -1,5 +1,6 @@
+import { MdSnackBarModule } from '@angular/material';
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 
 import { UserService } from '../user/user.service';
@@ -10,6 +11,11 @@ describe('UserResolver', () => {
   let userResolver: UserResolver;
   let userService: UserService;
   let routeSnapshotStub: ActivatedRouteSnapshot;
+  let router: Router;
+
+  let routerStub = {
+    navigate: (params) => {}
+  };
   let userServiceStub = {
     getUser: (id: string) => {}
   };
@@ -18,13 +24,17 @@ describe('UserResolver', () => {
     TestBed.configureTestingModule({
       providers: [
         UserResolver,
-        {provide: UserService, useValue: userServiceStub}
-      ]
+        { provide: UserService, useValue: userServiceStub },
+        { provide: Router, useValue: routerStub }
+      ],
+      imports: [MdSnackBarModule]
     });
     userResolver = TestBed.get(UserResolver);
     userService = TestBed.get(UserService);
+    router = TestBed.get(Router);
     routeSnapshotStub = new ActivatedRouteSnapshot();
     spyOn(userService, 'getUser').and.returnValue(Observable.of(null));
+    spyOn(router, 'navigate');
   });
 
   describe('.resolve()', () => {
@@ -32,6 +42,13 @@ describe('UserResolver', () => {
       routeSnapshotStub.params = {userId: 1};
       userResolver.resolve(routeSnapshotStub).subscribe(_ => {
         expect(userService.getUser).toHaveBeenCalledWith(1);
+      });
+    });
+
+    it('should navigate to editor if requested user doesn\'t exist', () => {
+      routeSnapshotStub.params = {userId: 1};
+      userResolver.resolve(routeSnapshotStub).subscribe(_ => {
+        expect(router.navigate).toHaveBeenCalledWith(['/editor']);
       });
     });
   });
