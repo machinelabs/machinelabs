@@ -54,15 +54,11 @@ describe('ToolbarMenuComponent', () => {
     spyOn(authService, 'linkOrSignInWithGitHub').and.returnValue(Observable.of(dummyUser));
     spyOn(authService, 'signOut').and.returnValue(Observable.of(null));
     spyOn(userService, 'createUserIfMissing').and.returnValue(Observable.of(dummyUser));
-
-
-    let user = Object.assign({}, dummyUser);
-    component.user = user;
-    fixture.detectChanges();
   });
 
   it('should login via GitHub', () => {
-
+    spyOn(userService, 'observeUserChanges').and.returnValue(Observable.of(dummyUser));
+    fixture.detectChanges();
     const menuButton = fixture.debugElement.query(By.css('[md-icon-button]'));
 
     // open menu
@@ -76,7 +72,9 @@ describe('ToolbarMenuComponent', () => {
 
   it('should logout', () => {
     // fake logged-in state
-    component.user.isAnonymous = false;
+    let user = Object.assign({}, dummyUser);
+    user.isAnonymous = false;
+    spyOn(userService, 'observeUserChanges').and.returnValue(Observable.of(user));
     fixture.detectChanges();
 
     const menuButton = fixture.debugElement.query(By.css('[md-icon-button]'));

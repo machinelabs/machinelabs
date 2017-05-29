@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MdSnackBar } from '@angular/material';
+import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../auth/auth.service';
 import { UserService } from '../../user/user.service';
 import { User } from '../../models/user';
@@ -9,13 +10,17 @@ import { User } from '../../models/user';
   templateUrl: './toolbar-menu.component.html',
   styleUrls: ['./toolbar-menu.component.scss']
 })
-export class ToolbarMenuComponent {
+export class ToolbarMenuComponent implements OnInit {
 
-  @Input() user: User;
+  user: Observable<User>;
 
   constructor(private authService: AuthService,
               private userService: UserService,
               private snackBar: MdSnackBar) {}
+
+  ngOnInit() {
+    this.user = this.userService.observeUserChanges();
+  }
 
   loginWithGitHub() {
     this.authService.linkOrSignInWithGitHub()
