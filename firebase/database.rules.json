@@ -176,9 +176,9 @@
     "users": {
       "$id": {
         "common": {
-          ".validate": "newData.hasChildren(['id', 'isAnonymous', 'displayName', 'photoUrl', 'email'])",
+          ".validate": "newData.hasChildren(['id', 'isAnonymous', 'displayName', 'bio', 'photoUrl', 'email'])",
           "id": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && newData.val() == auth.uid"
           },
           "isAnonymous": {
             ".validate": "newData.isBoolean() && newData.val() == (auth.provider == 'anonymous')"
@@ -186,11 +186,14 @@
           "displayName": {
             ".validate": "newData.isString()"
           },
+          "bio": {
+            ".validate": "newData.isString()"
+          },
           "photoUrl": {
             ".validate": "newData.isString()"
           },
           "email": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && newData.val() == auth.email"
           },
           "$other": {
             ".validate": "false"

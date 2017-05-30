@@ -75,12 +75,21 @@ type AnonymousState extends Boolean {
   validate() { this === isAnonymous() }
 }
 
+type UserId extends String {
+  validate() { this === auth.uid }
+}
+
+type UserEmail extends String {
+  validate() { this === auth.email }
+}
+
 type User {
-  id: String,
+  id: UserId,
   isAnonymous: AnonymousState,
   displayName: String,
+  bio: String,
   photoUrl: String,
-  email: String,
+  email: UserEmail,
 }
 
 type Server {
