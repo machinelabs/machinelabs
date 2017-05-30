@@ -25,9 +25,7 @@ export class UserService {
 
   private isDifferent(loginUser: LoginUser, user: User) {
     return Lang.isDifferent(user.email, loginUser.email) ||
-           Lang.isDifferent(user.isAnonymous, loginUser.isAnonymous) ||
-           Lang.isDifferent(user.photoUrl, this.getPhotoUrl(loginUser)) ||
-           Lang.isDifferent(user.displayName, this.getDisplayName(loginUser));
+           Lang.isDifferent(user.isAnonymous, loginUser.isAnonymous);
   }
 
   userHasProviderData(loginUser: LoginUser) {
@@ -47,6 +45,7 @@ export class UserService {
       id: fromUser.uid,
       displayName: this.getDisplayName(fromUser),
       email: fromUser.email,
+      bio: '',
       isAnonymous: fromUser.isAnonymous,
       photoUrl: this.getPhotoUrl(fromUser)
     };

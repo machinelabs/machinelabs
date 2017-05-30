@@ -26,6 +26,7 @@ describe('UserService', () => {
     id: 'some-id',
     displayName: 'foo',
     email: 'foo@bar.de',
+    bio: '',
     isAnonymous: true,
     photoUrl: '/some/address'
   };

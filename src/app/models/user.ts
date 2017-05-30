@@ -11,6 +11,7 @@ export interface User {
   id: string;
   displayName: string|null;
   email: string|null;
+  bio?: string|null;
   isAnonymous: boolean;
   photoUrl: string|null;
 }

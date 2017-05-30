@@ -9,12 +9,16 @@
 <div role="main">
   <div fxLayout class="ml-user-profile">
 
-    <div fxFlex="30" class="ml-user-profile-details">
+    <div fxFlex="30">
       <md-card>
-        <md-card-content>
+        <md-card-content class="ml-user-profile-details">
           <img class="ml-user-profile-avatar" alt="Avatar of {{user.displayName}}" [src]="user.photoUrl">
-          <h3>{{user.displayName}}</h3>
+          <h3 class="ml-user-profile-name">{{user.displayName}}</h3>
+          <p>{{user.bio}}</p>
         </md-card-content>
+        <md-card-actions class="ml-user-profile-details-actions" *ngIf="isAuthUser">
+          <button color="primary" md-button title="Edit user profile" (click)="edit()"><md-icon>edit</md-icon> Edit Profile</button>
+        </md-card-actions>
       </md-card>
     </div>
 
