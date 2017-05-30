@@ -1,0 +1,18 @@
+<ml-dialog-header>Edit Profile</ml-dialog-header>
+  <form [formGroup]="form" (ngSubmit)="submit(form.value)">
+  <ml-dialog-content>
+    <div fxLayout="column">
+      <md-input-container fxFlex>
+        <input mdInput placeholder="Profile name" formControlName="displayName">
+        <md-hint *ngIf="!form.valid && form.get('displayName').errors" align="end">This field is required.</md-hint>
+      </md-input-container>
+      <md-input-container fxFlex>
+        <textarea mdInput maxlength="200" placeholder="Tell us a little bit about you" formControlName="bio"></textarea>
+      </md-input-container>
+    </div>
+  </ml-dialog-content>
+  <ml-dialog-cta-bar>
+    <button md-button [disabled]="!form.valid" type="submit">Save</button>
+    <button md-button type="button" md-dialog-close>Cancel</button>
+  </ml-dialog-cta-bar>
+</form>
