@@ -58,6 +58,12 @@ export class UserService {
                            .map(_ => user);
   }
 
+  updateUser(user: User): Observable<User> {
+    return this.authService.requireAuthOnce()
+                           .switchMap(_ => this.db.userRef(user.id).update(user))
+                           .map(_ => user);
+  }
+
   getUser(id: string): Observable<User> {
     return this.authService.requireAuthOnce()
                            .switchMap(_ => this.db.userRef(id).onceValue())
