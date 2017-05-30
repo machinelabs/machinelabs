@@ -200,6 +200,9 @@
           },
           ".read": "true",
           ".write": "data.val() != null ? auth != null && auth.uid == data.child('id').val() && (auth != null && auth.uid == newData.child('id').val()) : auth != null && auth.uid == newData.child('id').val()"
+        },
+        "plan": {
+          ".read": "true"
         }
       }
     },
