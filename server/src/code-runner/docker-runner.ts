@@ -29,7 +29,6 @@ EOL
     let ps = spawn(`docker`, [
                                 'run',
                                 '--cap-drop=ALL',
-                                '--memory=128m',
                                 '--net=none',
                                 '--security-opt=no-new-privileges',
                                 '-i',
