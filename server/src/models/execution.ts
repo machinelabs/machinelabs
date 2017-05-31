@@ -1,3 +1,5 @@
+import { Lab } from './lab';
+
 export enum ExecutionStatus {
   Pristine,
   Executing,
@@ -13,7 +15,7 @@ export interface Execution {
   finished_at: number,
   server_info: string
   user_id: string;
-  lab_id: string;
+  lab: Lab;
   status: ExecutionStatus;
 }
 

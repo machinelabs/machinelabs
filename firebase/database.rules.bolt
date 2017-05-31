@@ -60,7 +60,7 @@ type Execution {
   finished_at: Number | Null,
   server_info: String,
   user_id: String,
-  lab_id: String,
+  lab: InvocationLab,
   status: Number
 }
 

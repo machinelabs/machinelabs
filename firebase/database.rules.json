@@ -113,7 +113,7 @@
     "executions": {
       "$id": {
         "common": {
-          ".validate": "newData.hasChildren(['id', 'file_set_hash', 'started_at', 'server_info', 'user_id', 'lab_id', 'status'])",
+          ".validate": "newData.hasChildren(['id', 'file_set_hash', 'started_at', 'server_info', 'user_id', 'lab', 'status'])",
           "id": {
             ".validate": "newData.isString()"
           },
@@ -132,8 +132,29 @@
           "user_id": {
             ".validate": "newData.isString()"
           },
-          "lab_id": {
-            ".validate": "newData.isString()"
+          "lab": {
+            ".validate": "newData.hasChildren(['id'])",
+            "id": {
+              ".validate": "newData.isString()"
+            },
+            "files": {
+              "$key2": {
+                ".validate": "newData.hasChildren(['name', 'content'])",
+                "name": {
+                  ".validate": "newData.isString()"
+                },
+                "content": {
+                  ".validate": "newData.isString()"
+                },
+                "$other": {
+                  ".validate": "false"
+                }
+              },
+              ".validate": "newData.hasChildren()"
+            },
+            "$other": {
+              ".validate": "false"
+            }
           },
           "status": {
             ".validate": "newData.isNumber()"

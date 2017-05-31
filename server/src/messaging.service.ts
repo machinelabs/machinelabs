@@ -105,10 +105,10 @@ export class MessagingService {
       .set({
         id: invocation.id,
         file_set_hash: hash,
+        lab: invocation.data,
         server_info: `${this.server.name} (${this.server.hardware_type})`,
         started_at: firebase.database.ServerValue.TIMESTAMP,
         user_id: invocation.user_id,
-        lab_id: invocation.data.id,
         status: ExecutionStatus.Executing
       })
       .switchMap(_ => this.db.labsForHashRef(hash).onceValue())
