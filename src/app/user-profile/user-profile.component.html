@@ -23,7 +23,7 @@
     </div>
 
     <div fxFlex class="ml-user-profile-content">
-      <div class="ml-user-profile-content-action-bar">
+      <div class="ml-user-profile-content-action-bar" *ngIf="isAuthUser">
         <a color="primary" md-button routerLink="/editor" [queryParams]="{tpl: 'blank'}" title="Create new lab"><md-icon>add</md-icon> Create lab</a>
       </div>
 
