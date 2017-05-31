@@ -6,6 +6,9 @@ import { CodeRunner, ProcessStreamData } from './code-runner';
 import { Lab, File } from '../models/lab';
 import { Invocation } from '../models/invocation';
 
+const RUN_PARTITION_SIZE = '5g';
+const RUN_PARTITION_MODE = '1777';
+
 /**
  * This is the Docker Runner that takes the code and runs it on a isolated docker container
  */
@@ -31,13 +34,16 @@ EOL
                                 '--cap-drop=ALL',
                                 '--security-opt=no-new-privileges',
                                 '-i',
+                                '--read-only',
+                                '--tmpfs',
+                                `/run:rw,size=${RUN_PARTITION_SIZE},mode=${RUN_PARTITION_MODE}`,
                                 '--rm',
                                 `--name`,
                                 invocation.id,
                                 'thoughtram/keras',
                                 '/bin/bash',
                                 '-c',
-                                `(${writeCommand}) && python main.py`
+                                `cd /run && (${writeCommand}) && python main.py`
                                 ]);
 
     return ProcessUtil.toObservableProcess(ps);
