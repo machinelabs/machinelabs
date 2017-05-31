@@ -46,4 +46,26 @@
   }
 }
 
+.ml-execution-metadata-no-execution-message {
+  margin-top: 7em;
+  margin-left: 2.5em;
+  margin-right: 2.5em;
+  text-align: center;
+}
 
+.ml-execution-metadata-no-execution-message-icon {
+  font-size: 7em;
+  height: initial;
+  width: initial;
+  margin-bottom: 0.2em;
+}
+
+.ml-execution-metadata-no-execution-message-headline {
+  margin: 0;
+  font-size: 1.5em;
+  font-weight: 400;
+}
+
+.ml-execution-metadata-no-execution-message-text {
+  line-height: 1.4;
+}

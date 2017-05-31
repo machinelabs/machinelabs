@@ -3,6 +3,7 @@ import { User } from '../../models/user';
 import { Execution } from '../../models/execution';
 import { UserService } from 'app/user/user.service';
 import { Observable } from 'rxjs/Observable';
+import { ExecutionStatus } from '../../models/execution';
 
 @Component({
   selector: 'ml-execution-metadata',
@@ -12,6 +13,7 @@ import { Observable } from 'rxjs/Observable';
 export class ExecutionMetadataComponent {
   _execution: Observable<Execution>;
   executer: Observable<User>;
+  ExecutionStatus = ExecutionStatus;
 
   constructor(private userService: UserService) {
   }
