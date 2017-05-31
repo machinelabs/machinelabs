@@ -51,7 +51,7 @@ export class MessagingService {
     console.log(`Starting new run ${invocation.id}`);
 
     // check if we have existing output for the requested run
-    let hash = Crypto.hashLabFiles(invocation.data);
+    let hash = Crypto.getCacheHash(invocation.data);
     return this.getExistingExecutionAsObservable(hash)
                .switchMap(execution => {
                   // if we do have output, send a redirect message
@@ -104,7 +104,7 @@ export class MessagingService {
     this.db.executionRef(invocation.id)
       .set({
         id: invocation.id,
-        file_set_hash: hash,
+        cache_hash: hash,
         lab: invocation.data,
         server_info: `${this.server.name} (${this.server.hardware_type})`,
         started_at: firebase.database.ServerValue.TIMESTAMP,
@@ -138,8 +138,8 @@ export class MessagingService {
   /**
    * Gets an Observable<Execution> that emits once with either null or an existing output 
    */
-  getExistingExecutionAsObservable(fileSetHash: string) : Observable<Execution> {
-    return this.db.executionByHashRef(fileSetHash)
+  getExistingExecutionAsObservable(executionHash: string) : Observable<Execution> {
+    return this.db.executionByHashRef(executionHash)
                   .onceValue()
                   .map(snapshot => snapshot.val())
                   .map(val => val ? val[Object.keys(val)[0]].common : null);

@@ -2,8 +2,8 @@ import { createHash } from 'crypto';
 import { Lab } from 'models/lab';
 
 export class Crypto {
-  static hashLabFiles(lab: Lab) {
-    return Crypto.hash(JSON.stringify(lab.files));
+  static getCacheHash(lab: Lab) {
+    return Crypto.hash(JSON.stringify(lab.directory));
   }
 
   static hash(val: string) {

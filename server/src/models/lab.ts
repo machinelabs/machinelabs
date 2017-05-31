@@ -5,5 +5,5 @@ export interface File {
 
 export interface Lab {
   id: string;
-  files: File[];
+  directory: File[];
 }

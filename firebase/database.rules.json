@@ -20,7 +20,7 @@
           "has_cached_run": {
             ".validate": "newData.isBoolean()"
           },
-          "file_set_hash": {
+          "cache_hash": {
             ".validate": "newData.isString()"
           },
           "tags": {
@@ -29,7 +29,7 @@
             },
             ".validate": "newData.hasChildren()"
           },
-          "files": {
+          "directory": {
             "$key2": {
               ".validate": "newData.hasChildren(['name', 'content'])",
               "name": {
@@ -52,7 +52,7 @@
         }
       },
       ".indexOn": [
-        "common/file_set_hash"
+        "common/cache_hash"
       ]
     },
     "invocations": {
@@ -76,7 +76,7 @@
             "id": {
               ".validate": "newData.isString()"
             },
-            "files": {
+            "directory": {
               "$key2": {
                 ".validate": "newData.hasChildren(['name', 'content'])",
                 "name": {
@@ -113,11 +113,11 @@
     "executions": {
       "$id": {
         "common": {
-          ".validate": "newData.hasChildren(['id', 'file_set_hash', 'started_at', 'server_info', 'user_id', 'lab', 'status'])",
+          ".validate": "newData.hasChildren(['id', 'cache_hash', 'started_at', 'server_info', 'user_id', 'lab', 'status'])",
           "id": {
             ".validate": "newData.isString()"
           },
-          "file_set_hash": {
+          "cache_hash": {
             ".validate": "newData.isString()"
           },
           "started_at": {
@@ -137,7 +137,7 @@
             "id": {
               ".validate": "newData.isString()"
             },
-            "files": {
+            "directory": {
               "$key2": {
                 ".validate": "newData.hasChildren(['name', 'content'])",
                 "name": {
@@ -191,7 +191,7 @@
         }
       },
       ".indexOn": [
-        "common/file_set_hash"
+        "common/cache_hash"
       ]
     },
     "users": {

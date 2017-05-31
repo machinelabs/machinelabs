@@ -6,9 +6,9 @@ const crypto = require('crypto');
 module.exports = functions.database.ref('/labs/{id}/common')
   .onWrite(event => Promise.all([saveUserLabId(event), setHasCachedRun(event)]));
 
-function hashFiles(files) {
+function hashDirectory(directory) {
   const hasher = crypto.createHash('sha256');
-  return hasher.update(JSON.stringify(files)).digest('hex');
+  return hasher.update(JSON.stringify(directory)).digest('hex');
 }
 
 function saveUserLabId(event) {
@@ -21,15 +21,15 @@ function saveUserLabId(event) {
 function setHasCachedRun(event) {
   const data = event.data.val();
 
-  console.log(`stringify files: 
-                ${JSON.stringify(data.files)}`);
+  console.log(`stringify directory: 
+                ${JSON.stringify(data.directory)}`);
 
-  const hash = hashFiles(data.files);
+  const hash = hashDirectory(data.directory);
   console.log(`Looking for hash: ${hash} of lab ${event.params.id}`);
 
 
   return admin.database().ref('executions')
-                          .orderByChild('common/file_set_hash')
+                          .orderByChild('common/cache_hash')
                           .equalTo(hash)
                           .once('value')
                           .then(snapshot => snapshot.val())
@@ -39,7 +39,7 @@ function setHasCachedRun(event) {
                               .ref(`/labs/${event.params.id}/common`)
                               .update({
                                 'has_cached_run': val ? true : false,
-                                'file_set_hash': hash
+                                'cache_hash': hash
                               });
                           });
 }

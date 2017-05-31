@@ -10,7 +10,7 @@ export enum ExecutionStatus {
 
 export interface Execution {
   id: string;
-  file_set_hash: string;
+  cache_hash: string;
   started_at: number;
   finished_at: number,
   server_info: string

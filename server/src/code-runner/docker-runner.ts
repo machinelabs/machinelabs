@@ -23,7 +23,7 @@ export class DockerRunner implements CodeRunner {
 
     // ATTENTION: The formatting is important here. We have to use a Here Doc because of multi line strings
     // http://stackoverflow.com/questions/2953081/how-can-i-write-a-here-doc-to-a-file-in-bash-script/2954835#2954835
-    let writeCommand = invocation.data.files.map((file: File) =>`{ cat <<'EOL' > ${file.name}
+    let writeCommand = invocation.data.directory.map((file: File) =>`{ cat <<'EOL' > ${file.name}
 ${file.content}
 EOL
 }`)

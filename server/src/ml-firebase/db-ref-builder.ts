@@ -17,7 +17,7 @@ export class DbRefBuilder {
   }
 
   labsForHashRef(hash: string) {
-    return new ObservableDbRef(db.ref(`labs`).orderByChild('common/file_set_hash').equalTo(hash));
+    return new ObservableDbRef(db.ref(`labs`).orderByChild('common/cache_hash').equalTo(hash));
   }
 
   serverRef(id: string) {
@@ -46,7 +46,7 @@ export class DbRefBuilder {
 
   executionByHashRef(hash: string) {
     return new ObservableDbRef(db.ref(`executions`)
-                                 .orderByChild('common/file_set_hash')
+                                 .orderByChild('common/cache_hash')
                                  .equalTo(hash));
   }
 

@@ -26,9 +26,9 @@ type Lab {
   name: String,
   description: String,
   has_cached_run: Boolean | Null,
-  file_set_hash: String | Null
+  cache_hash: String | Null
   tags: String[],
-  files: File[]
+  directory: File[]
 }
 
 type File {
@@ -38,7 +38,7 @@ type File {
 
 type InvocationLab {
   id: String,
-  files: File[]
+  directory: File[]
 }
 
 type AllowOther {
@@ -55,7 +55,7 @@ type Invocation {
 
 type Execution {
   id: String,
-  file_set_hash: String,
+  cache_hash: String,
   started_at: Number,
   finished_at: Number | Null,
   server_info: String,
@@ -116,7 +116,7 @@ path /labs/{id}/common is Lab {
 }
 
 path /labs {
-  index() { ['common/file_set_hash'] }
+  index() { ['common/cache_hash'] }
 }
 
 path /invocations/{id}/common is Invocation {
@@ -139,7 +139,7 @@ path /executions/{id}/common is Execution {
 }
 
 path /executions {
-  index() { ['common/file_set_hash']}
+  index() { ['common/cache_hash']}
 }
 
 path /executions/{id}/messages {

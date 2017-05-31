@@ -16,7 +16,7 @@ describe('.hashLabFiles()', () => {
 
     let lab: Lab = {
       id: 'test',
-      files: [
+      directory: [
         {
           name: 'test',
           content: 'test'
@@ -24,7 +24,7 @@ describe('.hashLabFiles()', () => {
       ]
     };
 
-    let hash = Crypto.hashLabFiles(lab);
+    let hash = Crypto.getCacheHash(lab);
     let expectedHash = '99e84db3997fc16a78ddf71d9cf3c25b5a0f3712ab325c0b2ab5898e44f4df74';
     expect(hash).toBe(expectedHash);
   });
