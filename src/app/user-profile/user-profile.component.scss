@@ -34,6 +34,7 @@
 
 .ml-user-profile-content-action-bar {
   text-align: right;
+  margin-bottom: 1em;
 
   [md-raised-button],[md-button] {
     md-icon {
@@ -54,7 +55,6 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  margin-top: 1em;
 
   li {
     &:first-child {
