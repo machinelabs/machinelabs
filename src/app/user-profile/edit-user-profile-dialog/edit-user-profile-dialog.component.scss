@@ -7,3 +7,11 @@ textarea {
   line-height: 1.4;
 }
 
+.ml-edit-user-profile-dialog-no-name-message {
+  border-radius: 0.2em;
+  padding: 1em;
+
+  md-icon {
+    vertical-align: -25%;
+  }
+}

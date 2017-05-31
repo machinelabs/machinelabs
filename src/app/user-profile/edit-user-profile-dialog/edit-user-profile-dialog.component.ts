@@ -1,8 +1,14 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { MD_DIALOG_DATA, MdDialogRef } from '@angular/material';
 
 import { User } from '../../models/user';
+import { PLACEHOLDER_USERNAME } from '../../user/user.service';
+
+
+function validateNoPlaceholderName(control: AbstractControl) {
+  return control.value !== PLACEHOLDER_USERNAME ? null : { placeholderName: true };
+}
 
 @Component({
   selector: 'ml-edit-user-profile-dialog',
@@ -23,7 +29,7 @@ export class EditUserProfileDialogComponent implements OnInit {
   ngOnInit() {
     this.user = this.data.user;
     this.form = this.formBuilder.group({
-      displayName: [this.user.displayName, Validators.required],
+      displayName: [this.user.displayName, [Validators.required, validateNoPlaceholderName]],
       bio: this.user.bio
     });
   }

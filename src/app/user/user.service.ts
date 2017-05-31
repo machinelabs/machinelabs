@@ -5,6 +5,8 @@ import { LoginUser, User } from '../models/user';
 import { Observable } from 'rxjs/Observable';
 import { Lang } from '../util/lang';
 
+export const PLACEHOLDER_USERNAME = 'Unnamed User';
+
 @Injectable()
 export class UserService {
 
@@ -43,7 +45,7 @@ export class UserService {
   mapUserToLoginUser(fromUser: LoginUser): User {
     return {
       id: fromUser.uid,
-      displayName: this.getDisplayName(fromUser),
+      displayName: this.getDisplayName(fromUser) || PLACEHOLDER_USERNAME,
       email: fromUser.email,
       bio: '',
       isAnonymous: fromUser.isAnonymous,

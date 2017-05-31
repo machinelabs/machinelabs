@@ -1,5 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Observable } from 'rxjs/Observable';
@@ -35,7 +36,8 @@ describe('ToolbarMenuComponent', () => {
       declarations: [ToolbarMenuComponent],
       imports: [
         MachineLabsMaterialModule,
-        CommonModule
+        CommonModule,
+        RouterTestingModule
       ],
       providers: [
         { provide: AuthService, useValue: authServiceStub },
