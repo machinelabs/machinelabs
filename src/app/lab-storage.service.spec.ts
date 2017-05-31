@@ -16,7 +16,7 @@ let testLab = {
   name: 'Existing lab',
   description: '',
   tags: ['existing'],
-  files: [],
+  directory: [],
   has_cached_run: false
 };
 
@@ -70,9 +70,9 @@ describe('LabStorageService', () => {
     it('should create a new lab', () => {
       labStorageService.createLab().subscribe(lab => {
         expect(lab).toBeDefined();
-        expect(lab.files.length).toBe(1);
-        expect(lab.files[0].name).toEqual('main.py');
-        expect(lab.files[0].content).toEqual('');
+        expect(lab.directory.length).toBe(1);
+        expect(lab.directory[0].name).toEqual('main.py');
+        expect(lab.directory[0].content).toEqual('');
       });
     });
 
@@ -86,7 +86,7 @@ describe('LabStorageService', () => {
         expect(lab.name).toEqual(`Fork of ${existingLab.name}`);
         expect(lab.description).toEqual(existingLab.description);
         expect(lab.tags).toEqual(existingLab.tags);
-        expect(lab.files.length).toBe(0);
+        expect(lab.directory.length).toBe(0);
       });
     });
   });
@@ -103,9 +103,9 @@ describe('LabStorageService', () => {
       labStorageService.createLabFromTemplate(TEMPLATE).subscribe(lab => {
         expect(labTemplateService.getTemplate).toHaveBeenCalledWith(TEMPLATE);
         expect(labStorageService.createLab).toHaveBeenCalledWith(LAB_TEMPLATES[TEMPLATE]);
-        expect(lab.files.length).toBe(1);
+        expect(lab.directory.length).toBe(1);
         expect(lab.name).toEqual(`Fork of ${LAB_TEMPLATES[TEMPLATE].name}`);
-        expect(lab.files[0].content).toEqual(LAB_TEMPLATES[TEMPLATE].files[0].content);
+        expect(lab.directory[0].content).toEqual(LAB_TEMPLATES[TEMPLATE].directory[0].content);
       });
     });
   });

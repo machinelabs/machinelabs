@@ -220,14 +220,14 @@ export class EditorViewComponent implements OnInit {
   }
 
   deleteFile(file: File) {
-    this.lab.files.splice(this.lab.files.indexOf(file), 1);
-    this.openFile(this.lab.files[0]);
+    this.lab.directory.splice(this.lab.directory.indexOf(file), 1);
+    this.openFile(this.lab.directory[0]);
   }
 
   updateFile(file: File, newFile: File) {
-    const index = this.lab.files.findIndex(f => f.name === file.name);
+    const index = this.lab.directory.findIndex(f => f.name === file.name);
     if (index !== -1) {
-      this.lab.files[index] = newFile;
+      this.lab.directory[index] = newFile;
     }
   }
 
@@ -244,7 +244,7 @@ export class EditorViewComponent implements OnInit {
       .subscribe(name => {
         if (!file) {
           const newFile = { name, content: '' };
-          this.lab.files.push(newFile);
+          this.lab.directory.push(newFile);
           this.openFile(newFile);
         } else {
           this.updateFile(file, { name, content: file.content});
@@ -261,9 +261,9 @@ export class EditorViewComponent implements OnInit {
     this.tabGroup.selectedIndex = TabIndex.Editor;
 
     // try query param file name first
-    const file = this.lab.files.find(f => f.name === this.router.parseUrl(this.location.path(false)).queryParams.file);
+    const file = this.lab.directory.find(f => f.name === this.router.parseUrl(this.location.path(false)).queryParams.file);
 
-    this.openFile(file || this.lab.files[0]);
+    this.openFile(file || this.lab.directory[0]);
 
     if (lab.has_cached_run) {
       this.run(lab);

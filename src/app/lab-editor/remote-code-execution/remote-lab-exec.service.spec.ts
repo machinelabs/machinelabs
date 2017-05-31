@@ -26,7 +26,7 @@ function createStubs () {
     name: 'Existing lab',
     description: '',
     tags: ['existing'],
-    files: [],
+    directory: [],
     has_cached_run: false
   };
 

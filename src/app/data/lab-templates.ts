@@ -5,7 +5,7 @@ export const LAB_TEMPLATES = {
     name: 'XOR Template',
     description: '',
     tags: [],
-    files: [{
+    directory: [{
       name: 'main.py',
       content: SIMPLE_XOR_LAB_CODE
     }]

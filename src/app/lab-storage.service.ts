@@ -26,7 +26,7 @@ export class LabStorageService {
           name: lab ? `Fork of ${lab.name}` : 'Untitled',
           description: lab ? lab.description : '',
           tags: lab ? lab.tags : [],
-          files: lab ? lab.files : [{ name: 'main.py', content: '' }]
+          directory: lab ? lab.directory : [{ name: 'main.py', content: '' }]
         };
       });
   }
@@ -55,7 +55,7 @@ export class LabStorageService {
                   // `lab.tags` can be undefined when editing an existing lab that
                   // doesn't have any tags yet.
                   tags: lab.tags || [],
-                  files: lab.files
+                  directory: lab.directory
                 }));
   }
 

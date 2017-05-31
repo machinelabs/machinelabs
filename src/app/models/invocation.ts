@@ -5,9 +5,9 @@ export enum InvocationType {
   StopExecution
 }
 
-export interface Lab {
+export interface InvocationLab {
   id: string;
-  files: File[];
+  directory: File[];
 }
 
 export interface Invocation {

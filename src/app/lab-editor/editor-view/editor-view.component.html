@@ -12,7 +12,7 @@
             <md-sidenav opened="true" mode="side" class="ml-sidebar">
               <ml-panel panelTitle="Files">
                 <ml-file-tree
-                  [files]="lab.files"
+                  [files]="lab.directory"
                   [selectedFile]="activeFile"
                   (selectFile)="openFile($event)"
                   (removeFile)="deleteFile($event)"

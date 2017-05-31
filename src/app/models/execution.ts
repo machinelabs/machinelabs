@@ -1,3 +1,5 @@
+import { InvocationLab } from './invocation';
+
 export enum ExecutionStatus {
   Pristine,
   Executing,
@@ -13,12 +15,12 @@ export enum ClientExecutionState {
 
 export interface Execution {
   id?: string;
-  file_set_hash?: string;
+  cache_hash?: string;
   started_at?: number;
   finished_at?: number;
   server_info?: string;
   user_id?: string;
-  lab_id?: string;
+  lab?: InvocationLab;
   redirected?: boolean;
   status: ExecutionStatus;
 }

@@ -11,7 +11,7 @@ export interface LabTemplate {
   name: string;
   description: string;
   tags: string[];
-  files: File[];
+  directory: File[];
 }
 
 export interface Lab extends LabTemplate {
