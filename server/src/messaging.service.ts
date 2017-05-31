@@ -105,7 +105,7 @@ export class MessagingService {
       .set({
         id: invocation.id,
         file_set_hash: hash,
-        server_info: this.server.info || '',
+        server_info: `${this.server.name} (${this.server.hardware_type})`,
         started_at: firebase.database.ServerValue.TIMESTAMP,
         user_id: invocation.user_id,
         lab_id: invocation.data.id,
