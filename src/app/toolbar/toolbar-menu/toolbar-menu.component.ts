@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MdSnackBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../auth/auth.service';
-import { UserService } from '../../user/user.service';
+import { UserService, PLACEHOLDER_USERNAME } from '../../user/user.service';
 import { User } from '../../models/user';
 
 @Component({
@@ -16,6 +17,7 @@ export class ToolbarMenuComponent implements OnInit {
 
   constructor(private authService: AuthService,
               private userService: UserService,
+              private router: Router,
               private snackBar: MdSnackBar) {}
 
   ngOnInit() {
@@ -26,6 +28,11 @@ export class ToolbarMenuComponent implements OnInit {
     this.authService.linkOrSignInWithGitHub()
                     .switchMap(loginUser => this.userService.createUserIfMissing())
                     .subscribe(user => {
+
+      if (user.displayName === PLACEHOLDER_USERNAME) {
+        this.router.navigate(['/user', user.id], { queryParams: { editing: true }});
+      }
+
       this.snackBar.open(`Logged in as ${user.displayName}`, 'Dismiss', { duration: 3000 });
     });
   }

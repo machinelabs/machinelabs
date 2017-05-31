@@ -1,0 +1,17 @@
+@import '../../../../node_modules/@angular/material/theming';
+
+@mixin ml-edit-user-profile-dialog-theme($theme) {
+
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+  $light-blue: mat-palette($mat-light-blue);
+
+  .ml-edit-user-profile-dialog-no-name-message {
+    color: mat-color($light-blue, 800);
+    background-color: mat-color($light-blue, 100);
+  }
+}
+
+

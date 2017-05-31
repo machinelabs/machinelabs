@@ -39,6 +39,14 @@ export class UserProfileComponent implements OnInit, OnDestroy {
                                         .observeUserChanges()
                                         .switchMap(_ => this.userService.isLoggedInUser(this.user.id))
                                         .subscribe(isLoggedIn => this.isAuthUser = isLoggedIn);
+
+    // Need to wrap this in a timeout, otherwise we're running into an
+    // ExpressionChangedAfterItHasBeenCheckedError.
+    setTimeout(() => {
+      if (this.route.snapshot.queryParamMap.get('editing') && this.isAuthUser) {
+        this.edit();
+      }
+    });
   }
 
   edit() {
