@@ -142,6 +142,7 @@ export class EditorViewComponent implements OnInit {
       this.showEditDialog(createdLab, {
         hideCancelButton: true
       }).subscribe(info => {
+        this.outputPanel.clear();
         // we allways need to save after forking but either the
         // version from before the dialog or the one after
         this.save(info.shouldSave ? info.lab : createdLab, 'Lab forked');
