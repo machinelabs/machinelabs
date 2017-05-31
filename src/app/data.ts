@@ -2,7 +2,7 @@ export const DUMMY_LAB = {
   name: 'Testlab',
   description: 'Some Description',
   tags: [{name: 'MNIST'}, {name: 'NN'}],
-  files: [
+  directory: [
     {
       name: 'main.py',
       content: `import numpy as np

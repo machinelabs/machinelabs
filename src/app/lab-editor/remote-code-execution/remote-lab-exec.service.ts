@@ -48,7 +48,7 @@ export class RemoteLabExecService {
                         type: InvocationType.StartExecution,
                         data: {
                           id: context.lab.id,
-                          files: context.lab.files
+                          directory: context.lab.directory
                         }
                     }))
                     .switchMap(_ => this.executionMessagesAsObservable(context.id))

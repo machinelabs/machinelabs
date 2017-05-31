@@ -41,7 +41,7 @@ describe('LabResolver', () => {
         name: 'New Lab',
         description: 'this is a new lab',
         tags: [],
-        files: [],
+        directory: [],
         has_cached_run: false
       };
 
@@ -64,7 +64,7 @@ describe('LabResolver', () => {
         name: 'New Lab',
         description: 'this is a new lab',
         tags: [],
-        files: [],
+        directory: [],
         has_cached_run: false,
       };
 
@@ -88,7 +88,7 @@ describe('LabResolver', () => {
         name: 'New Lab',
         description: 'this is a new lab',
         tags: [],
-        files: [],
+        directory: [],
         has_cached_run: false
       };
 
@@ -112,7 +112,7 @@ describe('LabResolver', () => {
         name: 'New Lab',
         description: 'this is a new lab',
         tags: [],
-        files: [],
+        directory: [],
         has_cached_run: false
       };
 
@@ -136,7 +136,7 @@ describe('LabResolver', () => {
         name: 'New Lab',
         description: 'this is a new lab',
         tags: [],
-        files: [],
+        directory: [],
         has_cached_run: false
       };
 
