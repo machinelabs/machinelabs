@@ -2,7 +2,7 @@
   <ml-toolbar-logo></ml-toolbar-logo>
   <ml-toolbar-content>
     <div class="ml-toolbar-lab-info">
-      <span class="ml-toolbar-lab-name">{{lab.name}}</span>
+      <span [mdTooltip]="lab.name" class="ml-toolbar-lab-name">{{lab.name | words: 10}}</span>
 
       <ng-container *ngIf="userOwnsLab(); else userInfo">
         <button

@@ -30,7 +30,7 @@
       <ul class="ml-user-profile-lab-list" *ngIf="labs.length; else noLabsMessage">
         <li *ngFor="let lab of labs">
           <md-card>
-            <md-card-title>{{lab.name}}</md-card-title>
+            <md-card-title>{{lab.name | words: 10}}</md-card-title>
             <md-card-content>{{lab.description || 'This lab has no description.' | words:30}}</md-card-content>
             <ml-tag-list [tags]="lab.tags"></ml-tag-list>
             <md-card-actions class="ml-user-profile-lab-actions">
