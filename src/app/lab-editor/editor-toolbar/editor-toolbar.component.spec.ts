@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { MachineLabsMaterialModule } from '../../ml-material.module';
+import { SharedModule } from '../../shared/shared.module';
 import { AuthService, dummyUser } from '../../auth/';
 import { EditorToolbarComponent, EditorToolbarActionTypes } from './editor-toolbar.component';
 import { LabExecutionContext } from '../../models/lab';
@@ -57,7 +58,8 @@ describe('EditorToolbarComponent', () => {
         TestModule,
         MachineLabsMaterialModule,
         CommonModule,
-        FormsModule
+        FormsModule,
+        SharedModule
       ],
       providers: [
         { provide: AuthService, useValue: authServiceStub },
