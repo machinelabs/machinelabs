@@ -1,0 +1,12 @@
+@import '../../../../node_modules/@angular/material/theming';
+
+@mixin ml-lab-settings-theme($theme) {
+
+  $primary: map-get($theme, primary);
+
+  .ml-lab-settings-title {
+    background-color: mat-color($primary);
+    color: mat-color($primary, default-contrast);
+  }
+}
+

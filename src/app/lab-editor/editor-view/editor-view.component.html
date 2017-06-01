@@ -42,6 +42,11 @@
             theme="terminal"
             mode="sh"></ml-ace-editor>
         </md-tab>
+        <ng-container *ngIf="user | async as user">
+          <md-tab label="Settings" *ngIf="userService.userOwnsLab(user, lab)">
+            <ml-lab-settings [lab]="lab"></ml-lab-settings>
+          </md-tab>
+        </ng-container>
       </md-tab-group>
     </div>
     <md-sidenav

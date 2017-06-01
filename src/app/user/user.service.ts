@@ -82,4 +82,7 @@ export class UserService {
                            .map(sessionUser => id === sessionUser.uid);
   };
 
+  userOwnsLab(user: User, lab) {
+    return lab && user && lab.user_id === user.id;
+  }
 }

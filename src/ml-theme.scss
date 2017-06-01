@@ -6,6 +6,7 @@
 @import 'app/lab-editor/execution-metadata/execution-metadata-theme.scss';
 @import 'app/lab-editor/panel/panel-theme.scss';
 @import 'app/lab-editor/file-tree/file-tree-theme.scss';
+@import 'app/lab-editor/lab-settings/lab-settings-theme.scss';
 @import 'app/user-profile/user-profile-theme.scss';
 @import 'app/user-profile/edit-user-profile-dialog/edit-user-profile-dialog-theme.scss';
 
@@ -28,6 +29,7 @@ $ml-app-theme: mat-light-theme($ml-app-primary, $ml-app-accent, $ml-app-warn);
   @include ml-file-tree-theme($theme);
   @include ml-user-profile-theme($theme);
   @include ml-edit-user-profile-dialog-theme($theme);
+  @include ml-lab-settings-theme($theme);
 }
 
 @include angular-material-theme($ml-app-theme);

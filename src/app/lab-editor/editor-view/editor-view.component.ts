@@ -20,7 +20,8 @@ import { EditorToolbarAction, EditorToolbarActionTypes } from '../editor-toolbar
 
 enum TabIndex {
   Editor,
-  Console
+  Console,
+  Settings
 }
 
 interface EditLabDialogOptions {
@@ -40,6 +41,8 @@ export class EditorViewComponent implements OnInit {
   output: Observable<string>;
 
   lab: Lab;
+
+  user: Observable<User>;
 
   context: LabExecutionContext;
 
@@ -75,6 +78,8 @@ export class EditorViewComponent implements OnInit {
     this.context = new LabExecutionContext();
     this.route.data.map(data => data['lab'])
               .subscribe(lab =>  this.initLab(lab));
+
+    this.user = this.userService.observeUserChanges();
   }
 
   toolbarAction(action: EditorToolbarAction) {
@@ -84,7 +89,6 @@ export class EditorViewComponent implements OnInit {
       case EditorToolbarActionTypes.Save: this.save(action.data); break;
       case EditorToolbarActionTypes.Fork: this.fork(action.data); break;
       case EditorToolbarActionTypes.Create: this.create(); break;
-      case EditorToolbarActionTypes.Edit: this.edit(action.data); break;
     }
   }
 
@@ -158,15 +162,6 @@ export class EditorViewComponent implements OnInit {
 
       this.editorSnackbar.notify(msg);
     });
-  }
-
-  edit(lab: Lab) {
-    this.showEditDialog(lab)
-        .subscribe(info => {
-          if (info.shouldSave) {
-            this.save(info.lab);
-          }
-        });
   }
 
   showEditDialog(lab: Lab, options: EditLabDialogOptions = {
