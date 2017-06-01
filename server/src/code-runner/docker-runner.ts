@@ -8,6 +8,8 @@ import { Invocation } from '../models/invocation';
 
 const RUN_PARTITION_SIZE = '5g';
 const RUN_PARTITION_MODE = '1777';
+const TMP_PARTITION_SIZE = '1g';
+const TMP_PARTITION_MODE = '1777';
 
 /**
  * This is the Docker Runner that takes the code and runs it on a isolated docker container
@@ -37,6 +39,8 @@ EOL
                                 '--read-only',
                                 '--tmpfs',
                                 `/run:rw,size=${RUN_PARTITION_SIZE},mode=${RUN_PARTITION_MODE}`,
+                                '--tmpfs',
+                                `/tmp:rw,size=${TMP_PARTITION_SIZE},mode=${TMP_PARTITION_MODE}`,
                                 '--rm',
                                 `--name`,
                                 invocation.id,
