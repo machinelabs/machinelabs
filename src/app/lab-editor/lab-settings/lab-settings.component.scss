@@ -1,0 +1,28 @@
+:host {
+  display: block;
+  padding: 1em;
+}
+
+md-card-title {
+  text-align: center;
+  margin-left: -0.98em;
+  margin-right: -0.98em;
+  margin-top: -0.98em!important;
+  padding: 1em;
+}
+
+md-card {
+  max-width: 600px;
+  margin: 0 auto;
+  margin-top: 2em;
+}
+
+md-card-content {
+  padding-top: 2em;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+md-card-actions {
+  text-align: center;
+}

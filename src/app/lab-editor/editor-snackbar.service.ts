@@ -14,6 +14,14 @@ export class EditorSnackbarService {
     this.notify('New lab created');
   }
 
+  notifyLabUpdated() {
+    this.notify('Lab updated');
+  }
+
+  notifyLabForked() {
+    this.notify('Lab forked');
+  }
+
   notifyLabStopped() {
     this.notify('Lab stopped');
   }

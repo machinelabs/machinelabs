@@ -104,28 +104,6 @@ describe('EditorToolbarComponent', () => {
 
   describe('Toolbar Actions', () => {
 
-    it('should emit edit action', (done) => {
-      // The user will be available in the next tick hence the setTimeout
-      setTimeout(_ => {
-        let lab = Object.assign({}, testLab);
-        // lab user id and user id have to be equal
-        lab.user_id = 'some unique id';
-
-        component.context = new LabExecutionContext(lab);
-        component.lab = lab;
-        fixture.detectChanges();
-
-        let editButton = fixture.debugElement.query(By.css('.ml-toolbar-edit-button'));
-
-        component.action.subscribe(action => {
-          expect(action.type).toBe(EditorToolbarActionTypes.Edit);
-        });
-
-        editButton.triggerEventHandler('click', null);
-        done();
-      });
-    });
-
     it('should emit run action', () => {
       let runButton = fixture.debugElement.queryAll(By.css('ml-toolbar-cta-bar button'))[0];
 
