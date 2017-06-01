@@ -65,7 +65,11 @@ export class LabStorageService {
               .map((snapshot: any) => snapshot.val())
               .map(labIds => Object.keys(labIds || {}))
               .map(labIds => labIds.map(labId => this.getLab(labId)))
-              .switchMap(labRefs => labRefs.length ? Observable.forkJoin(labRefs) : Observable.of([]));
+              .switchMap(labRefs => labRefs.length ? Observable.forkJoin(labRefs) : Observable.of([]))
+              // This shouldn't happen, but in case we fetch labs
+              // that don't exist anymore, resuling in `null` fields, we need
+              // to filter them out.
+              .map(labs => labs.filter(lab => lab));
   }
 
 }
