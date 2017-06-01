@@ -44,7 +44,7 @@ EOL
                                 '--rm',
                                 `--name`,
                                 invocation.id,
-                                'thoughtram/keras',
+                                'floydhub/tensorflow:latest-py3',
                                 '/bin/bash',
                                 '-c',
                                 `cd /run && (${writeCommand}) && python main.py`
