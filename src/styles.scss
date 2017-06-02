@@ -44,7 +44,7 @@ img {
 
 
 .ace_editor {
-  height: 680px;
+  height: 620px;
   width: 100%;
 }
 
@@ -54,4 +54,11 @@ img {
   // the selector more specific by adding the
   // theme class e.g. `.ace-github .ace_cutter`
   background-color: transparent!important;
+}
+
+ml-editor-view {
+  // for now, we only want this in the <ml-editor-view> component
+  .mat-sidenav-content {
+    overflow: hidden;
+  }
 }
