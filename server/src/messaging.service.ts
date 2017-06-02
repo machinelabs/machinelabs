@@ -6,7 +6,7 @@ import { CodeRunner, ProcessStreamData } from './code-runner/code-runner';
 import { Observable } from '@reactivex/rxjs';
 import { Invocation, InvocationType } from './models/invocation';
 import { Execution, ExecutionStatus, ExecutionMessage, MessageKind, toMessageKind } from './models/execution';
-import { RulesService } from './rules/rules.service';
+import { ValidationService } from './validation/validation.service';
 import { Server } from 'models/server';
 
 export class MessagingService {
@@ -14,7 +14,7 @@ export class MessagingService {
   db = new DbRefBuilder();
   server: Server;
 
-  constructor(private rulesService: RulesService,
+  constructor(private validationService: ValidationService,
               private codeRunner: CodeRunner) {
   }
 
@@ -64,15 +64,15 @@ export class MessagingService {
                   }
 
                   // otherwise, try to get approval
-                  return this.rulesService
-                              .getApproval(invocation)
-                              .switchMap(approval => {
-                                if (approval.allowExecution) {
+                  return this.validationService
+                              .validate(invocation)
+                              .switchMap(validationContext => {
+                                if (validationContext.isApproved()) {
                                   // if we get the approval, create the meta data
                                   this.createExecutionAndUpdateLabs(invocation, hash);
                                   // and execute the code
                                   return this.codeRunner
-                                            .run(invocation)
+                                            .run(invocation, validationContext.labConfiguration)
                                             .map(data => this.processStreamDataToExecutionMessage(data))
                                             .startWith({
                                               kind: MessageKind.ExecutionStarted,
@@ -92,7 +92,7 @@ export class MessagingService {
                                 // if we don't get an approval, reject it
                                 return Observable.of({
                                   kind: MessageKind.ExecutionRejected,
-                                  data: approval.message
+                                  data: validationContext.approval.message
                                 });
                               });
 

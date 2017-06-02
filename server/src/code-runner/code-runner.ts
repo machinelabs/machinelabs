@@ -1,5 +1,6 @@
 import { Observable } from '@reactivex/rxjs';
 import { Invocation } from '../models/invocation';
+import { PrivateLabConfiguration } from 'models/lab-configuration';
 
 export interface ProcessStreamData {
   origin: string,
@@ -8,6 +9,6 @@ export interface ProcessStreamData {
 }
 
 export interface CodeRunner {
-  run (invocation: Invocation) : Observable<ProcessStreamData>
+  run (invocation:Invocation, configuration: PrivateLabConfiguration) : Observable<ProcessStreamData>
   stop (invocation: Invocation) : void
 }

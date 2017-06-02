@@ -24,6 +24,10 @@ export class DbRefBuilder {
     return new ObservableDbRef(db.ref(`servers/${id}`));
   }
 
+  dockerImagesRef() {
+    return new ObservableDbRef(db.ref(`docker_images/`));
+  }
+
   invocationRef(id: string) {
     return new ObservableDbRef(db.ref(`invocations/${id}/common`));
   }

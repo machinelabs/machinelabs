@@ -1,10 +1,10 @@
 import { spawn, exec } from 'child_process';
-import * as fs from 'fs';
 import { Observable } from '@reactivex/rxjs';
 import { ProcessUtil } from '../util/process';
 import { CodeRunner, ProcessStreamData } from './code-runner';
-import { Lab, File } from '../models/lab';
+import { File } from '../models/lab';
 import { Invocation } from '../models/invocation';
+import { PrivateLabConfiguration } from 'models/lab-configuration';
 
 const RUN_PARTITION_SIZE = '5g';
 const RUN_PARTITION_MODE = '1777';
@@ -15,7 +15,8 @@ const TMP_PARTITION_MODE = '1777';
  * This is the Docker Runner that takes the code and runs it on a isolated docker container
  */
 export class DockerRunner implements CodeRunner {
-  run(invocation: Invocation): Observable<ProcessStreamData> {
+
+  run(invocation: Invocation, configuration: PrivateLabConfiguration): Observable<ProcessStreamData> {
 
     // construct a shell command to create all files.
     // The `&` makes sure that file creation happens asynchronously rather than sequentially.
@@ -44,7 +45,7 @@ EOL
                                 '--rm',
                                 `--name`,
                                 invocation.id,
-                                'floydhub/tensorflow:latest-py3',
+                                configuration.imageWithDigest,
                                 '/bin/bash',
                                 '-c',
                                 `cd /run && (${writeCommand}) && python main.py`
