@@ -7,9 +7,11 @@ import { DockerImageService, getDockerImages } from './docker-image.service';
 import { HasPlanRule } from './validation/rules/has-plan';
 import { NoAnonymousRule } from './validation/rules/no-anonymous';
 import { HasValidConfigRule } from './validation/rules/has-valid-config';
+import { LabConfigService } from './lab-config/lab-config.service';
 
 console.log(`Starting MachineLabs server (${environment.serverId})`)
 
+const labConfigService = new LabConfigService;
 const dockerImageService = new DockerImageService(getDockerImages());
 
 dockerImageService
@@ -22,7 +24,7 @@ dockerImageService
     validationService
       .addRule(new HasPlanRule())
       .addRule(new NoAnonymousRule())
-      .addRule(new HasValidConfigRule(dockerImageService));
+      .addRule(new HasValidConfigRule(dockerImageService, labConfigService));
 
     const messagingService = new MessagingService(validationService, runner);
     messagingService.init();
