@@ -36,14 +36,6 @@ describe('Editor-View Component', function() {
       expect(editorView.getFileName(0)).toContain('main.py');
     });
 
-    it('should display the current lab description', () => {
-      expect(editorView.labDescription).toEqual('');
-    });
-
-    it('should display the current lab tags', () => {
-      expect(editorView.labTags).toEqual([]);
-    });
-
     it('should allow users to edit file names', () => {
       let fileIndex = 0;
 

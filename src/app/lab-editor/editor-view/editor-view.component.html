@@ -39,10 +39,6 @@
             (removeFile)="deleteFile($event)"
             (editFile)="openFileNameDialog($event)"
             (addFile)="openFileNameDialog()"></ml-file-tree>
-          <ml-panel-title>Description</ml-panel-title>
-          <p class="ml-lab-description">{{lab.description}}</p>
-          <ml-panel-title>Tags</ml-panel-title>
-          <ml-tag-list [tags]="lab.tags"></ml-tag-list>
         </ml-panel>
         <div class="ml-editor-view-editor-wrapper">
           <ml-ace-editor
