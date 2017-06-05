@@ -30,9 +30,20 @@ export enum MessageKind {
 
 export interface ExecutionMessage {
   id?: string,
-  data: string,
+  data: string | ExecutionRejectionInfo,
   kind: MessageKind,
   timestamp?: number | object
+}
+
+export enum ExecutionRejectionReason {
+  NoAnonymous,
+  NoPlan,
+  InvalidConfig
+}
+
+export class ExecutionRejectionInfo {
+  constructor(public reason: ExecutionRejectionReason,
+              public message: string){}
 }
 
 export function toMessageKind(kind: string) {

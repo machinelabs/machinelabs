@@ -67,7 +67,7 @@ type Execution {
 type ExecutionMessage {
   id: String,
   timestamp: Number,
-  data: String,
+  data: Any,
   kind: Number
 }
 

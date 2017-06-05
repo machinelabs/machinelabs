@@ -1,7 +1,7 @@
 import { DummyRunner } from './code-runner/dummy-runner.js';
 import { DockerRunner } from './code-runner/docker-runner.js';
 import { MessagingService } from './messaging.service';
-import { ValidationService } from './validation/validation.service';
+import { ValidationService, userRefFactory } from './validation/validation.service';
 import { environment } from './environments/environment';
 import { DockerImageService, getDockerImages } from './docker-image.service';
 import { HasPlanRule } from './validation/rules/has-plan';
@@ -20,7 +20,7 @@ dockerImageService
     const DUMMY_RUNNER = process.argv.includes('--dummy-runner');
     let runner = DUMMY_RUNNER ? new DummyRunner() : new DockerRunner();
 
-    const validationService = new ValidationService();
+    const validationService = new ValidationService(userRefFactory());
     validationService
       .addRule(new HasPlanRule())
       .addRule(new NoAnonymousRule())

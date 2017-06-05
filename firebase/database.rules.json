@@ -177,7 +177,7 @@
               ".validate": "newData.isNumber()"
             },
             "data": {
-              ".validate": "newData.isString()"
+              ".validate": "true"
             },
             "kind": {
               ".validate": "newData.isNumber()"

@@ -1,13 +1,6 @@
-import { Approval } from 'models/approval';
+import { ValidationResult } from 'models/validation-result';
 import { ValidationContext } from 'models/validation-context';
 
 export interface ValidationRule {
-  check(validationContext: ValidationContext) : Approval
-}
-
-export function allow(): Approval {
-  return {
-    message: 'ok',
-    allowExecution: true,
-  }
+  check(validationContext: ValidationContext) : ValidationResult
 }

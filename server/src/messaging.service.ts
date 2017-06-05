@@ -7,7 +7,8 @@ import { Observable } from '@reactivex/rxjs';
 import { Invocation, InvocationType } from './models/invocation';
 import { Execution, ExecutionStatus, ExecutionMessage, MessageKind, toMessageKind } from './models/execution';
 import { ValidationService } from './validation/validation.service';
-import { Server } from 'models/server';
+import { Server } from './models/server';
+import { ValidationContext } from './models/validation-context';
 
 export class MessagingService {
 
@@ -57,16 +58,18 @@ export class MessagingService {
                   // if we do have output, send a redirect message
                   if (execution) {
                     console.log('redirecting output');
-                    return Observable.of({
+                    return Observable.of(<ExecutionMessage>{
                               kind: MessageKind.OutputRedirected,
                               data: '' + execution.id
                             });
                   }
 
+
                   // otherwise, try to get approval
                   return this.validationService
                               .validate(invocation)
                               .switchMap(validationContext => {
+
                                 if (validationContext.isApproved()) {
                                   // if we get the approval, create the meta data
                                   this.createExecutionAndUpdateLabs(invocation, hash);
@@ -74,11 +77,11 @@ export class MessagingService {
                                   return this.codeRunner
                                             .run(invocation, validationContext.labConfiguration)
                                             .map(data => this.processStreamDataToExecutionMessage(data))
-                                            .startWith({
+                                            .startWith(<ExecutionMessage>{
                                               kind: MessageKind.ExecutionStarted,
                                               data: 'Execution started... (this might take a little while)'
                                             })
-                                            .concat(Observable.of({
+                                            .concat(Observable.of(<ExecutionMessage>{
                                               kind: MessageKind.ExecutionFinished,
                                               data: ''
                                             }))
@@ -86,13 +89,13 @@ export class MessagingService {
                                               if (msg.kind === MessageKind.ExecutionFinished){
                                                 this.completeExecution(invocation);
                                               }
-                                            })
+                                            });
                                 }
 
                                 // if we don't get an approval, reject it
-                                return Observable.of({
+                                return Observable.of(<ExecutionMessage>{
                                   kind: MessageKind.ExecutionRejected,
-                                  data: validationContext.approval.message
+                                  data: validationContext.validationResult
                                 });
                               });
 

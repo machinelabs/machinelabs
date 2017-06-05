@@ -1,21 +1,15 @@
-import { ValidationRule, allow } from './rule';
-import { ExtendedUser } from 'models/user';
-import { Invocation } from 'models/invocation';
-import { Approval } from 'models/approval';
-import { ValidationContext } from 'models/validation-context';
+import { ValidationRule } from './rule';
+import { ExtendedUser } from '../../models/user';
+import { Invocation } from '../../models/invocation';
+import { ValidationResult } from '../../models/validation-result';
+import { ValidationContext } from '../../models/validation-context';
+import { ExecutionRejectionReason, ExecutionRejectionInfo } from '../../models/execution';
 
 export class NoAnonymousRule implements ValidationRule {
 
-  check(validationContext: ValidationContext) : Approval {
+  check(validationContext: ValidationContext) : ValidationResult {
     return !validationContext.user || validationContext.user.common.isAnonymous ? 
-      this.rejectAnonymous() :
-      allow();
-  }
-
-  private rejectAnonymous() {
-    return {
-      message: 'Anonymous user can only replay existing executions',
-      allowExecution: false
-    }
+      new ExecutionRejectionInfo(ExecutionRejectionReason.NoAnonymous, 'Anonymous user can not execute code') :
+      true;
   }
 }
