@@ -32,11 +32,11 @@ export class EditorViewPageObject {
   }
 
   get activeTabLabel(): promise.Promise<string> {
-    return element(by.css('.mat-tab-label-active')).getText();
+    return element(by.css('.mat-tab-link[ng-reflect-active="true"]')).getText();
   }
 
   get editorMode(): promise.Promise<string> {
-    return element(by.tagName('ml-ace-editor')).getAttribute('mode');
+    return element(by.tagName('ml-ace-editor.active')).getAttribute('mode');
   }
 
   getTabByLabel(label: string): ElementArrayFinder {

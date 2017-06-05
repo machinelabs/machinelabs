@@ -48,7 +48,8 @@
           <ml-ace-editor
             #editor
             [(value)]="activeFile.content"
-            mode="python"></ml-ace-editor>
+            mode="python"
+            [class.active]="selectedTab == TabIndex.Editor"></ml-ace-editor>
         </div>
       </div>
       <ml-ace-editor
@@ -57,6 +58,7 @@
         [readOnly]="true"
         theme="terminal"
         [class.hidden]="selectedTab != TabIndex.Console"
+        [class.active]="selectedTab == TabIndex.Console"
         mode="sh"></ml-ace-editor>
         <ml-lab-settings
           [lab]="lab"
