@@ -1,6 +1,33 @@
-:host {
-  display: block;
-  height: 100%;
+.ml-editor-view-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.ml-editor-view-layout-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.ml-editor-view-header {
+  z-index: 2;
+  box-shadow: 0 -1px 5px rgba(0,0,0,.24);
+}
+
+.ml-editor-view-layout-columns {
+  display: flex;
+  flex: 1;
+}
+
+.ml-editor-view-editor-wrapper {
+  flex: 1;
+  position: relative;
+}
+
+ml-panel {
+  width: 350px;
+  box-shadow: 0 0 5px rgba(0,0,0,.24);
 }
 
 md-sidenav {
@@ -8,7 +35,10 @@ md-sidenav {
   box-shadow: 0 0 8px rgba(0,0,0,.24);
 }
 
-md-sidenav-container { height: 100% }
+md-sidenav-container {
+  display: flex;
+  flex: 1;
+}
 
 .ml-lab-description {
   padding: 1.2em 2em;

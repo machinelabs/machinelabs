@@ -17,7 +17,7 @@ const EC = protractor.ExpectedConditions;
 export class EditorViewPageObject {
   fileNameDialog: FileNameDialogPageObject = new FileNameDialogPageObject();
 
-  tabs: ElementArrayFinder = element.all(by.css('.mat-tab-label'));
+  tabs: ElementArrayFinder = element.all(by.css('.mat-tab-link'));
   fileList: ElementArrayFinder = element.all(by.css('.ml-file-list-item'));
   addFileBtn: ElementFinder = element(by.css('.ml-file-tree-cta.mat-button'));
 
