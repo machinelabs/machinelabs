@@ -1,6 +1,7 @@
+import { Observable } from '@reactivex/rxjs';
 import { ValidationResult } from 'models/validation-result';
-import { ValidationContext } from 'models/validation-context';
+import { Invocation } from '../../models/invocation';
 
 export interface ValidationRule {
-  check(validationContext: ValidationContext) : ValidationResult
+  check(validationContext: Invocation, resolves: Map<Function, Observable<any>>) : Observable<ValidationResult>
 }

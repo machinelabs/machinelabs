@@ -1,27 +1,20 @@
-import { DbRefBuilder } from '../ml-firebase';
 import { Observable } from '@reactivex/rxjs';
 import { Invocation} from '../models/invocation';
 import { ValidationRule } from './rules/rule';
-import { NoAnonymousRule } from './rules/no-anonymous';
-import { HasPlanRule } from './rules/has-plan';
 import { ValidationContext } from '../models/validation-context';
 import { ExecutionRejectionInfo } from '../models/execution';
-import { ExtendedUser } from '../models/user';
-
-export function userRefFactory () {
-  let db = new DbRefBuilder();
-  return (id: string) => {
-    return db.userRef(id)
-            .onceValue()
-            .map(snapshot => snapshot.val());
-  };
-}
+import { Resolver } from './resolver/resolver';
+import { ValidationResult } from '../models/validation-result';
 
 export class ValidationService {
 
-  rules: Array<ValidationRule> = [];
+  private rules: Array<ValidationRule> = [];
+  private resolver = new Map<Function, Resolver>();
 
-  constructor(private userRef: (id:string) => Observable<ExtendedUser>){}
+  addResolver(resolverType:Function , resolver: Resolver) {
+    this.resolver.set(resolverType, resolver);
+    return this;
+  }
 
   addRule(rule: ValidationRule) {
     this.rules.push(rule);
@@ -29,24 +22,26 @@ export class ValidationService {
   }
 
   validate(invocation: Invocation) : Observable<ValidationContext> {
-    return this.userRef(invocation.user_id)
-                  .switchMap(user => {
 
-                    let validationContext = new ValidationContext(invocation, user);
+    let resolves = new Map<Function, Observable<any>>();
+    let resolved = new Map<Function, any>();
 
-                    //This is written with a for..of because we want to
-                    //short circuit at the first failed rule.
+    this.resolver.forEach((val, key) => {
+      resolves.set(key, val.resolve(invocation)
+                           .do(data => resolved.set(key, data))
+                           .share());
+    });
 
-                    for (let rule of this.rules) {
-                      let validationResult = rule.check(validationContext);
-                      validationContext.validationResult = validationResult;
-                      if (validationResult instanceof ExecutionRejectionInfo) {
-                        console.log(`Validation failed: ${validationResult.message}`);
-                        return Observable.of(validationContext);
-                      }
-                    }
+    let results$ = Observable
+                      .from(this.rules)
+                      .flatMap(rule => rule.check(invocation, resolves))
+                      .share();
 
-                    return Observable.of(validationContext);
-                  });
+    let fails$ = results$.filter(result => result instanceof ExecutionRejectionInfo);
+
+    return results$.takeUntil(fails$)
+            .merge(fails$.take(1))
+            .last()
+            .map((result: ValidationResult) => new ValidationContext(result, resolved));
   }
 }

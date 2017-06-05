@@ -9,6 +9,7 @@ import { Execution, ExecutionStatus, ExecutionMessage, MessageKind, toMessageKin
 import { ValidationService } from './validation/validation.service';
 import { Server } from './models/server';
 import { ValidationContext } from './models/validation-context';
+import { LabConfigResolver } from './validation/resolver/lab-config-resolver';
 
 export class MessagingService {
 
@@ -69,13 +70,14 @@ export class MessagingService {
                   return this.validationService
                               .validate(invocation)
                               .switchMap(validationContext => {
-
-                                if (validationContext.isApproved()) {
+                                if (validationContext.isApproved() && validationContext.resolved.get(LabConfigResolver)) {
                                   // if we get the approval, create the meta data
                                   this.createExecutionAndUpdateLabs(invocation, hash);
                                   // and execute the code
+                                  let config = validationContext.resolved.get(LabConfigResolver);
+
                                   return this.codeRunner
-                                            .run(invocation, validationContext.labConfiguration)
+                                            .run(invocation, config)
                                             .map(data => this.processStreamDataToExecutionMessage(data))
                                             .startWith(<ExecutionMessage>{
                                               kind: MessageKind.ExecutionStarted,
