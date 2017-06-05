@@ -1,7 +1,8 @@
 <form [formGroup]="form" (ngSubmit)="submit(form.value)">
   <md-card>
-    <md-card-title class="ml-lab-settings-title">Edit Lab</md-card-title>
+    <md-card-title>Lab Settings</md-card-title>
     <md-card-content>
+      <md-card-subtitle>Information</md-card-subtitle>
       <div fxLayout="column">
         <md-input-container fxFlex>
           <input mdInput placeholder="Name" formControlName="name">
@@ -21,3 +22,4 @@
     </md-card-actions>
   </md-card>
 </form>
+
