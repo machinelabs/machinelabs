@@ -43,22 +43,6 @@ export class EditorViewPageObject {
     return this.tabs.filter((elem, index) => elem.getText().then(text => text === label));
   }
 
-
-  /**
-   * SIDENAV
-   */
-  get labDescription(): promise.Promise<string> {
-    return element(by.css('.ml-lab-description')).getText();
-  }
-
-  get labTags(): promise.Promise<Array<string>> {
-    return element(by.tagName('ml-tag-list'))
-              .all(by.tagName('md-chip'))
-              .reduce((acc: Array<string>, elem: ElementFinder) => {
-                return elem.getText().then((text: string) => acc.concat(text));
-              }, []);
-  }
-
   getFileByIndex(index: number): ElementFinder {
     return this.fileList.get(index);
   }
