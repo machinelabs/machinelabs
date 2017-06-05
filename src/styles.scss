@@ -37,17 +37,6 @@ img {
   vertical-align: middle;
 }
 
-.mat-tab-header {
-  z-index: 2;
-  box-shadow: 0 -1px 5px rgba(0,0,0,.24);
-}
-
-
-.ace_editor {
-  height: 620px;
-  width: 100%;
-}
-
 .ace_gutter {
   // we actually don't want to use !important
   // here but the only alternative is to make
@@ -56,9 +45,13 @@ img {
   background-color: transparent!important;
 }
 
+.hidden {
+  display: none!important;
+}
+
 ml-editor-view {
-  // for now, we only want this in the <ml-editor-view> component
   .mat-sidenav-content {
-    overflow: hidden;
+    display: flex;
+    flex: 1;
   }
 }

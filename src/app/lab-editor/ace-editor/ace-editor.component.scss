@@ -1,5 +1,10 @@
-:host { display: block; }
+:host {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 
-.ml-ace-editor__mount {
   font-size: 0.9em;
 }

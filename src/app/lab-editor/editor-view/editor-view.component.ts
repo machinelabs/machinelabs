@@ -64,6 +64,10 @@ export class EditorViewComponent implements OnInit {
 
   rejectionDialogRef: MdDialogRef<RejectionDialogComponent>;
 
+  selectedTab = TabIndex.Editor;
+
+  TabIndex = TabIndex;
+
   constructor (private rleService: RemoteLabExecService,
                private labStorageService: LabStorageService,
                private route: ActivatedRoute,
@@ -92,9 +96,13 @@ export class EditorViewComponent implements OnInit {
     }
   }
 
+  selectTab(tabIndex: TabIndex) {
+    this.selectedTab = tabIndex;
+  }
+
   run(lab: Lab) {
     this.outputPanel.clear();
-    this.tabGroup.selectedIndex = TabIndex.Console;
+    this.selectTab(TabIndex.Console);
     // we want to have this immutable. Shared instances make it hard
     // to reason about things when code is executed asynchronously.
     // E.g. if some async handler has a reference to a context it needs
@@ -253,7 +261,7 @@ export class EditorViewComponent implements OnInit {
 
   initLab(lab: Lab) {
     this.lab = lab;
-    this.tabGroup.selectedIndex = TabIndex.Editor;
+    this.selectTab(TabIndex.Editor);
 
     // try query param file name first
     const file = this.lab.directory.find(f => f.name === this.router.parseUrl(this.location.path(false)).queryParams.file);

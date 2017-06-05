@@ -1,7 +1,6 @@
 import {
   Component,
   OnInit,
-  ViewChild,
   Input,
   Output,
   EventEmitter,
@@ -20,7 +19,7 @@ const ACE_EDITOR_MODE_PREFIX = 'ace/mode/';
 @Component({
   selector: 'ml-ace-editor',
   template: `
-    <div class="ml-ace-editor__mount" #editor><ng-content></ng-content></div>
+    <ng-content></ng-content>
   `,
   styleUrls: ['./ace-editor.component.scss']
 })
@@ -29,8 +28,6 @@ export class AceEditorComponent implements AfterViewInit, OnChanges {
   private editor;
   private _mode;
   private _theme;
-
-  @ViewChild('editor') editorElement: ElementRef;
 
   @Input() value = null;
 
@@ -59,6 +56,10 @@ export class AceEditorComponent implements AfterViewInit, OnChanges {
   }
 
   @Output() valueChange = new EventEmitter();
+
+  constructor(private element: ElementRef) {
+
+  }
 
   ngOnChanges(changes) {
     // we need to check if editor is defined because ngOnChanges
@@ -93,7 +94,7 @@ export class AceEditorComponent implements AfterViewInit, OnChanges {
   }
 
   ngAfterViewInit() {
-    this.editor = ace.edit(this.editorElement.nativeElement);
+    this.editor = ace.edit(this.element.nativeElement);
 
     this.editor.setTheme(this.theme);
     this.editor.setReadOnly(this.readOnly);
