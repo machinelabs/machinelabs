@@ -1,25 +1,12 @@
-<form [formGroup]="form" (ngSubmit)="submit(form.value)">
-  <md-card>
-    <md-card-title>Lab Settings</md-card-title>
-    <md-card-content>
-      <md-card-subtitle>Information</md-card-subtitle>
-      <div fxLayout="column">
-        <md-input-container fxFlex>
-          <input mdInput placeholder="Name" formControlName="name">
-          <md-hint *ngIf="!form.valid && !form.pristine && form.get('name').errors" align="end">This field is required.</md-hint>
-        </md-input-container>
-        <md-input-container fxFlex>
-          <textarea mdInput placeholder="Description" formControlName="description">
-          </textarea>
-        </md-input-container>
-        <md-input-container fxFlex>
-          <input mdInput placeholder="Tags" formControlName="tags">
-        </md-input-container>
-      </div>
-    </md-card-content>
-    <md-card-actions>
-      <button md-button [disabled]="!form.valid" type="submit">Save</button>
-    </md-card-actions>
-  </md-card>
-</form>
+<md-card>
+  <md-card-title>Lab Configuration</md-card-title>
+  <md-card-content>
+    <table *ngIf="configuration">
+      <tr>
+        <td>Docker Image</td>
+        <td>{{configuration.dockerImageId}}</td>
+      </tr>
+    </table>
+  </md-card-content>
+</md-card>
 

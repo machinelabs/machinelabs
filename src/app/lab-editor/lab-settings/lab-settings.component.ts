@@ -1,9 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { LabStorageService } from '../../lab-storage.service';
-import { EditorSnackbarService } from '../editor-snackbar.service';
+import { LabConfigService } from '../lab-config.service';
 import { Lab } from '../../models/lab';
+import { PublicLabConfiguration } from '../../models/lab-configuration';
 
 @Component({
   selector: 'ml-lab-settings',
@@ -14,34 +12,11 @@ export class LabSettingsComponent implements OnInit {
 
   @Input() lab = null as Lab;
 
-  form: FormGroup;
+  configuration: PublicLabConfiguration;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private labStorageService: LabStorageService,
-    private editorSnackbar: EditorSnackbarService,
-    private router: Router
-  ) { }
+  constructor(private labConfigService: LabConfigService) { }
 
   ngOnInit() {
-    this.form = this.formBuilder.group({
-      name: [this.lab.name, Validators.required],
-      description: this.lab.description,
-      tags: this.lab.tags ? this.lab.tags.join(',') : '',
-    });
-  }
-
-  submit(data) {
-    this.lab.name = data.name;
-    this.lab.description = data.description;
-    this.lab.tags = data.tags.split(',').filter(tag => tag.trim() !== '');
-    this.labStorageService
-        .saveLab(this.lab)
-        .subscribe(_ => {
-          this.router.navigate([this.lab.id], {
-            queryParamsHandling: 'preserve'
-          });
-          this.editorSnackbar.notifyLabUpdated();
-        });
+    this.configuration = this.labConfigService.readConfig(this.lab);
   }
 }
