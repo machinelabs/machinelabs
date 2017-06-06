@@ -15,7 +15,13 @@ import { User } from '../../models/user';
 import { BLANK_LAB_TPL_ID } from '../../lab-template.service';
 import { Observable } from 'rxjs/Observable';
 import { Lab, LabExecutionContext, File } from '../../models/lab';
-import { ExecutionMessage, MessageKind, ClientExecutionState, ExecutionRejectionInfo, ExecutionRejectionReason } from '../../models/execution';
+import {
+  ExecutionMessage,
+  MessageKind,
+  ClientExecutionState,
+  ExecutionRejectionInfo,
+  ExecutionRejectionReason
+} from '../../models/execution';
 import { EditorToolbarAction, EditorToolbarActionTypes } from '../editor-toolbar/editor-toolbar.component';
 
 enum TabIndex {
