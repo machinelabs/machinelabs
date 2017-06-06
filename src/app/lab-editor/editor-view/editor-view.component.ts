@@ -15,7 +15,7 @@ import { User } from '../../models/user';
 import { BLANK_LAB_TPL_ID } from '../../lab-template.service';
 import { Observable } from 'rxjs/Observable';
 import { Lab, LabExecutionContext, File } from '../../models/lab';
-import { ExecutionMessage, MessageKind, ClientExecutionState } from '../../models/execution';
+import { ExecutionMessage, MessageKind, ClientExecutionState, ExecutionRejectionInfo, ExecutionRejectionReason } from '../../models/execution';
 import { EditorToolbarAction, EditorToolbarActionTypes } from '../editor-toolbar/editor-toolbar.component';
 
 enum TabIndex {
@@ -126,7 +126,13 @@ export class EditorViewComponent implements OnInit {
                         this.editorSnackbar.notifyCacheReplay(msg.data);
                       } else if (msg.kind === MessageKind.ExecutionRejected) {
                         this.context.clientExecutionState = ClientExecutionState.NotExecuting;
-                        this.openRejectionDialog();
+                        if (ExecutionRejectionInfo.isOfType(msg.data)) {
+                          if (msg.data.reason === ExecutionRejectionReason.InvalidConfig) {
+                            this.editorSnackbar.notifyInvalidConfig();
+                          } else {
+                            this.openRejectionDialog();
+                          }
+                        }
                       }
                     })
                     .filter(msg => msg.kind === MessageKind.ExecutionStarted ||

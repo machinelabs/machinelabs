@@ -10,6 +10,10 @@ export class EditorSnackbarService {
     return this.snackBar.open(text, config.actionLabel, { duration: config.duration });
   }
 
+  notifyInvalidConfig() {
+    this.notify('Execution Rejected. Please check your ml.yaml');
+  }
+
   notifyLabCreated() {
     this.notify('New lab created');
   }

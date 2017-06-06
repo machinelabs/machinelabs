@@ -36,7 +36,26 @@ export enum MessageKind {
 
 export interface ExecutionMessage {
   id: string;
-  data: string;
+  data: string | ExecutionRejectionInfo;
   kind: MessageKind;
   timestamp: number;
+}
+
+export enum ExecutionRejectionReason {
+  NoAnonymous,
+  NoPlan,
+  InvalidConfig
+}
+
+export class ExecutionRejectionInfo {
+
+  // we need this because after deserialization from JSON a simple instanceof
+  // does not work anymore. TS calls these Type Guards
+  // https://www.typescriptlang.org/docs/handbook/advanced-types.html
+  static isOfType(info: any): info is ExecutionRejectionInfo {
+    return info.message && info.reason !== undefined;
+  }
+
+  constructor(public reason: ExecutionRejectionReason,
+              public message: string) {}
 }
