@@ -129,7 +129,8 @@ export class EditorViewComponent implements OnInit {
                         this.openRejectionDialog();
                       }
                     })
-                    .filter(msg => msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr)
+                    .filter(msg => msg.kind === MessageKind.ExecutionStarted ||
+                        msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr)
                     .scan((acc, current) => `${acc}\n${current.data}`, '');
 
     Observable.timer(EXECUTION_START_TIMEOUT)
