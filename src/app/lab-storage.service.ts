@@ -7,6 +7,7 @@ import { Lab, LabTemplate } from './models/lab';
 import { DbRefBuilder } from './firebase/db-ref-builder';
 import { AuthService } from './auth';
 import { LabTemplateService } from './lab-template.service';
+import { ML_YAML_FILE } from './data/ml.yaml';
 
 @Injectable()
 export class LabStorageService {
@@ -26,7 +27,7 @@ export class LabStorageService {
           name: lab ? `Fork of ${lab.name}` : 'Untitled',
           description: lab ? lab.description : '',
           tags: lab ? lab.tags : [],
-          directory: lab ? lab.directory : [{ name: 'main.py', content: '' }]
+          directory: lab ? lab.directory : [{ name: 'main.py', content: '' }, ML_YAML_FILE]
         };
       });
   }
