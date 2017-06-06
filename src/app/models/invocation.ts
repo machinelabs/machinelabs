@@ -2,6 +2,7 @@ import { File } from './lab';
 
 export enum InvocationType {
   StartExecution,
+  ForceExecution,
   StopExecution
 }
 
