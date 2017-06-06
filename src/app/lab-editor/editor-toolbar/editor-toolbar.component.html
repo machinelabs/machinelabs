@@ -4,11 +4,23 @@
     <div class="ml-toolbar-lab-info">
       <span [mdTooltip]="lab.name" class="ml-toolbar-lab-name">{{lab.name | words: 10}}</span>
 
-      <span class="ml-toolbar-user-info" >
-        <ng-container *ngIf="labOwner | async as user; else anonymousUser">
-          created by <img src="{{user.photoUrl}}" alt="User profile picture"> <a title="{{user.displayName}}'s profile" [routerLink]="['/user', user.id]">{{user.displayName}}</a>
-        </ng-container>
-      </span>
+      <ng-container *ngIf="userService.userOwnsLab(user, lab); else userInfo">
+        <button
+          md-icon-button
+          type="button"
+          (click)="emitAction(EditorToolbarActionTypes.Edit, lab)"
+          class="ml-toolbar-edit-button">
+          <md-icon>edit</md-icon>
+        </button>
+      </ng-container>
+
+      <ng-template #userInfo>
+        <span class="ml-toolbar-user-info">
+          <ng-container *ngIf="(labOwner | async); else anonymousUser; let user;">
+            by <img src="{{user.photoUrl}}" alt="User profile picture"> <a title="{{user.displayName}}'s profile" [routerLink]="['/user', user.id]">{{user.displayName}}</a>
+          </ng-container>
+        </span>
+      </ng-template>
 
       <ng-template #anonymousUser>
         created by <md-icon>account_circle</md-icon> anonymous user

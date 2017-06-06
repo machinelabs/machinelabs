@@ -73,6 +73,8 @@ describe('EditLabDialogComponent', () => {
     component.ngOnInit();
 
     expect(component.form.value.name).toEqual(lab.name);
+    expect(component.form.value.description).toEqual(lab.description);
+    expect(component.form.value.tags).toEqual(lab.tags.join(','));
   });
 
   it('should close dialog with right params on submit', (done) => {
