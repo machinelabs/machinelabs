@@ -24,12 +24,16 @@ export class EditLabDialogComponent implements OnInit {
   ngOnInit() {
     this.lab = this.data.lab;
     this.form = this.formBuilder.group({
-      name: [this.lab.name, Validators.required]
+      name: [this.lab.name, Validators.required],
+      description: this.lab.description,
+      tags: this.lab.tags ? this.lab.tags.join(',') : ''
     });
   }
 
   submit(data) {
     this.lab.name = data.name;
+    this.lab.description = data.description;
+    this.lab.tags = data.tags.split(',').filter(tag => tag.trim() !== '');
     this.close(this.lab, true);
   }
 

@@ -96,6 +96,7 @@ export class EditorViewComponent implements OnInit {
     switch (action.type) {
       case EditorToolbarActionTypes.Run: this.run(action.data); break;
       case EditorToolbarActionTypes.Stop: this.stop(action.data); break;
+      case EditorToolbarActionTypes.Edit: this.edit(action.data); break;
       case EditorToolbarActionTypes.Save: this.save(action.data); break;
       case EditorToolbarActionTypes.Fork: this.fork(action.data); break;
       case EditorToolbarActionTypes.Create: this.create(); break;
@@ -173,6 +174,15 @@ export class EditorViewComponent implements OnInit {
         this.save(info.shouldSave ? info.lab : createdLab, 'Lab forked');
       });
     });
+  }
+
+  edit(lab: Lab) {
+    this.showEditDialog(lab)
+        .subscribe(info => {
+          if (info.shouldSave) {
+            this.save(info.lab);
+          }
+        });
   }
 
   save(lab: Lab, msg = 'Lab saved') {
