@@ -1,4 +1,12 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnInit,
+  OnDestroy,
+  OnChanges
+} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Lab, LabExecutionContext } from '../../models/lab';
@@ -20,7 +28,7 @@ export interface EditorToolbarAction {
   templateUrl: './editor-toolbar.component.html',
   styleUrls: ['./editor-toolbar.component.scss']
 })
-export class EditorToolbarComponent implements OnInit, OnDestroy {
+export class EditorToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() lab = null as Lab;
 
@@ -42,11 +50,13 @@ export class EditorToolbarComponent implements OnInit, OnDestroy {
               private router: Router,
               private route: ActivatedRoute) {}
 
+  ngOnChanges() {
+    this.labOwner = this.userService.getUser(this.lab.user_id);
+  }
+
   ngOnInit() {
     this.userSubscription = this.userService.observeUserChanges()
                     .subscribe(user => this.user = user);
-
-    this.labOwner = this.userService.getUser(this.lab.user_id);
   }
 
   emitAction(action: EditorToolbarActionTypes, data?: any) {
