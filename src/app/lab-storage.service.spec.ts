@@ -70,8 +70,9 @@ describe('LabStorageService', () => {
     it('should create a new lab', () => {
       labStorageService.createLab().subscribe(lab => {
         expect(lab).toBeDefined();
-        expect(lab.directory.length).toBe(1);
+        expect(lab.directory.length).toBe(2);
         expect(lab.directory[0].name).toEqual('main.py');
+        expect(lab.directory[1].name).toEqual('ml.yaml');
         expect(lab.directory[0].content).toEqual('');
       });
     });
@@ -103,7 +104,7 @@ describe('LabStorageService', () => {
       labStorageService.createLabFromTemplate(TEMPLATE).subscribe(lab => {
         expect(labTemplateService.getTemplate).toHaveBeenCalledWith(TEMPLATE);
         expect(labStorageService.createLab).toHaveBeenCalledWith(LAB_TEMPLATES[TEMPLATE]);
-        expect(lab.directory.length).toBe(1);
+        expect(lab.directory.length).toBe(2);
         expect(lab.name).toEqual(`Fork of ${LAB_TEMPLATES[TEMPLATE].name}`);
         expect(lab.directory[0].content).toEqual(LAB_TEMPLATES[TEMPLATE].directory[0].content);
       });
