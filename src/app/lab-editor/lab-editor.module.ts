@@ -12,6 +12,7 @@ import { ROUTES } from './lab-editor.routes';
 
 import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.service';
 import { EditorSnackbarService } from './editor-snackbar.service';
+import { LabConfigService } from './lab-config.service';
 
 import { EditorToolbarComponent } from './editor-toolbar/editor-toolbar.component';
 import { EditorViewComponent } from './editor-view/editor-view.component';
@@ -65,7 +66,8 @@ import { ExecutionStatusPipe } from './execution-status.pipe';
   providers: [
     LabResolver,
     RemoteLabExecService,
-    EditorSnackbarService
+    EditorSnackbarService,
+    LabConfigService
   ],
   entryComponents: [
     NavigationConfirmDialogComponent,

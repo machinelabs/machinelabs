@@ -17,3 +17,20 @@ md-card {
 md-card-actions {
   text-align: center;
 }
+
+table {
+  width: 100%;
+}
+
+td, th {
+  padding: 1em;
+}
+
+tr {
+  display: block;
+  border-bottom: 1px solid #ddd;
+
+  td {
+    text-align: left;
+  }
+}
