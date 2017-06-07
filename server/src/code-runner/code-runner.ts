@@ -10,5 +10,5 @@ export interface ProcessStreamData {
 
 export interface CodeRunner {
   run (invocation:Invocation, configuration: PrivateLabConfiguration) : Observable<ProcessStreamData>
-  stop (invocation: Invocation) : void
+  stop (id: string) : void
 }

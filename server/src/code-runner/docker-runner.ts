@@ -54,10 +54,10 @@ EOL
     return ProcessUtil.toObservableProcess(ps);
   }
 
-  stop (invocation: Invocation, attempt = 0) {
-    console.log(`Stopping container with name: ${invocation.id}`);
+  stop (id: string, attempt = 0) {
+    console.log(`Stopping container with name: ${id}`);
     
-    exec(`docker kill $(docker ps -a -q --filter="name=${invocation.id}")`, (error, stdout, stderr) => {
+    exec(`docker kill $(docker ps -a -q --filter="name=${id}")`, (error, stdout, stderr) => {
         if (error) {
 
           // If this errored it means the `docker ps` did not return a container and
@@ -75,13 +75,13 @@ EOL
           // TODO: We need to investigate how that scales under load. If processes take really long to spawn
           // this system may fall apart again.
           if (attempt >= 10) {
-            console.log(`Giving up on ${invocation.id}. (Container doesn't run anymore)`);
+            console.log(`Giving up on ${id}. (Container doesn't run anymore)`);
             return;
           }
           
           let currentAttempt = attempt + 1;
-          console.log(`Failed to stop ${invocation.id}....rescheduling for stopping (${currentAttempt} attempt)`);
-          setTimeout(() => this.stop(invocation, currentAttempt), 1000)
+          console.log(`Failed to stop ${id}....rescheduling for stopping (${currentAttempt} attempt)`);
+          setTimeout(() => this.stop(id, currentAttempt), 1000)
           return;
         }
       });

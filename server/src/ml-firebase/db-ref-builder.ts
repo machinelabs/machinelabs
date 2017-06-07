@@ -54,8 +54,12 @@ export class DbRefBuilder {
                                  .equalTo(hash));
   }
 
-  executionMessagesRef(id: string) {
-    return new ObservableDbRef(db.ref(`executions/${id}/messages`));
+  executionMessagesRef(id: string, limitToFirst = 0) {
+    if (limitToFirst > 0) {
+      return new ObservableDbRef(db.ref(`executions/${id}/messages`).limitToFirst(limitToFirst));
+    } else {
+      return new ObservableDbRef(db.ref(`executions/${id}/messages`));
+    }
   }
 
   executionMessageRef(executionId: string, messageId: string) {

@@ -13,7 +13,7 @@ export class DummyRunner implements CodeRunner {
     return ProcessUtil.toObservableProcess(spawn(`ping`, ['-c10', 'machinelabs.ai']))
   }
 
-  stop(invocation: Invocation) {
+  stop(id: string) {
     
   }
 }

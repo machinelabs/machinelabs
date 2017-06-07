@@ -10,13 +10,15 @@ import { ValidationService } from './validation/validation.service';
 import { Server } from './models/server';
 import { ValidationContext } from './validation/validation-context';
 import { LabConfigResolver } from './validation/resolver/lab-config-resolver';
+import { ExecutionResolver } from './validation/resolver/execution-resolver';
 
 export class MessagingService {
 
   db = new DbRefBuilder();
   server: Server;
 
-  constructor(private validationService: ValidationService,
+  constructor(private startValidationService: ValidationService,
+              private stopValidationService: ValidationService,
               private codeRunner: CodeRunner) {
   }
 
@@ -41,8 +43,16 @@ export class MessagingService {
     // Listen on all changed runs to get notified about stops
     this.db.invocationsForServerRef(this.server.id).childChanged()
         .map(snapshot => snapshot.val().common)
-        .filter(execution => execution.type === InvocationType.StopExecution)
-        .subscribe(execution => this.codeRunner.stop(execution));
+        .filter(invocation => invocation.type === InvocationType.StopExecution)
+        .switchMap(invocation => this.stopValidationService.validate(invocation))
+        .subscribe(validationContext => {
+          let execution = validationContext.resolved.get(ExecutionResolver);
+          if (validationContext.isApproved() && execution){
+            this.codeRunner.stop(execution.id)
+          } else {
+            console.log('Request to stop invocation was invalid');
+          }
+        });
   }
 
   /**
@@ -67,7 +77,7 @@ export class MessagingService {
 
 
                   // otherwise, try to get approval
-                  return this.validationService
+                  return this.startValidationService
                               .validate(invocation)
                               .switchMap(validationContext => {
                                 if (validationContext.isApproved() && validationContext.resolved.get(LabConfigResolver)) {

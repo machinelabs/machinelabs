@@ -10,6 +10,8 @@ import { HasValidConfigRule } from './validation/rules/has-valid-config';
 import { LabConfigService } from './lab-config/lab-config.service';
 import { UserResolver } from './validation/resolver/user-resolver';
 import { LabConfigResolver } from './validation/resolver/lab-config-resolver';
+import { ExecutionResolver } from './validation/resolver/execution-resolver';
+import { OwnsExecutionRule } from './validation/rules/owns-execution';
 
 console.log(`Starting MachineLabs server (${environment.serverId})`)
 
@@ -30,7 +32,12 @@ dockerImageService
       .addResolver(UserResolver, new UserResolver())
       .addResolver(LabConfigResolver, new LabConfigResolver(dockerImageService, labConfigService));
 
-    const messagingService = new MessagingService(validationService, runner);
+    const stopValidationService = new ValidationService();
+    stopValidationService
+      .addRule(new OwnsExecutionRule())
+      .addResolver(ExecutionResolver, new ExecutionResolver());
+
+    const messagingService = new MessagingService(validationService, stopValidationService, runner);
     messagingService.init();
 
     console.log(`Using runner: ${runner.constructor.name}`);
