@@ -8,7 +8,7 @@ import { Invocation, InvocationType } from './models/invocation';
 import { Execution, ExecutionStatus, ExecutionMessage, MessageKind, toMessageKind } from './models/execution';
 import { ValidationService } from './validation/validation.service';
 import { Server } from './models/server';
-import { ValidationContext } from './models/validation-context';
+import { ValidationContext } from './validation/validation-context';
 import { LabConfigResolver } from './validation/resolver/lab-config-resolver';
 
 export class MessagingService {

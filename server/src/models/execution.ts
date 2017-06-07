@@ -1,4 +1,5 @@
 import { Lab } from './lab';
+import { AbstractValidationError } from '../validation/validation-result';
 
 export enum ExecutionStatus {
   Pristine,
@@ -41,9 +42,11 @@ export enum ExecutionRejectionReason {
   InvalidConfig
 }
 
-export class ExecutionRejectionInfo {
+export class ExecutionRejectionInfo extends AbstractValidationError {
   constructor(public reason: ExecutionRejectionReason,
-              public message: string){}
+              public message: string){
+                super(message);
+              }
 }
 
 export function toMessageKind(kind: string) {

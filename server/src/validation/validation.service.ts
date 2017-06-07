@@ -1,10 +1,10 @@
 import { Observable } from '@reactivex/rxjs';
 import { Invocation} from '../models/invocation';
 import { ValidationRule } from './rules/rule';
-import { ValidationContext } from '../models/validation-context';
+import { ValidationContext } from './validation-context';
 import { ExecutionRejectionInfo } from '../models/execution';
 import { Resolver } from './resolver/resolver';
-import { ValidationResult } from '../models/validation-result';
+import { ValidationResult } from './validation-result';
 
 export class ValidationService {
 

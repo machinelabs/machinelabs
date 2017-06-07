@@ -2,7 +2,7 @@ import { Observable } from '@reactivex/rxjs'
 import { ValidationRule } from './rule';
 import { ExtendedUser } from '../../models/user';
 import { Invocation } from '../../models/invocation';
-import { ValidationResult } from '../../models/validation-result';
+import { ValidationResult } from '../validation-result';
 import { DockerImageService } from '../../docker-image.service';
 import { PublicLabConfiguration } from '../../models/lab-configuration';
 import { LabConfigService } from '../../lab-config/lab-config.service';
