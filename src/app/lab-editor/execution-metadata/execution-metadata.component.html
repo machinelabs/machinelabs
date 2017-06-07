@@ -23,6 +23,10 @@
             <ng-template #notAvailable>-</ng-template>
           </td>
         </tr>
+        <tr>
+          <td>Cached:</td>
+          <td>{{execution.redirected ? 'Yes' : 'No'}}</td>
+        </tr>
         <tr class="ml-execution-metadata-user-info">
           <td>Executed by:</td>
           <td>
