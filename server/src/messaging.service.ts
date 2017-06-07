@@ -36,15 +36,15 @@ export class MessagingService {
     // Listen on all incoming runs to do the right thing
     this.db.newInvocationsForServerRef(this.server.id).childAdded()
         .map(snapshot => snapshot.val().common)
-        .switchMap(invocation => this.getOutputAsObservable(invocation))
-        .switchMap(data => this.writeExecutionMessage(data.output, data.invocation))
+        .flatMap(invocation => this.getOutputAsObservable(invocation))
+        .flatMap(data => this.writeExecutionMessage(data.output, data.invocation))
         .subscribe();
 
     // Listen on all changed runs to get notified about stops
     this.db.invocationsForServerRef(this.server.id).childChanged()
         .map(snapshot => snapshot.val().common)
         .filter(invocation => invocation.type === InvocationType.StopExecution)
-        .switchMap(invocation => this.stopValidationService.validate(invocation))
+        .flatMap(invocation => this.stopValidationService.validate(invocation))
         .subscribe(validationContext => {
           let execution = validationContext.resolved.get(ExecutionResolver);
           if (validationContext.isApproved() && execution){
