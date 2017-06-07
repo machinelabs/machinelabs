@@ -28,7 +28,7 @@ export class RemoteLabExecService {
    * Executes code on the server. Returns an Observable<string>
    * where `string` is each line that was printed to STDOUT.
    */
-  run (context: LabExecutionContext, lab: Lab): Observable<ExecutionMessage> {
+  run (context: LabExecutionContext, lab: Lab, forceExecution = false): Observable<ExecutionMessage> {
     // This shouldn't really happen in practice because the UI forbids this.
     // But semantically it makes sense to check for it.
     if (context.execution.status === ExecutionStatus.Executing) {
@@ -45,7 +45,7 @@ export class RemoteLabExecService {
                         id: context.id,
                         user_id: login.uid,
                         timestamp: firebase.database.ServerValue.TIMESTAMP,
-                        type: InvocationType.StartExecution,
+                        type: forceExecution ? InvocationType.ForceExecution : InvocationType.StartExecution,
                         data: {
                           id: context.lab.id,
                           directory: context.lab.directory

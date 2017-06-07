@@ -15,7 +15,7 @@ import { User } from '../../models/user';
 import { UserService } from '../../user/user.service';
 
 export enum EditorToolbarActionTypes {
-  Run, Stop, Save, Fork, Create
+  Run, ForceRun, Stop, Save, Fork, Create
 }
 
 export interface EditorToolbarAction {

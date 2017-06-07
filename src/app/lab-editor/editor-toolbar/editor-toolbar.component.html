@@ -18,6 +18,7 @@
 
   <ml-toolbar-cta-bar>
     <button md-button (click)="emitAction(EditorToolbarActionTypes.Run, lab)" *ngIf="context.clientExecutionState != ClientExecutionState.Executing"><md-icon>cached</md-icon> Run</button>
+    <button md-button (click)="emitAction(EditorToolbarActionTypes.ForceRun, lab)" *ngIf="context.clientExecutionState != ClientExecutionState.Executing"><md-icon>play_arrow</md-icon> Force Run</button>
     <button md-button (click)="emitAction(EditorToolbarActionTypes.Stop, context)" *ngIf="context.clientExecutionState == ClientExecutionState.Executing"><md-icon>stop</md-icon> Stop</button>
     <button md-button (click)="emitAction(EditorToolbarActionTypes.Save, lab)" *ngIf="userService.userOwnsLab(user, lab)"><md-icon>save</md-icon> Save</button>
     <button md-button (click)="emitAction(EditorToolbarActionTypes.Fork, lab)"><md-icon>share</md-icon> Fork</button>

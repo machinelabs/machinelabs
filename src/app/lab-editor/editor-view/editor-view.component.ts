@@ -95,6 +95,7 @@ export class EditorViewComponent implements OnInit {
   toolbarAction(action: EditorToolbarAction) {
     switch (action.type) {
       case EditorToolbarActionTypes.Run: this.run(action.data); break;
+      case EditorToolbarActionTypes.ForceRun: this.run(action.data, true); break;
       case EditorToolbarActionTypes.Stop: this.stop(action.data); break;
       case EditorToolbarActionTypes.Save: this.save(action.data); break;
       case EditorToolbarActionTypes.Fork: this.fork(action.data); break;
@@ -106,7 +107,7 @@ export class EditorViewComponent implements OnInit {
     this.selectedTab = tabIndex;
   }
 
-  run(lab: Lab) {
+  run(lab: Lab, forceExecution = false) {
     this.outputPanel.clear();
     this.selectTab(TabIndex.Console);
     // we want to have this immutable. Shared instances make it hard
@@ -122,7 +123,7 @@ export class EditorViewComponent implements OnInit {
     // Don't make this a manual subscription without dealing with
     // Unsubscribing. The returned Observable may not auto complete
     // in all scenarios.
-    let messages = this.rleService.run(this.context, lab);
+    let messages = this.rleService.run(this.context, lab, forceExecution);
 
     this.output = messages.do(msg => {
                       if (msg.kind === MessageKind.ExecutionFinished) {
