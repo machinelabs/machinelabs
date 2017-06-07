@@ -19,7 +19,7 @@ export class HasPlanRule implements ValidationRule {
 
     return resolves
       .get(UserResolver)
-      .map(user => (user.plan && PLANS.includes(user.plan.plan_id)) ||
+      .map(user => (user && user.plan && PLANS.includes(user.plan.plan_id)) ||
         new ExecutionRejectionInfo(ExecutionRejectionReason.NoPlan, 'Missing plan that allows executions'));
   }
 }
