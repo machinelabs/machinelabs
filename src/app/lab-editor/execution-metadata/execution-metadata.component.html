@@ -24,7 +24,7 @@
           <td>
             <ng-container *ngIf="execution.finished_at; else notAvailable">
               {{execution.started_at | distanceInWordsStrict: execution.finished_at}}</ng-container>
-            <ng-template #notAvailable>-</ng-template>
+            <ng-template #notAvailable>{{executionTimer | async | distanceInWordsStrict: execution.started_at}}</ng-template>
           </td>
         </tr>
         <tr class="ml-execution-metadata-user-info">

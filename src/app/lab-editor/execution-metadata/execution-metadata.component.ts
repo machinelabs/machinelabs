@@ -14,9 +14,10 @@ export class ExecutionMetadataComponent {
   _execution: Observable<Execution>;
   executer: Observable<User>;
   ExecutionStatus = ExecutionStatus;
+  executionTimer: Observable<any> = Observable.timer(0, 1000)
+                                        .map(tick => new Date().getTime()); ;
 
-  constructor(private userService: UserService) {
-  }
+  constructor(private userService: UserService) {}
 
   @Input()
   set execution (val: Observable<Execution>) {
