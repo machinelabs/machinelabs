@@ -4,6 +4,10 @@
     <md-card-content class="ml-execution-metadata-content">
       <table>
         <tr>
+          <td>ID:</td>
+          <td>{{ execution.id }}</td>
+        </tr>
+        <tr>
           <td>Status:</td>
           <td>{{ execution.status | executionStatusLabel }}</td>
         </tr>
