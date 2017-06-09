@@ -6,6 +6,7 @@ import * as distanceInWordsStrict from 'date-fns/distance_in_words_strict';
 })
 export class DistanceInWordsStrictPipe implements PipeTransform {
   transform(startTimestamp: number, endTimestamp: number): string {
+    if (!startTimestamp || !endTimestamp) { return ''; };
     return distanceInWordsStrict(new Date(startTimestamp), new Date(endTimestamp));
   }
 }

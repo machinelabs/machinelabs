@@ -17,6 +17,10 @@
 .ml-execution-metadata-content {
   padding: 1em 1.5em;
 
+  table {
+    width: 100%;
+  }
+
   tr {
     &:first-child {
       td { margin-top: 0; }
@@ -26,8 +30,11 @@
       margin-top: 0.5em;
       display: inline-block;
       &:first-child {
-        width: 95px;
+        width: 35%;
         font-weight: 500;
+      }
+      &:nth-child(2) {
+        width: 65%;
       }
     }
   }
