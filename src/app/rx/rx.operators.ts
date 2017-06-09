@@ -17,4 +17,5 @@ import 'rxjs/add/operator/skipWhile';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/last';
+import 'rxjs/add/operator/delay';
 import './takeWhileInclusive';

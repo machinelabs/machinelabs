@@ -97,142 +97,153 @@ describe('RemoteLabExecService', () => {
   });
 
   describe('.run()', () => {
-
     it('should handle ProcessFinished gracefully', (done) => {
-      let doneWhen = new DoneWhen(done).calledNTimes(2);
+      let doneWhen = new DoneWhen(done).calledNTimes(4);
+
+      let playedMessages = [
+        { kind: MessageKind.Stdout, data: 'some-text' },
+        { kind: MessageKind.Stdout, data: 'other-text' },
+        { kind: MessageKind.ExecutionFinished, data: '' },
+        { kind: MessageKind.Stdout, data: 'other text' }
+      ];
+
+      let messagesSubscriber = 0;
 
       let messages$ = new Observable(obs => {
-          obs.next(createMessageSnapshot(MessageKind.Stdout, 'some-text'));
-          obs.next(createMessageSnapshot(MessageKind.Stdout, 'other-text'));
-          obs.next(createMessageSnapshot(MessageKind.ExecutionFinished, ''));
-          obs.next(createMessageSnapshot(MessageKind.Stdout, 'other-text'));
+          messagesSubscriber++;
+          obs.next(playedMessages[0]);
+          obs.next(playedMessages[1]);
+          obs.next(playedMessages[2]);
+          obs.next(playedMessages[3]);
           return () => {
             // in case the cleanup does not run, the test won't complete
             // which seems to be the only way to properly test this.
             doneWhen.call();
           };
-      });
+      }).delay(1);
 
-      // FIXME This is really fragile. If we return undefined the test throws but passes
-      spyOn(rleService, 'executionMessagesAsObservable')
-        .and.callFake((id) => {
-          if (id === context.id) {
-            return messages$;
-          }
-        });
+      let playedExecutions = [
+        { id: 1, status: ExecutionStatus.Executing },
+        { id: 1, status: ExecutionStatus.Finished },
+        { id: 1, status: ExecutionStatus.Executing }
+      ];
 
-      spyOnExecutionAndCallDone(db, doneWhen);
+      let executionsSubscriber = 0;
+
+      let executions$ = new Observable(obs => {
+          executionsSubscriber++;
+          obs.next(playedExecutions[0]);
+          obs.next(playedExecutions[1]);
+          obs.next(playedExecutions[2]);
+          return () => {
+            // in case the cleanup does not run, the test won't complete
+            // which seems to be the only way to properly test this.
+            doneWhen.call();
+          };
+      }).delay(1);
 
       let actualMessages = [];
-      rleService.run(context, testLab)
-                .do(data => actualMessages.push(data))
-                .finally(() => {
-                  expect(actualMessages).toEqual([
-                    { kind: 0, data: 'some-text' },
-                    { kind: 0, data: 'other-text' },
-                    { kind: 3, data: '' }
-                  ]);
-                })
-                .subscribe();
+      let actualExecutions = [];
 
+      doneWhen.assertBeforeDone(() => {
+        expect(messagesSubscriber).toBe(1);
+        expect(executionsSubscriber).toBe(1);
+      });
+
+      rleService.consumeExecution(messages$, executions$)
+                .subscribe((ew) => {
+                  ew.messages
+                    .do(msg => actualMessages.push(msg))
+                    .finally(() => {
+                      expect(actualMessages.length).toBe(3);
+                      doneWhen.call();
+                    })
+                    .subscribe();
+
+                  ew.execution
+                    .do(e => {
+                      console.log(e);
+                      actualExecutions.push(e);
+                    })
+                    .finally(() => {
+                      expect(actualExecutions.length).toBe(2);
+                      doneWhen.call();
+                    })
+                    .subscribe();
+                });
     });
 
     it('should handle ExecutionRejected gracefully', (done) => {
-      let doneWhen = new DoneWhen(done).calledNTimes(2);
+      let doneWhen = new DoneWhen(done).calledNTimes(4);
+
+      let playedMessages = [
+        { kind: MessageKind.ExecutionRejected, data: 'meh' },
+        { kind: MessageKind.Stdout, data: 'other-text' }
+      ];
+
+      let messagesSubscriber = 0;
 
       let messages$ = new Observable(obs => {
-          obs.next(createMessageSnapshot(MessageKind.ExecutionRejected, 'not allowed'));
+          messagesSubscriber++;
+          console.log('producing messages$');
+          obs.next(playedMessages[0]);
+          obs.next(playedMessages[1]);
           return () => {
             // in case the cleanup does not run, the test won't complete
             // which seems to be the only way to properly test this.
+            console.log('unsubscribed messages$');
             doneWhen.call();
           };
-      });
+      }).delay(1);
 
-      // FIXME This is really fragile. If we return undefined the test throws but passes
-      spyOn(rleService, 'executionMessagesAsObservable')
-        .and.callFake((id) => {
-          if (id === context.id) {
-            return messages$;
-          }
-        });
+      let playedExecutions = [
+        null
+      ];
 
-      spyOnExecutionAndCallDone(db, doneWhen);
+      let executionsSubscriber = 0;
+
+      let executions$ = new Observable(obs => {
+          console.log('producing executions$');
+          executionsSubscriber++;
+          obs.next(playedExecutions[0]);
+          return () => {
+            // in case the cleanup does not run, the test won't complete
+            // which seems to be the only way to properly test this.
+            console.log('unsubscribed executions$');
+            doneWhen.call();
+          };
+      }).delay(1);
 
       let actualMessages = [];
-      rleService.run(context, testLab)
-                .do(data => actualMessages.push(data))
-                .finally(() => {
-                  expect(actualMessages).toEqual([
-                    { kind: 5, data: 'not allowed' }
-                  ]);
-                })
-                .subscribe();
-
-    });
-
-    it('should handle OutputRedirected gracefully', (done) => {
-
-      let doneWhen = new DoneWhen(done).calledNTimes(3);
-
-      let messages$ = new Observable(obs => {
-          obs.next(createMessageSnapshot(MessageKind.OutputRedirected, '2'));
-          return () => {
-            // in case the cleanup does not run, the test won't complete
-            // which seems to be the only way to properly test this.
-            doneWhen.call();
-          };
-      });
-
-      let redirectedMessages$ = new Observable(obs => {
-          setTimeout(() => {
-            obs.next(createMessageSnapshot(MessageKind.Stdout, 'some-text'));
-            obs.next(createMessageSnapshot(MessageKind.Stdout, 'other-text'));
-          }, 100);
-
-          setTimeout(() => {
-            obs.next(createMessageSnapshot(MessageKind.ExecutionFinished, ''));
-            obs.next(createMessageSnapshot(MessageKind.Stdout, 'other-text'));
-          }, 200);
-
-          return () => {
-            // in case the cleanup does not run, the test won't complete
-            // which seems to be the only way to properly test this.
-            doneWhen.call();
-          };
-      });
-
-      // FIXME This is really fragile. If we return undefined the test throws but passes
-      spyOn(rleService, 'executionMessagesAsObservable')
-        .and.callFake((id) => {
-          if (id === context.id) {
-            return messages$;
-          } else if (id === '2') {
-            return redirectedMessages$;
-          }
-        });
-
-      spyOnExecutionAndCallDone(db, doneWhen);
-
-      let actualMessages = [];
-      rleService.run(context, testLab)
-                .do(data => actualMessages.push(data))
-                .finally(() => {
-                  expect(actualMessages).toEqual([
-                    { kind: 4, data: '2' },
-                    { kind: 1, data: 'This is a cached execution. You are looking at a truncated response.' },
-                    { kind: 0, data: 'some-text' },
-                    { kind: 0, data: 'other-text' },
-                    { kind: 3, data: '' }
-                  ]);
-                })
-                .subscribe();
+      let actualExecutions = [];
 
       doneWhen.assertBeforeDone(() => {
-        expect(context.execution.redirected).toBeTruthy();
+        expect(messagesSubscriber).toBe(1);
+        expect(executionsSubscriber).toBe(1);
       });
 
-    });
+      rleService.consumeExecution(messages$, executions$)
+                .subscribe((ew) => {
+                  ew.messages
+                    .do(msg => actualMessages.push(msg))
+                    .finally(() => {
+                      expect(actualMessages.length).toBe(1);
+                      console.log('messages$ completed');
+                      doneWhen.call();
+                    })
+                    .subscribe();
 
+                  ew.execution
+                    .do(e => {
+                      actualExecutions.push(e);
+                    })
+                    .finally(() => {
+                      expect(actualExecutions.length).toBe(0);
+                      console.log('execution$ completed');
+                      doneWhen.call();
+                    })
+                    .subscribe();
+                });
+    });
   });
 });

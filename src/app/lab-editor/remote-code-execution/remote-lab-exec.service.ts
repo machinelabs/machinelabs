@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Lab, LabExecutionContext } from '../../models/lab';
 import { Invocation, InvocationType } from '../../models/invocation';
-import { Execution, ExecutionStatus, ExecutionMessage, MessageKind } from '../../models/execution';
+import { Execution, ExecutionStatus, ExecutionMessage, MessageKind, ExecutionWrapper } from '../../models/execution';
 import { ContextExecutionUpdater } from './context-execution-updater';
 import * as shortid from 'shortid';
 import * as firebase from 'firebase';
@@ -23,61 +23,58 @@ export class RemoteLabExecService {
     return this.db.executionMessageRef(id, limitToLast).childAdded();
   }
 
-
-  /**
-   * Executes code on the server. Returns an Observable<string>
-   * where `string` is each line that was printed to STDOUT.
-   */
-  run(context: LabExecutionContext, lab: Lab): Observable<ExecutionMessage> {
+  run(lab: Lab): Observable<ExecutionWrapper> {
     let id = this.newInvocationId();
-    context.resetData(lab, id);
-
-    let contextUpdater = new ContextExecutionUpdater(this.db, context);
-    let output$ = this.authService
+    let executionWrapper$ = this.authService
       .requireAuthOnce()
-      .switchMap(login => this.db.invocationRef(context.id).set({
-        id: context.id,
+      .switchMap(login => this.db.invocationRef(id).set({
+        id: id,
         user_id: login.uid,
         timestamp: firebase.database.ServerValue.TIMESTAMP,
         type: InvocationType.StartExecution,
         data: {
-          id: context.lab.id,
-          directory: context.lab.directory
+          id: lab.id,
+          directory: lab.directory
         }
       }))
-      .switchMap(_ => this.executionMessagesAsObservable(context.id))
-      .map((snapshot: any) => snapshot.val())
-      .share();
+      .switchMap(_ => {
+        let messages$ = this.db.executionMessageRef(id)
+                               .childAdded()
+                               .map(snapshot => snapshot.val());
 
-    // if the first message isn't a redirect, set this execution on the context
-    output$.take(1)
-      .filter(msg => msg.kind !== MessageKind.OutputRedirected)
-      .subscribe(_ => contextUpdater.executionId = id);
+        let execution$ = this.db.executionRef(id)
+                                .value()
+                                .map(snapshot => snapshot.val());
 
-    // we create a stream that - based on a filter - will only ever start producing
-    // messages if the output was redirected
-    let redirectedOutput$ = output$.filter(msg => msg.kind === MessageKind.OutputRedirected)
-      .do(msg => {
-        contextUpdater.executionId = msg.data;
-        context.execution.redirected = true;
-      })
-      .switchMap(msg => this.executionMessagesAsObservable(msg.data, this.MAX_CACHE_MESSAGES)
-        .map((snapshot: any) => snapshot.val())
-        .merge(Observable.of({
-          kind: MessageKind.Stderr,
-          data: `This is a cached execution. You are looking at a truncated response.`
-        })));
+        return this.consumeExecution(messages$, execution$);
+      });
 
+    return executionWrapper$;
+  }
 
-    // we combine the regular stream with the redirected one (which may never be used)
-    let outputWithRedirects$ = output$
-      .merge(redirectedOutput$)
-      .takeWhileInclusive(msg => msg.kind !== MessageKind.ExecutionFinished && msg.kind !== MessageKind.ExecutionRejected)
-      .share();
+  consumeExecution(messages: Observable<ExecutionMessage>, execution: Observable<Execution>): Observable<ExecutionWrapper>{
 
-    contextUpdater.output = outputWithRedirects$;
+    let sharedMessages = messages.share();
 
-    return outputWithRedirects$;
+    let messagesNotFinishedOrRejected = (msg: ExecutionMessage) =>
+                      msg.kind !== MessageKind.ExecutionFinished &&
+                      msg.kind !== MessageKind.ExecutionRejected;
+
+    let executingExecutions = (exec: Execution) => exec.status === ExecutionStatus.Executing;
+
+    let messages$ = sharedMessages.takeWhileInclusive(messagesNotFinishedOrRejected);
+
+    let rejectedMessage = sharedMessages.filter(msg => msg.kind === MessageKind.ExecutionRejected);
+
+    let execution$ = execution
+                      .filter(exec => !!exec)
+                      .takeWhileInclusive(executingExecutions)
+                      .takeUntil(rejectedMessage);
+
+    return Observable.of({
+      messages: messages$,
+      execution: execution$
+    });
   }
 
   stop(executionId: string) {
