@@ -114,25 +114,6 @@ describe('EditorToolbarComponent', () => {
       runButton.triggerEventHandler('click', null);
     });
 
-    it('should emit stop action', () => {
-      let lab = Object.assign({}, testLab);
-
-      component.context = new LabExecutionContext(lab);
-      component.context.clientExecutionState = ClientExecutionState.Executing;
-      component.context.execution.status = ExecutionStatus.Executing;
-      component.lab = lab;
-      fixture.detectChanges();
-
-      // When lab is running, stop button is the first
-      let stopButton = fixture.debugElement.queryAll(By.css('ml-toolbar-cta-bar button'))[0];
-
-      component.action.subscribe(action => {
-        expect(action.type).toBe(EditorToolbarActionTypes.Stop);
-      });
-
-      stopButton.triggerEventHandler('click', null);
-    });
-
     it('should emit save action', (done) => {
       // The user will be available in the next tick hence the setTimeout
       setTimeout(() => {

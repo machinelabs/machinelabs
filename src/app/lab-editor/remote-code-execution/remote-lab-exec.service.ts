@@ -28,71 +28,74 @@ export class RemoteLabExecService {
    * Executes code on the server. Returns an Observable<string>
    * where `string` is each line that was printed to STDOUT.
    */
-  run (context: LabExecutionContext, lab: Lab): Observable<ExecutionMessage> {
-    // This shouldn't really happen in practice because the UI forbids this.
-    // But semantically it makes sense to check for it.
-    if (context.execution.status === ExecutionStatus.Executing) {
-      this.stop(context.clone());
-    }
-
-    let id = `${Date.now()}-${shortid.generate()}`;
+  run(context: LabExecutionContext, lab: Lab): Observable<ExecutionMessage> {
+    let id = this.newInvocationId();
     context.resetData(lab, id);
 
     let contextUpdater = new ContextExecutionUpdater(this.db, context);
     let output$ = this.authService
-                    .requireAuthOnce()
-                    .switchMap(login => this.db.invocationRef(context.id).set({
-                        id: context.id,
-                        user_id: login.uid,
-                        timestamp: firebase.database.ServerValue.TIMESTAMP,
-                        type: InvocationType.StartExecution,
-                        data: {
-                          id: context.lab.id,
-                          directory: context.lab.directory
-                        }
-                    }))
-                    .switchMap(_ => this.executionMessagesAsObservable(context.id))
-                    .map((snapshot: any) => snapshot.val())
-                    .share();
+      .requireAuthOnce()
+      .switchMap(login => this.db.invocationRef(context.id).set({
+        id: context.id,
+        user_id: login.uid,
+        timestamp: firebase.database.ServerValue.TIMESTAMP,
+        type: InvocationType.StartExecution,
+        data: {
+          id: context.lab.id,
+          directory: context.lab.directory
+        }
+      }))
+      .switchMap(_ => this.executionMessagesAsObservable(context.id))
+      .map((snapshot: any) => snapshot.val())
+      .share();
 
     // if the first message isn't a redirect, set this execution on the context
     output$.take(1)
-           .filter(msg => msg.kind !== MessageKind.OutputRedirected)
-           .subscribe(_ => contextUpdater.executionId = id);
+      .filter(msg => msg.kind !== MessageKind.OutputRedirected)
+      .subscribe(_ => contextUpdater.executionId = id);
 
     // we create a stream that - based on a filter - will only ever start producing
     // messages if the output was redirected
     let redirectedOutput$ = output$.filter(msg => msg.kind === MessageKind.OutputRedirected)
-                                   .do(msg => {
-                                     contextUpdater.executionId = msg.data;
-                                     context.execution.redirected = true;
-                                    })
-                                   .switchMap(msg => this.executionMessagesAsObservable(msg.data, this.MAX_CACHE_MESSAGES)
-                                                         .map((snapshot: any) => snapshot.val())
-                                                         .merge(Observable.of({
-                                                              kind: MessageKind.Stderr,
-                                                              data: `This is a cached execution. You are looking at a truncated response.`
-                                                            })));
+      .do(msg => {
+        contextUpdater.executionId = msg.data;
+        context.execution.redirected = true;
+      })
+      .switchMap(msg => this.executionMessagesAsObservable(msg.data, this.MAX_CACHE_MESSAGES)
+        .map((snapshot: any) => snapshot.val())
+        .merge(Observable.of({
+          kind: MessageKind.Stderr,
+          data: `This is a cached execution. You are looking at a truncated response.`
+        })));
 
 
     // we combine the regular stream with the redirected one (which may never be used)
     let outputWithRedirects$ = output$
-            .merge(redirectedOutput$)
-            .takeWhileInclusive(msg => msg.kind !== MessageKind.ExecutionFinished && msg.kind !== MessageKind.ExecutionRejected)
-            .share();
+      .merge(redirectedOutput$)
+      .takeWhileInclusive(msg => msg.kind !== MessageKind.ExecutionFinished && msg.kind !== MessageKind.ExecutionRejected)
+      .share();
 
     contextUpdater.output = outputWithRedirects$;
 
     return outputWithRedirects$;
   }
 
-  stop(context: LabExecutionContext) {
-    context.execution.status = ExecutionStatus.Stopped;
+  stop(executionId: string) {
+
+    let id = this.newInvocationId();
+
     return this.authService
       .requireAuthOnce()
-      .switchMap(_ => this.db.invocationRef(context.id).onceValue())
-      .map((snapshot: any) => snapshot.val())
-      .switchMap(data => this.db.invocationRef(context.id).update({type: InvocationType.StopExecution}))
-      .subscribe();
+      .switchMap(login => this.db.invocationRef(id).set({
+        id: id,
+        type: InvocationType.StopExecution,
+        data: { execution_id: executionId },
+        user_id: login.uid,
+        timestamp: firebase.database.ServerValue.TIMESTAMP
+      })).subscribe();
+  }
+
+  private newInvocationId() {
+    return `${Date.now()}-${shortid.generate()}`;
   }
 }

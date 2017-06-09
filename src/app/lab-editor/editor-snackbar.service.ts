@@ -39,9 +39,6 @@ export class EditorSnackbarService {
   }
 
   notifyLateExecution() {
-    return this.notify('The server doesn\'t seem responding', {
-      actionLabel: 'Stop waiting',
-      duration: 0
-    });
+    return this.notify('The server doesn\'t seem responding');
   }
 }
