@@ -25,7 +25,6 @@ export enum MessageKind {
   Stderr,
   ExecutionStarted,
   ExecutionFinished,
-  OutputRedirected,
   ExecutionRejected
 }
 

@@ -64,60 +64,46 @@ export class MessagingService {
    * Take a run and observe the output. The run maybe cached or rejected
    * but it is guaranteed to get some message back.
    */
-  getOutputAsObservable(invocation: Invocation) : Observable<any> {
+  getOutputAsObservable(invocation: Invocation): Observable<any> {
     console.log(`Starting new run ${invocation.id}`);
 
     // check if we have existing output for the requested run
     let hash = Crypto.getCacheHash(invocation.data);
-    return this.getExistingExecutionAsObservable(hash)
-               .switchMap(execution => {
-                  // if we do have output, send a redirect message
-                  if (execution) {
-                    console.log('redirecting output');
-                    return Observable.of(<ExecutionMessage>{
-                              kind: MessageKind.OutputRedirected,
-                              data: '' + execution.id
-                            });
-                  }
+    // otherwise, try to get approval
+    return this.startValidationService
+      .validate(invocation)
+      .switchMap(validationContext => {
+        if (validationContext.isApproved() && validationContext.resolved.get(LabConfigResolver)) {
+          // if we get the approval, create the meta data
+          this.createExecutionAndUpdateLabs(invocation, hash);
+          // and execute the code
+          let config = validationContext.resolved.get(LabConfigResolver);
 
+          return this.codeRunner
+            .run(invocation, config)
+            .map(data => this.processStreamDataToExecutionMessage(data))
+            .startWith(<ExecutionMessage>{
+              kind: MessageKind.ExecutionStarted,
+              data: 'Execution started... (this might take a little while)'
+            })
+            .concat(Observable.of(<ExecutionMessage>{
+              kind: MessageKind.ExecutionFinished,
+              data: ''
+            }))
+            .do(msg => {
+              if (msg.kind === MessageKind.ExecutionFinished) {
+                this.completeExecution(invocation);
+              }
+            });
+        }
 
-                  // otherwise, try to get approval
-                  return this.startValidationService
-                              .validate(invocation)
-                              .switchMap(validationContext => {
-                                if (validationContext.isApproved() && validationContext.resolved.get(LabConfigResolver)) {
-                                  // if we get the approval, create the meta data
-                                  this.createExecutionAndUpdateLabs(invocation, hash);
-                                  // and execute the code
-                                  let config = validationContext.resolved.get(LabConfigResolver);
-
-                                  return this.codeRunner
-                                            .run(invocation, config)
-                                            .map(data => this.processStreamDataToExecutionMessage(data))
-                                            .startWith(<ExecutionMessage>{
-                                              kind: MessageKind.ExecutionStarted,
-                                              data: 'Execution started... (this might take a little while)'
-                                            })
-                                            .concat(Observable.of(<ExecutionMessage>{
-                                              kind: MessageKind.ExecutionFinished,
-                                              data: ''
-                                            }))
-                                            .do(msg => {
-                                              if (msg.kind === MessageKind.ExecutionFinished){
-                                                this.completeExecution(invocation);
-                                              }
-                                            });
-                                }
-
-                                // if we don't get an approval, reject it
-                                return Observable.of(<ExecutionMessage>{
-                                  kind: MessageKind.ExecutionRejected,
-                                  data: validationContext.validationResult
-                                });
-                              });
-
-              })
-              .map(output => ({output, invocation}));
+        // if we don't get an approval, reject it
+        return Observable.of(<ExecutionMessage>{
+          kind: MessageKind.ExecutionRejected,
+          data: validationContext.validationResult
+        });
+      })
+      .map(output => ({ output, invocation }));
   }
 
   createExecutionAndUpdateLabs(invocation: Invocation, hash: string) {
