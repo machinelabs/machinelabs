@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, UrlSerializer } from '@angular/router';
 import { MdDialog, MdDialogRef, MdSnackBar, MdTabGroup, MdSidenav } from '@angular/material';
 import { AceEditorComponent } from '../ace-editor/ace-editor.component';
 import { FileNameDialogComponent } from '../file-name-dialog/file-name-dialog.component';
@@ -84,6 +84,7 @@ export class EditorViewComponent implements OnInit {
                private dialog: MdDialog,
                private editorSnackbar: EditorSnackbarService,
                private location: Location,
+               private urlSerializer: UrlSerializer,
                private router: Router,
                private labExecutionService: LabExecutionService,
                private userService: UserService) {
@@ -239,7 +240,7 @@ export class EditorViewComponent implements OnInit {
       .filter(confirmed => confirmed)
       .switchMap(_ => this.labStorageService.createLab())
       .subscribe(lab => {
-        this.location.go(`/?tpl=${BLANK_LAB_TPL_ID}`);
+        this.goToLab();
         this.initLab(lab);
         this.editorSnackbar.notifyLabCreated();
       });
@@ -253,7 +254,8 @@ export class EditorViewComponent implements OnInit {
     this.activeFile = file;
     this.router.navigate(['.'], {
       relativeTo: this.route,
-      queryParams: { file: file.name }
+      queryParams: { file: file.name },
+      queryParamsHandling: 'merge'
     });
   }
 
@@ -308,10 +310,12 @@ export class EditorViewComponent implements OnInit {
     }
   }
 
-  private goToLab(lab) {
-    let fullPath = this.location.path();
-    let queryString = fullPath.substr(fullPath.indexOf('?'), fullPath.length);
-    let path = fullPath.substr(0, fullPath.indexOf('?'));
-    this.location.go(`${path}/${lab.id}${queryString}`);
+  private goToLab(lab?: Lab) {
+    this.location.go(this.urlSerializer.serialize(
+      this.router.createUrlTree([`${lab ? lab.id : '.'}`], {
+        queryParamsHandling: 'merge',
+        relativeTo: this.route
+      })
+    ));
   }
 }
