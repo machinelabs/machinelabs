@@ -67,7 +67,9 @@
           #executionMetadataSidebar
           class="ml-sidebar"
           >
-        <ml-execution-metadata [execution]="context.execution$"></ml-execution-metadata>
+        <ml-execution-metadata
+            *ngFor="let execution of executions | async"
+            [execution]="execution"></ml-execution-metadata>
       </md-sidenav>
     </md-sidenav-container>
   </div>

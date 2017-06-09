@@ -15,7 +15,9 @@ import { User } from '../../models/user';
 import { BLANK_LAB_TPL_ID } from '../../lab-template.service';
 import { Observable } from 'rxjs/Observable';
 import { Lab, LabExecutionContext, File } from '../../models/lab';
+import { LabExecutionService } from '../../lab-execution.service';
 import {
+  Execution,
   ExecutionMessage,
   MessageKind,
   ClientExecutionState,
@@ -52,6 +54,8 @@ export class EditorViewComponent implements OnInit {
 
   context: LabExecutionContext;
 
+  executions: Observable<Array<Observable<Execution>>>;
+
   sidebarToggled = false;
 
   activeFile: File;
@@ -81,6 +85,7 @@ export class EditorViewComponent implements OnInit {
                private editorSnackbar: EditorSnackbarService,
                private location: Location,
                private router: Router,
+               private labExecutionService: LabExecutionService,
                private userService: UserService) {
   }
 
@@ -90,6 +95,7 @@ export class EditorViewComponent implements OnInit {
               .subscribe(lab =>  this.initLab(lab));
 
     this.user = this.userService.observeUserChanges();
+    this.executions = this.labExecutionService.observeExecutionsForLab(this.lab);
   }
 
   toolbarAction(action: EditorToolbarAction) {
