@@ -95,7 +95,6 @@ export class EditorViewComponent implements OnInit {
   toolbarAction(action: EditorToolbarAction) {
     switch (action.type) {
       case EditorToolbarActionTypes.Run: this.run(action.data); break;
-      case EditorToolbarActionTypes.Stop: this.stop(action.data); break;
       case EditorToolbarActionTypes.Edit: this.edit(action.data); break;
       case EditorToolbarActionTypes.Save: this.save(action.data); break;
       case EditorToolbarActionTypes.Fork: this.fork(action.data); break;
@@ -161,19 +160,12 @@ export class EditorViewComponent implements OnInit {
 
           Observable.timer(EXECUTION_START_TIMEOUT)
                     .takeUntil(messages)
-                    .switchMap(_ => this.editorSnackbar.notifyLateExecution().afterDismissed())
-                    .subscribe(_ => this.stop(this.context));
+                    .subscribe(_ => this.editorSnackbar.notifyLateExecution());
 
           setTimeout(() => {
             this.executionMetadataSidebar.open();
           }, METADATA_SIDEBAR_OPEN_TIMEOUT);
         });
-  }
-
-  stop(context: LabExecutionContext) {
-    context.clientExecutionState = ClientExecutionState.NotExecuting;
-    this.rleService.stop(context);
-    this.editorSnackbar.notifyLabStopped();
   }
 
   fork(lab: Lab) {

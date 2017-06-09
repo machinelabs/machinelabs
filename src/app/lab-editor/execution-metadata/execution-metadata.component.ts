@@ -4,6 +4,7 @@ import { Execution } from '../../models/execution';
 import { UserService } from 'app/user/user.service';
 import { Observable } from 'rxjs/Observable';
 import { ExecutionStatus } from '../../models/execution';
+import { RemoteLabExecService } from '../../lab-editor/remote-code-execution/remote-lab-exec.service';
 
 @Component({
   selector: 'ml-execution-metadata',
@@ -15,7 +16,8 @@ export class ExecutionMetadataComponent {
   executer: Observable<User>;
   ExecutionStatus = ExecutionStatus;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService,
+              private rleService: RemoteLabExecService) {
   }
 
   @Input()
@@ -26,5 +28,9 @@ export class ExecutionMetadataComponent {
 
   get execution () {
     return this._execution;
+  }
+
+  stop(execution: Execution) {
+    this.rleService.stop(execution.id);
   }
 }
