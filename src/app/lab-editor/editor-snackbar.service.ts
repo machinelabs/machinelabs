@@ -34,10 +34,6 @@ export class EditorSnackbarService {
     this.notify('Execution finished');
   }
 
-  notifyCacheReplay(data) {
-    this.notify(`Replaying cached execution: ${data}`);
-  }
-
   notifyLateExecution() {
     return this.notify('The server doesn\'t seem responding');
   }
