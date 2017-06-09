@@ -45,6 +45,10 @@ export class LabStorageService {
               .map((snapshot: any) => snapshot.val());
   }
 
+  labExists(id: string) {
+    return this.getLab(id).map(lab => !!lab);
+  }
+
   saveLab(lab: Lab): Observable<any> {
     return this.authService
               .requireAuthOnce()
