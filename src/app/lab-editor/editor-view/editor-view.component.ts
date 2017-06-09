@@ -143,8 +143,6 @@ export class EditorViewComponent implements OnInit {
                             if (msg.kind === MessageKind.ExecutionFinished) {
                               this.clientExecutionState = ClientExecutionState.NotExecuting;
                               this.editorSnackbar.notifyExecutionFinished();
-                            } else if (msg.kind === MessageKind.OutputRedirected) {
-                              this.editorSnackbar.notifyCacheReplay(msg.data);
                             } else if (msg.kind === MessageKind.ExecutionRejected) {
                               this.clientExecutionState = ClientExecutionState.NotExecuting;
                               if (ExecutionRejectionInfo.isOfType(msg.data)) {
