@@ -58,6 +58,7 @@ type Execution {
   cache_hash: String,
   started_at: Number,
   finished_at: Number | Null,
+  server_id: String,
   server_info: String,
   user_id: String,
   lab: InvocationLab,

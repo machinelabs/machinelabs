@@ -113,7 +113,7 @@
     "executions": {
       "$id": {
         "common": {
-          ".validate": "newData.hasChildren(['id', 'cache_hash', 'started_at', 'server_info', 'user_id', 'lab', 'status'])",
+          ".validate": "newData.hasChildren(['id', 'cache_hash', 'started_at', 'server_id', 'server_info', 'user_id', 'lab', 'status'])",
           "id": {
             ".validate": "newData.isString()"
           },
@@ -125,6 +125,9 @@
           },
           "finished_at": {
             ".validate": "newData.isNumber()"
+          },
+          "server_id": {
+            ".validate": "newData.isString()"
           },
           "server_info": {
             ".validate": "newData.isString()"
