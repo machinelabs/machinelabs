@@ -9,8 +9,7 @@ import {
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { Lab, LabExecutionContext } from '../../models/lab';
-import { ClientExecutionState } from '../../models/execution';
+import { Lab } from '../../models/lab';
 import { User } from '../../models/user';
 import { UserService } from '../../user/user.service';
 
@@ -32,8 +31,6 @@ export class EditorToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() lab = null as Lab;
 
-  @Input() context: LabExecutionContext;
-
   @Output() action = new EventEmitter<EditorToolbarAction>();
 
   labOwner: Observable<User>;
@@ -41,8 +38,6 @@ export class EditorToolbarComponent implements OnInit, OnChanges, OnDestroy {
   private user: User;
 
   private userSubscription;
-
-  ClientExecutionState = ClientExecutionState;
 
   EditorToolbarActionTypes = EditorToolbarActionTypes;
 

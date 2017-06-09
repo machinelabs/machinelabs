@@ -2,7 +2,6 @@
   <div class="ml-editor-view-header">
     <ml-editor-toolbar
       [lab]="lab"
-      [context]="context"
       (action)="toolbarAction($event)"
       ></ml-editor-toolbar>
     <nav md-tab-nav-bar class="ml-editor-view-nav-bar">
@@ -74,7 +73,7 @@
     </md-sidenav-container>
   </div>
   <ml-footer
-    [executionContext]="context"
+    [execution]="execution"
     [slideToggleChecked]="sidebarToggled"
     (slideToggleClick)="executionMetadataSidebar.toggle()"
     ></ml-footer>

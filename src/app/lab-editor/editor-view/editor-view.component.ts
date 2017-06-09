@@ -14,7 +14,7 @@ import { UserService } from '../../user/user.service';
 import { User } from '../../models/user';
 import { BLANK_LAB_TPL_ID } from '../../lab-template.service';
 import { Observable } from 'rxjs/Observable';
-import { Lab, LabExecutionContext, File } from '../../models/lab';
+import { Lab, File } from '../../models/lab';
 import { LabExecutionService } from '../../lab-execution.service';
 import {
   Execution,
@@ -52,9 +52,11 @@ export class EditorViewComponent implements OnInit {
 
   user: Observable<User>;
 
-  context: LabExecutionContext;
+  execution: Observable<Execution>;
 
   executions: Observable<Array<Observable<Execution>>>;
+
+  clientExecutionState: ClientExecutionState;
 
   sidebarToggled = false;
 
@@ -91,7 +93,6 @@ export class EditorViewComponent implements OnInit {
   }
 
   ngOnInit () {
-    this.context = new LabExecutionContext();
     this.route.data.map(data => data['lab'])
               .subscribe(lab =>  this.initLab(lab));
 
@@ -130,7 +131,7 @@ export class EditorViewComponent implements OnInit {
           this.outputPanel.clear();
           this.selectTab(TabIndex.Console);
           let wrapper = this.rleService.run(lab);
-
+          this.execution = wrapper.switchMap(val => val.execution);
           let messages$ = wrapper.switchMap(val => val.messages);
 
           // Scan the notifications and build up a string with line breaks
@@ -140,12 +141,12 @@ export class EditorViewComponent implements OnInit {
           this.output = messages$
                           .do(msg => {
                             if (msg.kind === MessageKind.ExecutionFinished) {
-                              this.context.clientExecutionState = ClientExecutionState.NotExecuting;
+                              this.clientExecutionState = ClientExecutionState.NotExecuting;
                               this.editorSnackbar.notifyExecutionFinished();
                             } else if (msg.kind === MessageKind.OutputRedirected) {
                               this.editorSnackbar.notifyCacheReplay(msg.data);
                             } else if (msg.kind === MessageKind.ExecutionRejected) {
-                              this.context.clientExecutionState = ClientExecutionState.NotExecuting;
+                              this.clientExecutionState = ClientExecutionState.NotExecuting;
                               if (ExecutionRejectionInfo.isOfType(msg.data)) {
                                 if (msg.data.reason === ExecutionRejectionReason.InvalidConfig) {
                                   this.editorSnackbar.notifyInvalidConfig();

@@ -7,7 +7,6 @@ import { RemoteLabExecService } from './remote-lab-exec.service';
 import { AuthService } from '../../auth';
 import { DATABASE } from '../../app.tokens';
 import { DbRefBuilder } from '../../firebase/db-ref-builder';
-import { LabExecutionContext, Lab } from '../../models/lab';
 import { MessageKind, ExecutionStatus } from '../../models/execution';
 
 
@@ -31,9 +30,6 @@ function createStubs () {
   };
 
     user = { uid: 'some-id' };
-
-
-  context = new LabExecutionContext();
 
   authServiceStub = {
     requireAuthOnce: () => {}

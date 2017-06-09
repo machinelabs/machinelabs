@@ -3,13 +3,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { ExecutionStatusComponent } from './execution-status.component';
-import { LabExecutionContext } from '../../models/lab';
-import { ExecutionStatus } from '../../models/execution';
+import { ExecutionStatus, Execution } from '../../models/execution';
+import { Subject } from 'rxjs/Subject';
 
 describe('ExecutionStatusComponent', () => {
   let component: ExecutionStatusComponent;
   let fixture: ComponentFixture<ExecutionStatusComponent>;
-  let context: LabExecutionContext;
+  let execution = new Subject<Execution>();
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -19,9 +19,8 @@ describe('ExecutionStatusComponent', () => {
 
     fixture = TestBed.createComponent(ExecutionStatusComponent);
     component = fixture.componentInstance;
-    context = new LabExecutionContext();
 
-    component.executionContext = context;
+    component.execution = execution;
     fixture.detectChanges();
   });
 
@@ -33,29 +32,29 @@ describe('ExecutionStatusComponent', () => {
   it('should show status message based on status type', () => {
     let statusMessage;
 
-    context.execution.status = ExecutionStatus.Executing;
+    execution.next({status: ExecutionStatus.Executing});
     fixture.detectChanges();
     statusMessage = fixture.debugElement.query(By.css('.ml-status-message'));
     expect(statusMessage.nativeElement.textContent).toContain('Running...');
 
-    context.execution.status = ExecutionStatus.Finished;
+    execution.next({status: ExecutionStatus.Finished});
     fixture.detectChanges();
     statusMessage = fixture.debugElement.query(By.css('.ml-status-message'));
     expect(statusMessage.nativeElement.textContent).toContain('Done');
 
-    context.execution.status = ExecutionStatus.Stopped;
+    execution.next({status: ExecutionStatus.Stopped});
     fixture.detectChanges();
     statusMessage = fixture.debugElement.query(By.css('.ml-status-message'));
     expect(statusMessage.nativeElement.textContent).toContain('Stopped');
 
-    context.execution.status = ExecutionStatus.Failed;
+    execution.next({status: ExecutionStatus.Failed});
     fixture.detectChanges();
     statusMessage = fixture.debugElement.query(By.css('.ml-status-message'));
     expect(statusMessage.nativeElement.textContent).toContain('Errored');
   });
 
   it('should render progress bar when lab is running', () => {
-    context.execution.status = ExecutionStatus.Executing;
+    execution.next({status: ExecutionStatus.Executing});
     fixture.detectChanges();
 
     let progressBar = fixture.debugElement.query(By.css('md-progress-bar'));
