@@ -129,22 +129,16 @@ export class EditorViewComponent implements OnInit {
         .subscribe(() => {
           this.outputPanel.clear();
           this.selectTab(TabIndex.Console);
-          // we want to have this immutable. Shared instances make it hard
-          // to reason about things when code is executed asynchronously.
-          // E.g. if some async handler has a reference to a context it needs
-          // to be sure that the id won't change because someone started a new
-          // run in between.
-          // However, we want to give information about the previous context to
-          // the rleService, hence we clone the current context and pass it on.
-          this.context = this.context.clone();
-          this.context.clientExecutionState = ClientExecutionState.Executing;
+          let wrapper = this.rleService.run(lab);
+
+          let messages$ = wrapper.switchMap(val => val.messages);
+
           // Scan the notifications and build up a string with line breaks
           // Don't make this a manual subscription without dealing with
           // Unsubscribing. The returned Observable may not auto complete
           // in all scenarios.
-          let messages = this.rleService.run(this.context, lab);
-
-          this.output = messages.do(msg => {
+          this.output = messages$
+                          .do(msg => {
                             if (msg.kind === MessageKind.ExecutionFinished) {
                               this.context.clientExecutionState = ClientExecutionState.NotExecuting;
                               this.editorSnackbar.notifyExecutionFinished();
@@ -166,7 +160,7 @@ export class EditorViewComponent implements OnInit {
                           .scan((acc, current) => `${acc}\n${current.data}`, '');
 
           Observable.timer(EXECUTION_START_TIMEOUT)
-                    .takeUntil(messages)
+                    .takeUntil(messages$)
                     .subscribe(_ => this.editorSnackbar.notifyLateExecution());
 
           setTimeout(() => {

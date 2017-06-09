@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { InvocationLab } from './invocation';
 
 export enum ExecutionStatus {
@@ -58,4 +59,9 @@ export class ExecutionRejectionInfo {
 
   constructor(public reason: ExecutionRejectionReason,
               public message: string) {}
+}
+
+export interface ExecutionWrapper {
+  messages: Observable<ExecutionMessage>;
+  execution: Observable<Execution>;
 }
