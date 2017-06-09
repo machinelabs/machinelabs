@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
 import { Execution } from '../../models/execution';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'ml-footer',
@@ -10,7 +11,7 @@ import { Execution } from '../../models/execution';
 })
 export class FooterComponent {
 
-  @Input() executionContext = null as Execution;
+  @Input() execution = null as Observable<Execution>;
 
   @Input() slideToggleChecked: boolean;
 

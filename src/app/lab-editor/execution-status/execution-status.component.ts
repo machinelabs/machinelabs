@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { LabExecutionContext } from '../../models/lab';
-import { ExecutionStatus } from '../../models/execution';
+import { Execution, ExecutionStatus } from '../../models/execution';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'ml-execution-status',
@@ -8,6 +8,6 @@ import { ExecutionStatus } from '../../models/execution';
   styleUrls: ['./execution-status.component.scss']
 })
 export class ExecutionStatusComponent {
-  @Input() executionContext: LabExecutionContext;
+  @Input() execution = null as Observable<Execution>;
   ExecutionStatus = ExecutionStatus;
 }

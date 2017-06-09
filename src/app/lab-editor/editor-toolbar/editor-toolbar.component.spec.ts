@@ -9,7 +9,6 @@ import { MachineLabsMaterialModule } from '../../ml-material.module';
 import { SharedModule } from '../../shared/shared.module';
 import { AuthService, dummyUser } from '../../auth/';
 import { EditorToolbarComponent, EditorToolbarActionTypes } from './editor-toolbar.component';
-import { LabExecutionContext } from '../../models/lab';
 import { ExecutionStatus, ClientExecutionState } from '../../models/execution';
 import { UserService } from '../../user/user.service';
 import { DbRefBuilder } from '../../firebase/db-ref-builder';
@@ -77,7 +76,6 @@ describe('EditorToolbarComponent', () => {
     authService = TestBed.get(AuthService);
 
     let lab = Object.assign({}, testLab);
-    component.context = new LabExecutionContext(lab);
     component.lab = lab;
     spyOn(authService, 'requireAuth').and.returnValue(Observable.of(dummyUser));
     spyOn(authService, 'requireAuthOnce').and.returnValue(Observable.of(dummyUser));
@@ -92,7 +90,6 @@ describe('EditorToolbarComponent', () => {
     // The user will be available in the next tick hence the setTimeout
     let lab = Object.assign({}, testLab);
 
-    component.context = new LabExecutionContext(lab);
     component.lab = lab;
     fixture.detectChanges();
 
@@ -121,7 +118,6 @@ describe('EditorToolbarComponent', () => {
         // lab user id and user id have to be equal
         lab.user_id = 'some unique id';
 
-        component.context = new LabExecutionContext(lab);
         component.lab = lab;
         fixture.detectChanges();
 

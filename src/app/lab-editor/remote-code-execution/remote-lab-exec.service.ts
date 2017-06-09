@@ -1,10 +1,9 @@
 import { Injectable, Inject } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { Lab, LabExecutionContext } from '../../models/lab';
+import { Lab } from '../../models/lab';
 import { Invocation, InvocationType } from '../../models/invocation';
 import { Execution, ExecutionStatus, ExecutionMessage, MessageKind, ExecutionWrapper } from '../../models/execution';
-import { ContextExecutionUpdater } from './context-execution-updater';
 import * as shortid from 'shortid';
 import * as firebase from 'firebase';
 
@@ -52,7 +51,7 @@ export class RemoteLabExecService {
     return executionWrapper$;
   }
 
-  consumeExecution(messages: Observable<ExecutionMessage>, execution: Observable<Execution>): Observable<ExecutionWrapper>{
+  consumeExecution(messages: Observable<ExecutionMessage>, execution: Observable<Execution>): Observable<ExecutionWrapper> {
 
     let sharedMessages = messages.share();
 
