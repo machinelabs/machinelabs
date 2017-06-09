@@ -177,3 +177,8 @@ path /user_labs/{id} {
   read() { true }
   write() { false }
 }
+
+path /lab_executions/{id} {
+  read() { true }
+  write() { false }
+}

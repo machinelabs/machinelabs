@@ -255,6 +255,11 @@
       "$id": {
         ".read": "true"
       }
+    },
+    "lab_executions": {
+      "$id": {
+        ".read": "true"
+      }
     }
   }
 }
