@@ -108,52 +108,66 @@ export class EditorViewComponent implements OnInit {
   }
 
   run(lab: Lab) {
-    this.outputPanel.clear();
-    this.selectTab(TabIndex.Console);
-    // we want to have this immutable. Shared instances make it hard
-    // to reason about things when code is executed asynchronously.
-    // E.g. if some async handler has a reference to a context it needs
-    // to be sure that the id won't change because someone started a new
-    // run in between.
-    // However, we want to give information about the previous context to
-    // the rleService, hence we clone the current context and pass it on.
-    this.context = this.context.clone();
-    this.context.clientExecutionState = ClientExecutionState.Executing;
-    // Scan the notifications and build up a string with line breaks
-    // Don't make this a manual subscription without dealing with
-    // Unsubscribing. The returned Observable may not auto complete
-    // in all scenarios.
-    let messages = this.rleService.run(this.context, lab);
 
-    this.output = messages.do(msg => {
-                      if (msg.kind === MessageKind.ExecutionFinished) {
-                        this.context.clientExecutionState = ClientExecutionState.NotExecuting;
-                        this.editorSnackbar.notifyExecutionFinished();
-                      } else if (msg.kind === MessageKind.OutputRedirected) {
-                        this.editorSnackbar.notifyCacheReplay(msg.data);
-                      } else if (msg.kind === MessageKind.ExecutionRejected) {
-                        this.context.clientExecutionState = ClientExecutionState.NotExecuting;
-                        if (ExecutionRejectionInfo.isOfType(msg.data)) {
-                          if (msg.data.reason === ExecutionRejectionReason.InvalidConfig) {
-                            this.editorSnackbar.notifyInvalidConfig();
-                          } else {
-                            this.openRejectionDialog();
-                          }
-                        }
-                      }
-                    })
-                    .filter(msg => msg.kind === MessageKind.ExecutionStarted ||
-                        msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr)
-                    .scan((acc, current) => `${acc}\n${current.data}`, '');
+    // First check if this lab is already persisted or not. We don't want to
+    // execute labs that don't exist in the database.
+    this.labStorageService.labExists(lab.id)
+        .switchMap(exists => exists ? Observable.of(null) :
+            // If it doesn't exist yet, we save it first and make sure to update
+            // the url accordingly, so it can be easily shared. We can't use
+            // router.navigate() here because it will perform a full navigation
+            // cycle as gonig from /editor to /editor/:id is a route change.
+            this.labStorageService.saveLab(lab)
+                .do(_ => this.goToLab(lab))
+        )
+        .subscribe(() => {
+          this.outputPanel.clear();
+          this.selectTab(TabIndex.Console);
+          // we want to have this immutable. Shared instances make it hard
+          // to reason about things when code is executed asynchronously.
+          // E.g. if some async handler has a reference to a context it needs
+          // to be sure that the id won't change because someone started a new
+          // run in between.
+          // However, we want to give information about the previous context to
+          // the rleService, hence we clone the current context and pass it on.
+          this.context = this.context.clone();
+          this.context.clientExecutionState = ClientExecutionState.Executing;
+          // Scan the notifications and build up a string with line breaks
+          // Don't make this a manual subscription without dealing with
+          // Unsubscribing. The returned Observable may not auto complete
+          // in all scenarios.
+          let messages = this.rleService.run(this.context, lab);
 
-    Observable.timer(EXECUTION_START_TIMEOUT)
-              .takeUntil(messages)
-              .switchMap(_ => this.editorSnackbar.notifyLateExecution().afterDismissed())
-              .subscribe(_ => this.stop(this.context));
+          this.output = messages.do(msg => {
+                            if (msg.kind === MessageKind.ExecutionFinished) {
+                              this.context.clientExecutionState = ClientExecutionState.NotExecuting;
+                              this.editorSnackbar.notifyExecutionFinished();
+                            } else if (msg.kind === MessageKind.OutputRedirected) {
+                              this.editorSnackbar.notifyCacheReplay(msg.data);
+                            } else if (msg.kind === MessageKind.ExecutionRejected) {
+                              this.context.clientExecutionState = ClientExecutionState.NotExecuting;
+                              if (ExecutionRejectionInfo.isOfType(msg.data)) {
+                                if (msg.data.reason === ExecutionRejectionReason.InvalidConfig) {
+                                  this.editorSnackbar.notifyInvalidConfig();
+                                } else {
+                                  this.openRejectionDialog();
+                                }
+                              }
+                            }
+                          })
+                          .filter(msg => msg.kind === MessageKind.ExecutionStarted ||
+                              msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr)
+                          .scan((acc, current) => `${acc}\n${current.data}`, '');
 
-    setTimeout(() => {
-      this.executionMetadataSidebar.open();
-    }, METADATA_SIDEBAR_OPEN_TIMEOUT);
+          Observable.timer(EXECUTION_START_TIMEOUT)
+                    .takeUntil(messages)
+                    .switchMap(_ => this.editorSnackbar.notifyLateExecution().afterDismissed())
+                    .subscribe(_ => this.stop(this.context));
+
+          setTimeout(() => {
+            this.executionMetadataSidebar.open();
+          }, METADATA_SIDEBAR_OPEN_TIMEOUT);
+        });
   }
 
   stop(context: LabExecutionContext) {
@@ -294,5 +308,12 @@ export class EditorViewComponent implements OnInit {
     if (lab.has_cached_run) {
       this.run(lab);
     }
+  }
+
+  private goToLab(lab) {
+    let fullPath = this.location.path();
+    let queryString = fullPath.substr(fullPath.indexOf('?'), fullPath.length);
+    let path = fullPath.substr(0, fullPath.indexOf('?'));
+    this.location.go(`${path}/${lab.id}${queryString}`);
   }
 }
