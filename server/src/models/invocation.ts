@@ -10,3 +10,7 @@ export interface Invocation {
   type: InvocationType;
   data: any;
 }
+
+export interface InvocationExecution {
+  execution_id: string
+}

@@ -33,19 +33,24 @@ export class MessagingService {
   }
 
   initMessaging () {
-    // Listen on all incoming runs to do the right thing
-    this.db.newInvocationsForServerRef(this.server.id).childAdded()
-        .map(snapshot => snapshot.val().common)
-        .flatMap(invocation => this.getOutputAsObservable(invocation))
-        .flatMap(data => this.writeExecutionMessage(data.output, data.invocation))
-        .subscribe();
 
-    // Listen on all changed runs to get notified about stops
-    this.db.invocationsForServerRef(this.server.id).childChanged()
-        .map(snapshot => snapshot.val().common)
-        .filter(invocation => invocation.type === InvocationType.StopExecution)
-        .flatMap(invocation => this.stopValidationService.validate(invocation))
-        .subscribe(validationContext => {
+    // Share one subscription to all incoming messages
+    let newInvocations$ = this.db.newInvocationsForServerRef(this.server.id)
+                                 .childAdded()
+                                 .map(snapshot => snapshot.val().common)
+                                 .share();
+
+    // Invoke new processes for incoming StartExecution Invocations
+    newInvocations$
+      .filter((invocation: Invocation) => invocation.type === InvocationType.StartExecution)
+      .flatMap(invocation => this.getOutputAsObservable(invocation))
+      .flatMap(data => this.writeExecutionMessage(data.output, data.invocation))
+      .subscribe();
+
+    newInvocations$
+      .filter((invocation: Invocation) => invocation.type === InvocationType.StopExecution)
+      .flatMap(invocation => this.stopValidationService.validate(invocation))
+      .subscribe(validationContext => {
           let execution = validationContext.resolved.get(ExecutionResolver);
           if (validationContext.isApproved() && execution){
             this.codeRunner.stop(execution.id)

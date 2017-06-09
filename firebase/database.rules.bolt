@@ -41,6 +41,10 @@ type InvocationLab {
   directory: File[]
 }
 
+type InvocationExecution {
+  execution_id: String
+}
+
 type AllowOther {
   validate() { true }
 }
@@ -50,7 +54,7 @@ type Invocation {
   user_id: String,
   timestamp: Number,
   type: Number,
-  data: InvocationLab
+  data: InvocationLab | InvocationExecution
 }
 
 type Execution {

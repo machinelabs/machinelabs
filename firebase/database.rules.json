@@ -72,13 +72,13 @@
             ".validate": "newData.isNumber()"
           },
           "data": {
-            ".validate": "newData.hasChildren(['id'])",
+            ".validate": "newData.hasChildren() && newData.hasChildren(['id']) || newData.hasChildren() && newData.hasChildren(['execution_id'])",
             "id": {
               ".validate": "newData.isString()"
             },
             "directory": {
               "$key2": {
-                ".validate": "newData.hasChildren(['name', 'content'])",
+                ".validate": "newData.hasChildren() && newData.hasChildren(['name', 'content'])",
                 "name": {
                   ".validate": "newData.isString()"
                 },
@@ -93,6 +93,9 @@
             },
             "$other": {
               ".validate": "false"
+            },
+            "execution_id": {
+              ".validate": "newData.isString()"
             }
           },
           "$other": {

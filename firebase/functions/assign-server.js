@@ -24,9 +24,17 @@ function getServerForHardwareType(hardwareType) {
        .then(val => sample(toArray(val)));
 }
 
-function assignServer(invocation, server) {
+function getServerIdFromExecution(executionId) {
+  return app.database()
+            .ref(`executions/${executionId}/common`)
+            .once('value')
+            .then(snapshot => snapshot.val())
+            .then(val => val ? val.server_id : null);
+}
 
-  if (!server) {
+function assignServer(invocation, serverId) {
+
+  if (!serverId) {
     console.log('No matching server found: Could not assign any server');
     return Promise.resolve();
   }
@@ -35,8 +43,8 @@ function assignServer(invocation, server) {
               .ref(`/invocations/${invocation.id}`)
               .update({
                 server: {
-                  id: server.id,
-                  [server.id]: {
+                  id: serverId,
+                  [serverId]: {
                     timestamp: invocation.timestamp
                   }
                 }
@@ -59,6 +67,15 @@ module.exports = functions.database.ref('/invocations/{id}/')
 
     const invocation = invocationWrapper.common;
 
-    return getServerForHardwareType(invocation.hardware_type || DEFAULT_HARDWARE_TYPE)
-              .then(server => assignServer(invocation, server));
+    // Stop Invocation needs to have the server assigned where the execution
+    // is running on
+    if (invocation.data.executionId){
+      return getServerIdFromExecution(invocation.data.execution_id)
+              .then(serverId => assignServer(invocation, serverId));
+    }
+    // Start Invocation gets a random server assigned
+    else {
+      return getServerForHardwareType(invocation.hardware_type || DEFAULT_HARDWARE_TYPE)
+              .then(server => assignServer(invocation, server.id));
+    }
   });
