@@ -14,6 +14,7 @@ import { SharedModule } from './shared/shared.module';
 
 import { LabStorageService } from './lab-storage.service';
 import { LabTemplateService, InMemoryLabTemplateService } from './lab-template.service';
+import { LabExecutionService } from './lab-execution.service';
 import { UserService } from 'app/user/user.service';
 import { AuthService, FirebaseAuthService, OfflineAuthService } from './auth';
 
@@ -49,6 +50,7 @@ const AnimationsModule = [environment.testing ? NoopAnimationsModule : BrowserAn
   ],
   providers: [
     LabStorageService,
+    LabExecutionService,
     { provide: LabTemplateService, useClass: InMemoryLabTemplateService },
     UserService,
     DbRefBuilder,
