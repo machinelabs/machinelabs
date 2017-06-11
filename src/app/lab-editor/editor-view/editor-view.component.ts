@@ -297,10 +297,6 @@ export class EditorViewComponent implements OnInit {
     const file = this.lab.directory.find(f => f.name === this.router.parseUrl(this.location.path(false)).queryParams.file);
 
     this.openFile(file || this.lab.directory[0]);
-
-    if (lab.has_cached_run) {
-      this.run(lab);
-    }
   }
 
   private goToLab(lab?: Lab) {
