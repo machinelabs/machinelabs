@@ -129,7 +129,7 @@ path /invocations/{id}/common is Invocation {
   write() { isOwningUserOrExecutionServerOrAssignFn(this) }
 }
 
-path /invocations/{id}/server {
+path /invocations/{id} {
   read() { isAssignServerFn() || isExecutionServer() }
   write() { isAssignServerFn() }
 }

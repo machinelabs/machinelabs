@@ -7,5 +7,8 @@
     "lodash.sample": "^4.2.1",
     "lodash.toarray": "^4.4.0"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "jest": "^20.0.4"
+  }
 }

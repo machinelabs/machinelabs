@@ -104,10 +104,8 @@
           ".read": "auth != null && auth.uid == data.child('user_id').val() || auth.uid == 'cloud-fn-assign-server'",
           ".write": "data.val() != null ? auth != null && auth.uid == data.child('user_id').val() && (auth != null && auth.uid == newData.child('user_id').val()) || auth.uid == 'execution-server' || auth.uid == 'cloud-fn-assign-server' : auth != null && auth.uid == newData.child('user_id').val()"
         },
-        "server": {
-          ".read": "auth.uid == 'cloud-fn-assign-server' || auth.uid == 'execution-server'",
-          ".write": "auth.uid == 'cloud-fn-assign-server'"
-        }
+        ".read": "auth.uid == 'cloud-fn-assign-server' || auth.uid == 'execution-server'",
+        ".write": "auth.uid == 'cloud-fn-assign-server'"
       },
       ".indexOn": [
         "server/id"
