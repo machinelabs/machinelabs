@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { User } from '../../models/user';
 import { Execution } from '../../models/execution';
 import { UserService } from 'app/user/user.service';
@@ -15,6 +15,8 @@ export class ExecutionMetadataComponent {
   _execution: Observable<Execution>;
   executer: Observable<User>;
   ExecutionStatus = ExecutionStatus;
+
+  @Output() listen = new EventEmitter<Execution>();
 
   constructor(private userService: UserService,
               private rleService: RemoteLabExecService) {
