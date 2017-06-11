@@ -36,19 +36,21 @@ export class RemoteLabExecService {
           directory: lab.directory
         }
       }))
-      .switchMap(_ => {
-        let messages$ = this.db.executionMessageRef(id)
+      .switchMap(_ => this.listen(id));
+
+    return executionWrapper$;
+  }
+
+  listen(executionId: string): Observable<ExecutionWrapper> {
+    let messages$ = this.db.executionMessageRef(executionId)
                                .childAdded()
                                .map(snapshot => snapshot.val());
 
-        let execution$ = this.db.executionRef(id)
-                                .value()
-                                .map(snapshot => snapshot.val());
+    let execution$ = this.db.executionRef(executionId)
+                            .value()
+                            .map(snapshot => snapshot.val());
 
-        return this.consumeExecution(messages$, execution$);
-      });
-
-    return executionWrapper$;
+    return this.consumeExecution(messages$, execution$);
   }
 
   consumeExecution(messages: Observable<ExecutionMessage>, execution: Observable<Execution>): Observable<ExecutionWrapper> {
