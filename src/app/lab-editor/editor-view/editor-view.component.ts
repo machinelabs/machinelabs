@@ -57,7 +57,7 @@ export class EditorViewComponent implements OnInit {
 
   executions: Observable<Array<Observable<Execution>>>;
 
-  clientExecutionState: ClientExecutionState;
+  clientExecutionState = ClientExecutionState.NotExecuting;
 
   sidebarToggled = false;
 
@@ -300,7 +300,20 @@ export class EditorViewComponent implements OnInit {
 
   initLab(lab: Lab) {
     this.lab = lab;
-    this.executions = this.labExecutionService.observeExecutionsForLab(this.lab);
+    this.executions = this.labExecutionService.observeExecutionsForLab(this.lab).share();
+
+    this.executions
+        .take(1)
+        .map(executions => executions.length > 0 ? executions[0] : null)
+        .filter(obsExecution => !!obsExecution)
+        .switchMap(obsExecution => obsExecution)
+        .subscribe(execution => {
+          // Only attach to an existing execution if the user did not do it by themself
+          if (this.clientExecutionState === ClientExecutionState.NotExecuting) {
+            this.listen(execution);
+          }
+        });
+
     this.selectTab(TabIndex.Editor);
 
     // try query param file name first
