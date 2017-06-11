@@ -98,7 +98,6 @@ export class EditorViewComponent implements OnInit {
               .subscribe(lab =>  this.initLab(lab));
 
     this.user = this.userService.observeUserChanges();
-    this.executions = this.labExecutionService.observeExecutionsForLab(this.lab);
   }
 
   toolbarAction(action: EditorToolbarAction) {
@@ -301,6 +300,7 @@ export class EditorViewComponent implements OnInit {
 
   initLab(lab: Lab) {
     this.lab = lab;
+    this.executions = this.labExecutionService.observeExecutionsForLab(this.lab);
     this.selectTab(TabIndex.Editor);
 
     // try query param file name first
