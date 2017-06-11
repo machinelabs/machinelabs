@@ -22,7 +22,8 @@ import {
   MessageKind,
   ClientExecutionState,
   ExecutionRejectionInfo,
-  ExecutionRejectionReason
+  ExecutionRejectionReason,
+  ExecutionWrapper
 } from '../../models/execution';
 import { EditorToolbarAction, EditorToolbarActionTypes } from '../editor-toolbar/editor-toolbar.component';
 
@@ -128,44 +129,53 @@ export class EditorViewComponent implements OnInit {
                 .do(_ => this.goToLab(lab))
         )
         .subscribe(() => {
-          this.outputPanel.clear();
-          this.selectTab(TabIndex.Console);
           let wrapper = this.rleService.run(lab);
-          this.execution = wrapper.switchMap(val => val.execution);
-          let messages$ = wrapper.switchMap(val => val.messages);
-
-          // Scan the notifications and build up a string with line breaks
-          // Don't make this a manual subscription without dealing with
-          // Unsubscribing. The returned Observable may not auto complete
-          // in all scenarios.
-          this.output = messages$
-                          .do(msg => {
-                            if (msg.kind === MessageKind.ExecutionFinished) {
-                              this.clientExecutionState = ClientExecutionState.NotExecuting;
-                              this.editorSnackbar.notifyExecutionFinished();
-                            } else if (msg.kind === MessageKind.ExecutionRejected) {
-                              this.clientExecutionState = ClientExecutionState.NotExecuting;
-                              if (ExecutionRejectionInfo.isOfType(msg.data)) {
-                                if (msg.data.reason === ExecutionRejectionReason.InvalidConfig) {
-                                  this.editorSnackbar.notifyInvalidConfig();
-                                } else {
-                                  this.openRejectionDialog();
-                                }
-                              }
-                            }
-                          })
-                          .filter(msg => msg.kind === MessageKind.ExecutionStarted ||
-                              msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr)
-                          .scan((acc, current) => `${acc}\n${current.data}`, '');
-
-          Observable.timer(EXECUTION_START_TIMEOUT)
-                    .takeUntil(messages$)
-                    .subscribe(_ => this.editorSnackbar.notifyLateExecution());
-
-          setTimeout(() => {
-            this.executionMetadataSidebar.open();
-          }, METADATA_SIDEBAR_OPEN_TIMEOUT);
+          this.consume(wrapper);
         });
+  }
+
+  consume(wrapper: Observable<ExecutionWrapper>) {
+    this.outputPanel.clear();
+    this.selectTab(TabIndex.Console);
+    this.execution = wrapper.switchMap(val => val.execution);
+    let messages$ = wrapper.switchMap(val => val.messages);
+
+    // Scan the notifications and build up a string with line breaks
+    // Don't make this a manual subscription without dealing with
+    // Unsubscribing. The returned Observable may not auto complete
+    // in all scenarios.
+    this.output = messages$
+                    .do(msg => {
+                      if (msg.kind === MessageKind.ExecutionFinished) {
+                        this.clientExecutionState = ClientExecutionState.NotExecuting;
+                        this.editorSnackbar.notifyExecutionFinished();
+                      } else if (msg.kind === MessageKind.ExecutionRejected) {
+                        this.clientExecutionState = ClientExecutionState.NotExecuting;
+                        if (ExecutionRejectionInfo.isOfType(msg.data)) {
+                          if (msg.data.reason === ExecutionRejectionReason.InvalidConfig) {
+                            this.editorSnackbar.notifyInvalidConfig();
+                          } else {
+                            this.openRejectionDialog();
+                          }
+                        }
+                      }
+                    })
+                    .filter(msg => msg.kind === MessageKind.ExecutionStarted ||
+                        msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr)
+                    .scan((acc, current) => `${acc}\n${current.data}`, '');
+
+    Observable.timer(EXECUTION_START_TIMEOUT)
+              .takeUntil(messages$)
+              .subscribe(_ => this.editorSnackbar.notifyLateExecution());
+
+    setTimeout(() => {
+      this.executionMetadataSidebar.open();
+    }, METADATA_SIDEBAR_OPEN_TIMEOUT);
+  }
+
+  listen(execution: Execution) {
+    let wrapper = this.rleService.listen(execution.id);
+    this.consume(wrapper);
   }
 
   fork(lab: Lab) {

@@ -68,7 +68,9 @@
           >
         <ml-execution-metadata
             *ngFor="let execution of executions | async"
-            [execution]="execution"></ml-execution-metadata>
+            [execution]="execution"
+            (listen)=listen($event)>
+        </ml-execution-metadata>
       </md-sidenav>
     </md-sidenav-container>
   </div>
