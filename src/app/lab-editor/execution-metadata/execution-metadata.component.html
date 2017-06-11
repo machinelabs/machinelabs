@@ -32,7 +32,7 @@
           </td>
         </tr>
       </table>
-      <button md-button (click)="stop(execution)"><md-icon>stop</md-icon> Stop</button>
+      <button md-button (click)="stop(execution)" *ngIf="execution.status === ExecutionStatus.Executing"><md-icon>stop</md-icon> Stop</button>
     </md-card-content>
   </md-card>
 </div>
