@@ -23,9 +23,11 @@ export class LabExecutionService {
   observeExecutionsForLab(lab: Lab): Observable<Array<Observable<Execution>>> {
     return this.authService
       .requireAuthOnce()
-      .switchMap(_ => this.db.labExecutionsRef(lab.id).value())
-      .map((snapshot: any) => snapshot.val())
-      .map(executionIds => Object.keys(executionIds || {}))
-      .map(executionIds => executionIds.map(id => this.observeExecution(id)));
+      .switchMap(_ => this.db.labExecutionsRef(lab.id).childAdded())
+      .map((snapshot: any) => this.observeExecution(snapshot.key))
+      .scan((acc, val) => {
+        acc.unshift(val);
+        return acc;
+      }, []);
   }
 }
