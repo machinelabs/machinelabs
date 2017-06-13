@@ -4,7 +4,7 @@
     <div fxLayout="column">
       <md-input-container fxFlex>
         <input mdInput placeholder="Name" formControlName="name">
-        <md-hint *ngIf="!form.valid && !form.pristine && form.get('name').errors" align="end">This field is required.</md-hint>
+        <md-hint *ngIf="!form.valid && !form.pristine && !!form.get('name').errors" align="end">This field is required.</md-hint>
       </md-input-container>
       <md-input-container fxFlex>
           <textarea mdInput placeholder="Description" formControlName="description">

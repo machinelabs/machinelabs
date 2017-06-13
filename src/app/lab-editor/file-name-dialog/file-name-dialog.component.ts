@@ -36,7 +36,7 @@ export class FileNameDialogComponent implements OnInit {
   form: FormGroup;
 
   constructor(
-    private dialogRef: MdDialogRef<FileNameDialogComponent>,
+    public dialogRef: MdDialogRef<FileNameDialogComponent>,
     private formBuilder: FormBuilder,
     @Inject(MD_DIALOG_DATA) private data: any
   ) { }

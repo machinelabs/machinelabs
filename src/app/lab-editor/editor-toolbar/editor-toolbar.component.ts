@@ -35,13 +35,13 @@ export class EditorToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
   labOwner: Observable<User>;
 
-  private user: User;
+  user: User;
 
   private userSubscription;
 
   EditorToolbarActionTypes = EditorToolbarActionTypes;
 
-  constructor(private userService: UserService,
+  constructor(public userService: UserService,
               private router: Router,
               private route: ActivatedRoute) {}
 
