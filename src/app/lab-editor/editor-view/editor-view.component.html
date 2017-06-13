@@ -9,20 +9,20 @@
       <a routerLink="."
          queryParamsHandling="merge"
          md-tab-link
-         (click)="selectedTab = TabIndex.Editor"
+         (click)="selectTab(TabIndex.Editor)"
          [active]="selectedTab == TabIndex.Editor">Editor</a>
 
       <a routerLink="."
          queryParamsHandling="merge"
          md-tab-link
-         (click)="selectedTab = TabIndex.Console"
+         (click)="selectTab(TabIndex.Console)"
          [active]="selectedTab == TabIndex.Console">Console</a>
 
       <ng-container *ngIf="user | async as user">
         <a *ngIf="userService.userOwnsLab(user, lab)"
            queryParamsHandling="merge"
            routerLink="."
-           md-tab-link (click)="selectedTab = TabIndex.Settings"
+           md-tab-link (click)="selectTab(TabIndex.Settings)"
            [active]="selectedTab == TabIndex.Settings">Settings</a>
       </ng-container>
     </nav>
