@@ -56,6 +56,7 @@ export class RemoteLabExecService {
   consumeExecution(messages: Observable<ExecutionMessage>, execution: Observable<Execution>): Observable<ExecutionWrapper> {
 
     let sharedMessages = messages.share();
+    let sharedExecution = execution.share();
 
     let messagesNotFinishedOrRejected = (msg: ExecutionMessage) =>
                       msg.kind !== MessageKind.ExecutionFinished &&
@@ -67,7 +68,7 @@ export class RemoteLabExecService {
 
     let rejectedMessage = sharedMessages.filter(msg => msg.kind === MessageKind.ExecutionRejected);
 
-    let execution$ = execution
+    let execution$ = sharedExecution
                       .filter(exec => !!exec)
                       .takeWhileInclusive(executingExecutions)
                       .takeUntil(rejectedMessage);
