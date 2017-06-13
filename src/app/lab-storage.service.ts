@@ -9,6 +9,11 @@ import { AuthService } from './auth';
 import { LabTemplateService } from './lab-template.service';
 import { ML_YAML_FILE } from './data/ml.yaml';
 
+import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/switchMap';
+
 @Injectable()
 export class LabStorageService {
 

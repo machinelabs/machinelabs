@@ -5,6 +5,9 @@ import { LabStorageService } from '../lab-storage.service';
 import { Observable } from 'rxjs/Observable';
 import { BLANK_LAB_TPL_ID, DEFAULT_LAB_TPL_ID } from '../lab-template.service';
 
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/switchMap';
+
 @Injectable()
 export class LabResolver implements Resolve<Lab> {
 

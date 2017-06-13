@@ -5,6 +5,8 @@ import { MD_DIALOG_DATA, MdDialogRef } from '@angular/material';
 import { User } from '../../models/user';
 import { PLACEHOLDER_USERNAME } from '../../user/user.service';
 
+import 'rxjs/add/observable/of';
+
 
 function validateNoPlaceholderName(control: AbstractControl) {
   return control.value !== PLACEHOLDER_USERNAME ? null : { placeholderName: true };

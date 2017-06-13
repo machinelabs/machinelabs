@@ -10,6 +10,12 @@ import * as firebase from 'firebase';
 import { DbRefBuilder } from '../../firebase/db-ref-builder';
 import { AuthService } from '../../auth';
 
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/switchMap';
+import '../../rx/takeWhileInclusive';
+
 @Injectable()
 export class RemoteLabExecService {
 

@@ -28,6 +28,15 @@ import {
 } from '../../models/execution';
 import { EditorToolbarAction, EditorToolbarActionTypes } from '../editor-toolbar/editor-toolbar.component';
 
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/timer';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/scan';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/takeUntil';
+
 enum TabIndex {
   Editor,
   Console,

@@ -6,6 +6,13 @@ import { Observable } from 'rxjs/Observable';
 import { AuthService} from './auth.service';
 import { LoginUser } from '../models/user';
 
+import 'rxjs/add/observable/fromPromise';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/catch';
+
 @Injectable()
 export class FirebaseAuthService extends AuthService {
 

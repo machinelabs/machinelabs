@@ -1,6 +1,9 @@
 import { Observable } from 'rxjs/Observable';
 import * as firebase from 'firebase';
 
+import 'rxjs/add/observable/fromEventPattern';
+import 'rxjs/add/observable/fromPromise';
+
 export class ObservableDbRef {
 
   ref: any;

@@ -6,6 +6,9 @@ import { Observable } from 'rxjs/Observable';
 import { ExecutionStatus } from '../../models/execution';
 import { RemoteLabExecService } from '../../lab-editor/remote-code-execution/remote-lab-exec.service';
 
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/switchMap';
+
 @Component({
   selector: 'ml-execution-metadata',
   templateUrl: './execution-metadata.component.html',
