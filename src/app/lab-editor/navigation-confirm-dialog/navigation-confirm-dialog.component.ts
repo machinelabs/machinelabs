@@ -18,5 +18,5 @@ import { MdDialogRef } from '@angular/material';
 })
 export class NavigationConfirmDialogComponent {
 
-  constructor(private dialogRef: MdDialogRef<NavigationConfirmDialogComponent>) { }
+  constructor(public dialogRef: MdDialogRef<NavigationConfirmDialogComponent>) { }
 }

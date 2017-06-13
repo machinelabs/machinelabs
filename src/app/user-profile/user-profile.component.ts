@@ -18,7 +18,7 @@ import { EditUserProfileDialogComponent } from './edit-user-profile-dialog/edit-
 })
 export class UserProfileComponent implements OnInit, OnDestroy {
 
-  labs: Observable<Array<Lab>>;
+  labs: Array<Lab>;
   user: User;
   isAuthUser = false;
   editUserProfileDialog: MdDialogRef<EditUserProfileDialogComponent>;

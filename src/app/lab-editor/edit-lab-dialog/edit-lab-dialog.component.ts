@@ -18,7 +18,7 @@ export class EditLabDialogComponent implements OnInit {
   constructor(
     private dialogRef: MdDialogRef<EditLabDialogComponent>,
     private formBuilder: FormBuilder,
-    @Inject(MD_DIALOG_DATA) private data: any
+    @Inject(MD_DIALOG_DATA) public data: any
   ) { }
 
   ngOnInit() {
