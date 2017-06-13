@@ -6,6 +6,8 @@ import { LAB_TEMPLATES } from './data/lab-templates';
 export const BLANK_LAB_TPL_ID = 'blank';
 export const DEFAULT_LAB_TPL_ID = 'xor';
 
+import 'rxjs/add/observable/of';
+
 export abstract class LabTemplateService {
   abstract getTemplate(name: string): Observable<LabTemplate>;
 }

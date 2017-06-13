@@ -11,6 +11,10 @@ import { UserService } from '../user/user.service';
 
 import { EditUserProfileDialogComponent } from './edit-user-profile-dialog/edit-user-profile-dialog.component';
 
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/switchMap';
+
 @Component({
   selector: 'ml-user-profile',
   templateUrl: './user-profile.component.html',

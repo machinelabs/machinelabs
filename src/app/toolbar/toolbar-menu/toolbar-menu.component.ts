@@ -6,6 +6,8 @@ import { AuthService } from '../../auth/auth.service';
 import { UserService, PLACEHOLDER_USERNAME } from '../../user/user.service';
 import { User } from '../../models/user';
 
+import 'rxjs/add/operator/switchMap';
+
 @Component({
   selector: 'ml-toolbar-menu',
   templateUrl: './toolbar-menu.component.html',

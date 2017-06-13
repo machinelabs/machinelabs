@@ -1,5 +1,11 @@
 import { Observable } from 'rxjs/Observable';
 
+import 'rxjs/add/operator/skipWhile';
+import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/takeWhile';
+import 'rxjs/add/operator/publish';
+import 'rxjs/add/operator/merge';
+
 function takeWhileInclusive(predicate) {
   return this.publish(co => co.takeWhile(predicate)
                               .merge(co.skipWhile(predicate).take(1)));

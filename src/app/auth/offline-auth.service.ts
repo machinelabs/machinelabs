@@ -4,6 +4,7 @@ import { LoginUser } from '../models/user';
 import { AuthService } from './auth.service';
 
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 
 export let dummyUser = {
   id: 'some unique id',

@@ -5,6 +5,10 @@ import { LoginUser, User } from '../models/user';
 import { Observable } from 'rxjs/Observable';
 import { Lang } from '../util/lang';
 
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/switchMap';
+
 export const PLACEHOLDER_USERNAME = 'Unnamed User';
 
 @Injectable()

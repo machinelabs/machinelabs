@@ -9,6 +9,7 @@ import { DATABASE } from '../../app.tokens';
 import { DbRefBuilder } from '../../firebase/db-ref-builder';
 import { MessageKind, ExecutionStatus } from '../../models/execution';
 
+import 'rxjs/add/operator/delay';
 
 let createSnapshot = data => ({ val: () => data });
 let createMessageSnapshot = (kind, data) => createSnapshot({kind, data});
