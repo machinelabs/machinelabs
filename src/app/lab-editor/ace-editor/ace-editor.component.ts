@@ -121,4 +121,10 @@ export class AceEditorComponent implements AfterViewInit, OnChanges {
       this.editor.setValue('');
     }
   }
+
+  resize() {
+    if (this.editor) {
+      this.editor.resize();
+    }
+  }
 }

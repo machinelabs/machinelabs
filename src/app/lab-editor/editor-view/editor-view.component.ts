@@ -14,6 +14,7 @@ import { UserService } from '../../user/user.service';
 import { User } from '../../models/user';
 import { BLANK_LAB_TPL_ID } from '../../lab-template.service';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import { Lab, File } from '../../models/lab';
 import { LabExecutionService } from '../../lab-execution.service';
 import {
@@ -55,6 +56,8 @@ export class EditorViewComponent implements OnInit {
 
   execution: Observable<Execution>;
 
+  executionSubscription: Subscription;
+
   executions: Observable<Array<Observable<Execution>>>;
 
   clientExecutionState = ClientExecutionState.NotExecuting;
@@ -72,6 +75,8 @@ export class EditorViewComponent implements OnInit {
   @ViewChild('executionMetadataSidebar') executionMetadataSidebar: MdSidenav;
 
   @ViewChild('outputPanel') outputPanel: AceEditorComponent;
+
+  @ViewChild('editor') editor: AceEditorComponent;
 
   editLabDialogRef: MdDialogRef<EditLabDialogComponent>;
 
@@ -112,6 +117,11 @@ export class EditorViewComponent implements OnInit {
 
   selectTab(tabIndex: TabIndex) {
     this.selectedTab = tabIndex;
+    if (this.selectedTab === TabIndex.Editor && this.editor) {
+      // This has to run in the next tick after the editor has become visible
+      // https://github.com/ajaxorg/ace/issues/3070
+      Promise.resolve().then(_ => this.editor.resize());
+    }
   }
 
   run(lab: Lab) {
@@ -137,6 +147,19 @@ export class EditorViewComponent implements OnInit {
     this.outputPanel.clear();
     this.selectTab(TabIndex.Console);
     this.execution = wrapper.switchMap(val => val.execution);
+
+    if (this.executionSubscription) {
+      this.executionSubscription.unsubscribe();
+    }
+
+    // The take(1) may make it seem as if we don't have to care about unsubscribing
+    // but think about an Execution coming in late when the user actually has already
+    // opened up a different execution. It would cause our lab contents to get overwritten
+    // with the wrong files.
+    this.executionSubscription = this.execution
+                                     .take(1)
+                                     .subscribe(execution => this.initDirectory(execution.lab.directory));
+
     let messages$ = wrapper.switchMap(val => val.messages);
 
     // Scan the notifications and build up a string with line breaks
@@ -316,9 +339,13 @@ export class EditorViewComponent implements OnInit {
 
     this.selectTab(TabIndex.Editor);
 
+    this.initDirectory(lab.directory);
+  }
+
+  private initDirectory(directory: Array<File>) {
+    this.lab.directory = directory;
     // try query param file name first
     const file = this.lab.directory.find(f => f.name === this.router.parseUrl(this.location.path(false)).queryParams.file);
-
     this.openFile(file || this.lab.directory[0]);
   }
 
