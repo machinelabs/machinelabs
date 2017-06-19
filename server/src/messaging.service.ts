@@ -140,16 +140,6 @@ export class MessagingService {
       });
   }
 
-  /**
-   * Gets an Observable<Execution> that emits once with either null or an existing output 
-   */
-  getExistingExecutionAsObservable(executionHash: string) : Observable<Execution> {
-    return this.db.executionByHashRef(executionHash)
-                  .onceValue()
-                  .map(snapshot => snapshot.val())
-                  .map(val => val ? val[Object.keys(val)[0]].common : null);
-  }
-
   processStreamDataToExecutionMessage(data: ProcessStreamData): ExecutionMessage {
     return {
       data: data.str,
