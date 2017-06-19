@@ -173,9 +173,12 @@
           ".read": "true",
           ".write": "auth.uid == 'execution-server'",
           "$mid": {
-            ".validate": "newData.hasChildren(['id', 'timestamp', 'data', 'kind'])",
+            ".validate": "newData.hasChildren(['id', 'index', 'timestamp', 'data', 'kind'])",
             "id": {
               ".validate": "newData.isString()"
+            },
+            "index": {
+              ".validate": "newData.isNumber()"
             },
             "timestamp": {
               ".validate": "newData.isNumber()"

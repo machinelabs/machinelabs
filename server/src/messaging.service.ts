@@ -44,7 +44,7 @@ export class MessagingService {
     newInvocations$
       .filter((invocation: Invocation) => invocation.type === InvocationType.StartExecution)
       .flatMap(invocation => this.getOutputAsObservable(invocation))
-      .flatMap(data => this.writeExecutionMessage(data.output, data.invocation))
+      .flatMap(data => this.writeExecutionMessage(data.message, data.invocation))
       .subscribe();
 
     newInvocations$
@@ -103,7 +103,8 @@ export class MessagingService {
           data: validationContext.validationResult
         });
       })
-      .map(output => ({ output, invocation }));
+      .map((message, index) => Object.assign(message, { index }))
+      .map(message => ({ message, invocation }));
   }
 
   createExecutionAndUpdateLabs(invocation: Invocation, hash: string) {
