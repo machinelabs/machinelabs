@@ -24,10 +24,6 @@ export class RemoteLabExecService {
   constructor(private db: DbRefBuilder, private authService: AuthService) {
   }
 
-  private executionMessagesAsObservable(id: string, limitToLast = 0) {
-    return this.db.executionMessageRef(id, limitToLast).childAdded();
-  }
-
   run(lab: Lab): Observable<ExecutionWrapper> {
     let id = this.newInvocationId();
     let executionWrapper$ = this.authService
