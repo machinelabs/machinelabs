@@ -360,7 +360,7 @@ export class EditorViewComponent implements OnInit {
 
   private goToLab(lab?: Lab) {
     this.location.go(this.urlSerializer.serialize(
-      this.router.createUrlTree([`${lab ? lab.id : '.'}`], {
+      this.router.createUrlTree([`${lab ? lab.id : '../'}`], {
         queryParamsHandling: 'merge',
         relativeTo: this.route
       })
