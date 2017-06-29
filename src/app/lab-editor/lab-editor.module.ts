@@ -32,6 +32,7 @@ import { RejectionDialogComponent } from './rejection-dialog/rejection-dialog.co
 import { ShareDialogComponent } from './share-dialog/share-dialog.component';
 
 import { DistanceInWordsStrictPipe } from './distance-in-words-strict.pipe';
+import { DistanceInWordsToNowPipe } from './distance-in-words-to-now.pipe';
 import { ExecutionStatusPipe } from './execution-status.pipe';
 
 @NgModule({
@@ -58,6 +59,7 @@ import { ExecutionStatusPipe } from './execution-status.pipe';
     RejectionDialogComponent,
     ShareDialogComponent,
     DistanceInWordsStrictPipe,
+    DistanceInWordsToNowPipe,
     ExecutionStatusPipe,
     ExecutionMetadataComponent,
     FooterComponent,

@@ -1,48 +1,49 @@
 .ml-execution-metadata {
-  padding: 0;
-  margin: 1.2em;
+  padding: 0.5em;
+  margin: 0.8em;
+  margin-top: 1em;
 }
 
 .ml-execution-metadata-headline {
   margin: 0;
-  padding: 1em 1.5em;
+  padding: 0.5em;
   line-height: 1;
 
   md-icon {
-    vertical-align: -20%;
+    vertical-align: -22%;
     font-size: 22px;
+    width: initial;
+    height: initial;
+  }
+
+  md-progress-spinner {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    margin-right: 0.1em;
+    vertical-align: -40%;
   }
 }
 
 .ml-execution-metadata-content {
-  padding: 1em 1.5em;
+  padding: .5em;
 
-  tr {
-    &:first-child {
-      td { margin-top: 0; }
-    }
-    td {
-      vertical-align: top;
-      margin-top: 0.5em;
-      display: inline-block;
-      &:first-child {
-        width: 95px;
-        font-weight: 500;
-      }
-    }
+  md-icon {
+    font-size: 1.2em;
+    width: initial;
+    height: initial;
+    color: #888;
   }
 
-  a {
-    text-decoration: none;
-    color: currentColor;
-    border-bottom: 1px dotted currentColor;
+  time {
+    vertical-align: 30%;
+    font-size: 0.9em;
   }
 }
 
-.ml-execution-metadata-user-info {
-  img {
-    width: 1.4em;
-    border-radius: 50%;
-  }
+.ml-execution-metadata-info {
+  margin-top: 0.2em;
 }
 
+.ml-execution-metadata-cta-bar {
+}

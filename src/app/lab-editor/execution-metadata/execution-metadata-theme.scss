@@ -4,10 +4,24 @@
 
   $primary: map-get($theme, primary);
   $foreground: map-get($theme, foreground);
+  $accent: map-get($theme, accent);
+
+  .ml-execution-metadata {
+    border: 1px solid mat-color($foreground, divider);
+    border-left: 10px solid mat-color($foreground, divider);
+
+    &.finished { border-left-color: #39aa56; }
+    &.failed { border-left-color: #db4545; }
+    &.executing { border-left-color: mat-color($accent); }
+
+    &.selected { background-color: #f0f0f0; }
+  }
 
   .ml-execution-metadata-headline {
-    background: mat-color($primary);
-    color: mat-color($primary, default-contrast);
+    .finished & { color: #39aa56; }
+    .failed & { color: #db4545; }
+    .stopped & { color: #888; }
+    .executing & { color: mat-color($accent); }
   }
 
   .ml-execution-metadata-no-execution-message-headline,

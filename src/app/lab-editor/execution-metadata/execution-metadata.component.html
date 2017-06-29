@@ -1,42 +1,45 @@
-<div *ngIf="execution | async as execution;">
-  <md-card class="ml-execution-metadata" *ngIf="execution.status != ExecutionStatus.Pristine; else noExecutionMessage">
-    <h4 class="ml-execution-metadata-headline"><md-icon>info</md-icon> Execution status</h4>
-    <md-card-content class="ml-execution-metadata-content">
-      <table>
-        <tr>
-          <td>Status:</td>
-          <td>{{ execution.status | executionStatusLabel }}</td>
-        </tr>
-        <tr>
-          <td>Started:</td>
-          <td>{{ (execution.started_at | date: 'medium') || '-' }}</td>
-        </tr>
-        <tr>
-          <td>Finished:</td>
-          <td>{{ (execution.finished_at | date: 'medium') || '-' }}</td>
-        </tr>
-        <tr>
-          <td>Duration:</td>
-          <td>
-            <ng-container *ngIf="execution.finished_at; else notAvailable">
-              {{execution.started_at | distanceInWordsStrict: execution.finished_at}}</ng-container>
-            <ng-template #notAvailable>-</ng-template>
-          </td>
-        </tr>
-        <tr class="ml-execution-metadata-user-info">
-          <td>Executed by:</td>
-          <td>
-            <ng-container *ngIf="executer | async as executer; else notAvailable">
-              <img [src]="executer.photoUrl"> <a title="{{executer.displayName}}'s profile" [routerLink]="['/user', executer.id]">{{executer.displayName}}</a>
-            </ng-container>
-          </td>
-        </tr>
-      </table>
-      <button md-button (click)="stop(execution)" *ngIf="execution.status === ExecutionStatus.Executing"><md-icon>stop</md-icon> Stop</button>
-      <button md-button (click)="listen.emit(execution)"><md-icon>repeat</md-icon>View</button>
-    </md-card-content>
-  </md-card>
-</div>
+<ng-container *ngIf="execution | async as execution;">
+  <div class="ml-execution-metadata"
+    *ngIf="execution.status != ExecutionStatus.Pristine; else noExecutionMessage"
+       [ngClass]="{
+        finished: execution.status == ExecutionStatus.Finished,
+        executing: execution.status == ExecutionStatus.Executing,
+        stopped: execution.status == ExecutionStatus.Stopped,
+        failed: execution.status == ExecutionStatus.Failed
+       }"
+    >
+    <h4 class="ml-execution-metadata-headline">
+      <ng-container [ngSwitch]="execution.status">
+        <md-icon *ngSwitchCase="ExecutionStatus.Finished">done</md-icon>
+        <md-progress-spinner
+          color="accent"
+          *ngSwitchCase="ExecutionStatus.Executing"
+          mode="indeterminate"></md-progress-spinner>
+        <md-icon *ngSwitchCase="ExecutionStatus.Stopped">info</md-icon>
+        <md-icon *ngSwitchCase="ExecutionStatus.Failed">block</md-icon>
+      </ng-container>
+      #{{ execution.id }}
+    </h4>
+    <div class="ml-execution-metadata-content">
+      <div *ngIf="execution.finished_at" class="ml-execution-metadata-info">
+        <md-icon>schedule</md-icon>
+        <time [attr.datetime]="execution.finished_at">
+          Ran for {{execution.started_at | distanceInWordsStrict: execution.finished_at}}
+        </time>
+      </div>
+      <div class="ml-execution-metadata-info">
+        <md-icon>update</md-icon>
+        <time [attr.datetime]="execution.started_at">
+          about {{execution.started_at | distanceInWordsToNow}} ago
+        </time>
+      </div>
+    </div>
+    <div class="ml-execution-metadata-cta-bar">
+      <button md-button (click)="listen.emit(execution)">View</button>
+      <button md-button (click)="stop(execution)" *ngIf="execution.status === ExecutionStatus.Executing">Stop</button>
+    </div>
+  </div>
+</ng-container>
 
 <ng-template #noExecutionMessage>
   <div class="ml-execution-metadata-no-execution-message">
