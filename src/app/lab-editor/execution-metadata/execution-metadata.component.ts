@@ -20,6 +20,7 @@ export class ExecutionMetadataComponent {
   ExecutionStatus = ExecutionStatus;
 
   @Output() listen = new EventEmitter<Execution>();
+  @Output() restart = new EventEmitter<Execution>();
 
   constructor(private userService: UserService,
               private rleService: RemoteLabExecService) {
