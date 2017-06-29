@@ -29,7 +29,7 @@
   </ml-toolbar-content>
 
   <ml-toolbar-cta-bar>
-    <button md-button (click)="emitAction(EditorToolbarActionTypes.Run, lab)"><md-icon>cached</md-icon> Run</button>
+    <button md-button (click)="emitAction(EditorToolbarActionTypes.Run, lab)" *ngIf="userService.userOwnsLab(user, lab)"><md-icon>cached</md-icon> Run</button>
     <button md-button (click)="emitAction(EditorToolbarActionTypes.Save, lab)" *ngIf="userService.userOwnsLab(user, lab)"><md-icon>save</md-icon> Save</button>
     <button md-button (click)="emitAction(EditorToolbarActionTypes.Fork, lab)"><md-icon>share</md-icon> Fork</button>
     <button md-button (click)="emitAction(EditorToolbarActionTypes.Create)"><md-icon>add</md-icon> New</button>
