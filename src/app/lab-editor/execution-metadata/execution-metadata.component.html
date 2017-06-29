@@ -37,6 +37,7 @@
     <div class="ml-execution-metadata-cta-bar">
       <button md-button (click)="listen.emit(execution)">View</button>
       <button md-button (click)="stop(execution)" *ngIf="execution.status === ExecutionStatus.Executing">Stop</button>
+      <button md-button (click)="restart.emit(execution)" *ngIf="execution.status != ExecutionStatus.Executing && execution.status != ExecutionStatus.Pristine">Restart</button>
     </div>
   </div>
 </ng-container>

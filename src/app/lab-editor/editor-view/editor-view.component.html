@@ -70,7 +70,9 @@
           <ml-execution-metadata
               *ngFor="let execution of executions"
               [execution]="execution"
-              (listen)="listen($event)">
+              (listen)="listen($event)"
+              (restart)="run($event.lab)"
+              >
           </ml-execution-metadata>
         </ng-container>
 
