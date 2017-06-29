@@ -98,63 +98,6 @@ describe('EditorToolbarComponent', () => {
     expect(nameSpan).toBeDefined();
     expect(nameSpan.nativeElement.textContent).toEqual(lab.name);
   });
-
-  describe('Toolbar Actions', () => {
-
-    it('should emit run action', () => {
-      let runButton = fixture.debugElement.queryAll(By.css('ml-toolbar-cta-bar button'))[0];
-
-      component.action.subscribe(action => {
-        expect(action.type).toBe(EditorToolbarActionTypes.Run);
-      });
-
-      runButton.triggerEventHandler('click', null);
-    });
-
-    it('should emit save action', (done) => {
-      // The user will be available in the next tick hence the setTimeout
-      setTimeout(() => {
-        let lab = Object.assign({}, testLab);
-        // lab user id and user id have to be equal
-        lab.user_id = 'some unique id';
-
-        component.lab = lab;
-        fixture.detectChanges();
-
-        // When lab isn't running, save button is the second
-        let saveButton = fixture.debugElement.queryAll(By.css('ml-toolbar-cta-bar button'))[1];
-
-        component.action.subscribe(action => {
-          expect(action.type).toBe(EditorToolbarActionTypes.Save);
-        });
-
-        saveButton.triggerEventHandler('click', null);
-        done();
-      });
-    });
-
-    it('should emit fork action', () => {
-      // When user doesn't own lab and lab isn't running, fork button is second
-      let forkButton = fixture.debugElement.queryAll(By.css('ml-toolbar-cta-bar button'))[1];
-
-      component.action.subscribe(action => {
-        expect(action.type).toBe(EditorToolbarActionTypes.Fork);
-      });
-
-      forkButton.triggerEventHandler('click', null);
-    });
-
-    it('should emit create action', () => {
-      // When user doesn't own lab and lab isn't running, add button is third
-      let createButton = fixture.debugElement.queryAll(By.css('ml-toolbar-cta-bar button'))[2];
-
-      component.action.subscribe(action => {
-        expect(action.type).toBe(EditorToolbarActionTypes.Create);
-      });
-
-      createButton.triggerEventHandler('click', null);
-    });
-  });
 });
 
 @NgModule({
