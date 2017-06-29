@@ -104,7 +104,7 @@ export class EditorViewComponent implements OnInit {
                private urlSerializer: UrlSerializer,
                private router: Router,
                private labExecutionService: LabExecutionService,
-               private userService: UserService) {
+               public userService: UserService) {
   }
 
   ngOnInit () {
