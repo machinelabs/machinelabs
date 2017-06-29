@@ -1,7 +1,7 @@
 export const ML_YAML = `
 
 # Set the dockerImageId to choose between different environments
-# 
+#
 # Currently supported:
 #
 # dockerImageId                  |      description
