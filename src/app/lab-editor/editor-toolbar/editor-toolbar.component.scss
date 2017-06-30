@@ -19,14 +19,13 @@ ml-toolbar {
 }
 
 .ml-toolbar-user-info {
-  vertical-align: -5%;
   font-size: 0.7em;
   display: block;
+  margin-top: -0.5em;
 
   a {
     color: currentColor;
     text-decoration: none;
-    vertical-align: -8%;
     border-bottom: 1px dotted currentColor;
 
     &:hover,
