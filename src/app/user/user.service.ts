@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from 'app/auth';
 import { DbRefBuilder } from '../firebase/db-ref-builder';
 import { LoginUser, User } from '../models/user';
+import { Execution } from '../models/execution';
 import { Observable } from 'rxjs/Observable';
 import { Lang } from '../util/lang';
 
@@ -88,5 +89,9 @@ export class UserService {
 
   userOwnsLab(user: User, lab) {
     return lab && user && lab.user_id === user.id;
+  }
+
+  userOwnsExecution(user: User, execution: Execution) {
+    return user && user.id === execution.user_id;
   }
 }

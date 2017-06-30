@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, EventEmitter, Output } from '@angular/core';
 import { User } from '../../models/user';
 import { Execution } from '../../models/execution';
 import { UserService } from 'app/user/user.service';
@@ -14,16 +14,28 @@ import 'rxjs/add/operator/switchMap';
   templateUrl: './execution-metadata.component.html',
   styleUrls: ['./execution-metadata.component.scss']
 })
-export class ExecutionMetadataComponent {
+export class ExecutionMetadataComponent implements OnInit, OnDestroy {
+
   _execution: Observable<Execution>;
+
   executer: Observable<User>;
+
+  user: User;
+
   ExecutionStatus = ExecutionStatus;
+
+  private userSubscription;
 
   @Output() listen = new EventEmitter<Execution>();
   @Output() restart = new EventEmitter<Execution>();
 
-  constructor(private userService: UserService,
+  constructor(public userService: UserService,
               private rleService: RemoteLabExecService) {
+  }
+
+  ngOnInit() {
+    this.userSubscription = this.userService.observeUserChanges()
+                    .subscribe(user => this.user = user);
   }
 
   @Input()
@@ -38,5 +50,9 @@ export class ExecutionMetadataComponent {
 
   stop(execution: Execution) {
     this.rleService.stop(execution.id);
+  }
+
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe();
   }
 }
