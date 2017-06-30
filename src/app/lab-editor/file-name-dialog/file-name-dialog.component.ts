@@ -10,7 +10,7 @@ import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
       <ml-dialog-content>
         <md-input-container>
           <input mdInput placeholder="File name" formControlName="filename">
-          <md-hint *ngIf="!form.valid && !form.pristine" align="start">This field is required.</md-hint>
+          <md-hint *ngIf="!form.valid && !form.pristine">This field is required.</md-hint>
         </md-input-container>
       </ml-dialog-content>
       <ml-dialog-cta-bar>
@@ -26,6 +26,10 @@ import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
     }
     md-input-container {
       width: 100%;
+    }
+    md-hint {
+      width: 100%;
+      text-align: right;
     }
   `]
 })
