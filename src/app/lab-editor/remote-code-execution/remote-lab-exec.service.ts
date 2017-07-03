@@ -4,6 +4,8 @@ import { Subject } from 'rxjs/Subject';
 import { Lab } from '../../models/lab';
 import { Invocation, InvocationType } from '../../models/invocation';
 import { Execution, ExecutionStatus, ExecutionMessage, MessageKind, ExecutionWrapper } from '../../models/execution';
+import { MessageStreamOptimizer } from './message-stream-optimizer';
+
 import * as shortid from 'shortid';
 import * as firebase from 'firebase';
 
@@ -14,14 +16,19 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/concat';
 import '../../rx/takeWhileInclusive';
 
 @Injectable()
 export class RemoteLabExecService {
 
-  MAX_CACHE_MESSAGES = 5000;
+  PARTITION_SIZE = 100;
+  FULL_FETCH_TRESHOLD = 500;
+
+  messageStreamOptimizer: MessageStreamOptimizer;
 
   constructor(private db: DbRefBuilder, private authService: AuthService) {
+    this.messageStreamOptimizer = new MessageStreamOptimizer(db, this.PARTITION_SIZE, this.FULL_FETCH_TRESHOLD);
   }
 
   run(lab: Lab): Observable<ExecutionWrapper> {
@@ -44,13 +51,12 @@ export class RemoteLabExecService {
   }
 
   listen(executionId: string): Observable<ExecutionWrapper> {
-    let messages$ = this.db.executionMessageRef(executionId)
-                               .childAdded()
-                               .map(snapshot => snapshot.val());
 
     let execution$ = this.db.executionRef(executionId)
                             .value()
                             .map(snapshot => snapshot.val());
+
+    let messages$ = this.messageStreamOptimizer.listenForMessages(executionId);
 
     return this.consumeExecution(messages$, execution$);
   }
