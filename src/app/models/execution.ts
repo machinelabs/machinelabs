@@ -36,6 +36,7 @@ export enum MessageKind {
 
 export interface ExecutionMessage {
   id: string;
+  index: number;
   data: string | ExecutionRejectionInfo;
   kind: MessageKind;
   timestamp: number;
