@@ -3,7 +3,7 @@ const chalk = require('chalk');
 const execute = require('./execute')();
 
 console.log(chalk.green('Building app...'));
-execute('ng build --environment=prod');
+execute('ng build --prod --environment=prod');
 console.log(chalk.green('Deploying to staging...'));
 execute('firebase use staging');
 execute('firebase deploy');
