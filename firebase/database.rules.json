@@ -172,6 +172,9 @@
         "messages": {
           ".read": "true",
           ".write": "auth.uid == 'execution-server'",
+          ".indexOn": [
+            "index"
+          ],
           "$mid": {
             ".validate": "newData.hasChildren(['id', 'index', 'timestamp', 'data', 'kind'])",
             "id": {
