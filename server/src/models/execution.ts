@@ -1,5 +1,6 @@
 import { Lab } from './lab';
 import { AbstractValidationError } from '../validation/validation-result';
+import { HardwareType } from './server';
 
 export enum ExecutionStatus {
   Pristine,
@@ -13,8 +14,9 @@ export interface Execution {
   id: string;
   cache_hash: string;
   started_at: number;
-  finished_at: number,
-  server_info: string
+  finished_at: number;
+  server_info: string;
+  hardware_type: HardwareType;
   user_id: string;
   lab: Lab;
   status: ExecutionStatus;

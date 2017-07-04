@@ -64,6 +64,7 @@ type Execution {
   finished_at: Number | Null,
   server_id: String,
   server_info: String,
+  hardware_type: String,
   user_id: String,
   lab: InvocationLab,
   status: Number

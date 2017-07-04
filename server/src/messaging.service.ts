@@ -114,6 +114,7 @@ export class MessagingService {
         cache_hash: hash,
         lab: invocation.data,
         server_info: `${this.server.name} (${this.server.hardware_type})`,
+        hardware_type: this.server.hardware_type,
         server_id: this.server.id,
         started_at: firebase.database.ServerValue.TIMESTAMP,
         user_id: invocation.user_id,
