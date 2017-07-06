@@ -11,7 +11,8 @@
     "firebase": "^3.7.1",
     "firebase-admin": "^4.2.1",
     "js-yaml": "^3.8.4",
-    "minimist": "1.2.0"
+    "minimist": "1.2.0",
+    "moment": "^2.18.1"
   },
   "jest": {
     "transform": {
