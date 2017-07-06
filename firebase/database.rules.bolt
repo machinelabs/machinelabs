@@ -200,3 +200,8 @@ path /lab_visible_executions/{id} {
   read() { true }
   write() { false }
 }
+
+path /idx/user_executions/{id} {
+  read() { isExecutionServer() }
+  write() { false }
+}

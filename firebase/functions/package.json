@@ -4,8 +4,10 @@
   "dependencies": {
     "firebase-admin": "^4.1.2",
     "firebase-functions": "^0.5",
+    "lodash.merge": "^4.6.0",
     "lodash.sample": "^4.2.1",
-    "lodash.toarray": "^4.4.0"
+    "lodash.toarray": "^4.4.0",
+    "moment": "^2.18.1"
   },
   "private": true,
   "devDependencies": {

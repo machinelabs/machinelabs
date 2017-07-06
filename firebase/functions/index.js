@@ -6,7 +6,6 @@ const assignServer = require('./assign-server');
 const postLabWrite = require('./post-lab-write');
 const postExecutionWrite = require('./post-execution-write');
 
-
 exports.assignServer = assignServer;
 exports.postLabWrite = postLabWrite;
 exports.postExecutionWrite = postExecutionWrite;

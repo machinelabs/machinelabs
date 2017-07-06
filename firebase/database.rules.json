@@ -278,6 +278,13 @@
       "$id": {
         ".read": "true"
       }
+    },
+    "idx": {
+      "user_executions": {
+        "$id": {
+          ".read": "auth.uid == 'execution-server'"
+        }
+      }
     }
   }
 }
