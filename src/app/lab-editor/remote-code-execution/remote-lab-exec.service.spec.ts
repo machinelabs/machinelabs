@@ -7,9 +7,11 @@ import { RemoteLabExecService } from './remote-lab-exec.service';
 import { AuthService } from '../../auth';
 import { DATABASE } from '../../app.tokens';
 import { DbRefBuilder } from '../../firebase/db-ref-builder';
-import { MessageKind, ExecutionStatus } from '../../models/execution';
+import { MessageKind, ExecutionStatus, ExecutionMessage, Execution } from '../../models/execution';
 
 import 'rxjs/add/operator/delay';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/finally';
 
 let createSnapshot = data => ({ val: () => data });
 let createMessageSnapshot = (kind, data) => createSnapshot({kind, data});
@@ -98,15 +100,15 @@ describe('RemoteLabExecService', () => {
       let doneWhen = new DoneWhen(done).calledNTimes(4);
 
       let playedMessages = [
-        { kind: MessageKind.Stdout, data: 'some-text' },
-        { kind: MessageKind.Stdout, data: 'other-text' },
-        { kind: MessageKind.ExecutionFinished, data: '' },
-        { kind: MessageKind.Stdout, data: 'other text' }
-      ];
+        { id: '0', kind: MessageKind.Stdout, data: 'some-text' },
+        { id: '1', kind: MessageKind.Stdout, data: 'other-text' },
+        { id: '2', kind: MessageKind.ExecutionFinished, data: '' },
+        { id: '3', kind: MessageKind.Stdout, data: 'other text' }
+      ] as Array<ExecutionMessage>;
 
       let messagesSubscriber = 0;
 
-      let messages$ = new Observable(obs => {
+      let messages$ = new Observable<ExecutionMessage>(obs => {
           messagesSubscriber++;
           obs.next(playedMessages[0]);
           obs.next(playedMessages[1]);
@@ -120,14 +122,14 @@ describe('RemoteLabExecService', () => {
       }).delay(1);
 
       let playedExecutions = [
-        { id: 1, status: ExecutionStatus.Executing },
-        { id: 1, status: ExecutionStatus.Finished },
-        { id: 1, status: ExecutionStatus.Executing }
-      ];
+        { id: '1', status: ExecutionStatus.Executing },
+        { id: '1', status: ExecutionStatus.Finished },
+        { id: '1', status: ExecutionStatus.Executing }
+      ] as Array<Execution>;
 
       let executionsSubscriber = 0;
 
-      let executions$ = new Observable(obs => {
+      let executions$ = new Observable<Execution>(obs => {
           executionsSubscriber++;
           obs.next(playedExecutions[0]);
           obs.next(playedExecutions[1]);
@@ -174,13 +176,13 @@ describe('RemoteLabExecService', () => {
       let doneWhen = new DoneWhen(done).calledNTimes(4);
 
       let playedMessages = [
-        { kind: MessageKind.ExecutionRejected, data: 'meh' },
-        { kind: MessageKind.Stdout, data: 'other-text' }
-      ];
+        { id: '0', kind: MessageKind.ExecutionRejected, data: 'meh' },
+        { id: '1', kind: MessageKind.Stdout, data: 'other-text' }
+      ] as Array<ExecutionMessage>;
 
       let messagesSubscriber = 0;
 
-      let messages$ = new Observable(obs => {
+      let messages$ = new Observable<ExecutionMessage>(obs => {
           messagesSubscriber++;
           console.log('producing messages$');
           obs.next(playedMessages[0]);
@@ -195,11 +197,11 @@ describe('RemoteLabExecService', () => {
 
       let playedExecutions = [
         null
-      ];
+      ] as Array<Execution>;
 
       let executionsSubscriber = 0;
 
-      let executions$ = new Observable(obs => {
+      let executions$ = new Observable<Execution>(obs => {
           console.log('producing executions$');
           executionsSubscriber++;
           obs.next(playedExecutions[0]);
