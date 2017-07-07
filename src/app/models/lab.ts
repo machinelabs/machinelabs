@@ -17,5 +17,5 @@ export interface LabTemplate {
 export interface Lab extends LabTemplate {
   id: string;
   user_id: string;
-  has_cached_run: boolean;
+  has_cached_run?: boolean;
 }
