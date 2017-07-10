@@ -17,6 +17,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Lab, File } from '../../models/lab';
 import { LabExecutionService } from '../../lab-execution.service';
+import { LocationHelper } from '../../util/location-helper';
 import {
   Execution,
   ExecutionMessage,
@@ -102,7 +103,7 @@ export class EditorViewComponent implements OnInit {
                private dialog: MdDialog,
                private editorSnackbar: EditorSnackbarService,
                private location: Location,
-               private urlSerializer: UrlSerializer,
+               private locationHelper: LocationHelper,
                private router: Router,
                private labExecutionService: LabExecutionService,
                public userService: UserService) {
@@ -359,12 +360,11 @@ export class EditorViewComponent implements OnInit {
     this.openFile(file || this.lab.directory[0]);
   }
 
-  private goToLab(lab?: Lab) {
-    this.location.go(this.urlSerializer.serialize(
-      this.router.createUrlTree([`${lab ? lab.id : '../'}`], {
-        queryParamsHandling: 'merge',
-        relativeTo: this.route
-      })
-    ));
+  private goToLab(lab?: Lab, queryParams?) {
+    this.locationHelper.updateUrl([`${lab ? lab.id : '../'}`], {
+      queryParamsHandling: 'merge',
+      queryParams: queryParams || {},
+      relativeTo: this.route
+    });
   }
 }
