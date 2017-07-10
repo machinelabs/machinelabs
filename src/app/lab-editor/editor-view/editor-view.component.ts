@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
-import { Router, ActivatedRoute, UrlSerializer } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MdDialog, MdDialogRef, MdSnackBar, MdTabGroup, MdSidenav } from '@angular/material';
 import { AceEditorComponent } from '../ace-editor/ace-editor.component';
 import { FileNameDialogComponent } from '../file-name-dialog/file-name-dialog.component';
