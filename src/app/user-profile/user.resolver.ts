@@ -7,6 +7,8 @@ import { LabStorageService } from '../lab-storage.service';
 import { UserService } from 'app/user/user.service';
 import { User } from '../models/user';
 
+import 'rxjs/add/operator/do';
+
 @Injectable()
 export class UserResolver implements Resolve<User> {
 
