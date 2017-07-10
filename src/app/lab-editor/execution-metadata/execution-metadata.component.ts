@@ -26,7 +26,8 @@ export class ExecutionMetadataComponent implements OnInit, OnDestroy {
 
   private userSubscription;
 
-  @Output() listen = new EventEmitter<Execution>();
+  @Input() activeId: string;
+
   @Output() restart = new EventEmitter<Execution>();
 
   constructor(public userService: UserService,

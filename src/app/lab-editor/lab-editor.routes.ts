@@ -17,5 +17,12 @@ export const ROUTES: Routes = [
     resolve: {
       lab: LabResolver
     }
+  },
+  {
+    path: ':id/:executionId',
+    component: EditorViewComponent,
+    resolve: {
+      lab: LabResolver
+    }
   }
 ];
