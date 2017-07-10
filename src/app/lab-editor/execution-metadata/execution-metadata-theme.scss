@@ -9,12 +9,25 @@
   .ml-execution-metadata {
     border: 1px solid mat-color($foreground, divider);
     border-left: 10px solid mat-color($foreground, divider);
+    color: mat-color($foreground, text);
+    transition: ease box-shadow 250ms;
 
     &.finished { border-left-color: #39aa56; }
     &.failed { border-left-color: #db4545; }
     &.executing { border-left-color: mat-color($accent); }
 
-    &.selected { background-color: #f0f0f0; }
+    &:hover {
+      box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+    }
+
+    &.selected {
+      border-top-color: #BBB;
+      border-right-color: #BBB;
+      border-bottom-color: #BBB;
+      background-color: #efefef;
+      box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 4px 5px 0 rgba(0,0,0,.12);
+    }
+
   }
 
   .ml-execution-metadata-headline {

@@ -1,7 +1,12 @@
+:host { display: block; }
+
 .ml-execution-metadata {
+  position: relative;
+  display: block;
   padding: 0.5em;
   margin: 0.8em;
   margin-top: 1em;
+  text-decoration: none;
 }
 
 .ml-execution-metadata-headline {

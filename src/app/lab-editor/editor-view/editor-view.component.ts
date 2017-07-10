@@ -97,6 +97,8 @@ export class EditorViewComponent implements OnInit {
 
   TabIndex = TabIndex;
 
+  activeExecutionId: string;
+
   constructor (private rleService: RemoteLabExecService,
                private labStorageService: LabStorageService,
                private route: ActivatedRoute,
@@ -111,7 +113,18 @@ export class EditorViewComponent implements OnInit {
 
   ngOnInit () {
     this.route.data.map(data => data['lab'])
+              // Only init lab when it's opened for the first time
+              // or when switching labs.
+              .filter(lab => !!!this.lab || lab.id !== this.lab.id)
               .subscribe(lab =>  this.initLab(lab));
+
+    this.route.paramMap
+      .map(paramMap => paramMap.get('executionId'))
+      .filter(executionId => !!executionId && executionId != this.activeExecutionId)
+      .subscribe(executionId => {
+        this.activeExecutionId = executionId;
+        this.consume(this.rleService.listen(executionId));
+      });
 
     this.user = this.userService.observeUserChanges();
   }
@@ -361,7 +374,7 @@ export class EditorViewComponent implements OnInit {
   }
 
   private goToLab(lab?: Lab, queryParams?) {
-    this.locationHelper.updateUrl([`${lab ? lab.id : '../'}`], {
+    this.locationHelper.updateUrl(['/editor', `${lab ? lab.id : ''}`], {
       queryParamsHandling: 'merge',
       queryParams: queryParams || {},
       relativeTo: this.route
