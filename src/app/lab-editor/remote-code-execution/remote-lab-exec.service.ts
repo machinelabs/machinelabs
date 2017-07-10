@@ -3,7 +3,13 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Lab } from '../../models/lab';
 import { Invocation, InvocationType } from '../../models/invocation';
-import { Execution, ExecutionStatus, ExecutionMessage, MessageKind, ExecutionWrapper } from '../../models/execution';
+import {
+  Execution,
+  ExecutionStatus,
+  ExecutionMessage,
+  MessageKind,
+  ExecutionWrapper
+} from '../../models/execution';
 import { MessageStreamOptimizer } from './message-stream-optimizer';
 
 import * as shortid from 'shortid';
@@ -32,7 +38,7 @@ export class RemoteLabExecService {
     this.messageStreamOptimizer = new MessageStreamOptimizer(db, this.PARTITION_SIZE, this.FULL_FETCH_TRESHOLD);
   }
 
-  run(lab: Lab): Observable<ExecutionWrapper> {
+  run(lab: Lab): string {
     let id = this.newInvocationId();
     let executionWrapper$ = this.authService
       .requireAuthOnce()
@@ -46,12 +52,12 @@ export class RemoteLabExecService {
           directory: lab.directory
         }
       }))
-      .switchMap(_ => this.listen(id));
+      .subscribe();
 
-    return executionWrapper$;
+    return id;
   }
 
-  listen(executionId: string): Observable<ExecutionWrapper> {
+  listen(executionId: string): ExecutionWrapper {
 
     let execution$ = this.db.executionRef(executionId)
                             .value()
@@ -59,10 +65,10 @@ export class RemoteLabExecService {
 
     let messages$ = this.messageStreamOptimizer.listenForMessages(executionId);
 
-    return this.consumeExecution(messages$, execution$);
+    return this.consumeExecution(executionId, messages$, execution$);
   }
 
-  consumeExecution(messages: Observable<ExecutionMessage>, execution: Observable<Execution>): Observable<ExecutionWrapper> {
+  consumeExecution(executionId: string, messages: Observable<ExecutionMessage>, execution: Observable<Execution>): ExecutionWrapper {
 
     let sharedMessages = messages.share();
     let sharedExecution = execution.share();
@@ -82,10 +88,11 @@ export class RemoteLabExecService {
                       .takeWhileInclusive(executingExecutions)
                       .takeUntil(rejectedMessage);
 
-    return Observable.of({
+    return {
+      executionId: executionId,
       messages: messages$,
       execution: execution$
-    });
+    };
   }
 
   stop(executionId: string) {

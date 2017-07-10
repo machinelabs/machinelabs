@@ -36,11 +36,11 @@ export class HasExecutionGuard implements CanActivate {
     // navigating to a lab that simply hasn't been executed yet.
     return this.labExecutionService
         .getLatestExecutionIdForLab(labId)
-        .map(executionId => {
-          if (!executionId) {
+        .map(_executionId => {
+          if (!_executionId) {
             return true
           }
-          this.router.navigate(['/editor', labId, executionId], {
+          this.router.navigate(['/editor', labId, _executionId], {
             queryParamsHandling: 'merge',
             relativeTo: this.route
           });

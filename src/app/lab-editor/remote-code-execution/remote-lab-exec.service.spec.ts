@@ -149,27 +149,26 @@ describe('RemoteLabExecService', () => {
         expect(executionsSubscriber).toBe(1);
       });
 
-      rleService.consumeExecution(messages$, executions$)
-                .subscribe((ew) => {
-                  ew.messages
-                    .do(msg => actualMessages.push(msg))
-                    .finally(() => {
-                      expect(actualMessages.length).toBe(3);
-                      doneWhen.call();
-                    })
-                    .subscribe();
+      const wrapper = rleService.consumeExecution('someid', messages$, executions$);
 
-                  ew.execution
-                    .do(e => {
-                      console.log(e);
-                      actualExecutions.push(e);
-                    })
-                    .finally(() => {
-                      expect(actualExecutions.length).toBe(2);
-                      doneWhen.call();
-                    })
-                    .subscribe();
-                });
+      wrapper.messages
+              .do(msg => actualMessages.push(msg))
+              .finally(() => {
+                expect(actualMessages.length).toBe(3);
+                doneWhen.call();
+              })
+              .subscribe();
+
+      wrapper.execution
+              .do(e => {
+                console.log(e);
+                actualExecutions.push(e);
+              })
+              .finally(() => {
+                expect(actualExecutions.length).toBe(2);
+                doneWhen.call();
+              })
+              .subscribe();
     });
 
     it('should handle ExecutionRejected gracefully', (done) => {
@@ -221,28 +220,27 @@ describe('RemoteLabExecService', () => {
         expect(executionsSubscriber).toBe(1);
       });
 
-      rleService.consumeExecution(messages$, executions$)
-                .subscribe((ew) => {
-                  ew.messages
-                    .do(msg => actualMessages.push(msg))
-                    .finally(() => {
-                      expect(actualMessages.length).toBe(1);
-                      console.log('messages$ completed');
-                      doneWhen.call();
-                    })
-                    .subscribe();
+      const wrapper = rleService.consumeExecution('someid', messages$, executions$);
 
-                  ew.execution
-                    .do(e => {
-                      actualExecutions.push(e);
-                    })
-                    .finally(() => {
-                      expect(actualExecutions.length).toBe(0);
-                      console.log('execution$ completed');
-                      doneWhen.call();
-                    })
-                    .subscribe();
-                });
+      wrapper.messages
+              .do(msg => actualMessages.push(msg))
+              .finally(() => {
+                expect(actualMessages.length).toBe(1);
+                console.log('messages$ completed');
+                doneWhen.call();
+              })
+              .subscribe();
+
+      wrapper.execution
+              .do(e => {
+                actualExecutions.push(e);
+              })
+              .finally(() => {
+                expect(actualExecutions.length).toBe(0);
+                console.log('execution$ completed');
+                doneWhen.call();
+              })
+              .subscribe();
     });
   });
 });
