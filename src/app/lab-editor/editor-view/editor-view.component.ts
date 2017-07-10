@@ -120,7 +120,7 @@ export class EditorViewComponent implements OnInit {
 
     this.route.paramMap
       .map(paramMap => paramMap.get('executionId'))
-      .filter(executionId => !!executionId && executionId != this.activeExecutionId)
+      .filter(executionId => !!executionId && executionId !== this.activeExecutionId)
       .subscribe(executionId => {
         this.activeExecutionId = executionId;
         this.consume(this.rleService.listen(executionId));
@@ -149,28 +149,29 @@ export class EditorViewComponent implements OnInit {
   }
 
   run(lab: Lab) {
-
     // First check if this lab is already persisted or not. We don't want to
     // execute labs that don't exist in the database.
     this.labStorageService.labExists(lab.id)
-        .switchMap(exists => exists ? Observable.of(null) :
-            // If it doesn't exist yet, we save it first and make sure to update
-            // the url accordingly, so it can be easily shared. We can't use
-            // router.navigate() here because it will perform a full navigation
-            // cycle as gonig from /editor to /editor/:id is a route change.
-            this.labStorageService.saveLab(lab)
-                .do(_ => this.goToLab(lab))
-        )
-        .subscribe(() => {
-          let wrapper = this.rleService.run(lab);
-          this.consume(wrapper);
+        // If it doesn't exist yet, we save it first and make sure to update
+        // the url accordingly, so it can be easily shared.
+        .switchMap(exists => exists ? Observable.of(null) : this.labStorageService.saveLab(lab))
+        .subscribe(_ => {
+          const executionId = this.rleService.run(lab);
+
+          // A new execution also means a new execution id. We update the
+          // query parameter accordingly so the correct state is represented
+          // in the UI.
+          this.router.navigate(['/editor', lab.id, executionId], {
+            queryParamsHandling: 'merge',
+            relativeTo: this.route
+          });
         });
   }
 
-  consume(wrapper: Observable<ExecutionWrapper>) {
+  consume(wrapper: ExecutionWrapper) {
     this.outputPanel.clear();
     this.selectTab(TabIndex.Console);
-    this.execution = wrapper.switchMap(val => val.execution);
+    this.execution = wrapper.execution;
 
     if (this.executionSubscription) {
       this.executionSubscription.unsubscribe();
@@ -184,7 +185,7 @@ export class EditorViewComponent implements OnInit {
                                      .take(1)
                                      .subscribe(execution => this.initDirectory(execution.lab.directory));
 
-    let messages$ = wrapper.switchMap(val => val.messages);
+    let messages$ = wrapper.messages;
 
     // Scan the notifications and build up a string with line breaks
     // Don't make this a manual subscription without dealing with
