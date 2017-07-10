@@ -35,6 +35,8 @@ import { DistanceInWordsStrictPipe } from './distance-in-words-strict.pipe';
 import { DistanceInWordsToNowPipe } from './distance-in-words-to-now.pipe';
 import { ExecutionStatusPipe } from './execution-status.pipe';
 
+import { LocationHelper } from '../util/location-helper';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -69,7 +71,8 @@ import { ExecutionStatusPipe } from './execution-status.pipe';
     LabResolver,
     RemoteLabExecService,
     EditorSnackbarService,
-    LabConfigService
+    LabConfigService,
+    LocationHelper
   ],
   entryComponents: [
     NavigationConfirmDialogComponent,
