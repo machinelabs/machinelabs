@@ -23,7 +23,6 @@ import { PanelComponent } from './panel/panel.component';
 import { PanelTitleComponent } from './panel/panel-title.component';
 import { FileTreeComponent } from './file-tree/file-tree.component';
 import { ExecutionStatusComponent } from './execution-status/execution-status.component';
-import { ExecutionMetadataComponent } from './execution-metadata/execution-metadata.component';
 import { FooterComponent } from './editor-footer/editor-footer.component';
 
 import { FileNameDialogComponent } from './file-name-dialog/file-name-dialog.component';
@@ -37,6 +36,7 @@ import { DistanceInWordsToNowPipe } from './distance-in-words-to-now.pipe';
 import { ExecutionStatusPipe } from './execution-status.pipe';
 
 import { LocationHelper } from '../util/location-helper';
+import { ExecutionListComponent } from './execution-list/execution-list.component';
 
 @NgModule({
   imports: [
@@ -64,9 +64,9 @@ import { LocationHelper } from '../util/location-helper';
     DistanceInWordsStrictPipe,
     DistanceInWordsToNowPipe,
     ExecutionStatusPipe,
-    ExecutionMetadataComponent,
     FooterComponent,
-    LabSettingsComponent
+    LabSettingsComponent,
+    ExecutionListComponent
   ],
   providers: [
     LabResolver,
