@@ -1,0 +1,42 @@
+.ml-execution-panel-header {
+  font-weight: 600;
+  md-icon {
+    vertical-align: -20%;
+    font-size: 22px;
+    width: initial;
+    height: initial;
+  }
+
+  md-progress-spinner {
+    width: 24px;
+    height: 27px;
+    display: inline-block;
+    margin-right: 0.2em;
+    vertical-align: -12%;
+
+    .mat-expanded & {
+      height: 40px;
+      vertical-align: -20%;
+    }
+  }
+}
+
+.ml-execution-panel-content {
+  padding: .2em;
+
+  md-icon {
+    font-size: 1.2em;
+    width: initial;
+    height: initial;
+    color: #888;
+  }
+
+  time {
+    vertical-align: 30%;
+    font-size: 0.9em;
+  }
+}
+
+.ml-execution-panel-info {
+  margin-top: 0.2em;
+}

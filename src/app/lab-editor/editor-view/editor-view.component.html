@@ -67,13 +67,11 @@
           class="ml-sidebar"
           >
         <ng-container *ngIf="executions | async as executions; else noExecutionMessage">
-          <ml-execution-metadata
-              *ngFor="let execution of executions"
-              [execution]="execution"
-              [activeId]="activeExecutionId"
-              (restart)="run($event.lab)"
-              >
-          </ml-execution-metadata>
+          <ml-execution-list
+            [executions]="executions"
+            [activeId]="activeExecutionId"
+            (restart)="run($event.lab)"
+            ></ml-execution-list>
         </ng-container>
 
         <ng-template #noExecutionMessage>

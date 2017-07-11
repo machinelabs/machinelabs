@@ -3,7 +3,7 @@
 @import 'app/shared/dialog/dialog-theme.scss';
 @import 'app/lab-editor/editor-footer/editor-footer-theme.scss';
 @import 'app/lab-editor/execution-status/execution-status-theme.scss';
-@import 'app/lab-editor/execution-metadata/execution-metadata-theme.scss';
+@import 'app/lab-editor/execution-list/execution-list-theme.scss';
 @import 'app/lab-editor/panel/panel-theme.scss';
 @import 'app/lab-editor/file-tree/file-tree-theme.scss';
 @import 'app/lab-editor/lab-settings/lab-settings-theme.scss';
@@ -23,7 +23,7 @@ $ml-app-theme: mat-light-theme($ml-app-primary, $ml-app-accent, $ml-app-warn);
 @mixin machine-labs-theme($theme) {
   @include ml-editor-footer-theme($theme);
   @include ml-execution-status-theme($theme);
-  @include ml-execution-metadata-theme($theme);
+  @include ml-execution-list-theme($theme);
   @include ml-dialog-theme($theme);
   @include ml-panel-theme($theme);
   @include ml-file-tree-theme($theme);

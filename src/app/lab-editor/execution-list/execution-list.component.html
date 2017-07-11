@@ -1,0 +1,57 @@
+<md-accordion>
+  <ng-container *ngFor="let execution of executions">
+    <ng-container *ngIf="execution | async as execution">
+      <md-expansion-panel
+        *ngIf="execution.status != ExecutionStatus.Pristine; else noExecutionMessage"
+        class="ml-execution-panel"
+        [expanded]="execution.id == activeId"
+        [ngClass]="{
+          finished: execution.status == ExecutionStatus.Finished,
+          executing: execution.status == ExecutionStatus.Executing,
+          stopped: execution.status == ExecutionStatus.Stopped,
+          failed: execution.status == ExecutionStatus.Failed,
+          selected: execution.id == activeId
+        }">
+        <md-expansion-panel-header class="ml-execution-panel-header">
+          <span>
+          <ng-container [ngSwitch]="execution.status">
+            <md-icon *ngSwitchCase="ExecutionStatus.Finished">done</md-icon>
+            <md-progress-spinner
+              color="accent"
+              *ngSwitchCase="ExecutionStatus.Executing"
+              mode="indeterminate"></md-progress-spinner>
+            <md-icon *ngSwitchCase="ExecutionStatus.Stopped">info</md-icon>
+            <md-icon *ngSwitchCase="ExecutionStatus.Failed">block</md-icon>
+          </ng-container>
+          #{{ execution.id }}
+          </span>
+        </md-expansion-panel-header>
+        <div class="ml-execution-panel-content">
+          <div *ngIf="execution.finished_at" class="ml-execution-panel-info">
+            <md-icon>schedule</md-icon>
+            <time [attr.datetime]="execution.finished_at">
+              Ran for {{execution.started_at | distanceInWordsStrict: execution.finished_at}}
+            </time>
+          </div>
+          <div class="ml-execution-metadata-info">
+            <md-icon>update</md-icon>
+            <time [attr.datetime]="execution.started_at">
+              about {{execution.started_at | distanceInWordsToNow}} ago
+            </time>
+          </div>
+        </div>
+        <div class="ml-execution-metadata-cta-bar">
+          <a [routerLink]="['../', execution.id]"
+            queryParamsHandling="merge"
+            title="View this execution"
+            md-button>
+            View
+          </a>
+          <button md-button (click)="stop(execution)" *ngIf="execution.status === ExecutionStatus.Executing && userService.userOwnsExecution(user, execution)">Stop</button>
+          <button md-button (click)="restart.emit(execution)" *ngIf="execution.status != ExecutionStatus.Executing && execution.status != ExecutionStatus.Pristine && userService.userOwnsExecution(user, execution)">Restart</button>
+        </div>
+      </md-expansion-panel>
+    </ng-container>
+  </ng-container>
+</md-accordion>
+

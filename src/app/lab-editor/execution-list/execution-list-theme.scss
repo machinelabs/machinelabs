@@ -1,0 +1,39 @@
+@import '../../../../node_modules/@angular/material/theming';
+
+@mixin ml-execution-list-theme($theme) {
+
+  $primary: map-get($theme, primary);
+  $foreground: map-get($theme, foreground);
+  $accent: map-get($theme, accent);
+
+  .ml-execution-panel-header {
+    border-left: 10px solid mat-color($foreground, divider);
+    .finished & {
+      color: #39aa56;
+      border-left-color: #39aa56;
+    }
+    .failed & {
+      color: #db4545;
+      border-left-color: #db4545;
+    }
+    .stopped & {
+      color: #888;
+      border-left-color: #888;
+    }
+    .executing & {
+      color: mat-color($accent);
+      border-left-color: mat-color($accent);
+    }
+  }
+
+  .mat-expansion-panel-content {
+    border-left: 10px solid mat-color($foreground, divider);
+
+    .finished & { border-left-color: #39aa56; }
+    .failed  & { border-left-color: #db4545; }
+    .executing & { border-left-color: mat-color($accent); }
+  }
+}
+
+
+
