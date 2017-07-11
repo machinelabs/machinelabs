@@ -25,7 +25,7 @@ export class ToolbarComponent implements OnInit {
 
 @Component({
   selector: 'ml-toolbar-logo',
-  template: 'Machine<span>Labs</span>',
+  template: '<img src="/assets/images/machinelabs_logo_white.svg" alt="MachineLabs, Inc.">',
   styleUrls: ['./toolbar-logo.component.scss']
 })
 export class ToolbarLogoComponent {}
