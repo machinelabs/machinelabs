@@ -24,6 +24,7 @@
       color: mat-color($accent);
       border-left-color: mat-color($accent);
     }
+    .selected & { background-color: rgba(0, 0, 0, 0.06)!important; }
   }
 
   .mat-expansion-panel-content {
@@ -32,6 +33,7 @@
     .finished & { border-left-color: #39aa56; }
     .failed  & { border-left-color: #db4545; }
     .executing & { border-left-color: mat-color($accent); }
+    .selected & { background-color: rgba(0, 0, 0, 0.06); }
   }
 }
 
