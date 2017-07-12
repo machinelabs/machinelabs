@@ -1,7 +1,7 @@
 .ml-status-message {
   display: inline-block;
   line-height: 1.5em;
-  font-weight: 500;
+  font-weight: 600;
 
   md-icon {
     font-size: 1.3em;
@@ -12,13 +12,13 @@
   }
 
   &.done {
-    md-icon { color: springgreen; }
+    md-icon { color: #39aa56; }
   }
   &.stopped {
-    md-icon { color: #ffc107; }
+    md-icon { color: #888; }
   }
   &.errored {
-    md-icon { color: orangered; }
+    md-icon { color: #db4545; }
   }
 }
 
