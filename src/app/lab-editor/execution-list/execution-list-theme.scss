@@ -7,7 +7,7 @@
   $accent: map-get($theme, accent);
 
   .ml-execution-panel-header {
-    border-left: 10px solid mat-color($foreground, divider);
+    border-left: 5px solid mat-color($foreground, divider);
     .finished & {
       color: #39aa56;
       border-left-color: #39aa56;
@@ -28,7 +28,7 @@
   }
 
   .mat-expansion-panel-content {
-    border-left: 10px solid mat-color($foreground, divider);
+    border-left: 5px solid mat-color($foreground, divider);
 
     .finished & { border-left-color: #39aa56; }
     .failed  & { border-left-color: #db4545; }
