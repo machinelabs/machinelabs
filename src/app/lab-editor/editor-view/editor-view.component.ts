@@ -145,6 +145,8 @@ export class EditorViewComponent implements OnInit {
       // This has to run in the next tick after the editor has become visible
       // https://github.com/ajaxorg/ace/issues/3070
       setTimeout(_ => this.editor.resize(), 0);
+    } else if (this.selectedTab === TabIndex.Console && this.outputPanel) {
+      setTimeout(_ => this.outputPanel.resize(), 0);
     }
   }
 
@@ -290,6 +292,7 @@ export class EditorViewComponent implements OnInit {
       .filter(confirmed => confirmed)
       .switchMap(_ => this.labStorageService.createLab())
       .subscribe(lab => {
+        this.outputPanel.clear();
         this.goToLab();
         this.initLab(lab);
         this.editorSnackbar.notifyLabCreated();
