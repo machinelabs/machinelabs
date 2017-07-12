@@ -151,6 +151,8 @@ export class EditorViewComponent implements OnInit {
   }
 
   run(lab: Lab) {
+    this.outputPanel.clear();
+    this.selectTab(TabIndex.Console);
     // First check if this lab is already persisted or not. We don't want to
     // execute labs that don't exist in the database.
     this.labStorageService.labExists(lab.id)
@@ -172,7 +174,6 @@ export class EditorViewComponent implements OnInit {
 
   consume(wrapper: ExecutionWrapper) {
     this.outputPanel.clear();
-    this.selectTab(TabIndex.Console);
     this.execution = wrapper.execution;
 
     if (this.executionSubscription) {
@@ -361,6 +362,7 @@ export class EditorViewComponent implements OnInit {
         .subscribe(execution => {
           // Only attach to an existing execution if the user did not do it by themself
           if (this.clientExecutionState === ClientExecutionState.NotExecuting) {
+            this.selectTab(TabIndex.Console);
             this.listen(execution);
           }
         });
