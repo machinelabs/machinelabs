@@ -144,7 +144,7 @@ export class EditorViewComponent implements OnInit {
     if (this.selectedTab === TabIndex.Editor && this.editor) {
       // This has to run in the next tick after the editor has become visible
       // https://github.com/ajaxorg/ace/issues/3070
-      Promise.resolve().then(_ => this.editor.resize());
+      setTimeout(_ => this.editor.resize(), 0);
     }
   }
 
