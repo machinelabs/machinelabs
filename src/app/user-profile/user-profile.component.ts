@@ -36,8 +36,13 @@ export class UserProfileComponent implements OnInit, OnDestroy {
               private userService: UserService) {}
 
   ngOnInit() {
-    this.user = this.route.snapshot.data['user'];
-    this.labs = this.route.snapshot.data['labs'];
+    this.route.data
+        .map(data => data['user'])
+        .subscribe(user => this.user = user);
+
+    this.route.data
+        .map(data => data['labs'])
+        .subscribe(labs => this.labs = labs);
 
     this.userChangesSubscription = this.userService
                                         .observeUserChanges()
