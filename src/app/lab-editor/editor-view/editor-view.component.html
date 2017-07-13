@@ -17,14 +17,6 @@
          md-tab-link
          (click)="selectTab(TabIndex.Console)"
          [active]="selectedTab == TabIndex.Console">Console</a>
-
-      <ng-container *ngIf="user | async as user">
-        <a *ngIf="userService.userOwnsLab(user, lab)"
-           queryParamsHandling="merge"
-           routerLink="."
-           md-tab-link (click)="selectTab(TabIndex.Settings)"
-           [active]="selectedTab == TabIndex.Settings">Settings</a>
-      </ng-container>
     </nav>
   </div>
   <div class="ml-editor-view-layout-main">
@@ -55,9 +47,6 @@
         [class.hidden]="selectedTab != TabIndex.Console"
         [class.active]="selectedTab == TabIndex.Console"
         mode="sh"></ml-ace-editor>
-        <ml-lab-settings
-          [lab]="lab"
-          [class.hidden]="selectedTab != TabIndex.Settings"></ml-lab-settings>
       <md-sidenav
           (open)="sidebarToggled = true"
           (close)="sidebarToggled = false"

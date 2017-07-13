@@ -11,8 +11,8 @@ describe('Editor-View Component', function() {
     waitForContentReady();
   });
 
-  it('should contain the "Editor", "Console" and "Settings" tabs', () => {
-    expect(editorView.tabsLabels).toEqual(['Editor', 'Console', 'Settings']);
+  it('should contain the "Editor" and "Console" tabs', () => {
+    expect(editorView.tabsLabels).toEqual(['Editor', 'Console']);
   });
 
   it('should have the "Editor" tab selected by default', () => {

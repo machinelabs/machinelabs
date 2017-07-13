@@ -10,8 +10,6 @@ import { RejectionDialogComponent } from '../rejection-dialog/rejection-dialog.c
 import { RemoteLabExecService } from '../remote-code-execution/remote-lab-exec.service';
 import { EditorSnackbarService } from '../editor-snackbar.service';
 import { LabStorageService } from '../../lab-storage.service';
-import { UserService } from '../../user/user.service';
-import { User } from '../../models/user';
 import { BLANK_LAB_TPL_ID } from '../../lab-template.service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -63,8 +61,6 @@ export class EditorViewComponent implements OnInit {
 
   lab: Lab;
 
-  user: Observable<User>;
-
   execution: Observable<Execution>;
 
   executionSubscription: Subscription;
@@ -107,8 +103,7 @@ export class EditorViewComponent implements OnInit {
                private location: Location,
                private locationHelper: LocationHelper,
                private router: Router,
-               private labExecutionService: LabExecutionService,
-               public userService: UserService) {
+               private labExecutionService: LabExecutionService) {
   }
 
   ngOnInit () {
@@ -125,8 +120,6 @@ export class EditorViewComponent implements OnInit {
         this.activeExecutionId = executionId;
         this.consume(this.rleService.listen(executionId));
       });
-
-    this.user = this.userService.observeUserChanges();
   }
 
   toolbarAction(action: EditorToolbarAction) {
