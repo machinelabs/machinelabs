@@ -18,7 +18,6 @@ import { LabConfigService } from './lab-config.service';
 import { EditorToolbarComponent } from './editor-toolbar/editor-toolbar.component';
 import { EditorViewComponent } from './editor-view/editor-view.component';
 import { AceEditorComponent } from './ace-editor/ace-editor.component';
-import { LabSettingsComponent } from './lab-settings/lab-settings.component';
 import { PanelComponent } from './panel/panel.component';
 import { PanelTitleComponent } from './panel/panel-title.component';
 import { FileTreeComponent } from './file-tree/file-tree.component';
@@ -65,7 +64,6 @@ import { ExecutionListComponent } from './execution-list/execution-list.componen
     DistanceInWordsToNowPipe,
     ExecutionStatusPipe,
     FooterComponent,
-    LabSettingsComponent,
     ExecutionListComponent
   ],
   providers: [
