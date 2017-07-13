@@ -44,11 +44,13 @@
           <a [routerLink]="['../', execution.id]"
             queryParamsHandling="merge"
             title="View this execution"
+            *ngIf="execution.id !== activeId"
             md-button>
             View
           </a>
           <button md-button (click)="stop(execution)" *ngIf="execution.status === ExecutionStatus.Executing && userService.userOwnsExecution(user, execution)">Stop</button>
           <button md-button (click)="restart.emit(execution)" *ngIf="execution.status != ExecutionStatus.Executing && execution.status != ExecutionStatus.Pristine && userService.userOwnsExecution(user, execution)">Restart</button>
+          <button md-button (click)="remove.emit(execution)" *ngIf="execution.status != ExecutionStatus.Executing && userService.userOwnsExecution(user, execution)">Remove</button>
         </div>
       </md-expansion-panel>
     </ng-container>
