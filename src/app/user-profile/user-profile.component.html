@@ -5,29 +5,18 @@
   </ml-toolbar-cta-bar>
   <ml-toolbar-menu></ml-toolbar-menu>
 </ml-toolbar>
-
 <div role="main">
-  <div fxLayout class="ml-user-profile">
-
-    <div fxFlex="30">
-      <md-card>
-        <md-card-content class="ml-user-profile-details">
-          <img class="ml-user-profile-avatar" alt="Avatar of {{user.displayName}}" [src]="user.photoUrl">
-          <h3 class="ml-user-profile-name">{{user.displayName}}</h3>
-          <p>{{user.bio}}</p>
-        </md-card-content>
-        <md-card-actions class="ml-user-profile-details-actions" *ngIf="isAuthUser">
-          <button color="primary" md-button title="Edit user profile" (click)="edit()"><md-icon>edit</md-icon> Edit Profile</button>
-        </md-card-actions>
-      </md-card>
-    </div>
-
-    <div fxFlex class="ml-user-profile-content">
-      <div class="ml-user-profile-content-action-bar" *ngIf="isAuthUser">
-        <a color="primary" md-button routerLink="/editor" [queryParams]="{tpl: 'blank'}" title="Create new lab"><md-icon>add</md-icon> Create lab</a>
-      </div>
-
-      <ul class="ml-user-profile-lab-list" *ngIf="labs.length; else noLabsMessage">
+  <div class="ml-user-profile-header">
+    <h1>{{user.displayName}}</h1>
+  </div>
+  <div class="ml-user-profile-info-bar">
+    <img class="ml-user-profile-avatar" alt="Avatar of {{user.displayName}}" [src]="user.photoUrl">
+    <button *ngIf="isAuthUser" md-mini-fab color="accent" (click)="edit()"><md-icon>edit</md-icon></button>
+    <p>{{user.bio}}</p>
+  </div>
+  <div class="ml-user-profile-content">
+    <ng-container *ngIf="labs.length; else noLabsMessage">
+      <ul class="ml-user-profile-lab-list">
         <li *ngFor="let lab of labs">
           <md-card>
             <md-card-title>{{lab.name | words: 10}}</md-card-title>
@@ -39,10 +28,20 @@
           </md-card>
         </li>
       </ul>
-      <ng-template #noLabsMessage>
-        <p class="ml-user-profile-no-labs-msg">Hmmm...No sparks of genious here just yet, but no worries. We know you can do it, so go ahead and <a routerLink="/editor" [queryParams]="{tpl: 'blank'}" title="Create a new lab">get started</a>!</p>
-      </ng-template>
-    </div>
+    </ng-container>
+    <ng-template #noLabsMessage>
+      <md-card class="ml-user-profile-no-labs-message">
+        <md-card-title>
+          You haven't built any Labs yet.
+        </md-card-title>
+        <md-card-content>
+          <p>Hmmm...No sparks of genious here just yet, but no worries. We know you can do it, so go ahead.</p>
+          <a md-raised-button color="primary" routerLink="/editor" [queryParams]="{tpl: 'blank'}" title="Create a new lab">Get started!</a>
+        </md-card-content>
+      </md-card>
+    </ng-template>
   </div>
 </div>
-
+<footer class="ml-user-profile-footer">
+  <p>&copy; 2017 MachineLabs, Inc</p>
+</footer>

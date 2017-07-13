@@ -6,17 +6,20 @@
   $accent: map-get($theme, accent);
   $foreground: map-get($theme, foreground);
 
-  .ml-user-profile-lab-actions {
-    a {
-      color: mat-color($accent);
-    }
+  .ml-user-profile-header {
+    background: rgb(59, 59, 68);
+    background: rgb(100, 109, 141);
+    color: mat-color($primary, default-contrast);
   }
 
-  .ml-user-profile-no-labs-msg {
-    color: mat-color($foreground, secondary-text);
-    a {
-      color: mat-color($accent);
-    }
+  .ml-user-profile-info-bar {
+    background: rgb(59, 59, 68);
+    color: mat-color($primary, default-contrast);
+  }
+
+  .ml-user-profile-footer {
+    background: rgb(59, 59, 68);
+    color: mat-color($primary, default-contrast);
   }
 }
 

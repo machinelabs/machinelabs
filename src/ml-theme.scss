@@ -20,7 +20,6 @@ $ml-app-warn: mat-palette($mat-red);
 
 $ml-app-theme: mat-light-theme($ml-app-primary, $ml-app-accent, $ml-app-warn);
 
-
 @mixin machine-labs-theme($theme) {
   @include ml-editor-view-theme($theme);
   @include ml-editor-footer-theme($theme);

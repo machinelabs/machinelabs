@@ -1,7 +1,8 @@
 :host {
   display: block;
-  z-index: 3;
-  box-shadow: 0 -1px 8px rgba(0,0,0,.5);
+  z-index: 5;
+  position: relative;
+  box-shadow: 0 -1px 12px rgba(0,0,0,.5);
 }
 
 .ml-toolbar-layout {
