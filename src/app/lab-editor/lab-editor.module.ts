@@ -8,7 +8,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ToolbarModule } from '../toolbar/toolbar.module';
 
 import { LabResolver } from './lab.resolver';
-import { HasExecutionGuard } from './has-execution.guard';
+import { HasValidExecutionGuard } from './has-valid-execution.guard';
 import { ROUTES } from './lab-editor.routes';
 
 import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.service';
@@ -68,7 +68,7 @@ import { ExecutionListComponent } from './execution-list/execution-list.componen
   ],
   providers: [
     LabResolver,
-    HasExecutionGuard,
+    HasValidExecutionGuard,
     RemoteLabExecService,
     EditorSnackbarService,
     LabConfigService,
