@@ -35,13 +35,19 @@ export class LabExecutionService {
       }, []);
   }
 
-
   getLatestExecutionIdForLab(id: string) {
     return this.authService
       .requireAuthOnce()
       .switchMap(_ => this.db.labExecutionsRef(id).limitToLast(1).onceValue())
       .map((snapshot: any) => snapshot.val())
       .map(value => value ? Object.keys(value)[0] : null);
+  }
+
+  executionExists(id: string) {
+    return this.authService
+      .requireAuth()
+      .switchMap(_ => this.db.executionRef(id).onceValue())
+      .map((snapshot: any) => !!snapshot.val());
   }
 }
 

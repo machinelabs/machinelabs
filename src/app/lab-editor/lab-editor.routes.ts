@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { EditorViewComponent } from './editor-view/editor-view.component';
 import { LabResolver } from './lab.resolver';
-import { HasExecutionGuard } from './has-execution.guard';
+import { HasValidExecutionGuard } from './has-valid-execution.guard';
 
 
 export const ROUTES: Routes = [
@@ -18,13 +18,14 @@ export const ROUTES: Routes = [
     resolve: {
       lab: LabResolver
     },
-    canActivate: [HasExecutionGuard]
+    canActivate: [HasValidExecutionGuard]
   },
   {
     path: ':id/:executionId',
     component: EditorViewComponent,
     resolve: {
       lab: LabResolver
-    }
+    },
+    canActivate: [HasValidExecutionGuard]
   }
 ];

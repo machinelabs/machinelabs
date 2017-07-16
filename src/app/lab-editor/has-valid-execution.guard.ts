@@ -14,7 +14,7 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 
 @Injectable()
-export class HasExecutionGuard implements CanActivate {
+export class HasValidExecutionGuard implements CanActivate {
 
   constructor(
     private router: Router,
@@ -30,20 +30,26 @@ export class HasExecutionGuard implements CanActivate {
     const labId = route.paramMap.get('id');
     const executionId = route.paramMap.get('executionId');
 
+
     // If we don't have an execution id in the URL, check for the latest available
     // execution for this lab and redirect to the lab including the execution id.
     // If no execution exists, simply activate the component. This means that we're
     // navigating to a lab that simply hasn't been executed yet.
-    return this.labExecutionService
-        .getLatestExecutionIdForLab(labId)
-        .map(_executionId => {
-          if (!_executionId) {
-            return true
-          }
-          this.router.navigate(['/editor', labId, _executionId], {
-            queryParamsHandling: 'merge',
-            relativeTo: this.route
-          });
-        });
+    const checkForLatestExecution$ = this.labExecutionService
+                      .getLatestExecutionIdForLab(labId)
+                      .do(_executionId => {
+                        if (_executionId) {
+                          this.router.navigate(['/editor', labId, _executionId], {
+                            queryParamsHandling: 'merge',
+                            relativeTo: this.route
+                          });
+                        }
+                      })
+                      .map(_executionId => !executionId);
+
+    return !executionId ?
+      checkForLatestExecution$ :
+      this.labExecutionService.executionExists(executionId)
+        .switchMap(exists => exists ? Observable.of(true) : checkForLatestExecution$);
   }
 }
