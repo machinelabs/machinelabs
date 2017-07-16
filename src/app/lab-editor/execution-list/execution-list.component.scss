@@ -1,5 +1,5 @@
 .ml-execution-panel-header {
-  font-weight: 600;
+  font-weight: 400;
   md-icon {
     vertical-align: -20%;
     font-size: 22px;
@@ -18,6 +18,10 @@
       height: 40px;
       vertical-align: -20%;
     }
+  }
+
+  .selected & {
+    font-weight: 600;
   }
 }
 
