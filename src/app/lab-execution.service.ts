@@ -49,5 +49,13 @@ export class LabExecutionService {
       .switchMap(_ => this.db.executionRef(id).onceValue())
       .map((snapshot: any) => !!snapshot.val());
   }
+
+  updateExecution(execution: Execution) {
+    return this.authService
+      .requireAuthOnce()
+      .switchMap(_ => this.db.executionRef(execution.id).update({
+        hidden: execution.hidden
+      }));
+  }
 }
 

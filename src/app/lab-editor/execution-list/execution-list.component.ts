@@ -3,6 +3,8 @@ import { Observable } from 'rxjs/Observable';
 
 import { UserService } from 'app/user/user.service';
 import { RemoteLabExecService } from '../../lab-editor/remote-code-execution/remote-lab-exec.service';
+import { LabExecutionService } from '../../lab-execution.service';
+import { EditorSnackbarService } from '../editor-snackbar.service';
 
 import { User } from '../../models/user';
 import { Execution, ExecutionStatus } from '../../models/execution';
@@ -27,6 +29,8 @@ export class ExecutionListComponent implements OnInit, OnDestroy {
   private userSubscription;
 
   constructor(public userService: UserService,
+              private labExecutionService: LabExecutionService,
+              private editorSnackbar: EditorSnackbarService,
               private rleService: RemoteLabExecService) {
   }
 
@@ -37,6 +41,16 @@ export class ExecutionListComponent implements OnInit, OnDestroy {
 
   stop(execution: Execution) {
     this.rleService.stop(execution.id);
+  }
+
+  remove(execution: Execution) {
+    execution.hidden = true;
+    this.labExecutionService
+        .updateExecution(execution)
+        .subscribe(
+          _ => this.editorSnackbar.notifyExecutionRemoved(),
+          _ => this.editorSnackbar.notifyError()
+        );
   }
 
   ngOnDestroy() {

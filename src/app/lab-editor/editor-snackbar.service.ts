@@ -34,7 +34,15 @@ export class EditorSnackbarService {
     this.notify('Execution finished');
   }
 
+  notifyExecutionRemoved() {
+    this.notify('Execution removed');
+  }
+
   notifyLateExecution() {
     return this.notify('The server doesn\'t seem responding');
+  }
+
+  notifyError() {
+    this.notify('Request failed, please try again');
   }
 }
