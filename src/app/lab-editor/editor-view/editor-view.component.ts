@@ -15,6 +15,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Lab, File } from '../../models/lab';
 import { LabExecutionService } from '../../lab-execution.service';
+import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { LocationHelper } from '../../util/location-helper';
 import {
   Execution,
@@ -49,6 +50,7 @@ interface EditLabDialogOptions {
 
 const METADATA_SIDEBAR_OPEN_TIMEOUT = 600;
 const EXECUTION_START_TIMEOUT = 5000;
+const INITIAL_LOADING_INDICATOR_PROGRESS = 10;
 
 @Component({
   selector: 'ml-editor-view',
@@ -103,6 +105,7 @@ export class EditorViewComponent implements OnInit {
                private location: Location,
                private locationHelper: LocationHelper,
                private router: Router,
+               private slimLoadingBarService: SlimLoadingBarService,
                private labExecutionService: LabExecutionService) {
   }
 
@@ -144,6 +147,7 @@ export class EditorViewComponent implements OnInit {
   }
 
   run(lab: Lab) {
+    this.slimLoadingBarService.progress = INITIAL_LOADING_INDICATOR_PROGRESS;
     this.outputPanel.clear();
     this.selectTab(TabIndex.Console);
     // First check if this lab is already persisted or not. We don't want to
