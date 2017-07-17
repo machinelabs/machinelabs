@@ -76,7 +76,8 @@ type Execution {
   user_id: ServerWritableString,
   lab: InvocationLab,
   status: ServerWritableNumber,
-  hidden: Boolean | Null
+  hidden: Boolean | Null,
+  name: String | Null
 }
 
 type ExecutionMessage {

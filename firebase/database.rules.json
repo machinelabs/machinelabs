@@ -169,6 +169,9 @@
           "hidden": {
             ".validate": "newData.isBoolean()"
           },
+          "name": {
+            ".validate": "newData.isString()"
+          },
           "$other": {
             ".validate": "false"
           },
