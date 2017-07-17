@@ -153,15 +153,18 @@ export class EditorViewComponent implements OnInit {
         // the url accordingly, so it can be easily shared.
         .switchMap(exists => exists ? Observable.of(null) : this.labStorageService.saveLab(lab))
         .subscribe(_ => {
-          const executionId = this.rleService.run(lab);
-
-          // A new execution also means a new execution id. We update the
-          // query parameter accordingly so the correct state is represented
-          // in the UI.
-          this.router.navigate(['/editor', lab.id, executionId], {
-            queryParamsHandling: 'merge',
-            relativeTo: this.route
-          });
+          this.rleService.run(lab)
+              .execution
+              .take(1)
+              .subscribe(execution => {
+                // A new execution also means a new execution id. We update the
+                // query parameter accordingly so the correct state is represented
+                // in the UI.
+                this.router.navigate(['/editor', lab.id, execution.id], {
+                  queryParamsHandling: 'merge',
+                  relativeTo: this.route
+                });
+              });
         });
   }
 

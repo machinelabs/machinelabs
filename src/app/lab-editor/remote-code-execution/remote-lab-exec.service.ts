@@ -38,7 +38,7 @@ export class RemoteLabExecService {
     this.messageStreamOptimizer = new MessageStreamOptimizer(db, this.PARTITION_SIZE, this.FULL_FETCH_TRESHOLD);
   }
 
-  run(lab: Lab): string {
+  run(lab: Lab): ExecutionWrapper {
     let id = this.newInvocationId();
     let executionWrapper$ = this.authService
       .requireAuthOnce()
@@ -52,9 +52,13 @@ export class RemoteLabExecService {
           directory: lab.directory
         }
       }))
-      .subscribe();
+      .map(_ => this.listen(id));
 
-    return id;
+    return {
+      executionId: id,
+      execution: executionWrapper$.switchMap(val => val.execution),
+      messages: executionWrapper$.switchMap(val => val.messages),
+    };
   }
 
   listen(executionId: string): ExecutionWrapper {
