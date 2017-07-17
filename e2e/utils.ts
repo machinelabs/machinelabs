@@ -22,7 +22,7 @@ import { browser, element, by } from 'protractor';
  * [2] - https://github.com/angular/protractor/blob/master/docs/timeouts.md
  */
 export function waitForContentReady() {
-    browser.wait(() => element.all(by.css('ml-app > *')).count().then(count => count > 1));
+    browser.wait(() => element.all(by.css('ml-app > *')).count().then(count => count > 2));
   }
 
 

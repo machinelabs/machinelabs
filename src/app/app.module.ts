@@ -9,6 +9,7 @@ import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule, PreloadAllModules } from '@angular/router';
+import { SlimLoadingBarModule } from 'ng2-slim-loading-bar';
 
 import { SharedModule } from './shared/shared.module';
 
@@ -46,6 +47,7 @@ const AnimationsModule = [environment.testing ? NoopAnimationsModule : BrowserAn
     ReactiveFormsModule,
     FlexLayoutModule,
     RouterModule.forRoot(APP_ROUTES, { preloadingStrategy: PreloadAllModules }),
+    SlimLoadingBarModule.forRoot(),
     SharedModule
   ],
   providers: [
