@@ -57,17 +57,26 @@ type Invocation {
   data: InvocationLab | InvocationExecution
 }
 
+type ServerWritableString extends String {
+  validate() { isExecutionServer() }
+}
+
+type ServerWritableNumber extends Number {
+  validate() { isExecutionServer() }
+}
+
 type Execution {
-  id: String,
-  cache_hash: String,
-  started_at: Number,
-  finished_at: Number | Null,
-  server_id: String,
-  server_info: String,
-  hardware_type: String,
-  user_id: String,
+  id: ServerWritableString,
+  cache_hash: ServerWritableString,
+  started_at: ServerWritableNumber,
+  finished_at: ServerWritableNumber | Null,
+  server_id: ServerWritableString,
+  server_info: ServerWritableString,
+  hardware_type: ServerWritableString,
+  user_id: ServerWritableString,
   lab: InvocationLab,
-  status: Number
+  status: ServerWritableNumber,
+  hidden: Boolean | Null
 }
 
 type ExecutionMessage {
@@ -142,7 +151,8 @@ path /invocations {
 
 path /executions/{id}/common is Execution {
   read() { true }
-  write() { isExecutionServer() }
+  write() { isOwningUser(this, 'user_id') || isExecutionServer() }
+
 }
 
 path /executions {

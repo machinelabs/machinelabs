@@ -116,28 +116,28 @@
         "common": {
           ".validate": "newData.hasChildren(['id', 'cache_hash', 'started_at', 'server_id', 'server_info', 'hardware_type', 'user_id', 'lab', 'status'])",
           "id": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && auth.uid == 'execution-server'"
           },
           "cache_hash": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && auth.uid == 'execution-server'"
           },
           "started_at": {
-            ".validate": "newData.isNumber()"
+            ".validate": "newData.isNumber() && auth.uid == 'execution-server'"
           },
           "finished_at": {
-            ".validate": "newData.isNumber()"
+            ".validate": "newData.isNumber() && auth.uid == 'execution-server'"
           },
           "server_id": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && auth.uid == 'execution-server'"
           },
           "server_info": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && auth.uid == 'execution-server'"
           },
           "hardware_type": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && auth.uid == 'execution-server'"
           },
           "user_id": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && auth.uid == 'execution-server'"
           },
           "lab": {
             ".validate": "newData.hasChildren(['id'])",
@@ -164,13 +164,16 @@
             }
           },
           "status": {
-            ".validate": "newData.isNumber()"
+            ".validate": "newData.isNumber() && auth.uid == 'execution-server'"
+          },
+          "hidden": {
+            ".validate": "newData.isBoolean()"
           },
           "$other": {
             ".validate": "false"
           },
           ".read": "true",
-          ".write": "auth.uid == 'execution-server'"
+          ".write": "(data.val() != null ? auth != null && auth.uid == data.child('user_id').val() && (auth != null && auth.uid == newData.child('user_id').val()) : auth != null && auth.uid == newData.child('user_id').val()) || auth.uid == 'execution-server'"
         },
         "messages": {
           ".read": "true",
