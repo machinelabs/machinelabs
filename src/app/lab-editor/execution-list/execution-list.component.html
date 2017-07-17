@@ -2,8 +2,8 @@
   <ng-container *ngFor="let execution of executions">
     <ng-container *ngIf="execution | async as execution">
       <md-expansion-panel
-        *ngIf="execution.status != ExecutionStatus.Pristine; else noExecutionMessage"
         class="ml-execution-panel"
+        *ngIf="!execution.hidden"
         [expanded]="execution.id == activeId"
         [ngClass]="{
           finished: execution.status == ExecutionStatus.Finished,
@@ -50,7 +50,7 @@
           </a>
           <button md-button (click)="stop(execution)" *ngIf="execution.status === ExecutionStatus.Executing && userService.userOwnsExecution(user, execution)">Stop</button>
           <button md-button (click)="restart.emit(execution)" *ngIf="execution.status != ExecutionStatus.Executing && execution.status != ExecutionStatus.Pristine && userService.userOwnsExecution(user, execution)">Restart</button>
-          <button md-button (click)="remove.emit(execution)" *ngIf="execution.status != ExecutionStatus.Executing && userService.userOwnsExecution(user, execution)">Remove</button>
+          <button md-button (click)="remove(execution)" *ngIf="execution.status != ExecutionStatus.Executing && execution.id != activeId && userService.userOwnsExecution(user, execution)">Remove</button>
         </div>
       </md-expansion-panel>
     </ng-container>

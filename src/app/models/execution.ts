@@ -24,6 +24,7 @@ export interface Execution {
   lab?: InvocationLab;
   redirected?: boolean;
   status: ExecutionStatus;
+  hidden?: boolean;
 }
 
 export enum MessageKind {
