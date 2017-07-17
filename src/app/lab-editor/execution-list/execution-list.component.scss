@@ -43,3 +43,13 @@
 .ml-execution-panel-info {
   margin-top: 0.2em;
 }
+
+.ml-execution-panel-cta-bar {
+  position: relative;
+
+  [md-icon-button] {
+    position: absolute;
+    right: -1em;
+    top: -0.1em;
+  }
+}

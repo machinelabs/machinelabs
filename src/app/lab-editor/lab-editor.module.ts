@@ -29,6 +29,7 @@ import { NavigationConfirmDialogComponent } from './navigation-confirm-dialog/na
 import { EditLabDialogComponent } from './edit-lab-dialog/edit-lab-dialog.component';
 import { RejectionDialogComponent } from './rejection-dialog/rejection-dialog.component';
 import { ShareDialogComponent } from './share-dialog/share-dialog.component';
+import { EditExecutionDialogComponent } from './edit-execution-dialog/edit-execution-dialog.component';
 
 import { DistanceInWordsStrictPipe } from './distance-in-words-strict.pipe';
 import { DistanceInWordsToNowPipe } from './distance-in-words-to-now.pipe';
@@ -64,7 +65,8 @@ import { ExecutionListComponent } from './execution-list/execution-list.componen
     DistanceInWordsToNowPipe,
     ExecutionStatusPipe,
     FooterComponent,
-    ExecutionListComponent
+    ExecutionListComponent,
+    EditExecutionDialogComponent
   ],
   providers: [
     LabResolver,
@@ -79,7 +81,8 @@ import { ExecutionListComponent } from './execution-list/execution-list.componen
     EditLabDialogComponent,
     FileNameDialogComponent,
     RejectionDialogComponent,
-    ShareDialogComponent
+    ShareDialogComponent,
+    EditExecutionDialogComponent
   ]
 })
 export class LabEditorModule {}
