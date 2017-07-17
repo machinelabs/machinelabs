@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { MdDialog, MdDialogRef } from '@angular/material';
 
 import { UserService } from 'app/user/user.service';
 import { RemoteLabExecService } from '../../lab-editor/remote-code-execution/remote-lab-exec.service';
@@ -8,6 +9,8 @@ import { EditorSnackbarService } from '../editor-snackbar.service';
 
 import { User } from '../../models/user';
 import { Execution, ExecutionStatus } from '../../models/execution';
+
+import { EditExecutionDialogComponent } from '../edit-execution-dialog/edit-execution-dialog.component';
 
 @Component({
   selector: 'ml-execution-list',
@@ -28,9 +31,12 @@ export class ExecutionListComponent implements OnInit, OnDestroy {
 
   private userSubscription;
 
+  editExecutionDialogRef: MdDialogRef<EditExecutionDialogComponent>;
+
   constructor(public userService: UserService,
               private labExecutionService: LabExecutionService,
               private editorSnackbar: EditorSnackbarService,
+              private dialog: MdDialog,
               private rleService: RemoteLabExecService) {
   }
 
@@ -49,6 +55,26 @@ export class ExecutionListComponent implements OnInit, OnDestroy {
         .updateExecution(execution)
         .subscribe(
           _ => this.editorSnackbar.notifyExecutionRemoved(),
+          _ => this.editorSnackbar.notifyError()
+        );
+  }
+
+  showEditExecutionModal(execution: Execution) {
+    this.editExecutionDialogRef = this.dialog.open(EditExecutionDialogComponent, {
+      data: {
+        execution: execution
+      }
+    });
+
+    this.editExecutionDialogRef
+        .afterClosed()
+        .filter(name => name !== undefined)
+        .switchMap(name => {
+          execution.name = name;
+          return this.labExecutionService.updateExecution(execution);
+        })
+        .subscribe(
+          _ => this.editorSnackbar.notifyExecutionUpdated(),
           _ => this.editorSnackbar.notifyError()
         );
   }

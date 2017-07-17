@@ -23,7 +23,7 @@
             <md-icon *ngSwitchCase="ExecutionStatus.Stopped">info</md-icon>
             <md-icon *ngSwitchCase="ExecutionStatus.Failed">block</md-icon>
           </ng-container>
-          #{{ execution.id }}
+          {{ execution.name || '#' + execution.id }}
           </span>
         </md-expansion-panel-header>
         <div class="ml-execution-panel-content">
@@ -40,7 +40,7 @@
             </time>
           </div>
         </div>
-        <div class="ml-execution-metadata-cta-bar">
+        <div class="ml-execution-panel-cta-bar">
           <a [routerLink]="['../', execution.id]"
             queryParamsHandling="merge"
             title="View this execution"
@@ -50,7 +50,15 @@
           </a>
           <button md-button (click)="stop(execution)" *ngIf="execution.status === ExecutionStatus.Executing && userService.userOwnsExecution(user, execution)">Stop</button>
           <button md-button (click)="restart.emit(execution)" *ngIf="execution.status != ExecutionStatus.Executing && execution.status != ExecutionStatus.Pristine && userService.userOwnsExecution(user, execution)">Restart</button>
-          <button md-button (click)="remove(execution)" *ngIf="execution.status != ExecutionStatus.Executing && execution.id != activeId && userService.userOwnsExecution(user, execution)">Remove</button>
+
+          <button md-icon-button [md-menu-trigger-for]="menu">
+            <md-icon>more_vert</md-icon>
+          </button>
+
+          <md-menu #menu="mdMenu" yPosition="above">
+            <button md-menu-item (click)="showEditExecutionModal(execution)" *ngIf="userService.userOwnsExecution(user, execution)">Edit</button>
+            <button md-menu-item (click)="remove(execution)" *ngIf="execution.status != ExecutionStatus.Executing && execution.id != activeId && userService.userOwnsExecution(user, execution)">Remove</button>
+  </md-menu>
         </div>
       </md-expansion-panel>
     </ng-container>

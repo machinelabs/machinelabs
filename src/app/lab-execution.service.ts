@@ -54,7 +54,8 @@ export class LabExecutionService {
     return this.authService
       .requireAuthOnce()
       .switchMap(_ => this.db.executionRef(execution.id).update({
-        hidden: execution.hidden
+        hidden: execution.hidden || false,
+        name: execution.name || ''
       }));
   }
 }

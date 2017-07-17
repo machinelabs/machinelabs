@@ -25,6 +25,7 @@ export interface Execution {
   redirected?: boolean;
   status: ExecutionStatus;
   hidden?: boolean;
+  name?: string;
 }
 
 export enum MessageKind {

@@ -38,6 +38,10 @@ export class EditorSnackbarService {
     this.notify('Execution removed');
   }
 
+  notifyExecutionUpdated() {
+    return this.notify('Execution updated');
+  }
+
   notifyLateExecution() {
     return this.notify('The server doesn\'t seem responding');
   }
