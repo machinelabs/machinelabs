@@ -51,7 +51,7 @@
           <button md-button (click)="stop(execution)" *ngIf="execution.status === ExecutionStatus.Executing && userService.userOwnsExecution(user, execution)">Stop</button>
           <button md-button (click)="restart.emit(execution)" *ngIf="execution.status != ExecutionStatus.Executing && execution.status != ExecutionStatus.Pristine && userService.userOwnsExecution(user, execution)">Restart</button>
 
-          <button md-icon-button [md-menu-trigger-for]="menu">
+          <button md-icon-button [md-menu-trigger-for]="menu" *ngIf="userService.userOwnsExecution(user, execution)">
             <md-icon>more_vert</md-icon>
           </button>
 
