@@ -358,12 +358,10 @@ export class EditorViewComponent implements OnInit {
         .take(1)
         .map(executions => executions.length > 0 ? executions[0] : null)
         .filter(obsExecution => !!obsExecution)
-        .switchMap(obsExecution => obsExecution)
         .subscribe(execution => {
           // Only attach to an existing execution if the user did not do it by themself
           if (this.clientExecutionState === ClientExecutionState.NotExecuting) {
             this.selectTab(TabIndex.Console);
-            this.listen(execution);
           }
         });
 
