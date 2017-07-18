@@ -1,5 +1,6 @@
 import { environment } from '../environments/environment';
 import { db, ObservableDbRef } from '../ml-firebase';
+import { ShortMonth } from '../models/months';
 
 export class DbRefBuilder {
   constructor() {}
@@ -46,6 +47,14 @@ export class DbRefBuilder {
 
   executionRef(id: string) {
     return new ObservableDbRef(db.ref(`executions/${id}/common`));
+  }
+
+  userExecutionsByMonthRef(userId: string, year: number, month: ShortMonth) {
+    return new ObservableDbRef(db.ref(`idx/user_executions/${userId}/${year}/${month}`));
+  }
+
+  userExecutionsLiveRef(userId: string) {
+    return new ObservableDbRef(db.ref(`idx/user_executions/${userId}/live`));
   }
 
   executionByHashRef(hash: string) {
