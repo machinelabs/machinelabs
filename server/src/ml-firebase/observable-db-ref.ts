@@ -9,6 +9,26 @@ export class ObservableDbRef {
     this.ref = ref;
   }
 
+  limitToLast(limit: number) {
+    return new ObservableDbRef(this.ref.limitToLast(limit));
+  }
+
+  limitToFirst(limit: number) {
+    return new ObservableDbRef(this.ref.limitToFirst(limit));
+  }
+
+  orderByChild(value: any) {
+    return new ObservableDbRef(this.ref.orderByChild(value));
+  }
+
+  startAt(value: any, key?: any) {
+    return new ObservableDbRef(this.ref.startAt(value, key));
+  }
+
+  endAt(value: any, key?: any) {
+    return new ObservableDbRef(this.ref.endAt(value, key));
+  }
+
   once(eventType: string): Observable<firebase.database.DataSnapshot> {
     return Observable.fromPromise(this.ref.once(eventType));
   }
