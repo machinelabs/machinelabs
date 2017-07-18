@@ -35,7 +35,7 @@ export class EditorSnackbarService {
   }
 
   notifyExecutionRemoved() {
-    this.notify('Execution removed');
+    return this.notify('Execution removed', { actionLabel: 'Undo', duration: 5000 });
   }
 
   notifyExecutionUpdated() {
@@ -48,5 +48,9 @@ export class EditorSnackbarService {
 
   notifyError() {
     this.notify('Request failed, please try again');
+  }
+
+  notifyActionUndone() {
+    this.notify('Undone');
   }
 }
