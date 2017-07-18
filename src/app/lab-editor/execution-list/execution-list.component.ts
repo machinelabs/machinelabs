@@ -53,8 +53,13 @@ export class ExecutionListComponent implements OnInit, OnDestroy {
     execution.hidden = true;
     this.labExecutionService
         .updateExecution(execution)
+        .switchMap(_ => this.editorSnackbar.notifyExecutionRemoved().onAction())
+        .switchMap(_ => {
+          execution.hidden = false;
+          return this.labExecutionService.updateExecution(execution);
+        })
         .subscribe(
-          _ => this.editorSnackbar.notifyExecutionRemoved(),
+          _ => this.editorSnackbar.notifyActionUndone(),
           _ => this.editorSnackbar.notifyError()
         );
   }
