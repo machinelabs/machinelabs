@@ -8,7 +8,8 @@ import {
   ExecutionStatus,
   ExecutionMessage,
   MessageKind,
-  ExecutionWrapper
+  ExecutionWrapper,
+  ExecutionInvocationInfo
 } from '../../models/execution';
 import { MessageStreamOptimizer } from './message-stream-optimizer';
 
@@ -24,6 +25,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/concat';
+import 'rxjs/add/operator/startWith';
 import '../../rx/takeWhileInclusive';
 
 @Injectable()
@@ -38,9 +40,9 @@ export class RemoteLabExecService {
     this.messageStreamOptimizer = new MessageStreamOptimizer(db, this.PARTITION_SIZE, this.FULL_FETCH_TRESHOLD);
   }
 
-  run(lab: Lab): ExecutionWrapper {
+  run(lab: Lab): Observable<ExecutionInvocationInfo> {
     let id = this.newInvocationId();
-    let executionWrapper$ = this.authService
+    return this.authService
       .requireAuthOnce()
       .switchMap(login => this.db.invocationRef(id).set({
         id: id,
@@ -52,13 +54,43 @@ export class RemoteLabExecService {
           directory: lab.directory
         }
       }))
-      .map(_ => this.listen(id));
+      .switchMap(_ =>  this.db.executionMessageRef(id).limitToFirst(1).childAdded().take(1))
+      .map(snapshot => snapshot.val())
+      .switchMap(message => {
+        // If the execution was rejected, there's no point to try to fetch it
+        // hence we directly return the ExecutionInvocationInfo which ends the whole stream
+        if (message.kind === MessageKind.ExecutionRejected) {
+          return Observable.of({
+            executionId: id,
+            rejection: message.data,
+            persistent: false
+          });
+        } else {
+          // As we start listening for the execution before it may be written, we have
+          // to continue to listen until it is not null anymore. We do want the first non-null
+          // value to get propagated, hence the takeWhileInclusive.
+          // Theoretically we could map the null value to an ExecutionInvocationInfo that
+          // has `persistent` set to `false` but that would match exactly the same message
+          // that gets propagated synchronously in the beginning which means it doesn't add any
+          // value, hence we filter it out.
+          return this.db.executionRef(id)
+                 .value()
+                 .map(s => s.val())
+                 .takeWhileInclusive(e => e === null)
+                 .filter(e => e !== null)
+                 .map(_ => ({ persistent: true, executionId: id, rejection: null}));
+        }
+      })
+      .startWith({
+        executionId: id,
+        persistent: false,
+        rejection: null
+      });
+  }
 
-    return {
-      executionId: id,
-      execution: executionWrapper$.switchMap(val => val.execution),
-      messages: executionWrapper$.switchMap(val => val.messages),
-    };
+  runAndListen(lab: Lab): Observable<ExecutionWrapper> {
+    return this.run(lab)
+               .map(info => this.listen(info.executionId));
   }
 
   listen(executionId: string): ExecutionWrapper {
@@ -69,10 +101,10 @@ export class RemoteLabExecService {
 
     let messages$ = this.messageStreamOptimizer.listenForMessages(executionId);
 
-    return this.consumeExecution(executionId, messages$, execution$);
+    return this.consumeExecution(messages$, execution$);
   }
 
-  consumeExecution(executionId: string, messages: Observable<ExecutionMessage>, execution: Observable<Execution>): ExecutionWrapper {
+  consumeExecution(messages: Observable<ExecutionMessage>, execution: Observable<Execution>): ExecutionWrapper {
 
     let sharedMessages = messages.share();
     let sharedExecution = execution.share();
@@ -93,7 +125,6 @@ export class RemoteLabExecService {
                       .takeUntil(rejectedMessage);
 
     return {
-      executionId: executionId,
       messages: messages$,
       execution: execution$
     };

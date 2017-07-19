@@ -149,7 +149,7 @@ describe('RemoteLabExecService', () => {
         expect(executionsSubscriber).toBe(1);
       });
 
-      const wrapper = rleService.consumeExecution('someid', messages$, executions$);
+      const wrapper = rleService.consumeExecution(messages$, executions$);
 
       wrapper.messages
               .do(msg => actualMessages.push(msg))
@@ -220,7 +220,7 @@ describe('RemoteLabExecService', () => {
         expect(executionsSubscriber).toBe(1);
       });
 
-      const wrapper = rleService.consumeExecution('someid', messages$, executions$);
+      const wrapper = rleService.consumeExecution(messages$, executions$);
 
       wrapper.messages
               .do(msg => actualMessages.push(msg))
