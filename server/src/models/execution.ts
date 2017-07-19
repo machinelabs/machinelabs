@@ -41,7 +41,8 @@ export interface ExecutionMessage {
 export enum ExecutionRejectionReason {
   NoAnonymous,
   NoPlan,
-  InvalidConfig
+  InvalidConfig,
+  OutOfCredits
 }
 
 export class ExecutionRejectionInfo extends AbstractValidationError {
