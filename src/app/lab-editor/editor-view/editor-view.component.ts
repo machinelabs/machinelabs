@@ -161,16 +161,22 @@ export class EditorViewComponent implements OnInit {
         .switchMap(exists => exists ? Observable.of(null) : this.labStorageService.saveLab(lab))
         .subscribe(_ => {
           this.rleService.run(lab)
-              .execution
-              .take(1)
-              .subscribe(execution => {
-                // A new execution also means a new execution id. We update the
-                // query parameter accordingly so the correct state is represented
-                // in the UI.
-                this.router.navigate(['/editor', lab.id, execution.id], {
-                  queryParamsHandling: 'merge',
-                  relativeTo: this.route
-                });
+              .subscribe(info => {
+                if (info.persistent) {
+                  // A new execution also means a new execution id. We update the
+                  // query parameter accordingly so the correct state is represented
+                  // in the UI.
+                  this.router.navigate(['/editor', lab.id, info.executionId], {
+                    queryParamsHandling: 'merge',
+                    relativeTo: this.route
+                  });
+                } else if (info.rejection) {
+                  if (info.rejection.reason === ExecutionRejectionReason.InvalidConfig) {
+                    this.editorSnackbar.notifyInvalidConfig();
+                  } else {
+                    this.openRejectionDialog();
+                  }
+                }
               });
         });
   }
@@ -202,15 +208,6 @@ export class EditorViewComponent implements OnInit {
                       if (msg.kind === MessageKind.ExecutionFinished) {
                         this.clientExecutionState = ClientExecutionState.NotExecuting;
                         this.editorSnackbar.notifyExecutionFinished();
-                      } else if (msg.kind === MessageKind.ExecutionRejected) {
-                        this.clientExecutionState = ClientExecutionState.NotExecuting;
-                        if (ExecutionRejectionInfo.isOfType(msg.data)) {
-                          if (msg.data.reason === ExecutionRejectionReason.InvalidConfig) {
-                            this.editorSnackbar.notifyInvalidConfig();
-                          } else {
-                            this.openRejectionDialog();
-                          }
-                        }
                       }
                     })
                     .filter(msg => msg.kind === MessageKind.ExecutionStarted ||
