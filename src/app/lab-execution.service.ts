@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { DbRefBuilder } from './firebase/db-ref-builder';
 import { AuthService } from './auth';
 import { Lab } from './models/lab';
-import { Execution } from './models/execution';
+import { Execution, ExecutionStatus } from './models/execution';
 import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/add/operator/scan';
@@ -43,6 +43,13 @@ export class LabExecutionService {
       .map(value => value ? Object.keys(value)[0] : null);
   }
 
+  getExecution(id: string) {
+    return this.authService
+      .requireAuthOnce()
+      .switchMap(_ => this.db.executionRef(id).onceValue())
+      .map((snapshot: any) => snapshot.val());
+  }
+
   getLatestVisibleExecutionIdForLab(id: string) {
     return this.authService
       .requireAuthOnce()
@@ -58,6 +65,18 @@ export class LabExecutionService {
       .map((snapshot: any) => !!snapshot.val());
   }
 
+  getExecutionsFromLab(id: string) {
+    return this.authService
+      .requireAuthOnce()
+      .switchMap(_ => this.db.labVisibleExecutionsRef(id).onceValue())
+      .map((snapshot: any) => snapshot.val())
+      .map(executionIds => Object.keys(executionIds || {}))
+      .map(executionIds => executionIds.map(executionId => this.getExecution(executionId)))
+      .switchMap(executionRefs => executionRefs.length ? Observable.forkJoin(executionRefs) : Observable.of([]))
+      // for safety
+      .map(executions => executions.filter(execution => execution));
+  }
+
   updateExecution(execution: Execution) {
     return this.authService
       .requireAuthOnce()
@@ -65,6 +84,12 @@ export class LabExecutionService {
         hidden: execution.hidden || false,
         name: execution.name || ''
       }));
+  }
+
+  labHasRunningExecutions(id: string) {
+    return this.getExecutionsFromLab(id)
+      .map(executions => executions.filter(execution => execution.status === ExecutionStatus.Executing))
+      .map(executions => !!executions.length);
   }
 }
 
