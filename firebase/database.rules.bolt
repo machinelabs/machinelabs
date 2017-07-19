@@ -153,7 +153,6 @@ path /invocations {
 path /executions/{id}/common is Execution {
   read() { true }
   write() { isOwningUser(this, 'user_id') || isExecutionServer() }
-
 }
 
 path /executions {
@@ -193,6 +192,11 @@ path /user_labs/{id} {
 }
 
 path /lab_executions/{id} {
+  read() { true }
+  write() { false }
+}
+
+path /lab_visible_executions/{id} {
   read() { true }
   write() { false }
 }

@@ -273,6 +273,11 @@
       "$id": {
         ".read": "true"
       }
+    },
+    "lab_visible_executions": {
+      "$id": {
+        ".read": "true"
+      }
     }
   }
 }

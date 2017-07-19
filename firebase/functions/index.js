@@ -4,8 +4,9 @@ admin.initializeApp(functions.config().firebase);
 
 const assignServer = require('./assign-server');
 const postLabWrite = require('./post-lab-write');
-const postExecutionInvocation = require('./post-execution-invocation');
+const postExecutionWrite = require('./post-execution-write');
+
 
 exports.assignServer = assignServer;
 exports.postLabWrite = postLabWrite;
-exports.postExecutionInvocation = postExecutionInvocation;
+exports.postExecutionWrite = postExecutionWrite;
