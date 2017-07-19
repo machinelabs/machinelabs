@@ -26,7 +26,7 @@ export class HasValidExecutionGuard implements CanActivate {
   // to the URL if one exists. We're using a guard so we can prevent the activation
   // of the editor and redirect with an execution id if one exists but is missing
   // in the URL.
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  canActivate(route: ActivatedRouteSnapshot) {
     const labId = route.paramMap.get('id');
     const executionId = route.paramMap.get('executionId');
 
@@ -36,7 +36,7 @@ export class HasValidExecutionGuard implements CanActivate {
     // If no execution exists, simply activate the component. This means that we're
     // navigating to a lab that simply hasn't been executed yet.
     const checkForLatestExecution$ = this.labExecutionService
-                      .getLatestExecutionIdForLab(labId)
+                      .getLatestVisibleExecutionIdForLab(labId)
                       .do(_executionId => {
                         if (_executionId) {
                           this.router.navigate(['/editor', labId, _executionId], {

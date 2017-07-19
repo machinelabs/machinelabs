@@ -23,6 +23,10 @@ export class DbRefBuilder {
     return new ObservableDbRef(this.db.ref(`lab_executions/${id}`));
   }
 
+  labVisibleExecutionsRef(id: string) {
+    return new ObservableDbRef(this.db.ref(`lab_visible_executions/${id}`));
+  }
+
   executionRef(id: string) {
     return new ObservableDbRef(this.db.ref(`executions/${id}/common`));
   }
