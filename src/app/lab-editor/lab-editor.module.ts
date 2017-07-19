@@ -9,6 +9,7 @@ import { ToolbarModule } from '../toolbar/toolbar.module';
 
 import { LabResolver } from './lab.resolver';
 import { HasValidExecutionGuard } from './has-valid-execution.guard';
+import { HasRunningExecutionGuard } from './has-running-execution.guard';
 import { ROUTES } from './lab-editor.routes';
 
 import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.service';
@@ -71,6 +72,7 @@ import { ExecutionListComponent } from './execution-list/execution-list.componen
   providers: [
     LabResolver,
     HasValidExecutionGuard,
+    HasRunningExecutionGuard,
     RemoteLabExecService,
     EditorSnackbarService,
     LabConfigService,

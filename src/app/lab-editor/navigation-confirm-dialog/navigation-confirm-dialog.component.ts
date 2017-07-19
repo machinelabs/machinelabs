@@ -1,22 +1,45 @@
-import { Component, OnInit } from '@angular/core';
-import { MdDialogRef } from '@angular/material';
+import { Component, Inject } from '@angular/core';
+import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+
+export enum NavigationConfirmReason {
+  UnsavedChanges,
+  RunningExecutions
+}
 
 @Component({
   selector: 'ml-navigation-confirm-dialog',
   template: `
-    <p>Are you sure? Unsaved changes will be gone.</p>
-    <div class="cta-bar">
+    <ml-dialog-header>Are you sure?</ml-dialog-header>
+    <ml-dialog-content>
+      <ng-container [ngSwitch]="data.reason">
+        <p *ngSwitchCase="NavigationConfirmReason.UnsavedChanges">
+          Unsaved changes will be gone.
+        </p>
+        <p *ngSwitchCase="NavigationConfirmReason.RunningExecutions">
+          You have running executions, but you can always come back to check them out.
+        </p>
+      </ng-container>
+    </ml-dialog-content>
+    <ml-dialog-cta-bar>
       <button md-button (click)="dialogRef.close(true)">Yes</button>
       <button md-button type="button" (click)="dialogRef.close()">Close</button>
-    </div>
+    </ml-dialog-cta-bar>
   `,
   styles: [`
-    .cta-bar {
-      text-align: center;
+    :host {
+      display: block;
+      width: 500px;
     }
+
+    p { text-align: center; }
   `]
 })
 export class NavigationConfirmDialogComponent {
 
-  constructor(public dialogRef: MdDialogRef<NavigationConfirmDialogComponent>) { }
+  NavigationConfirmReason = NavigationConfirmReason;
+
+  constructor(
+    public dialogRef: MdDialogRef<NavigationConfirmDialogComponent>,
+    @Inject(MD_DIALOG_DATA) public data: any
+  ) { }
 }

@@ -5,7 +5,10 @@ import { MdDialog, MdDialogRef, MdSnackBar, MdTabGroup, MdSidenav } from '@angul
 import { AceEditorComponent } from '../ace-editor/ace-editor.component';
 import { FileNameDialogComponent } from '../file-name-dialog/file-name-dialog.component';
 import { EditLabDialogComponent } from '../edit-lab-dialog/edit-lab-dialog.component';
-import { NavigationConfirmDialogComponent } from '../navigation-confirm-dialog/navigation-confirm-dialog.component';
+import {
+  NavigationConfirmDialogComponent,
+  NavigationConfirmReason
+} from '../navigation-confirm-dialog/navigation-confirm-dialog.component';
 import { RejectionDialogComponent } from '../rejection-dialog/rejection-dialog.component';
 import { RemoteLabExecService } from '../remote-code-execution/remote-lab-exec.service';
 import { EditorSnackbarService } from '../editor-snackbar.service';
@@ -286,7 +289,10 @@ export class EditorViewComponent implements OnInit {
 
   create() {
     this.navigationConfirmDialogRef = this.dialog.open(NavigationConfirmDialogComponent, {
-      disableClose: false
+      disableClose: false,
+      data: {
+        reason: NavigationConfirmReason.UnsavedChanges
+      }
     });
 
     this.navigationConfirmDialogRef.afterClosed()
