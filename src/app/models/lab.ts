@@ -1,4 +1,4 @@
-import { Execution, ExecutionStatus, ClientExecutionState } from './execution';
+import { Execution, ExecutionStatus } from './execution';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 

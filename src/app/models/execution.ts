@@ -9,10 +9,6 @@ export enum ExecutionStatus {
   Failed
 }
 
-export enum ClientExecutionState {
-  Executing,
-  NotExecuting
-}
 
 export interface Execution {
   id?: string;

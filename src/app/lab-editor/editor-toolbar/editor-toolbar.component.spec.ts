@@ -9,7 +9,7 @@ import { MachineLabsMaterialModule } from '../../ml-material.module';
 import { SharedModule } from '../../shared/shared.module';
 import { AuthService, dummyUser } from '../../auth/';
 import { EditorToolbarComponent, EditorToolbarActionTypes } from './editor-toolbar.component';
-import { ExecutionStatus, ClientExecutionState } from '../../models/execution';
+import { ExecutionStatus } from '../../models/execution';
 import { UserService } from '../../user/user.service';
 import { DbRefBuilder } from '../../firebase/db-ref-builder';
 import { DATABASE } from '../../app.tokens';

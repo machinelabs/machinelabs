@@ -24,7 +24,6 @@ import {
   Execution,
   ExecutionMessage,
   MessageKind,
-  ClientExecutionState,
   ExecutionRejectionInfo,
   ExecutionRejectionReason,
   ExecutionWrapper
@@ -72,7 +71,6 @@ export class EditorViewComponent implements OnInit {
 
   executions: Observable<Array<Observable<Execution>>>;
 
-  clientExecutionState = ClientExecutionState.NotExecuting;
 
   sidebarToggled = false;
 
@@ -206,7 +204,6 @@ export class EditorViewComponent implements OnInit {
     this.output = messages$
                     .do(msg => {
                       if (msg.kind === MessageKind.ExecutionFinished) {
-                        this.clientExecutionState = ClientExecutionState.NotExecuting;
                         this.editorSnackbar.notifyExecutionFinished();
                       }
                     })
@@ -361,11 +358,10 @@ export class EditorViewComponent implements OnInit {
         .take(1)
         .map(executions => executions.length > 0 ? executions[0] : null)
         .filter(obsExecution => !!obsExecution)
+        .switchMap(obsExecution => obsExecution)
         .subscribe(execution => {
-          // Only attach to an existing execution if the user did not do it by themself
-          if (this.clientExecutionState === ClientExecutionState.NotExecuting) {
-            this.selectTab(TabIndex.Console);
-          }
+          this.selectTab(TabIndex.Console);
+          this.listen(execution);
         });
 
     this.selectTab(TabIndex.Editor);
