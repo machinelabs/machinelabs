@@ -1,8 +1,33 @@
-<ml-dialog-header>Request <strong>your beta invite</strong></ml-dialog-header>
-<ml-dialog-content>
-  <p>Hoppla, looks like you aren't part of our <strong>private beta</strong> yet!</p>
-  <p>Without an invite you can only view existing executions. To run your own experiments you have to request an invite.</p>
-</ml-dialog-content>
-<ml-dialog-cta-bar>
-  <a md-button href="http://get.machinelabs.ai" title="Request an invite for our private beta!" target="_blank"><md-icon>send</md-icon> Request invite</a>
-</ml-dialog-cta-bar>
+<ng-container [ngSwitch]="data.rejectionReason">
+  <ng-container *ngSwitchCase="ExecutionRejectionReason.NoPlan || ExecutionRejectionReason.NoAnonymous">
+    <ml-dialog-header>Request <strong>your beta invite</strong></ml-dialog-header>
+    <ml-dialog-content>
+      <p>Hoppla, looks like you aren't part of our <strong>private beta</strong> yet!</p>
+      <p>Without an invite you can only view existing executions. To run your own experiments you have to request an invite.</p>
+    </ml-dialog-content>
+    <ml-dialog-cta-bar>
+      <a md-button href="http://get.machinelabs.ai" title="Request an invite for our private beta!" target="_blank"><md-icon>send</md-icon> Request invite</a>
+    </ml-dialog-cta-bar>
+  </ng-container>
+  <ng-container *ngSwitchCase="ExecutionRejectionReason.OutOfCredits">
+    <ml-dialog-header>Out of free monthly credits</ml-dialog-header>
+    <ml-dialog-content>
+      <p>Woah, you've been active! Looks like you've used up all your <strong>free</strong> monthly credits!</p>
+      <p>Next month you'll be able to launch executions as usual again.</p>
+      <p>In the future you'll get to choose a paid plan that allows unlimited executions.</p>
+    </ml-dialog-content>
+    <ml-dialog-cta-bar>
+      <button md-button [md-dialog-close]="true">Ok</button>
+    </ml-dialog-cta-bar>
+  </ng-container>
+  <ng-container *ngSwitchDefault>
+    <ml-dialog-header>Hoppla, something went wrong</ml-dialog-header>
+    <ml-dialog-content>
+      <p>Something went terrible wrong and honestly, we have no idea what exactly.</p>
+      <p>Please shoot us an email to <strong><a href="mailto:support@machinelabs.ai">support@machinelabs.ai</a></strong> if the problem continues</p>
+    </ml-dialog-content>
+    <ml-dialog-cta-bar>
+      <button md-button [md-dialog-close]="true">Ok</button>
+    </ml-dialog-cta-bar>
+  </ng-container>
+</ng-container>
