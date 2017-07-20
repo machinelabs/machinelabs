@@ -172,7 +172,7 @@ export class EditorViewComponent implements OnInit {
                   if (info.rejection.reason === ExecutionRejectionReason.InvalidConfig) {
                     this.editorSnackbar.notifyInvalidConfig();
                   } else {
-                    this.openRejectionDialog();
+                    this.openRejectionDialog(info.rejection.reason);
                   }
                 }
               });
@@ -346,8 +346,10 @@ export class EditorViewComponent implements OnInit {
       });
   }
 
-  openRejectionDialog() {
-    this.rejectionDialogRef = this.dialog.open(RejectionDialogComponent);
+  openRejectionDialog(rejectionReason: ExecutionRejectionReason) {
+    this.rejectionDialogRef = this.dialog.open(RejectionDialogComponent, {
+      data: { rejectionReason }
+    });
   }
 
   initLab(lab: Lab) {
