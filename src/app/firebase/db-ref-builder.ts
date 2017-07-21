@@ -20,11 +20,11 @@ export class DbRefBuilder {
   }
 
   labExecutionsRef(id: string) {
-    return new ObservableDbRef(this.db.ref(`lab_executions/${id}`));
+    return new ObservableDbRef(this.db.ref(`idx/lab_executions/${id}`));
   }
 
   labVisibleExecutionsRef(id: string) {
-    return new ObservableDbRef(this.db.ref(`lab_visible_executions/${id}`));
+    return new ObservableDbRef(this.db.ref(`idx/lab_visible_executions/${id}`));
   }
 
   executionRef(id: string) {
@@ -40,7 +40,7 @@ export class DbRefBuilder {
   }
 
   userLabsIdsRef(id: string) {
-    return new ObservableDbRef(this.db.ref(`user_labs/${id}`));
+    return new ObservableDbRef(this.db.ref(`idx/user_labs/${id}`));
   }
 }
 
