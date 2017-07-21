@@ -11,4 +11,5 @@ export interface ProcessStreamData {
 export interface CodeRunner {
   run (invocation:Invocation, configuration: PrivateLabConfiguration) : Observable<ProcessStreamData>
   stop (id: string) : void
+  count(): number
 }

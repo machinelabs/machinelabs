@@ -16,4 +16,8 @@ export class DummyRunner implements CodeRunner {
   stop(id: string) {
     
   }
+
+  count() {
+    return 0;
+  }
 }

@@ -43,7 +43,8 @@ export enum ExecutionRejectionReason {
   NoPlan,
   InvalidConfig,
   OutOfCredits,
-  ExceedsMaximumConcurrency
+  ExceedsMaximumConcurrency,
+  OverCapacity
 }
 
 export class ExecutionRejectionInfo extends AbstractValidationError {

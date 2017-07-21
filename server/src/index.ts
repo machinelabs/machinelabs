@@ -9,6 +9,7 @@ import { HasPlanRule } from './validation/rules/has-plan';
 import { NoAnonymousRule } from './validation/rules/no-anonymous';
 import { HasValidConfigRule } from './validation/rules/has-valid-config';
 import { HasCreditsLeftRule } from './validation/rules/has-credits-left';
+import { ServerHasCapacityRule } from './validation/rules/server-has-capacity';
 import { LabConfigService } from './lab-config/lab-config.service';
 import { UserResolver } from './validation/resolver/user-resolver';
 import { LabConfigResolver } from './validation/resolver/lab-config-resolver';
@@ -38,6 +39,7 @@ dockerImageService
       .addRule(new HasValidConfigRule())
       .addRule(new HasCreditsLeftRule())
       .addRule(new WithinConcurrencyLimit())
+      .addRule(new ServerHasCapacityRule(runner))
       .addResolver(UserResolver, new UserResolver())
       .addResolver(LabConfigResolver, new LabConfigResolver(dockerImageService, labConfigService))
       .addResolver(UsageStatisticResolver, new UsageStatisticResolver(usageStatisticService));

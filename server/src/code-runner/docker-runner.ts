@@ -16,6 +16,8 @@ const TMP_PARTITION_MODE = '1777';
  */
 export class DockerRunner implements CodeRunner {
 
+  processCount = 0;
+
   run(invocation: Invocation, configuration: PrivateLabConfiguration): Observable<ProcessStreamData> {
 
     // construct a shell command to create all files.
@@ -51,7 +53,9 @@ EOL
                                 `cd /run && (${writeCommand}) && python main.py`
                                 ]);
 
-    return ProcessUtil.toObservableProcess(ps);
+    this.processCount++;
+    return ProcessUtil.toObservableProcess(ps)
+                      .finally(() => this.processCount--);
   }
 
   stop (id: string, attempt = 0) {
@@ -85,6 +89,10 @@ EOL
           return;
         }
       });
+  }
+
+  count() {
+    return this.processCount;
   }
 
 
