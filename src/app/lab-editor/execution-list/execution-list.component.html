@@ -56,8 +56,8 @@
           </button>
 
           <md-menu #menu="mdMenu" yPosition="above">
-            <button md-menu-item (click)="showEditExecutionModal(execution)" *ngIf="userService.userOwnsExecution(user, execution)">Edit</button>
             <button md-menu-item (click)="remove(execution)" *ngIf="execution.status != ExecutionStatus.Executing && execution.id != activeId && userService.userOwnsExecution(user, execution)">Remove</button>
+            <button md-menu-item (click)="showEditExecutionModal(execution)" *ngIf="userService.userOwnsExecution(user, execution)">Edit</button>
   </md-menu>
         </div>
       </md-expansion-panel>
