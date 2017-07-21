@@ -19,11 +19,11 @@ module.exports = functions.database.ref('/executions/{id}/common')
   });
 
 function updateLabVisibleExecutions(event, data, delta) {
-  delta[`/lab_visible_executions/${data.lab.id}/${data.id}`] = data.hidden ? null : true;
+  delta[`/idx/lab_visible_executions/${data.lab.id}/${data.id}`] = data.hidden ? null : true;
 }
 
 function updateLabExecution(event, data, delta) {
-  delta[`/lab_executions/${data.lab.id}/${data.id}`] = true;
+  delta[`/idx/lab_executions/${data.lab.id}/${data.id}`] = true;
 }
 
 function updateUserExecutions(event, data, delta) {

@@ -186,17 +186,17 @@ path /servers {
 
 path /servers/{id} is Server {}
 
-path /user_labs/{id} {
+path /idx/user_labs/{id} {
   read() { true }
   write() { false }
 }
 
-path /lab_executions/{id} {
+path /idx/lab_executions/{id} {
   read() { true }
   write() { false }
 }
 
-path /lab_visible_executions/{id} {
+path /idx/lab_visible_executions/{id} {
   read() { true }
   write() { false }
 }

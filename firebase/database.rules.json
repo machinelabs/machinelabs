@@ -264,22 +264,22 @@
         }
       }
     },
-    "user_labs": {
-      "$id": {
-        ".read": "true"
-      }
-    },
-    "lab_executions": {
-      "$id": {
-        ".read": "true"
-      }
-    },
-    "lab_visible_executions": {
-      "$id": {
-        ".read": "true"
-      }
-    },
     "idx": {
+      "user_labs": {
+        "$id": {
+          ".read": "true"
+        }
+      },
+      "lab_executions": {
+        "$id": {
+          ".read": "true"
+        }
+      },
+      "lab_visible_executions": {
+        "$id": {
+          ".read": "true"
+        }
+      },
       "user_executions": {
         "$id": {
           ".read": "auth.uid == 'execution-server'"
