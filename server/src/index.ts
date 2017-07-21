@@ -14,6 +14,7 @@ import { UserResolver } from './validation/resolver/user-resolver';
 import { LabConfigResolver } from './validation/resolver/lab-config-resolver';
 import { ExecutionResolver } from './validation/resolver/execution-resolver';
 import { OwnsExecutionRule } from './validation/rules/owns-execution';
+import { WithinConcurrencyLimit } from './validation/rules/within-concurrency-limit';
 import { UsageStatisticResolver } from './validation/resolver/usage-statistic-resolver';
 import { CostCalculator } from './statistics/cost-calculator';
 
@@ -36,6 +37,7 @@ dockerImageService
       .addRule(new NoAnonymousRule())
       .addRule(new HasValidConfigRule())
       .addRule(new HasCreditsLeftRule())
+      .addRule(new WithinConcurrencyLimit())
       .addResolver(UserResolver, new UserResolver())
       .addResolver(LabConfigResolver, new LabConfigResolver(dockerImageService, labConfigService))
       .addResolver(UsageStatisticResolver, new UsageStatisticResolver(usageStatisticService));
