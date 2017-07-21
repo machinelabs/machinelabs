@@ -17,6 +17,7 @@ import { BLANK_LAB_TPL_ID } from '../../lab-template.service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Lab, File } from '../../models/lab';
+import { Directory } from '../../util/directory';
 import { LabExecutionService } from '../../lab-execution.service';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { LocationHelper } from '../../util/location-helper';
@@ -65,11 +66,15 @@ export class EditorViewComponent implements OnInit {
 
   lab: Lab;
 
+  latestLab: Lab;
+
   execution: Observable<Execution>;
 
   executionSubscription: Subscription;
 
   executions: Observable<Array<Observable<Execution>>>;
+
+  showRestoreMessage = false;
 
   sidebarToggled = false;
 
@@ -110,13 +115,12 @@ export class EditorViewComponent implements OnInit {
   }
 
   ngOnInit () {
+    this.activeExecutionId = this.route.snapshot.paramMap.get('executionId');
     this.route.data.map(data => data['lab'])
               // Only init lab when it's opened for the first time
               // or when switching labs.
               .filter(lab => !!!this.lab || lab.id !== this.lab.id)
               .subscribe(lab =>  this.initLab(lab));
-
-    this.activeExecutionId = this.route.snapshot.paramMap.get('executionId');
 
     if (this.activeExecutionId) {
       this.listen(this.activeExecutionId);
@@ -187,11 +191,12 @@ export class EditorViewComponent implements OnInit {
     // opened up a different execution. It would cause our lab contents to get overwritten
     // with the wrong files.
     this.executionSubscription = this.execution
-                                     .take(1)
-                                     .subscribe(execution => {
-                                        this.slimLoadingBarService.complete();
-                                        this.initDirectory(execution.lab.directory);
-                                     });
+      .take(1)
+      .subscribe(execution => {
+        this.slimLoadingBarService.complete();
+        this.showRestoreMessage = Directory.isSameDirectory(execution.lab.directory, this.latestLab.directory);
+        this.initDirectory(execution.lab.directory);
+      });
 
     let messages$ = wrapper.messages;
 
@@ -213,9 +218,7 @@ export class EditorViewComponent implements OnInit {
               .takeUntil(messages$)
               .subscribe(_ => this.editorSnackbar.notifyLateExecution());
 
-    setTimeout(() => {
-      this.executionMetadataSidebar.open();
-    }, METADATA_SIDEBAR_OPEN_TIMEOUT);
+    this.openExecutionList();
   }
 
   listenAndUpdateUrl(execution: Execution) {
@@ -255,8 +258,15 @@ export class EditorViewComponent implements OnInit {
 
   save(lab: Lab, msg = 'Lab saved') {
     this.labStorageService.saveLab(lab).subscribe(() => {
-      this.locationHelper.updateUrl(['/editor', lab.id], {
-        queryParamsHandling: 'merge'
+      this.latestLab = Object.assign({}, lab);
+      const urlSegments = ['/editor', lab.id];
+
+      if (this.activeExecutionId) {
+        urlSegments.push(this.activeExecutionId);
+      }
+
+      this.locationHelper.updateUrl(urlSegments, {
+        queryParamsHandling: 'preserve'
       });
       this.editorSnackbar.notify(msg);
     });
@@ -356,17 +366,39 @@ export class EditorViewComponent implements OnInit {
 
   initLab(lab: Lab) {
     this.lab = lab;
+    this.latestLab = Object.assign({}, this.lab);
+
     this.executions = this.labExecutionService.observeExecutionsForLab(this.lab).share();
 
     this.executions
         .take(1)
         .map(executions => executions.length > 0 ? executions[0] : null)
         .filter(obsExecution => !!obsExecution)
-        .subscribe(_ => this.selectTab(TabIndex.Console));
+        .do(_ => this.openExecutionList())
+        .subscribe(_ => {
+          if (this.activeExecutionId) {
+            this.selectTab(TabIndex.Console);
+          }
+        });
 
     this.selectTab(TabIndex.Editor);
-
     this.initDirectory(lab.directory);
+  }
+
+  restoreLab() {
+    this.selectTab(TabIndex.Editor);
+    this.outputPanel.clear();
+    this.activeExecutionId = null;
+    this.locationHelper.updateUrl(['/editor', this.lab.id], {
+      queryParamsHandling: 'merge'
+    });
+    this.initDirectory(this.latestLab.directory);
+    this.showRestoreMessage = false;
+
+    setTimeout(() => {
+      this.executionMetadataSidebar.close();
+      this.editorSnackbar.notifyLabRestored();
+    }, METADATA_SIDEBAR_OPEN_TIMEOUT);
   }
 
   private initDirectory(directory: Array<File>) {
@@ -381,5 +413,11 @@ export class EditorViewComponent implements OnInit {
       queryParamsHandling: 'merge',
       queryParams: queryParams || {}
     });
+  }
+
+  private openExecutionList() {
+    setTimeout(() => {
+      this.executionMetadataSidebar.open();
+    }, METADATA_SIDEBAR_OPEN_TIMEOUT);
   }
 }

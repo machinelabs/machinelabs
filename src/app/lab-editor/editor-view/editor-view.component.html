@@ -17,6 +17,8 @@
          md-tab-link
          (click)="selectTab(TabIndex.Console)"
          [active]="selectedTab == TabIndex.Console">Console</a>
+
+      <p *ngIf="showRestoreMessage" class="ml-editor-restore-message">You're viewing an older version of this lab. Want to restore latest version? <button md-button color="primary" (click)="restoreLab()">Restore</button></p>
     </nav>
   </div>
   <div class="ml-editor-view-layout-main">

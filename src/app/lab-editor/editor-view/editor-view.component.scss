@@ -40,6 +40,18 @@ md-sidenav-container {
   flex: 1;
 }
 
+.ml-editor-restore-message {
+  position: absolute;
+  right: 1em;
+  top: 0.5em;
+  margin: 0;
+  font-size: 0.9em;
+
+  button {
+    margin-left: 0.2em;
+  }
+}
+
 .ml-execution-metadata-no-execution-message {
   margin-top: 7em;
   margin-left: 2.5em;
