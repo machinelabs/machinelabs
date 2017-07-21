@@ -19,7 +19,6 @@ export const ROUTES: Routes = [
     resolve: {
       lab: LabResolver
     },
-    canActivate: [HasValidExecutionGuard],
     canDeactivate: [HasRunningExecutionGuard]
   },
   {
