@@ -44,7 +44,8 @@ export enum ExecutionRejectionReason {
   NoAnonymous,
   NoPlan,
   InvalidConfig,
-  OutOfCredits
+  OutOfCredits,
+  ExceedsMaximumConcurrency
 }
 
 export class ExecutionRejectionInfo {

@@ -20,6 +20,17 @@
       <button md-button [md-dialog-close]="true">Ok</button>
     </ml-dialog-cta-bar>
   </ng-container>
+  <ng-container *ngSwitchCase="ExecutionRejectionReason.ExceedsMaximumConcurrency">
+    <ml-dialog-header>Too many parallel executions</ml-dialog-header>
+    <ml-dialog-content>
+      <p>Yeah, we get it. Executions are fun and exciting. However, during <strong>private beta</strong> you can only have a maximum of two executions running at the same time</p>
+      <p>You either have to wait until your other executions are finished or stop one of them before you can launch new ones.</p>
+      <p>In the future you'll get to choose a paid plan that allows more concurrent executions.</p>
+    </ml-dialog-content>
+    <ml-dialog-cta-bar>
+      <button md-button [md-dialog-close]="true">Ok</button>
+    </ml-dialog-cta-bar>
+  </ng-container>
   <ng-container *ngSwitchDefault>
     <ml-dialog-header>Hoppla, something went wrong</ml-dialog-header>
     <ml-dialog-content>
