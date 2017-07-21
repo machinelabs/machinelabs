@@ -16,4 +16,11 @@ export class LocationHelper {
       this.router.createUrlTree(urlSegments, options)
     ));
   }
+
+  updateQueryParams(path: string, params) {
+    const currentUrlTree = this.router.parseUrl(path);
+    currentUrlTree.queryParams = Object.assign({}, currentUrlTree.queryParams, params);
+
+    this.location.go(this.urlSerializer.serialize(currentUrlTree))
+  }
 }
