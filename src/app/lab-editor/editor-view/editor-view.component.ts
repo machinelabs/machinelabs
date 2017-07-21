@@ -71,7 +71,6 @@ export class EditorViewComponent implements OnInit {
 
   executions: Observable<Array<Observable<Execution>>>;
 
-
   sidebarToggled = false;
 
   activeFile: File;
@@ -117,13 +116,11 @@ export class EditorViewComponent implements OnInit {
               .filter(lab => !!!this.lab || lab.id !== this.lab.id)
               .subscribe(lab =>  this.initLab(lab));
 
-    this.route.paramMap
-      .map(paramMap => paramMap.get('executionId'))
-      .filter(executionId => !!executionId && executionId !== this.activeExecutionId)
-      .subscribe(executionId => {
-        this.activeExecutionId = executionId;
-        this.consume(this.rleService.listen(executionId));
-      });
+    this.activeExecutionId = this.route.snapshot.paramMap.get('executionId');
+
+    if (this.activeExecutionId) {
+      this.listen(this.activeExecutionId);
+    }
   }
 
   toolbarAction(action: EditorToolbarAction) {
@@ -148,7 +145,6 @@ export class EditorViewComponent implements OnInit {
   }
 
   run(lab: Lab) {
-    this.slimLoadingBarService.progress = INITIAL_LOADING_INDICATOR_PROGRESS;
     this.outputPanel.clear();
     this.selectTab(TabIndex.Console);
     // First check if this lab is already persisted or not. We don't want to
@@ -161,13 +157,11 @@ export class EditorViewComponent implements OnInit {
           this.rleService.run(lab)
               .subscribe(info => {
                 if (info.persistent) {
-                  // A new execution also means a new execution id. We update the
-                  // query parameter accordingly so the correct state is represented
-                  // in the UI.
-                  this.router.navigate(['/editor', lab.id, info.executionId], {
-                    queryParamsHandling: 'merge',
-                    relativeTo: this.route
+                  this.locationHelper.updateUrl(['/editor', lab.id, info.executionId], {
+                    queryParamsHandling: 'merge'
                   });
+                  this.activeExecutionId = info.executionId;
+                  this.listen(this.activeExecutionId);
                 } else if (info.rejection) {
                   if (info.rejection.reason === ExecutionRejectionReason.InvalidConfig) {
                     this.editorSnackbar.notifyInvalidConfig();
@@ -180,6 +174,7 @@ export class EditorViewComponent implements OnInit {
   }
 
   consume(wrapper: ExecutionWrapper) {
+    this.slimLoadingBarService.progress = INITIAL_LOADING_INDICATOR_PROGRESS;
     this.outputPanel.clear();
     this.execution = wrapper.execution;
 
@@ -193,7 +188,10 @@ export class EditorViewComponent implements OnInit {
     // with the wrong files.
     this.executionSubscription = this.execution
                                      .take(1)
-                                     .subscribe(execution => this.initDirectory(execution.lab.directory));
+                                     .subscribe(execution => {
+                                        this.slimLoadingBarService.complete();
+                                        this.initDirectory(execution.lab.directory);
+                                     });
 
     let messages$ = wrapper.messages;
 
@@ -220,9 +218,16 @@ export class EditorViewComponent implements OnInit {
     }, METADATA_SIDEBAR_OPEN_TIMEOUT);
   }
 
-  listen(execution: Execution) {
-    let wrapper = this.rleService.listen(execution.id);
-    this.consume(wrapper);
+  listenAndUpdateUrl(execution: Execution) {
+    this.locationHelper.updateUrl(['/editor', execution.lab.id, execution.id], {
+      queryParamsHandling: 'merge'
+    });
+    this.activeExecutionId = execution.id;
+    this.listen(this.activeExecutionId);
+  }
+
+  listen(executionId: string) {
+    this.consume(this.rleService.listen(executionId));
   }
 
   fork(lab: Lab) {
@@ -250,10 +255,9 @@ export class EditorViewComponent implements OnInit {
 
   save(lab: Lab, msg = 'Lab saved') {
     this.labStorageService.saveLab(lab).subscribe(() => {
-      this.router.navigate([lab.id], {
-        queryParamsHandling: 'preserve'
+      this.locationHelper.updateUrl(['/editor', lab.id], {
+        queryParamsHandling: 'merge'
       });
-
       this.editorSnackbar.notify(msg);
     });
   }
@@ -306,10 +310,8 @@ export class EditorViewComponent implements OnInit {
 
   openFile(file: File) {
     this.activeFile = file;
-    this.router.navigate(['.'], {
-      relativeTo: this.route,
-      queryParams: { file: file.name },
-      queryParamsHandling: 'merge'
+    this.locationHelper.updateQueryParams(this.location.path(), {
+      file: file.name,
     });
   }
 
@@ -360,11 +362,7 @@ export class EditorViewComponent implements OnInit {
         .take(1)
         .map(executions => executions.length > 0 ? executions[0] : null)
         .filter(obsExecution => !!obsExecution)
-        .switchMap(obsExecution => obsExecution)
-        .subscribe(execution => {
-          this.selectTab(TabIndex.Console);
-          this.listen(execution);
-        });
+        .subscribe(_ => this.selectTab(TabIndex.Console));
 
     this.selectTab(TabIndex.Editor);
 
@@ -381,8 +379,7 @@ export class EditorViewComponent implements OnInit {
   private goToLab(lab?: Lab, queryParams?) {
     this.locationHelper.updateUrl(['/editor', `${lab ? lab.id : ''}`], {
       queryParamsHandling: 'merge',
-      queryParams: queryParams || {},
-      relativeTo: this.route
+      queryParams: queryParams || {}
     });
   }
 }

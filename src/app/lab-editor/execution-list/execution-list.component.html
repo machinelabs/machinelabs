@@ -41,13 +41,7 @@
           </div>
         </div>
         <div class="ml-execution-panel-cta-bar">
-          <a [routerLink]="['../', execution.id]"
-            queryParamsHandling="merge"
-            title="View this execution"
-            *ngIf="execution.id !== activeId"
-            md-button>
-            View
-          </a>
+          <button md-button (click)="view.emit(execution)" *ngIf="execution.id !== activeId">View</button>
           <button md-button (click)="stop(execution)" *ngIf="execution.status === ExecutionStatus.Executing && userService.userOwnsExecution(user, execution)">Stop</button>
           <button md-button (click)="restart.emit(execution)" *ngIf="execution.status != ExecutionStatus.Executing && execution.status != ExecutionStatus.Pristine && userService.userOwnsExecution(user, execution)">Restart</button>
 

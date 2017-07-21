@@ -25,6 +25,8 @@ export class ExecutionListComponent implements OnInit, OnDestroy {
 
   @Output() restart = new EventEmitter<Execution>();
 
+  @Output() view = new EventEmitter<Execution>();
+
   ExecutionStatus = ExecutionStatus;
 
   user: User;
