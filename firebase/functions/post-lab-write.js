@@ -14,7 +14,7 @@ function hashDirectory(directory) {
 function saveUserLabId(event) {
   const data = event.data.val();
   return admin.database()
-              .ref(`user_labs/${data.user_id}/${data.id}`)
+              .ref(`idx/user_labs/${data.user_id}/${data.id}`)
               .set(true);
 }
 
