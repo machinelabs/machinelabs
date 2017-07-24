@@ -120,7 +120,7 @@ export class EditorViewComponent implements OnInit {
               // Only init lab when it's opened for the first time
               // or when switching labs.
               .filter(lab => !!!this.lab || lab.id !== this.lab.id)
-              .subscribe(lab =>  this.initLab(lab));
+              .subscribe(lab => this.initLab(lab));
 
     if (this.activeExecutionId) {
       this.listen(this.activeExecutionId);
@@ -240,9 +240,11 @@ export class EditorViewComponent implements OnInit {
         hideCancelButton: true
       }).subscribe(info => {
         this.outputPanel.clear();
+        this.activeExecutionId = null;
+        this.showRestoreMessage = false;
         // we allways need to save after forking but either the
         // version from before the dialog or the one after
-        this.save(info.shouldSave ? info.lab : createdLab, 'Lab forked');
+        this.save(info.shouldSave ? info.lab : createdLab, 'Lab forked', true);
       });
     });
   }
@@ -256,9 +258,10 @@ export class EditorViewComponent implements OnInit {
         });
   }
 
-  save(lab: Lab, msg = 'Lab saved') {
+  save(lab: Lab, msg = 'Lab saved', fetchExecutions = false) {
     this.labStorageService.saveLab(lab).subscribe(() => {
-      this.latestLab = Object.assign({}, lab);
+      this.initLab(lab, fetchExecutions);
+
       const urlSegments = ['/editor', lab.id];
 
       if (this.activeExecutionId) {
@@ -364,12 +367,18 @@ export class EditorViewComponent implements OnInit {
     });
   }
 
-  initLab(lab: Lab) {
+  initLab(lab: Lab, fetchExecutions = true) {
     this.lab = lab;
     this.latestLab = Object.assign({}, this.lab);
+    this.selectTab(TabIndex.Editor);
+    this.initDirectory(lab.directory);
+    if (fetchExecutions) {
+      this.initExecutionList();
+    }
+  }
 
+  private initExecutionList() {
     this.executions = this.labExecutionService.observeExecutionsForLab(this.lab).share();
-
     this.executions
         .take(1)
         .map(executions => executions.length > 0 ? executions[0] : null)
@@ -380,9 +389,6 @@ export class EditorViewComponent implements OnInit {
             this.selectTab(TabIndex.Console);
           }
         });
-
-    this.selectTab(TabIndex.Editor);
-    this.initDirectory(lab.directory);
   }
 
   restoreLab() {
