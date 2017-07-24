@@ -1,3 +1,6 @@
+<md-toolbar>
+  <md-icon>history</md-icon> <span>Executions</span>
+</md-toolbar>
 <md-accordion>
   <ng-container *ngFor="let execution of executions">
     <ng-container *ngIf="execution | async as execution">
