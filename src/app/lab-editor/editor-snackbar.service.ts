@@ -55,13 +55,13 @@ export class EditorSnackbarService {
     this.notify('Undone');
   }
 
-  notifyUnless(notifier$, message: string, waitMs = 5000) {
+  notifyUnless<T>(notifier$: Observable<T>, message: string, waitMs = 5000) {
     Observable.timer(waitMs)
               .takeUntil(notifier$)
               .subscribe(_ => this.notify(message));
   }
 
-  notifyLateExecutionUnless(notifier$, waitMs = 5000) {
+  notifyLateExecutionUnless<T>(notifier$: Observable<T>, waitMs?) {
     this.notifyUnless(notifier$, 'The server doesn\'t seem responding', waitMs);
   }
 }
