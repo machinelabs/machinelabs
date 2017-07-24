@@ -41,6 +41,7 @@ import 'rxjs/add/operator/skip';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/share';
 
 enum TabIndex {
   Editor,
@@ -160,24 +161,25 @@ export class EditorViewComponent implements OnInit {
         .switchMap(exists => exists ? Observable.of(null) : this.labStorageService.saveLab(lab))
         .subscribe(_ => {
 
-          const notifier$ = this.rleService.run(lab)
-              .do(info => {
-                if (info.persistent) {
-                  this.locationHelper.updateUrl(['/editor', lab.id, info.executionId], {
-                    queryParamsHandling: 'merge'
-                  });
-                  this.activeExecutionId = info.executionId;
-                  this.listen(this.activeExecutionId);
-                } else if (info.rejection) {
-                  if (info.rejection.reason === ExecutionRejectionReason.InvalidConfig) {
-                    this.editorSnackbar.notifyInvalidConfig();
-                  } else {
-                    this.openRejectionDialog(info.rejection.reason);
-                  }
-                }
-              });
+          const runInfo$ = this.rleService.run(lab).share();
 
-          this.editorSnackbar.notifyLateExecutionUnless(notifier$.skip(1));
+          runInfo$.subscribe(info => {
+            if (info.persistent) {
+              this.locationHelper.updateUrl(['/editor', lab.id, info.executionId], {
+                queryParamsHandling: 'merge'
+              });
+              this.activeExecutionId = info.executionId;
+              this.listen(this.activeExecutionId);
+            } else if (info.rejection) {
+              if (info.rejection.reason === ExecutionRejectionReason.InvalidConfig) {
+                this.editorSnackbar.notifyInvalidConfig();
+              } else {
+                this.openRejectionDialog(info.rejection.reason);
+              }
+            }
+          });
+
+          this.editorSnackbar.notifyLateExecutionUnless(runInfo$.skip(1));
         });
   }
 
