@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MdSnackBar } from '@angular/material';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class EditorSnackbarService {
@@ -46,15 +47,21 @@ export class EditorSnackbarService {
     return this.notify('Execution updated');
   }
 
-  notifyLateExecution() {
-    return this.notify('The server doesn\'t seem responding');
-  }
-
   notifyError() {
     this.notify('Request failed, please try again');
   }
 
   notifyActionUndone() {
     this.notify('Undone');
+  }
+
+  notifyUnless(notifier$, message: string, waitMs = 5000) {
+    Observable.timer(waitMs)
+              .takeUntil(notifier$)
+              .subscribe(_ => this.notify(message));
+  }
+
+  notifyLateExecutionUnless(notifier$, waitMs = 5000) {
+    this.notifyUnless(notifier$, 'The server doesn\'t seem responding', waitMs);
   }
 }

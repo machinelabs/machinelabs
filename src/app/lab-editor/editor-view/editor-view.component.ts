@@ -34,10 +34,11 @@ import { EditorToolbarAction, EditorToolbarActionTypes } from '../editor-toolbar
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/scan';
+import 'rxjs/add/operator/skip';
+import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/takeUntil';
 
@@ -158,8 +159,9 @@ export class EditorViewComponent implements OnInit {
         // the url accordingly, so it can be easily shared.
         .switchMap(exists => exists ? Observable.of(null) : this.labStorageService.saveLab(lab))
         .subscribe(_ => {
-          this.rleService.run(lab)
-              .subscribe(info => {
+
+          const notifier$ = this.rleService.run(lab)
+              .do(info => {
                 if (info.persistent) {
                   this.locationHelper.updateUrl(['/editor', lab.id, info.executionId], {
                     queryParamsHandling: 'merge'
@@ -174,6 +176,8 @@ export class EditorViewComponent implements OnInit {
                   }
                 }
               });
+
+          this.editorSnackbar.notifyLateExecutionUnless(notifier$.skip(1));
         });
   }
 
@@ -214,10 +218,8 @@ export class EditorViewComponent implements OnInit {
                         msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr)
                     .scan((acc, current) => `${acc}\n${current.data}`, '');
 
-    Observable.timer(EXECUTION_START_TIMEOUT)
-              .takeUntil(messages$)
-              .subscribe(_ => this.editorSnackbar.notifyLateExecution());
 
+    this.editorSnackbar.notifyLateExecutionUnless(messages$);
     this.openExecutionList();
   }
 
