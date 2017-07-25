@@ -4,7 +4,7 @@
     "labs": {
       "$id": {
         "common": {
-          ".validate": "newData.hasChildren(['id', 'user_id', 'name', 'description'])",
+          ".validate": "newData.hasChildren(['id', 'user_id', 'name', 'description', 'created_at', 'modified_at'])",
           "id": {
             ".validate": "newData.isString()"
           },
@@ -43,6 +43,12 @@
               }
             },
             ".validate": "newData.hasChildren()"
+          },
+          "created_at": {
+            ".validate": "newData.isNumber()"
+          },
+          "modified_at": {
+            ".validate": "newData.isNumber()"
           },
           "$other": {
             ".validate": "false"

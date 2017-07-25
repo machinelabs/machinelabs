@@ -28,7 +28,9 @@ type Lab {
   has_cached_run: Boolean | Null,
   cache_hash: String | Null
   tags: String[],
-  directory: File[]
+  directory: File[],
+  created_at: Number,
+  modified_at: Number
 }
 
 type File {
