@@ -17,7 +17,9 @@ let testLab = {
   description: '',
   tags: ['existing'],
   directory: [],
-  has_cached_run: false
+  has_cached_run: false,
+  created_at: Date.now(),
+  modified_at: Date.now()
 };
 
 let authServiceStub = {
@@ -139,7 +141,11 @@ describe('LabStorageService', () => {
         labStorageService.getLab(testLab.id)
           .subscribe(_lab => {
             // The returned lab should have its user_id changed
-            expect(_lab).toEqual(expectedLab);
+            expect(_lab.id).toEqual(expectedLab.id);
+            expect(_lab.name).toEqual(expectedLab.name);
+            expect(_lab.description).toEqual(expectedLab.description);
+            expect(_lab.tags).toEqual(expectedLab.tags);
+            expect(_lab.directory).toEqual(expectedLab.directory);
             done();
           });
       });

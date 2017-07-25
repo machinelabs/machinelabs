@@ -18,4 +18,6 @@ export interface Lab extends LabTemplate {
   id: string;
   user_id: string;
   has_cached_run?: boolean;
+  created_at: number;
+  modified_at: number;
 }

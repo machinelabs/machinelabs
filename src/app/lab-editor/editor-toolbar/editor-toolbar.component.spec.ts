@@ -29,7 +29,9 @@ let testLab = {
   description: '',
   tags: ['existing'],
   directory: [],
-  has_cached_run: false
+  has_cached_run: false,
+  created_at: Date.now(),
+  modified_at: Date.now()
 };
 
 let routerStub = {
