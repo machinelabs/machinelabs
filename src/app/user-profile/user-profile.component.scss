@@ -43,13 +43,15 @@
 }
 
 .ml-user-profile-content {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 2em;
+  padding: 25px;
 }
 
-.ml-user-profile-no-labs-message {
+.ml-user-profile-no-data-message {
   text-align: center;
+  overflow: hidden;
+  margin: 2% 25px;
 
   md-card-title {
     font-size: 1.5em;
@@ -66,17 +68,56 @@
 }
 
 .ml-user-profile-lab-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  flex-wrap: wrap;
+  padding-top: 25px;
+}
 
-  li {
-    width: 420px;
+.ml-user-profile-lab-card {
+  width: 32%;
+  margin: 0 2% 25px 0;
+  overflow: hidden;
+
+  &:nth-child(3n) {
+    margin-right: 0;
+  }
+}
+
+.ml-user-profile-execution-list {
+  padding-top: 25px;
+  padding-bottom: 25px;
+
+  a {
+    text-decoration: none;
+  }
+
+  md-card {
+    md-icon {
+      vertical-align: -20%;
+      font-size: 22px;
+      width: initial;
+      height: initial;
+    }
+
+    span {
+      font-size: 0.95em;
+      md-icon {
+        font-size: 20px;
+        color: #888;
+      }
+    }
+
+    &.executing {
+      padding-top: 21.5px;
+      padding-bottom: 21.5px;
+    }
+  }
+
+  md-progress-spinner {
+    width: 24px;
+    height: 27px;
     display: inline-block;
-    vertical-align: top;
-    margin: 0;
-    margin-left: 2em;
-    margin-top: 1em;
+    margin-right: 0.2em;
+    vertical-align: -40%;
   }
 }
 

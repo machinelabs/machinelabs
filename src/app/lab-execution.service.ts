@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { DbRefBuilder } from './firebase/db-ref-builder';
 import { AuthService } from './auth';
 import { Lab } from './models/lab';
+import { User } from './models/user';
 import { Execution, ExecutionStatus } from './models/execution';
 import { Observable } from 'rxjs/Observable';
 
@@ -27,7 +28,18 @@ export class LabExecutionService {
   observeExecutionsForLab(lab: Lab): Observable<Array<Observable<Execution>>> {
     return this.authService
       .requireAuthOnce()
-      .switchMap(_ => this.db.labExecutionsRef(lab.id).childAdded())
+      .switchMap(_ => this.db.labVisibleExecutionsRef(lab.id).childAdded())
+      .map((snapshot: any) => this.observeExecution(snapshot.key))
+      .scan((acc, val) => {
+        acc.unshift(val);
+        return acc;
+      }, []);
+  }
+
+  observeExecutionsForUser(user: User): Observable<Array<Observable<Execution>>> {
+    return this.authService
+      .requireAuthOnce()
+      .switchMap(_ => this.db.userVisibleExecutionsRef(user.id).childAdded())
       .map((snapshot: any) => this.observeExecution(snapshot.key))
       .scan((acc, val) => {
         acc.unshift(val);

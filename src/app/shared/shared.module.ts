@@ -8,6 +8,8 @@ import {
   DialogCtaBarComponent
 } from './dialog/dialog.component';
 import { TruncateWordsPipe } from './truncate-words.pipe';
+import { DistanceInWordsStrictPipe } from './distance-in-words-strict.pipe';
+import { DistanceInWordsToNowPipe } from './distance-in-words-to-now.pipe';
 
 
 @NgModule({
@@ -16,7 +18,9 @@ import { TruncateWordsPipe } from './truncate-words.pipe';
     DialogHeaderComponent,
     DialogContentComponent,
     DialogCtaBarComponent,
-    TruncateWordsPipe
+    TruncateWordsPipe,
+    DistanceInWordsStrictPipe,
+    DistanceInWordsToNowPipe
   ],
   imports: [MachineLabsMaterialModule, CommonModule],
   exports: [
@@ -25,7 +29,9 @@ import { TruncateWordsPipe } from './truncate-words.pipe';
     DialogHeaderComponent,
     DialogContentComponent,
     DialogCtaBarComponent,
-    TruncateWordsPipe
+    TruncateWordsPipe,
+    DistanceInWordsStrictPipe,
+    DistanceInWordsToNowPipe
   ]
 })
 export class SharedModule {}
