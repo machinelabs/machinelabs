@@ -109,7 +109,7 @@ If you have multiple servers, repeat this step to run them all in parallel.
 This command needs to be run from the root level
 
 ```
-./scripts/deploy_staging.sh
+./admin-cli/index.js deploy --template=ahlem
 ```
 
 #### Deploying only the server to the staging system
@@ -117,7 +117,7 @@ This command needs to be run from the root level
 This command needs to be run from the root level
 
 ```
-./scripts/deploy_staging_server.sh
+./admin-cli/index.js deploy --template=ahlem --noFb
 ```
 
 #### Deploying only the cloudfunctions and security rules to the staging firebase
@@ -125,7 +125,7 @@ This command needs to be run from the root level
 This command needs to be run from the root level
 
 ```
-./scripts/deploy_staging_firebase.sh
+./admin-cli/index.js deploy --template=ahlem --noServer
 ```
 
 
