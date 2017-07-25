@@ -153,6 +153,7 @@ export class EditorViewComponent implements OnInit {
   run(lab: Lab) {
     this.outputPanel.clear();
     this.selectTab(TabIndex.Console);
+    this.latestLab = Object.assign({}, lab);
     // First check if this lab is already persisted or not. We don't want to
     // execute labs that don't exist in the database.
     this.labStorageService.labExists(lab.id)
