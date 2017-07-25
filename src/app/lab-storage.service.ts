@@ -83,7 +83,8 @@ export class LabStorageService {
               // This shouldn't happen, but in case we fetch labs
               // that don't exist anymore, resuling in `null` fields, we need
               // to filter them out.
-              .map(labs => labs.filter(lab => lab));
+              .map(labs => labs.filter(lab => lab))
+              .map(labs => labs.sort((a, b) => b.modified_at - a.modified_at));
   }
 
 }
