@@ -10,7 +10,7 @@ module.exports = functions.database.ref('/executions/{id}/common')
   
     console.log(`Running post execution handler for ${data.id}`);
 
-    updateLabVisibleExecutions(event, data, delta);
+    updateVisibleExecutions(event, data, delta);
     updateLabExecution(event, data, delta);
     updateUserExecutions(event, data, delta);
 
@@ -18,8 +18,9 @@ module.exports = functions.database.ref('/executions/{id}/common')
     return admin.database().ref().update(delta);
   });
 
-function updateLabVisibleExecutions(event, data, delta) {
+function updateVisibleExecutions(event, data, delta) {
   delta[`/idx/lab_visible_executions/${data.lab.id}/${data.id}`] = data.hidden ? null : true;
+  delta[`/idx/user_visible_executions/${data.user_id}/${data.id}`] = data.hidden ? null: true;
 }
 
 function updateLabExecution(event, data, delta) {
@@ -43,4 +44,3 @@ function updateUserExecutions(event, data, delta) {
 
   delta[`/idx/user_executions/${data.user_id}/live/${data.id}`] = data.finished_at ? null : true;
 }
-

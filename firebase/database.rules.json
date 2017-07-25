@@ -290,6 +290,11 @@
         "$id": {
           ".read": "auth.uid == 'execution-server'"
         }
+      },
+      "user_visible_executions": {
+        "$id": {
+          ".read": "true"
+        }
       }
     }
   }
