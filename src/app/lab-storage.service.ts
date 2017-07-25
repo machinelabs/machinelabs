@@ -32,7 +32,9 @@ export class LabStorageService {
           name: lab ? `Fork of ${lab.name}` : 'Untitled',
           description: lab ? lab.description : '',
           tags: lab ? lab.tags : [],
-          directory: lab ? lab.directory : [{ name: 'main.py', content: '' }, ML_YAML_FILE]
+          directory: lab ? lab.directory : [{ name: 'main.py', content: '' }, ML_YAML_FILE],
+          created_at: Date.now(),
+          modified_at: Date.now()
         };
       });
   }
@@ -65,7 +67,9 @@ export class LabStorageService {
                   // `lab.tags` can be undefined when editing an existing lab that
                   // doesn't have any tags yet.
                   tags: lab.tags || [],
-                  directory: lab.directory
+                  directory: lab.directory,
+                  created_at: lab.created_at,
+                  modified_at: firebase.database.ServerValue.TIMESTAMP
                 }));
   }
 

@@ -20,7 +20,9 @@ let lab: Lab = {
       name: 'ml.yaml',
       content: validConfig
     }
-  ]
+  ],
+  created_at: Date.now(),
+  modified_at: Date.now()
 };
 
 let labWithPascalCase: Lab = {
@@ -35,7 +37,9 @@ let labWithPascalCase: Lab = {
       name: 'Ml.yaml',
       content: validConfig
     }
-  ]
+  ],
+  created_at: Date.now(),
+  modified_at: Date.now()
 };
 
 let labWithInvalidConfig: Lab = {
@@ -50,7 +54,9 @@ let labWithInvalidConfig: Lab = {
       name: 'Ml.yaml',
       content: invalidConfig
     }
-  ]
+  ],
+  created_at: Date.now(),
+  modified_at: Date.now()
 };
 
 let labWithoutConfig: Lab = {
@@ -60,7 +66,9 @@ let labWithoutConfig: Lab = {
   description: '',
   tags: [],
   has_cached_run: false,
-  directory: []
+  directory: [],
+  created_at: Date.now(),
+  modified_at: Date.now()
 };
 
 let svc: LabConfigService;
