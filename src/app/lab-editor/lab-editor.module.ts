@@ -32,8 +32,6 @@ import { RejectionDialogComponent } from './rejection-dialog/rejection-dialog.co
 import { ShareDialogComponent } from './share-dialog/share-dialog.component';
 import { EditExecutionDialogComponent } from './edit-execution-dialog/edit-execution-dialog.component';
 
-import { DistanceInWordsStrictPipe } from './distance-in-words-strict.pipe';
-import { DistanceInWordsToNowPipe } from './distance-in-words-to-now.pipe';
 import { ExecutionStatusPipe } from './execution-status.pipe';
 
 import { LocationHelper } from '../util/location-helper';
@@ -62,8 +60,6 @@ import { ExecutionListComponent } from './execution-list/execution-list.componen
     ExecutionStatusComponent,
     RejectionDialogComponent,
     ShareDialogComponent,
-    DistanceInWordsStrictPipe,
-    DistanceInWordsToNowPipe,
     ExecutionStatusPipe,
     FooterComponent,
     ExecutionListComponent,

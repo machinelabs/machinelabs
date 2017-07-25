@@ -5,8 +5,10 @@ import { Observable } from 'rxjs/Observable';
 
 import { User } from '../models/user';
 import { Lab } from '../models/lab';
+import { Execution, ExecutionStatus } from '../models/execution';
 
 import { LabStorageService } from '../lab-storage.service';
+import { LabExecutionService } from '../lab-execution.service';
 import { UserService } from '../user/user.service';
 
 import { EditUserProfileDialogComponent } from './edit-user-profile-dialog/edit-user-profile-dialog.component';
@@ -23,9 +25,16 @@ import 'rxjs/add/operator/switchMap';
 export class UserProfileComponent implements OnInit, OnDestroy {
 
   labs: Array<Lab>;
+
   user: User;
+
   isAuthUser = false;
+
   editUserProfileDialog: MdDialogRef<EditUserProfileDialogComponent>;
+
+  executions: Observable<Array<Observable<Execution>>>;
+
+  ExecutionStatus = ExecutionStatus;
 
   private userChangesSubscription;
 
@@ -33,12 +42,16 @@ export class UserProfileComponent implements OnInit, OnDestroy {
               private labStorage: LabStorageService,
               private dialog: MdDialog,
               private snackBar: MdSnackBar,
+              private labExecutionService: LabExecutionService,
               private userService: UserService) {}
 
   ngOnInit() {
     this.route.data
         .map(data => data['user'])
-        .subscribe(user => this.user = user);
+        .subscribe(user => {
+          this.user = user;
+          this.executions = this.labExecutionService.observeExecutionsForUser(user);
+        });
 
     this.route.data
         .map(data => data['labs'])

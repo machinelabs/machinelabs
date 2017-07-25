@@ -16,21 +16,63 @@
   </div>
   <div class="ml-user-profile-content">
     <ng-container *ngIf="labs.length; else noLabsMessage">
-      <ul class="ml-user-profile-lab-list">
-        <li *ngFor="let lab of labs">
-          <md-card>
-            <md-card-title>{{lab.name | words: 10}}</md-card-title>
-            <md-card-content>{{lab.description || 'This lab has no description.' | words:30}}</md-card-content>
-            <ml-tag-list [tags]="lab.tags"></ml-tag-list>
-            <md-card-actions class="ml-user-profile-lab-actions">
-              <a md-button title="Open this lab in editor" [routerLink]="['/editor', lab.id]">OPEN IN EDITOR</a>
-            </md-card-actions>
+      <md-tab-group [dynamicHeight]="true">
+        <md-tab label="Labs">
+
+          <div fxLayout class="ml-user-profile-lab-list">
+            <md-card *ngFor="let lab of labs" class="ml-user-profile-lab-card">
+              <md-card-title>{{lab.name | words: 10}}</md-card-title>
+              <md-card-content>{{lab.description || 'This lab has no description.' | words:30}}</md-card-content>
+              <ml-tag-list [tags]="lab.tags"></ml-tag-list>
+              <md-card-actions class="ml-user-profile-lab-actions">
+                <a md-button title="Open this lab in editor" [routerLink]="['/editor', lab.id]">OPEN IN EDITOR</a>
+              </md-card-actions>
+            </md-card>
+          </div>
+        </md-tab>
+        <md-tab label="Executions">
+          <div class="ml-user-profile-execution-list">
+            <ng-container *ngIf="executions | async as executions; else noExecutionsMessage">
+              <ng-container *ngFor="let execution of executions">
+                <a [routerLink]="['/editor', execution.lab.id, execution.id]" *ngIf="execution | async as execution">
+                  <md-card
+                    [ngClass]="{
+                      finished: execution.status == ExecutionStatus.Finished,
+                      executing: execution.status == ExecutionStatus.Executing,
+                      stopped: execution.status == ExecutionStatus.Stopped,
+                      failed: execution.status == ExecutionStatus.Failed
+                    }">
+                    <ng-container [ngSwitch]="execution.status">
+                      <md-icon *ngSwitchCase="ExecutionStatus.Finished">done</md-icon>
+                      <md-progress-spinner
+                        color="accent"
+                        *ngSwitchCase="ExecutionStatus.Executing"
+                        mode="indeterminate"></md-progress-spinner>
+                      <md-icon *ngSwitchCase="ExecutionStatus.Stopped">info</md-icon>
+                      <md-icon *ngSwitchCase="ExecutionStatus.Failed">block</md-icon>
+                    </ng-container>
+                    {{ execution.name || '#' + execution.id }}
+                    <span><md-icon>schedule</md-icon> Ran for {{execution.started_at | distanceInWordsStrict: execution.finished_at}} about {{execution.started_at | distanceInWordsToNow}} ago</span>
+                  </md-card>
+                </a>
+              </ng-container>
+            </ng-container>
+          </div>
+        </md-tab>
+        <ng-template #noExecutionsMessage>
+          <md-card class="ml-user-profile-no-data-message">
+            <md-card-title>
+              You haven't executed any labs yet
+            </md-card-title>
+            <md-card-content>
+              <p>Run your labs and all of your executions will show up here!</p>
+            </md-card-content>
           </md-card>
-        </li>
-      </ul>
+        </ng-template>
+      </md-tab-group>
     </ng-container>
     <ng-template #noLabsMessage>
-      <md-card class="ml-user-profile-no-labs-message">
+      <md-card class="ml-user-profile-no-data-message">
         <md-card-title>
           You haven't built any Labs yet.
         </md-card-title>

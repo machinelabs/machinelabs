@@ -17,6 +17,39 @@
     color: mat-color($primary, default-contrast);
   }
 
+  .ml-user-profile-execution-list {
+
+    md-card {
+      span {
+        display: inline-block;
+        color: mat-color($foreground, text);
+        margin-left: 1em;
+      }
+
+      border-left: 5px solid mat-color($foreground, divider);
+      &:hover {
+        background-color: #f0f0f0;
+      }
+
+      &.finished {
+        color: #39aa56;
+        border-left-color: #39aa56;
+      }
+      &.failed {
+        color: #db4545;
+        border-left-color: #db4545;
+      }
+      &.stopped {
+        color: #888;
+        border-left-color: #888;
+      }
+      &.executing {
+        color: mat-color($accent);
+        border-left-color: mat-color($accent);
+      }
+    }
+  }
+
   .ml-user-profile-footer {
     background: rgb(59, 59, 68);
     color: mat-color($primary, default-contrast);
