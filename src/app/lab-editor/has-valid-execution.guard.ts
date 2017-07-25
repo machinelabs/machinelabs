@@ -40,12 +40,18 @@ export class HasValidExecutionGuard implements CanActivate {
                       .do(_executionId => {
                         if (_executionId) {
                           this.router.navigate(['/editor', labId, _executionId], {
-                            queryParamsHandling: 'merge',
-                            relativeTo: this.route
+                            queryParamsHandling: 'merge'
+                          });
+                        } else {
+                          this.router.navigate(['/editor', labId], {
+                            queryParamsHandling: 'merge'
                           });
                         }
                       })
-                      .map(_executionId => !executionId);
+                      // This is only to satisfy the guard API. Technically,
+                      // we never really end up here as we've redirected at
+                      // this point already
+                      .map(_executionId => !_executionId);
 
     return !executionId ?
       checkForLatestExecution$ :
