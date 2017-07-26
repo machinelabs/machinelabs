@@ -3,7 +3,6 @@ import 'jest';
 import { ValidationService } from './validation.service';
 import { ValidationRule } from './rules/rule';
 import { Observable } from '@reactivex/rxjs';
-import { ExtendedUser } from '../models/user';
 import { ExecutionRejectionInfo, ExecutionRejectionReason } from '../models/execution';
 import { Invocation } from '../models/invocation';
 

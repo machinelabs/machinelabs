@@ -9,7 +9,7 @@ export class LabConfigService {
 
     let configFile = this.getMlYaml(lab);
 
-    if (!configFile || !configFile.content){
+    if (!configFile || !configFile.content) {
       return null;
     }
 
@@ -25,7 +25,7 @@ export class LabConfigService {
 
   private getMlYaml(lab: Lab) {
     let file = lab.directory
-                  .find(file => file.name.toLowerCase() === CONFIG_FILE_NAME);
+                  .find(currentFile => currentFile.name.toLowerCase() === CONFIG_FILE_NAME);
     return file;
   }
 

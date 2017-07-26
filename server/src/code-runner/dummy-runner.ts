@@ -10,11 +10,11 @@ import { PrivateLabConfiguration } from 'models/lab-configuration';
  */
 export class DummyRunner implements CodeRunner {
   run(invocation: Invocation, configuration: PrivateLabConfiguration): Observable<ProcessStreamData> {
-    return ProcessUtil.toObservableProcess(spawn(`ping`, ['-c10', 'machinelabs.ai']))
+    return ProcessUtil.toObservableProcess(spawn(`ping`, ['-c10', 'machinelabs.ai']));
   }
 
   stop(id: string) {
-    
+
   }
 
   count() {

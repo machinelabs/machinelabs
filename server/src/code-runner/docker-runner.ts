@@ -28,7 +28,7 @@ export class DockerRunner implements CodeRunner {
 
     // ATTENTION: The formatting is important here. We have to use a Here Doc because of multi line strings
     // http://stackoverflow.com/questions/2953081/how-can-i-write-a-here-doc-to-a-file-in-bash-script/2954835#2954835
-    let writeCommand = invocation.data.directory.map((file: File) =>`{ cat <<'EOL' > ${file.name}
+    let writeCommand = invocation.data.directory.map((file: File) => `{ cat <<'EOL' > ${file.name}
 ${file.content}
 EOL
 }`)
@@ -60,7 +60,7 @@ EOL
 
   stop (id: string, attempt = 0) {
     console.log(`Stopping container with name: ${id}`);
-    
+
     exec(`docker kill $(docker ps -a -q --filter="name=${id}")`, (error, stdout, stderr) => {
         if (error) {
 
@@ -82,10 +82,10 @@ EOL
             console.log(`Giving up on ${id}. (Container doesn't run anymore)`);
             return;
           }
-          
+
           let currentAttempt = attempt + 1;
           console.log(`Failed to stop ${id}....rescheduling for stopping (${currentAttempt} attempt)`);
-          setTimeout(() => this.stop(id, currentAttempt), 1000)
+          setTimeout(() => this.stop(id, currentAttempt), 1000);
           return;
         }
       });

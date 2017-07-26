@@ -1,6 +1,6 @@
 export interface ExtendedUser {
-  common: User,
-  plan: UserPlan
+  common: User;
+  plan: UserPlan;
 }
 
 export interface UserPlan {

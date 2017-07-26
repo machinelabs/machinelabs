@@ -33,7 +33,7 @@ export class DbRefBuilder {
     return new ObservableDbRef(db.ref(`invocations/${id}/common`));
   }
 
-  invocationsForServerRef(server:string) {
+  invocationsForServerRef(server: string) {
     return new ObservableDbRef(db.ref('invocations').orderByChild(`server/id`).equalTo(server));
   }
 

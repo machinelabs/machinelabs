@@ -12,5 +12,5 @@ export interface Invocation {
 }
 
 export interface InvocationExecution {
-  execution_id: string
+  execution_id: string;
 }

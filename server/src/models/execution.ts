@@ -31,11 +31,11 @@ export enum MessageKind {
 }
 
 export interface ExecutionMessage {
-  id?: string,
-  index?: number,
-  data: string | ExecutionRejectionInfo,
-  kind: MessageKind,
-  timestamp?: number | object
+  id?: string;
+  index?: number;
+  data: string | ExecutionRejectionInfo;
+  kind: MessageKind;
+  timestamp?: number | object;
 }
 
 export enum ExecutionRejectionReason {
@@ -49,7 +49,7 @@ export enum ExecutionRejectionReason {
 
 export class ExecutionRejectionInfo extends AbstractValidationError {
   constructor(public reason: ExecutionRejectionReason,
-              public message: string){
+              public message: string) {
                 super(message);
               }
 }

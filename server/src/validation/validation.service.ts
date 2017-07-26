@@ -11,7 +11,7 @@ export class ValidationService {
   private rules: Array<ValidationRule> = [];
   private resolver = new Map<Function, Resolver>();
 
-  addResolver(resolverType:Function , resolver: Resolver) {
+  addResolver(resolverType: Function, resolver: Resolver) {
     this.resolver.set(resolverType, resolver);
     return this;
   }
@@ -21,7 +21,7 @@ export class ValidationService {
     return this;
   }
 
-  validate(invocation: Invocation) : Observable<ValidationContext> {
+  validate(invocation: Invocation): Observable<ValidationContext> {
 
     let resolves = new Map<Function, Observable<any>>();
     let resolved = new Map<Function, any>();

@@ -1,13 +1,13 @@
 import { Execution } from 'models/execution';
 import { Observable } from '@reactivex/rxjs';
 import { HardwareType } from '../models/server';
-import { COST_PER_SECOND_PER_TYPE } from './costs'
+import { COST_PER_SECOND_PER_TYPE } from './costs';
 import { CostReport } from './cost-report';
 
 export class CostCalculator {
-  public calc(executions: Observable<Execution>) :Observable<CostReport> {
+  public calc(executions: Observable<Execution>): Observable<CostReport> {
     return executions
-            .scan((acc: CostReport, execution:Execution) => {
+            .scan((acc: CostReport, execution: Execution) => {
 
               let timeSpent = this.msToSecond((execution.finished_at || Date.now()) - execution.started_at);
 
@@ -21,7 +21,7 @@ export class CostCalculator {
 
               acc.totalCost = Array.from(acc.costPerHardware)
                                    .map(([key, val]) => val)
-                                   .reduce((acc, current) => acc + current, 0);
+                                   .reduce((prev, current) => prev + current, 0);
 
               return acc;
             }, new CostReport())

@@ -8,8 +8,8 @@ import { CostReport } from './cost-report';
 import { COST_PER_SECOND_PER_TYPE } from './costs';
 
 
-let mToMs = (m:number) => m * 60 * 1000;
-let mToS = (m:number) => m * 60;
+let mToMs = (m: number) => m * 60 * 1000;
+let mToS = (m: number) => m * 60;
 
 
 let generateExecutions = () => <Array<Execution>>[
@@ -39,12 +39,12 @@ let generateExecutions = () => <Array<Execution>>[
     started_at: Date.now() - mToMs(30),
     finished_at: Date.now() - mToMs(15),
   }
-]
+];
 
 describe('.calc()', () => {
   it('should calculate CostReport', (done) => {
     expect.assertions(6);
-    
+
     let executions$ = Observable.from(generateExecutions());
 
     let calculator = new CostCalculator();

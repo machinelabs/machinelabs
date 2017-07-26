@@ -4,8 +4,8 @@ import { Config } from '../util/config';
 
 admin.initializeApp({
   credential: admin.credential.cert(<any>{
-    "private_key": Config.getEnv(Config.ENV_PRIVATE_KEY),
-    "client_email": Config.getEnv(Config.ENV_CLIENT_EMAIL),
+    'private_key': Config.getEnv(Config.ENV_PRIVATE_KEY),
+    'client_email': Config.getEnv(Config.ENV_CLIENT_EMAIL),
   }),
   databaseURL: environment.firebaseConfig.databaseURL,
   databaseAuthVariableOverride: {

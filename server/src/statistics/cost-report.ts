@@ -6,7 +6,7 @@ export class CostReport {
   totalCost = 0;
   totalSeconds = 0;
 
-  constructor(){
+  constructor() {
     this.secondsPerHardware.set(HardwareType.Economy, 0);
     this.secondsPerHardware.set(HardwareType.Premium, 0);
   }

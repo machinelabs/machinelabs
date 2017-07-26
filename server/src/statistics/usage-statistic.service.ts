@@ -12,7 +12,7 @@ import { UsageStatistic } from './usage-statistic';
 const FREE_MONTHLY_USD_CREDIT = 1;
 
 export class UsageStatisticService {
-  
+
   constructor(private costCalculator: CostCalculator, private db = new DbRefBuilder()) {
 
   }
@@ -21,7 +21,7 @@ export class UsageStatisticService {
     return this.getStatistic(userId, DateUtil.getCurrentUtcYear(), DateUtil.getCurrentUtcShortMonth());
   }
 
-  getStatistic(userId: string, year: number, month: ShortMonth) : Observable<UsageStatistic> {
+  getStatistic(userId: string, year: number, month: ShortMonth): Observable<UsageStatistic> {
 
     let executions$ = Observable.merge(
       this.db.userExecutionsByMonthRef(userId, year, month).onceValue(),
@@ -32,7 +32,7 @@ export class UsageStatisticService {
       .flatMap(executionIds => Observable.from(executionIds)
                                          .flatMap(id => this.db.executionRef(id).onceValue()))
       .map(snapshot => snapshot.val())
-      .filter(execution => execution !== null)
+      .filter(execution => execution !== null);
 
       return this.costCalculator.calc(executions$)
                          .map(costReport => ({

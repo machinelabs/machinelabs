@@ -43,8 +43,8 @@ const MONTH_SHORTMONTH = {
   [Month.September]: ShortMonth.Sep,
   [Month.October]: ShortMonth.Oct,
   [Month.November]: ShortMonth.Nov,
-  [Month.December]:ShortMonth.Dec 
-}
+  [Month.December]: ShortMonth.Dec
+};
 
 export function toShortMonth(month: Month): ShortMonth {
   return MONTH_SHORTMONTH[month];
