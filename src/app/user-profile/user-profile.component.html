@@ -52,7 +52,7 @@
                       <md-icon *ngSwitchCase="ExecutionStatus.Failed">block</md-icon>
                     </ng-container>
                     {{ execution.name || '#' + execution.id }}
-                    <span><md-icon>schedule</md-icon> Ran for {{execution.started_at | distanceInWordsStrict: execution.finished_at}} about {{execution.started_at | distanceInWordsToNow}} ago</span>
+                    <span *ngIf="execution.status != ExecutionStatus.Executing"><md-icon>schedule</md-icon> Ran for {{execution.started_at | distanceInWordsStrict: execution.finished_at}} about {{execution.started_at | distanceInWordsToNow}} ago</span>
                   </md-card>
                 </a>
               </ng-container>
