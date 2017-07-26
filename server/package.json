@@ -35,7 +35,8 @@
     "build": "gulp build",
     "test": "./node_modules/jest/bin/jest.js",
     "tslint": "tslint -c config/tslint.json src/**/*.ts",
-    "ci": "gulp build --env=staging && npm run test"
+    "tsfix": "tslint --fix -c config/tslint.json src/**/*.ts",
+    "ci": "gulp build --env=staging && npm run tslint && npm run test"
   },
   "devDependencies": {
     "@types/core-js": "^0.9.34",
