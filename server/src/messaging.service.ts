@@ -122,16 +122,7 @@ export class MessagingService {
       })
       .switchMap(_ => this.db.labsForHashRef(hash).onceValue())
       .map(snapshot => snapshot.val())
-      .subscribe(labs => {
-        let updates = Object.keys(labs || {})
-          .map(key => labs[key])
-          .reduce((prev, lab) => (prev[`/labs/${lab.common.id}/common/has_cached_run`] = true) && prev, {});
-
-        let updateCount = Object.keys(updates).length;
-        console.log(`Updating ${updateCount} labs with associated run`);
-        // This updates all labs at once
-        this.db.rootRef().update(updates);
-      });
+      .subscribe();
   }
 
   completeExecution(run: Invocation) {
