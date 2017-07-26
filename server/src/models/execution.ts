@@ -3,11 +3,11 @@ import { AbstractValidationError } from '../validation/validation-result';
 import { HardwareType } from './server';
 
 export enum ExecutionStatus {
-  Pristine,
-  Executing,
-  Finished,
-  Stopped,
-  Failed
+  Pristine = 'pristine',
+  Executing = 'executing',
+  Finished = 'finished',
+  Stopped = 'stopped',
+  Failed = 'failed'
 }
 
 export interface Execution {

@@ -77,7 +77,7 @@ type Execution {
   hardware_type: ServerWritableString,
   user_id: ServerWritableString,
   lab: InvocationLab,
-  status: ServerWritableNumber,
+  status: ServerWritableString,
   hidden: Boolean | Null,
   name: String | Null
 }

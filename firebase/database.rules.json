@@ -170,7 +170,7 @@
             }
           },
           "status": {
-            ".validate": "newData.isNumber() && auth.uid == 'execution-server'"
+            ".validate": "newData.isString() && auth.uid == 'execution-server'"
           },
           "hidden": {
             ".validate": "newData.isBoolean()"
