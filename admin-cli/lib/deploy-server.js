@@ -3,13 +3,13 @@ const execute = require('./execute')({displayErrors: true});
 const isRootDir = require('./is-root-dir');
 const failWith = require('./fail-with');
 
-function deployServer(serverName, zone) {
+function deployServer(serverName, zone, env) {
   if (!isRootDir()) {
     failWith('Command needs to be run from root dir');
   }
 
   console.log(chalk.green('Deploying server'));
-  execute(`(cd ./server; gulp build --env=staging)`);
+  execute(`(cd ./server; gulp build --env=${env})`);
 
   // With our current setup transferring the ./dist isn't enough
   // We have to zip the entire directory (takes ages otherwise)

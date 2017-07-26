@@ -8,7 +8,7 @@ function deploy (argv) {
   console.log(chalk.green('Deployment mode'));
 
   if (argv.target.serverName && argv.target.zone && !argv.target.noServer) {
-    deployServer(argv.target.serverName, argv.target.zone);
+    deployServer(argv.target.serverName, argv.target.zone, argv.target.env);
   }
 
   if (argv.target.googleProjectId && !argv.target.noFb) {

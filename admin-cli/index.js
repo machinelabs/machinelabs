@@ -34,6 +34,11 @@ let sharedOptions = {
         describe: `Zone of server`,
         type: 'string',
         requiresArg: true
+      },
+      'target.env': {
+        describe: `Environment file for server`,
+        type: 'string',
+        requiresArg: true
       }
     };
 
@@ -52,14 +57,15 @@ let argv = yargs(process.argv.slice(2))
     .command('login [<options>]', 'Login to server', sharedOptions, loginCmd)
     .coerce('target', target => {
 
-      if (target.template && (target.serverName || target.zone || target.googleProjectId)) {
-        throw new Error("`target.template` option can't be used with `target.serverName`, `target.zone` or `target.googleProjectId`.")
+      if (target.template && (target.serverName || target.zone || target.googleProjectId || target.env)) {
+        throw new Error("`target.template` option can't be used with `target.serverName`, `target.zone`, `target.googleProjectId` or `target.env`.")
       }
 
       if (target.template && templates[target.template]) {
         target.serverName = templates[target.template].serverName;
         target.zone = templates[target.template].zone;
         target.googleProjectId = templates[target.template].googleProjectId;
+        target.env = templates[target.template].env;
       } else if (target.template) {
         throw new Error(`Can't find template ${target.template}`);
       }
