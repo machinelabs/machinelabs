@@ -2,13 +2,12 @@ import { Observable } from 'rxjs/Observable';
 import { InvocationLab } from './invocation';
 
 export enum ExecutionStatus {
-  Pristine,
-  Executing,
-  Finished,
-  Stopped,
-  Failed
+  Pristine = 'pristine',
+  Executing = 'executing',
+  Finished = 'finished',
+  Stopped = 'stopped',
+  Failed = 'failed'
 }
-
 
 export interface Execution {
   id?: string;
