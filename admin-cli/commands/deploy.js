@@ -7,12 +7,12 @@ const deployFirebase = require('../lib/deploy-firebase');
 function deploy (argv) {
   console.log(chalk.green('Deployment mode'));
 
-  if (argv.target.serverName && argv.target.zone && !argv.target.noServer) {
-    deployServer(argv.target.serverName, argv.target.zone, argv.target.env);
+  if (argv.cfg.target.serverName && argv.cfg.target.zone && !argv.cfg.target.noServer) {
+    deployServer(argv.cfg.target.serverName, argv.cfg.target.zone, argv.cfg.env);
   }
 
-  if (argv.target.googleProjectId && !argv.target.noFb) {
-    deployFirebase(argv.target.googleProjectId);
+  if (argv.cfg.target.googleProjectId && !argv.cfg.target.noFb) {
+    deployFirebase(argv.cfg.target.googleProjectId);
   }
 }
 

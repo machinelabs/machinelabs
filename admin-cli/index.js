@@ -14,28 +14,28 @@ const yargs = require('yargs');
 setRootDir();
 
 let sharedOptions = {
-      'target.template': {
+      'cfg.template': {
         describe: `Preinitialize googleProjectId, serverName and zone
                    from a template configuration`,
         type: 'string',
         requiresArg: true
       },
-      'target.googleProjectId': {
+      'cfg.target.googleProjectId': {
         describe: `GoogleProjectId to be used`,
         type: 'string',
         requiresArg: true
       },
-      'target.serverName': {
+      'cfg.target.serverName': {
         describe: `Name of server to be used`,
         type: 'string',
         requiresArg: true
       },
-      'target.zone': {
+      'cfg.target.zone': {
         describe: `Zone of server`,
         type: 'string',
         requiresArg: true
       },
-      'target.env': {
+      'cfg.env': {
         describe: `Environment file for server`,
         type: 'string',
         requiresArg: true
@@ -55,24 +55,22 @@ let argv = yargs(process.argv.slice(2))
       }
     }, sharedOptions), deployCmd)
     .command('login [<options>]', 'Login to server', sharedOptions, loginCmd)
-    .coerce('target', target => {
+    .coerce('cfg', cfg => {
 
-      if (target.template && (target.serverName || target.zone || target.googleProjectId || target.env)) {
-        throw new Error("`target.template` option can't be used with `target.serverName`, `target.zone`, `target.googleProjectId` or `target.env`.")
+      if (cfg.template && (cfg.target || cfg.env)) {
+        throw new Error("`cfg.template` option can't be used with `cfg.target` or `cfg.env`")
       }
 
-      if (target.template && templates[target.template]) {
-        target.serverName = templates[target.template].serverName;
-        target.zone = templates[target.template].zone;
-        target.googleProjectId = templates[target.template].googleProjectId;
-        target.env = templates[target.template].env;
-      } else if (target.template) {
-        throw new Error(`Can't find template ${target.template}`);
+      if (cfg.template && templates[cfg.template]) {
+        cfg.target = templates[cfg.template].target;
+        cfg.env = templates[cfg.template].env;
+      } else if (cfg.template) {
+        throw new Error(`Can't find template ${cfg.template}`);
       }
-      return target;
+      return cfg;
     })
     .check(argv => {
-      if (!argv.target) {
+      if (!argv.cfg.target) {
         throw new Error('`target` option is mandatory');
       }
 

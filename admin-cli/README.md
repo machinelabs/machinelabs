@@ -25,15 +25,16 @@ Options:
 admin-cli/index.js deploy [<options>]
 
 Options:
-  --help             Show help                                         [boolean]
-  --noServer         Flag to suppress deployment of server             [boolean]
-  --noFb             Flag to suppress deployment of firebase           [boolean]
-  --template         Preinitialize googleProjectId, serverName and zone
-                     from a template configuration                      [string]
-  --googleProjectId  GoogleProjectId to be used                         [string]
-  --serverName       Name of server to be used                          [string]
-  --zone             Zone of server                                     [string]
-
+  --help                        Show help                              [boolean]
+  --noServer                    Flag to suppress deployment of server  [boolean]
+  --noFb                        Flag to suppress deployment of firebase[boolean]
+  --cfg.template                Preinitialize googleProjectId, serverName and
+                                zone
+                                from a template configuration           [string]
+  --cfg.target.googleProjectId  GoogleProjectId to be used              [string]
+  --cfg.target.serverName       Name of server to be used               [string]
+  --cfg.target.zone             Zone of server                          [string]
+  --cfg.env                     Environment file for server             [string]
 ```
 
 
@@ -43,11 +44,13 @@ Options:
 admin-cli/index.js login [<options>]
 
 Options:
-  --help             Show help                                         [boolean]
-  --template         Preinitialize googleProjectId, serverName and zone
-                     from a template configuration                      [string]
-  --googleProjectId  GoogleProjectId to be used                         [string]
-  --serverName       Name of server to be used                          [string]
-  --zone             Zone of server                                     [string]
+  --help                        Show help                              [boolean]
+  --cfg.template                Preinitialize googleProjectId, serverName and
+                                zone
+                                from a template configuration           [string]
+  --cfg.target.googleProjectId  GoogleProjectId to be used              [string]
+  --cfg.target.serverName       Name of server to be used               [string]
+  --cfg.target.zone             Zone of server                          [string]
+  --cfg.env                     Environment file for server             [string]
 
 ```
