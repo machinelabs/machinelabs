@@ -6,6 +6,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MachineLabsMaterialModule } from '../ml-material.module';
 import { SharedModule } from '../shared/shared.module';
 import { ToolbarModule } from '../toolbar/toolbar.module';
+import { EditorModule } from '../editor/editor.module';
 
 import { HasValidExecutionGuard } from './has-valid-execution.guard';
 import { HasRunningExecutionGuard } from './has-running-execution.guard';
@@ -17,7 +18,6 @@ import { LabConfigService } from './lab-config.service';
 
 import { EditorToolbarComponent } from './editor-toolbar/editor-toolbar.component';
 import { EditorViewComponent } from './editor-view/editor-view.component';
-import { AceEditorComponent } from './ace-editor/ace-editor.component';
 import { PanelComponent } from './panel/panel.component';
 import { PanelTitleComponent } from './panel/panel-title.component';
 import { FileTreeComponent } from './file-tree/file-tree.component';
@@ -43,6 +43,7 @@ import { ExecutionListComponent } from './execution-list/execution-list.componen
     MachineLabsMaterialModule,
     ToolbarModule,
     SharedModule,
+    EditorModule,
     ReactiveFormsModule,
     FlexLayoutModule
   ],
@@ -51,7 +52,6 @@ import { ExecutionListComponent } from './execution-list/execution-list.componen
     EditorViewComponent,
     PanelComponent,
     PanelTitleComponent,
-    AceEditorComponent,
     FileTreeComponent,
     FileNameDialogComponent,
     NavigationConfirmDialogComponent,
