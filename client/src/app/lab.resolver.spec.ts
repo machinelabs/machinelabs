@@ -2,10 +2,10 @@ import { TestBed, inject } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 
 import { LabResolver } from './lab.resolver';
-import { LabStorageService } from '../lab-storage.service';
-import { BLANK_LAB_TPL_ID, DEFAULT_LAB_TPL_ID } from '../lab-template.service';
+import { LabStorageService } from './lab-storage.service';
+import { BLANK_LAB_TPL_ID, DEFAULT_LAB_TPL_ID } from './lab-template.service';
 
-import { Lab } from '../models/lab';
+import { Lab } from './models/lab';
 import { ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
 
 describe('LabResolver', () => {
