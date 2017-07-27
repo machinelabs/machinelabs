@@ -13,6 +13,7 @@ import { SlimLoadingBarModule } from 'ng2-slim-loading-bar';
 
 import { SharedModule } from './shared/shared.module';
 
+import { LabResolver } from './lab.resolver';
 import { LabStorageService } from './lab-storage.service';
 import { LabTemplateService, InMemoryLabTemplateService } from './lab-template.service';
 import { LabExecutionService } from './lab-execution.service';
@@ -53,6 +54,7 @@ const AnimationsModule = [environment.testing ? NoopAnimationsModule : BrowserAn
   providers: [
     LabStorageService,
     LabExecutionService,
+    LabResolver,
     { provide: LabTemplateService, useClass: InMemoryLabTemplateService },
     UserService,
     DbRefBuilder,
