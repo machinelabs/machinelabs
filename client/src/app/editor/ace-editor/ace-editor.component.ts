@@ -18,9 +18,7 @@ const ACE_EDITOR_MODE_PREFIX = 'ace/mode/';
 
 @Component({
   selector: 'ml-ace-editor',
-  template: `
-    <ng-content></ng-content>
-  `,
+  template: `<ng-content></ng-content>`,
   styleUrls: ['./ace-editor.component.scss']
 })
 export class AceEditorComponent implements AfterViewInit, OnChanges {
