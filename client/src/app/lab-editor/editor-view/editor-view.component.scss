@@ -10,11 +10,6 @@
   flex-direction: column;
 }
 
-.ml-editor-view-header {
-  z-index: 2;
-  box-shadow: 0 -1px 5px rgba(0,0,0,.24);
-}
-
 .ml-editor-view-layout-columns {
   display: flex;
   flex: 1;
@@ -23,6 +18,11 @@
 .ml-editor-view-editor-wrapper {
   flex: 1;
   position: relative;
+}
+
+.ml-editor-view-nav-bar {
+  z-index: 2;
+  box-shadow: 0 -1px 5px rgba(0,0,0,.24);
 }
 
 ml-panel {
