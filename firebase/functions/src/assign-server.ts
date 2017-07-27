@@ -1,8 +1,12 @@
-const admin = require('firebase-admin');
-const functions = require('firebase-functions');
-const toArray = require('lodash.toarray');
-const sample = require('lodash.sample');
-const InvocationWriter = require('./invocation-writer');
+import * as admin  from 'firebase-admin';
+import * as functions from 'firebase-functions';
+import { TriggerAnnotated, Event} from 'firebase-functions';
+import { DeltaSnapshot } from 'firebase-functions/lib/providers/database';
+
+
+import * as toArray from 'lodash.toarray';
+import * as sample from 'lodash.sample';
+import { InvocationWriter } from './invocation-writer';
 
 const DEFAULT_HARDWARE_TYPE = 'economy';
 
@@ -27,7 +31,7 @@ function getServerIdForHardwareType(hardwareType) {
        .then(serverId => {
          console.log(`Assigning randomly picked server ${serverId}`);
          return serverId;
-       })
+       });
 }
 
 function getServerIdFromExecution(executionId) {
@@ -55,12 +59,12 @@ function updateInvocation(invocation) {
        .set(invocation);
 }
 
-const invocationWriter = new InvocationWriter(getInvocationById, 
+const invocationWriter = InvocationWriter(getInvocationById,
                                               getServerIdForHardwareType,
                                               getServerIdFromExecution,
-                                              updateInvocation)
+                                              updateInvocation);
 
-module.exports = functions.database.ref('/invocations/{id}/common/id')
+export const assignServer = functions.database.ref('/invocations/{id}/common/id')
   .onWrite(event => {
     const invocationId = event.data.val();
     console.log(`Processing invocation: ${invocationId}`);

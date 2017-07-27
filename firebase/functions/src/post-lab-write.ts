@@ -1,9 +1,12 @@
-const admin = require('firebase-admin');
-const functions = require('firebase-functions');
-const crypto = require('crypto');
+import * as admin from 'firebase-admin';
+import * as functions from 'firebase-functions';
+import { TriggerAnnotated, Event} from 'firebase-functions';
+import { DeltaSnapshot } from 'firebase-functions/lib/providers/database';
+
+import * as crypto from 'crypto';
 
 
-module.exports = functions.database.ref('/labs/{id}/common')
+export const postLabWrite = functions.database.ref('/labs/{id}/common')
   .onWrite(event => Promise.all([saveUserLabId(event), setHasCachedRun(event)]));
 
 function hashDirectory(directory) {
@@ -21,7 +24,7 @@ function saveUserLabId(event) {
 function setHasCachedRun(event) {
   const data = event.data.val();
 
-  console.log(`stringify directory: 
+  console.log(`stringify directory:
                 ${JSON.stringify(data.directory)}`);
 
   const hash = hashDirectory(data.directory);

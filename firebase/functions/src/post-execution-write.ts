@@ -1,13 +1,17 @@
-const admin = require('firebase-admin');
-const functions = require('firebase-functions');
-const appendIndexEntry = require('./user-execution-index-tools');
-const pathify = require('./util/pathify');
+import * as admin from 'firebase-admin';
+import * as functions from 'firebase-functions';
+import { TriggerAnnotated, Event} from 'firebase-functions';
+import { DeltaSnapshot } from 'firebase-functions/lib/providers/database';
 
-module.exports = functions.database.ref('/executions/{id}/common')
+
+import { appendEntryToMonthIndex } from './user-execution-index-tools';
+import { pathify } from './util/pathify';
+
+export const postExecutionWrite = functions.database.ref('/executions/{id}/common')
   .onWrite(event => {
     let delta = {};
     const data = event.data.val();
-  
+
     console.log(`Running post execution handler for ${data.id}`);
 
     updateVisibleExecutions(event, data, delta);
@@ -20,7 +24,7 @@ module.exports = functions.database.ref('/executions/{id}/common')
 
 function updateVisibleExecutions(event, data, delta) {
   delta[`/idx/lab_visible_executions/${data.lab.id}/${data.id}`] = data.hidden ? null : true;
-  delta[`/idx/user_visible_executions/${data.user_id}/${data.id}`] = data.hidden ? null: true;
+  delta[`/idx/user_visible_executions/${data.user_id}/${data.id}`] = data.hidden ? null : true;
 }
 
 function updateLabExecution(event, data, delta) {
@@ -36,9 +40,9 @@ function updateUserExecutions(event, data, delta) {
           [data.user_id]: userIdx
         }
       }
-    } 
+    };
 
-    appendIndexEntry(userIdx, data.started_at, data.finished_at, data.id);
+    appendEntryToMonthIndex(userIdx, data.started_at, data.finished_at, data.id);
     Object.assign(delta, pathify(idx));
   }
 

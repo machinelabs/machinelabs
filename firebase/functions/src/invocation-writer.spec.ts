@@ -1,27 +1,28 @@
 
-const InvocationWriter = require('./invocation-writer');
+import 'jest';
+import {InvocationWriter} from './invocation-writer';
 
 describe('InvocationResolver', () => {
   it('should not try to get Invocation for non ids', () => {
 
     let mockedInvocation = {id: 1};
     const getInvocation = jest.fn();
-    getInvocation.mockReturnValue(mockedInvocation)
+    getInvocation.mockReturnValue(mockedInvocation);
 
-    resolver = new InvocationWriter(getInvocation)
-    
-    resolver();
+    let resolver = InvocationWriter(getInvocation, null, null, null);
+
+    resolver(undefined);
     expect(getInvocation.mock.calls.length).toBe(0);
   });
 
    it('should attach random server for start invocation', (done) => {
 
-    let mockedInvocation = {
+    let mockedInvocation: any = {
       common: {
         id: 1,
         type: 0,
         data: {},
-        timestamp: 0 
+        timestamp: 0
       }
     };
 
@@ -38,7 +39,7 @@ describe('InvocationResolver', () => {
     };
 
     const getInvocation = jest.fn();
-    getInvocation.mockReturnValue(Promise.resolve(mockedInvocation))
+    getInvocation.mockReturnValue(Promise.resolve(mockedInvocation));
 
     const getServerForHardwareType = jest.fn();
     getServerForHardwareType.mockReturnValue(Promise.resolve(server.id));
@@ -46,20 +47,20 @@ describe('InvocationResolver', () => {
     const getServerFromExecution = jest.fn();
     getServerFromExecution.mockReturnValue(Promise.resolve(null));
 
-    const updateInvocation = jest.fn((invocation) => Promise.resolve(invocation));
+    const updateInvocation = jest.fn((inv) => Promise.resolve(inv));
 
-    resolver = new InvocationWriter(getInvocation, 
+    let resolver = InvocationWriter(getInvocation,
                                       getServerForHardwareType,
                                       getServerFromExecution,
-                                      updateInvocation)
-    
+                                      updateInvocation);
+
     let invocation = resolver(1);
 
     invocation.then((resolvedInv) => {
       expect(getInvocation.mock.calls.length).toBe(1);
       expect(updateInvocation.mock.calls.length).toBe(1);
       expect(getServerForHardwareType.mock.calls.length).toBe(1);
-      expect(getServerFromExecution.mock.calls.length).toBe(0); 
+      expect(getServerFromExecution.mock.calls.length).toBe(0);
       expect(resolvedInv).toEqual(expectedInvocation);
       done();
     });
@@ -75,11 +76,11 @@ describe('InvocationResolver', () => {
         timestamp: 0
       }
     };
-    
+
     let expectedInvocation = Object.assign({}, mockedInvocation);
 
     const getInvocation = jest.fn();
-    getInvocation.mockReturnValue(Promise.resolve(mockedInvocation))
+    getInvocation.mockReturnValue(Promise.resolve(mockedInvocation));
 
     const getServerForHardwareType = jest.fn();
     getServerForHardwareType.mockReturnValue(Promise.resolve(null));
@@ -87,13 +88,13 @@ describe('InvocationResolver', () => {
     const getServerFromExecution = jest.fn();
     getServerFromExecution.mockReturnValue(Promise.resolve(null));
 
-    const updateInvocation = jest.fn((invocation) => Promise.resolve(invocation));
-    
-    resolver = new InvocationWriter(getInvocation, 
+    const updateInvocation = jest.fn((inv) => Promise.resolve(inv));
+
+    let resolver = InvocationWriter(getInvocation,
                                     getServerForHardwareType,
                                     getServerFromExecution,
-                                    updateInvocation)
-    
+                                    updateInvocation);
+
     let invocation = resolver(1);
 
     invocation.then((resolvedInv) => {
@@ -108,7 +109,7 @@ describe('InvocationResolver', () => {
 
   it('should attach server from execution for stop invocation', (done) => {
 
-    let mockedInvocation = {
+    let mockedInvocation: any = {
       common: {
         id: 1,
         type: 1,
@@ -132,7 +133,7 @@ describe('InvocationResolver', () => {
     };
 
     const getInvocation = jest.fn();
-    getInvocation.mockReturnValue(Promise.resolve(mockedInvocation))
+    getInvocation.mockReturnValue(Promise.resolve(mockedInvocation));
 
     const getServerForHardwareType = jest.fn();
     getServerForHardwareType.mockReturnValue(Promise.resolve(server.id));
@@ -140,13 +141,13 @@ describe('InvocationResolver', () => {
     const getServerFromExecution = jest.fn();
     getServerFromExecution.mockReturnValue(Promise.resolve(server.id));
 
-    const updateInvocation = jest.fn((invocation) => Promise.resolve(invocation));
+    const updateInvocation = jest.fn((inv) => Promise.resolve(inv));
 
-    resolver = new InvocationWriter(getInvocation, 
+    let resolver = InvocationWriter(getInvocation,
                                       getServerForHardwareType,
                                       getServerFromExecution,
-                                      updateInvocation)
-    
+                                      updateInvocation);
+
     let invocation = resolver(1);
 
     invocation.then((resolvedInv) => {

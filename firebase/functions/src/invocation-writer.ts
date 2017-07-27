@@ -12,10 +12,10 @@ function setServer(invocation, serverId) {
     [serverId]: {
       timestamp: invocation.common.timestamp
     }
-  }
+  };
 }
 
-function InvocationWriter(getInvocationById,
+export function InvocationWriter(getInvocationById,
                             getServerForHardwareType,
                             getServerFromExecution,
                             updateInvocation) {
@@ -35,7 +35,7 @@ function InvocationWriter(getInvocationById,
                 let typeMap = {
                   [InvocationType.StartExecution]: () => getServerForHardwareType(invocation.common.hardware_type || DEFAULT_HARDWARE_TYPE),
                   [InvocationType.StopExecution]: () => getServerFromExecution(invocation.common.data.execution_id)
-                }
+                };
 
                 let resolveServerId = typeMap[invocation.common.type] || (() => Promise.resolve(null));
 
@@ -49,9 +49,6 @@ function InvocationWriter(getInvocationById,
 
                 return val ? val.invocation : null;
               });
-  }
+  };
 }
 
-
-
-module.exports = InvocationWriter

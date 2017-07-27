@@ -1,18 +1,19 @@
-const pathify = require('./pathify');
+import 'jest';
+import { pathify } from './pathify';
 
 describe('pathify', () => {
   it('should translate nested objects to paths', () => {
 
     let input = {
-      "2012":
+      '2012':
       {
-        "Apr": {
-          "4711": true,
-          "4712": true
+        'Apr': {
+          '4711': true,
+          '4712': true
         },
-        "May": {
-          "4711": true,
-          "4712": true
+        'May': {
+          '4711': true,
+          '4712': true
         }
       }
     };
@@ -22,7 +23,7 @@ describe('pathify', () => {
       '/2012/Apr/4712': true,
       '/2012/May/4711': true,
       '/2012/May/4712': true
-    }
+    };
 
     expect(pathify(input)).toEqual(expected);
   });

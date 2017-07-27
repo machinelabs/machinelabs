@@ -1,6 +1,6 @@
 
-const moment = require('moment');
-const merge = require('lodash.merge');
+import * as moment from 'moment';
+import * as merge from 'lodash.merge';
 
 function resetToBeginOfMonth(date) {
   return date.date(1)
@@ -10,7 +10,7 @@ function resetToBeginOfMonth(date) {
     .millisecond(0);
 }
 
-module.exports = function appendEntryToMonthIndex(index, startDate, endDate, executionId) {
+export function appendEntryToMonthIndex(index, startDate, endDate, executionId) {
 
   startDate = moment.utc(startDate);
   endDate = moment.utc(endDate);
@@ -20,7 +20,7 @@ module.exports = function appendEntryToMonthIndex(index, startDate, endDate, exe
   resetToBeginOfMonth(endDate);
 
   if (endDate.isBefore(startDate)) {
-    throw "End date must be greater than start date."
+    throw 'End date must be greater than start date.';
   }
 
   let currentDate = startDate.clone();
