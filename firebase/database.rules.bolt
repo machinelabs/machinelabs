@@ -55,7 +55,7 @@ type Invocation {
   id: String,
   user_id: String,
   timestamp: Number,
-  type: Number,
+  type: String,
   data: InvocationLab | InvocationExecution
 }
 
@@ -87,7 +87,7 @@ type ExecutionMessage {
   index: Number,
   timestamp: Number,
   data: Any,
-  kind: Number
+  kind: String
 }
 
 type Plan {

@@ -1,6 +1,6 @@
 export enum InvocationType {
-  StartExecution,
-  StopExecution
+  StartExecution = 'start_execution',
+  StopExecution = 'stop_execution'
 }
 
 export interface Invocation {

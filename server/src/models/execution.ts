@@ -23,11 +23,11 @@ export interface Execution {
 }
 
 export enum MessageKind {
-  Stdout,
-  Stderr,
-  ExecutionStarted,
-  ExecutionFinished,
-  ExecutionRejected
+  Stdout = 'stdout',
+  Stderr = 'stderr',
+  ExecutionStarted = 'started',
+  ExecutionFinished = 'finished',
+  ExecutionRejected = 'rejected'
 }
 
 export interface ExecutionMessage {

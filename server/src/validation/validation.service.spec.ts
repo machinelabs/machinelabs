@@ -4,13 +4,13 @@ import { ValidationService } from './validation.service';
 import { ValidationRule } from './rules/rule';
 import { Observable } from '@reactivex/rxjs';
 import { ExecutionRejectionInfo, ExecutionRejectionReason } from '../models/execution';
-import { Invocation } from '../models/invocation';
+import { Invocation, InvocationType } from '../models/invocation';
 
 let dummyInvocation: Invocation = {
   id: 'dummy',
   timestamp: Date.now(),
   user_id: 'dummy',
-  type: 1,
+  type: InvocationType.StopExecution,
   data: []
 };
 

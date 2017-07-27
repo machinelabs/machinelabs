@@ -2,8 +2,8 @@
 const DEFAULT_HARDWARE_TYPE = 'economy';
 
 const InvocationType = {
-  StartExecution: 0,
-  StopExecution: 1
+  StartExecution: 'start_execution',
+  StopExecution: 'stop_execution'
 };
 
 function setServer(invocation, serverId) {
@@ -15,7 +15,7 @@ function setServer(invocation, serverId) {
   }
 }
 
-function InvocationWriter(getInvocationById, 
+function InvocationWriter(getInvocationById,
                             getServerForHardwareType,
                             getServerFromExecution,
                             updateInvocation) {

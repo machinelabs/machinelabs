@@ -75,7 +75,7 @@
             ".validate": "newData.isNumber()"
           },
           "type": {
-            ".validate": "newData.isNumber()"
+            ".validate": "newData.isString()"
           },
           "data": {
             ".validate": "newData.hasChildren() && newData.hasChildren(['id']) || newData.hasChildren() && newData.hasChildren(['execution_id'])",
@@ -205,7 +205,7 @@
               ".validate": "true"
             },
             "kind": {
-              ".validate": "newData.isNumber()"
+              ".validate": "newData.isString()"
             },
             "$other": {
               ".validate": "false"
