@@ -31,7 +31,6 @@ import { EditExecutionDialogComponent } from './edit-execution-dialog/edit-execu
 
 import { ExecutionStatusPipe } from './execution-status.pipe';
 
-import { LocationHelper } from '../util/location-helper';
 import { ExecutionListComponent } from './execution-list/execution-list.component';
 
 @NgModule({
@@ -66,7 +65,6 @@ import { ExecutionListComponent } from './execution-list/execution-list.componen
     HasValidExecutionGuard,
     HasRunningExecutionGuard,
     LabConfigService,
-    LocationHelper
   ],
   entryComponents: [
     NavigationConfirmDialogComponent,

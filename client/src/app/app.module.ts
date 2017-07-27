@@ -19,6 +19,7 @@ import { LabTemplateService, InMemoryLabTemplateService } from './lab-template.s
 import { LabExecutionService } from './lab-execution.service';
 import { UserService } from 'app/user/user.service';
 import { AuthService, FirebaseAuthService, OfflineAuthService } from './auth';
+import { LocationHelper } from './util/location-helper';
 
 import { AppComponent } from './app.component';
 
@@ -60,6 +61,7 @@ const AnimationsModule = [environment.testing ? NoopAnimationsModule : BrowserAn
     DbRefBuilder,
     { provide: DATABASE, useFactory: databaseFactory },
     { provide: AuthService, useClass: environment.offline ? OfflineAuthService : FirebaseAuthService },
+    LocationHelper,
     WindowRef
   ],
   bootstrap: [AppComponent]
