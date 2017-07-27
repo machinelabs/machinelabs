@@ -1,8 +1,8 @@
 import { File } from './lab';
 
 export enum InvocationType {
-  StartExecution = 'start',
-  StopExecution = 'stop'
+  StartExecution = 'start_execution',
+  StopExecution = 'stop_execution'
 }
 
 export interface InvocationLab {
