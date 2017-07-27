@@ -18,11 +18,9 @@ import { EditorToolbarComponent } from './editor-toolbar/editor-toolbar.componen
 import { EditorViewComponent } from './editor-view/editor-view.component';
 import { PanelComponent } from './panel/panel.component';
 import { PanelTitleComponent } from './panel/panel-title.component';
-import { FileTreeComponent } from './file-tree/file-tree.component';
 import { ExecutionStatusComponent } from './execution-status/execution-status.component';
 import { FooterComponent } from './editor-footer/editor-footer.component';
 
-import { FileNameDialogComponent } from './file-name-dialog/file-name-dialog.component';
 import { NavigationConfirmDialogComponent } from './navigation-confirm-dialog/navigation-confirm-dialog.component';
 import { EditLabDialogComponent } from './edit-lab-dialog/edit-lab-dialog.component';
 import { RejectionDialogComponent } from './rejection-dialog/rejection-dialog.component';
@@ -49,8 +47,6 @@ import { ExecutionListComponent } from './execution-list/execution-list.componen
     EditorViewComponent,
     PanelComponent,
     PanelTitleComponent,
-    FileTreeComponent,
-    FileNameDialogComponent,
     NavigationConfirmDialogComponent,
     EditLabDialogComponent,
     ExecutionStatusComponent,
@@ -69,7 +65,6 @@ import { ExecutionListComponent } from './execution-list/execution-list.componen
   entryComponents: [
     NavigationConfirmDialogComponent,
     EditLabDialogComponent,
-    FileNameDialogComponent,
     RejectionDialogComponent,
     ShareDialogComponent,
     EditExecutionDialogComponent
