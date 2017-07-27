@@ -16,7 +16,8 @@
 }
 
 .ml-toolbar-cta-bar {
-  ::ng-deep [md-button] {
+  ::ng-deep [md-button],
+  ::ng-deep [md-icon-button] {
     margin-left: 0.2em;
 
     &:first-child {
