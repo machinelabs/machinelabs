@@ -3,7 +3,6 @@ import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdDialog, MdDialogRef, MdSnackBar, MdTabGroup, MdSidenav } from '@angular/material';
 import { AceEditorComponent } from '../../editor/ace-editor/ace-editor.component';
-import { FileNameDialogComponent } from '../file-name-dialog/file-name-dialog.component';
 import { EditLabDialogComponent } from '../edit-lab-dialog/edit-lab-dialog.component';
 import {
   NavigationConfirmDialogComponent,
@@ -95,7 +94,6 @@ export class EditorViewComponent implements OnInit {
     return this.editorService.activeFile;
   }
 
-  fileNameDialogRef: MdDialogRef<FileNameDialogComponent>;
 
   navigationConfirmDialogRef: MdDialogRef<NavigationConfirmDialogComponent>;
 
@@ -338,46 +336,6 @@ export class EditorViewComponent implements OnInit {
     console.log(value);
   }
 
-  openFile(file: File) {
-    this.activeFile = file;
-    this.locationHelper.updateQueryParams(this.location.path(), {
-      file: file.name,
-    });
-  }
-
-  deleteFile(file: File) {
-    this.lab.directory.splice(this.lab.directory.indexOf(file), 1);
-    this.openFile(this.lab.directory[0]);
-  }
-
-  updateFile(file: File, newFile: File) {
-    const index = this.lab.directory.findIndex(f => f.name === file.name);
-    if (index !== -1) {
-      this.lab.directory[index] = newFile;
-    }
-  }
-
-  openFileNameDialog(file?: File) {
-    this.fileNameDialogRef = this.dialog.open(FileNameDialogComponent, {
-      disableClose: false,
-      data: {
-        fileName: file ? file.name :  ''
-      }
-    });
-
-    this.fileNameDialogRef.afterClosed()
-      .filter(name => name !== '' && name !== undefined)
-      .subscribe(name => {
-        if (!file) {
-          const newFile = { name, content: '' };
-          this.lab.directory.push(newFile);
-          this.openFile(newFile);
-        } else {
-          this.updateFile(file, { name, content: file.content});
-        }
-      });
-  }
-
   openRejectionDialog(rejectionReason: ExecutionRejectionReason) {
     this.rejectionDialogRef = this.dialog.open(RejectionDialogComponent, {
       data: { rejectionReason }
@@ -420,13 +378,6 @@ export class EditorViewComponent implements OnInit {
       this.executionMetadataSidebar.close();
       this.editorSnackbar.notifyLabRestored();
     }, METADATA_SIDEBAR_OPEN_TIMEOUT);
-  }
-
-  private initDirectory(directory: Array<File>) {
-    this.lab.directory = directory;
-    // try query param file name first
-    const file = this.lab.directory.find(f => f.name === this.router.parseUrl(this.location.path(false)).queryParams.file);
-    this.openFile(file || this.lab.directory[0]);
   }
 
   private goToLab(lab?: Lab, queryParams?) {

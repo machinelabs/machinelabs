@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 
 import { EditorLayoutComponent } from './layout/editor-layout.component';
@@ -10,6 +11,8 @@ import { EditorLayoutPanelComponent } from './layout/editor-layout-panel.compone
 import { EditorLayoutPanelCtaBarComponent } from './layout/editor-layout-panel-cta-bar.component';
 import { EditorLayoutFooterComponent } from './layout/editor-layout-footer.component';
 
+import { FileTreeComponent } from './file-tree/file-tree.component';
+import { FileNameDialogComponent } from './file-name-dialog/file-name-dialog.component';
 import { AceEditorComponent } from './ace-editor/ace-editor.component';
 
 import { EditorService } from './editor.service';
@@ -19,6 +22,7 @@ import { EditorSnackbarService } from './editor-snackbar.service';
 @NgModule({
   imports: [
     SharedModule,
+    ReactiveFormsModule
   ],
   declarations: [
     AceEditorComponent,
@@ -29,7 +33,9 @@ import { EditorSnackbarService } from './editor-snackbar.service';
     EditorLayoutPanelsComponent,
     EditorLayoutPanelComponent,
     EditorLayoutPanelCtaBarComponent,
-    EditorLayoutFooterComponent
+    EditorLayoutFooterComponent,
+    FileTreeComponent,
+    FileNameDialogComponent
   ],
   providers: [
     EditorService,
@@ -45,7 +51,11 @@ import { EditorSnackbarService } from './editor-snackbar.service';
     EditorLayoutPanelsComponent,
     EditorLayoutPanelComponent,
     EditorLayoutPanelCtaBarComponent,
-    EditorLayoutFooterComponent
+    EditorLayoutFooterComponent,
+    FileTreeComponent
+  ],
+  entryComponents: [
+    FileNameDialogComponent
   ]
 })
 export class EditorModule {}

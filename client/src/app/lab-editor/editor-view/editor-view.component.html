@@ -31,13 +31,7 @@
         </ml-editor-layout-panel-cta-bar>
           <md-sidenav-container>
             <md-sidenav mode="side" #fileTreeSidebar [opened]="true">
-              <ml-file-tree
-                [files]="lab.directory"
-                [selectedFile]="activeFile"
-                (selectFile)="openFile($event)"
-                (removeFile)="deleteFile($event)"
-                (editFile)="openFileNameDialog($event)"
-                (addFile)="openFileNameDialog()"></ml-file-tree>
+              <ml-file-tree></ml-file-tree>
             </md-sidenav>
             <ml-ace-editor
               #editor
