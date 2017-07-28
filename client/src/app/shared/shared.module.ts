@@ -24,6 +24,7 @@ import { DistanceInWordsToNowPipe } from './distance-in-words-to-now.pipe';
   ],
   imports: [MachineLabsMaterialModule, CommonModule],
   exports: [
+    CommonModule,
     MachineLabsMaterialModule,
     TagListComponent,
     DialogHeaderComponent,
