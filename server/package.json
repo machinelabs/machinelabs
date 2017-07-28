@@ -6,7 +6,7 @@
   "author": "Christoph Burgdorf <christoph.burgdorf@bvsn.org> (http://cburgdorf.wordpress.com/)",
   "license": "ISC",
   "dependencies": {
-    "@reactivex/rxjs": "^5.0.0-rc.5",
+    "@reactivex/rxjs": "^5.4.2",
     "@types/js-yaml": "^3.5.30",
     "firebase": "^3.7.1",
     "firebase-admin": "^4.2.1",

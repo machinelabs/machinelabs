@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@reactivex/rxjs@^5.0.0-rc.5":
-  version "5.0.0-rc.5"
-  resolved "https://registry.yarnpkg.com/@reactivex/rxjs/-/rxjs-5.0.0-rc.5.tgz#7d04df1d60b04aebe9a38627de2616b4aed920b0"
+"@reactivex/rxjs@^5.4.2":
+  version "5.4.2"
+  resolved "https://registry.yarnpkg.com/@reactivex/rxjs/-/rxjs-5.4.2.tgz#ab530dbbdab71071369828ef11c8d7ae558d5116"
   dependencies:
     symbol-observable "^1.0.1"
 
