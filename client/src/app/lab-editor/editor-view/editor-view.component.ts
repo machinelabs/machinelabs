@@ -10,6 +10,7 @@ import {
   NavigationConfirmReason
 } from '../navigation-confirm-dialog/navigation-confirm-dialog.component';
 import { RejectionDialogComponent } from '../rejection-dialog/rejection-dialog.component';
+import { EditorService, TabIndex } from '../../editor/editor.service';
 import { RemoteLabExecService } from '../../editor/remote-code-execution/remote-lab-exec.service';
 import { EditorSnackbarService } from '../../editor/editor-snackbar.service';
 import { LabStorageService } from '../../lab-storage.service';
@@ -43,12 +44,6 @@ import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/share';
 
-enum TabIndex {
-  Editor,
-  Console,
-  Settings
-}
-
 interface EditLabDialogOptions {
   hideCancelButton: boolean;
 }
@@ -66,9 +61,21 @@ export class EditorViewComponent implements OnInit {
 
   output: Observable<string>;
 
-  lab: Lab;
+  set lab(lab: Lab) {
+    this.editorService.lab = lab;
+  }
 
-  latestLab: Lab;
+  get lab(): Lab {
+    return this.editorService.lab;
+  }
+
+  set latestLab(lab: Lab) {
+    this.editorService.latestLab = lab;
+  }
+
+  get latestLab(): Lab {
+    return this.editorService.latestLab;
+  }
 
   execution: Observable<Execution>;
 
@@ -80,7 +87,13 @@ export class EditorViewComponent implements OnInit {
 
   sidebarToggled = false;
 
-  activeFile: File;
+  set activeFile(file: File) {
+    this.editorService.activeFile = file;
+  }
+
+  get activeFile(): File {
+    return this.editorService.activeFile;
+  }
 
   fileNameDialogRef: MdDialogRef<FileNameDialogComponent>;
 
@@ -98,11 +111,9 @@ export class EditorViewComponent implements OnInit {
 
   rejectionDialogRef: MdDialogRef<RejectionDialogComponent>;
 
-  selectedTab = TabIndex.Editor;
+  activeExecutionId: string;
 
   TabIndex = TabIndex;
-
-  activeExecutionId: string;
 
   constructor (private rleService: RemoteLabExecService,
                private labStorageService: LabStorageService,
@@ -112,6 +123,7 @@ export class EditorViewComponent implements OnInit {
                private location: Location,
                private locationHelper: LocationHelper,
                private router: Router,
+               public editorService: EditorService,
                private slimLoadingBarService: SlimLoadingBarService,
                private labExecutionService: LabExecutionService) {
   }
@@ -140,19 +152,19 @@ export class EditorViewComponent implements OnInit {
   }
 
   selectTab(tabIndex: TabIndex) {
-    this.selectedTab = tabIndex;
-    if (this.selectedTab === TabIndex.Editor && this.editor) {
+    this.editorService.selectTab(tabIndex);
+    if (this.editorService.editorTabActive() && this.editor) {
       // This has to run in the next tick after the editor has become visible
       // https://github.com/ajaxorg/ace/issues/3070
       setTimeout(_ => this.editor.resize(), 0);
-    } else if (this.selectedTab === TabIndex.Console && this.outputPanel) {
+    } else if (this.editorService.consoleTabActive() && this.outputPanel) {
       setTimeout(_ => this.outputPanel.resize(), 0);
     }
   }
 
   run(lab: Lab) {
     this.outputPanel.clear();
-    this.selectTab(TabIndex.Console);
+    this.editorService.selectConsoleTab();
     this.latestLab = Object.assign({}, lab);
     // First check if this lab is already persisted or not. We don't want to
     // execute labs that don't exist in the database.
@@ -202,7 +214,7 @@ export class EditorViewComponent implements OnInit {
       .subscribe(execution => {
         this.slimLoadingBarService.complete();
         this.showRestoreMessage = Directory.isSameDirectory(execution.lab.directory, this.latestLab.directory);
-        this.initDirectory(execution.lab.directory);
+        this.editorService.initDirectory(execution.lab.directory);
       });
 
     let messages$ = wrapper.messages;
@@ -228,7 +240,7 @@ export class EditorViewComponent implements OnInit {
 
   listenAndUpdateUrl(execution: Execution) {
     this.locationHelper.updateUrl(['/editor', execution.lab.id, execution.id], {
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'preserve'
     });
     this.activeExecutionId = execution.id;
     this.listen(this.activeExecutionId);
@@ -373,10 +385,8 @@ export class EditorViewComponent implements OnInit {
   }
 
   initLab(lab: Lab, fetchExecutions = true) {
-    this.lab = lab;
-    this.latestLab = Object.assign({}, this.lab);
+    this.editorService.initLab(lab);
     this.selectTab(TabIndex.Editor);
-    this.initDirectory(lab.directory);
     if (fetchExecutions) {
       this.initExecutionList();
     }
@@ -391,19 +401,19 @@ export class EditorViewComponent implements OnInit {
         .do(_ => this.openExecutionList())
         .subscribe(_ => {
           if (this.activeExecutionId) {
-            this.selectTab(TabIndex.Console);
+            this.editorService.selectConsoleTab();
           }
         });
   }
 
   restoreLab() {
-    this.selectTab(TabIndex.Editor);
+    this.editorService.selectEditorTab();
     this.outputPanel.clear();
     this.activeExecutionId = null;
     this.locationHelper.updateUrl(['/editor', this.lab.id], {
       queryParamsHandling: 'merge'
     });
-    this.initDirectory(this.latestLab.directory);
+    this.editorService.initDirectory(this.latestLab.directory);
     this.showRestoreMessage = false;
 
     setTimeout(() => {
