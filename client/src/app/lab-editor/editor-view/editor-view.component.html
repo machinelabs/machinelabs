@@ -1,54 +1,62 @@
-<div class="ml-editor-view-layout">
-  <div class="ml-editor-view-header">
+<ml-editor-layout>
+  <ml-editor-layout-header>
     <ml-editor-toolbar
       [lab]="lab"
       (action)="toolbarAction($event)"
       ></ml-editor-toolbar>
-    <nav md-tab-nav-bar class="ml-editor-view-nav-bar">
+    <ml-editor-layout-nav-bar>
+      <div md-tab-nav-bar class="ml-editor-view-nav-bar">
+        <a routerLink="."
+          queryParamsHandling="merge"
+          md-tab-link
+          (click)="selectTab(TabIndex.Editor)"
+          [active]="editorService.editorTabActive()">Editor</a>
 
-      <a routerLink="."
-         queryParamsHandling="merge"
-         md-tab-link
-         (click)="selectTab(TabIndex.Editor)"
-         [active]="selectedTab == TabIndex.Editor">Editor</a>
+        <a routerLink="."
+          queryParamsHandling="merge"
+          md-tab-link
+          (click)="selectTab(TabIndex.Console)"
+          [active]="editorService.consoleTabActive()">Console</a>
 
-      <a routerLink="."
-         queryParamsHandling="merge"
-         md-tab-link
-         (click)="selectTab(TabIndex.Console)"
-         [active]="selectedTab == TabIndex.Console">Console</a>
-
-      <p *ngIf="showRestoreMessage" class="ml-editor-restore-message">You're viewing an older version of this lab. Want to restore latest version? <button md-button color="primary" (click)="restoreLab()">Restore</button></p>
-    </nav>
-  </div>
-  <div class="ml-editor-view-layout-main">
-    <md-sidenav-container>
-      <div class="ml-editor-view-layout-columns" [class.hidden]="selectedTab != TabIndex.Editor">
-        <ml-panel panelTitle="Files">
-          <ml-file-tree
-            [files]="lab.directory"
-            [selectedFile]="activeFile"
-            (selectFile)="openFile($event)"
-            (removeFile)="deleteFile($event)"
-            (editFile)="openFileNameDialog($event)"
-            (addFile)="openFileNameDialog()"></ml-file-tree>
-        </ml-panel>
-        <div class="ml-editor-view-editor-wrapper">
-          <ml-ace-editor
-            #editor
-            [(value)]="activeFile.content"
-            mode="python"
-            [class.active]="selectedTab == TabIndex.Editor"></ml-ace-editor>
-        </div>
+        <p *ngIf="showRestoreMessage" class="ml-editor-restore-message">You're viewing an older version of this lab. Want to restore latest version? <button md-button color="primary" (click)="restoreLab()">Restore</button></p>
       </div>
-      <ml-ace-editor
-        #outputPanel
-        [value]="output | async"
-        [readOnly]="true"
-        theme="terminal"
-        [class.hidden]="selectedTab != TabIndex.Console"
-        [class.active]="selectedTab == TabIndex.Console"
-        mode="sh"></ml-ace-editor>
+    </ml-editor-layout-nav-bar>
+  </ml-editor-layout-header>
+  <ml-editor-layout-main>
+    <md-sidenav-container>
+      <ml-editor-layout-panels>
+        <ml-editor-layout-panel [class.hidden]="!editorService.editorTabActive()">
+          <ml-editor-layout-panel-cta-bar>
+          <button md-icon-button mdTooltip="Toogle file tree" mdTooltipPosition="right" (click)="fileTreeSidebar.toggle()"><md-icon>description</md-icon></button>
+        </ml-editor-layout-panel-cta-bar>
+          <md-sidenav-container>
+            <md-sidenav mode="side" #fileTreeSidebar [opened]="true">
+              <ml-file-tree
+                [files]="lab.directory"
+                [selectedFile]="activeFile"
+                (selectFile)="openFile($event)"
+                (removeFile)="deleteFile($event)"
+                (editFile)="openFileNameDialog($event)"
+                (addFile)="openFileNameDialog()"></ml-file-tree>
+            </md-sidenav>
+            <ml-ace-editor
+              #editor
+              [(value)]="activeFile.content"
+              mode="python"
+              [class.active]="editorService.editorTabActive()"></ml-ace-editor>
+          </md-sidenav-container>
+        </ml-editor-layout-panel>
+        <ml-editor-layout-panel [class.hidden]="!editorService.consoleTabActive()">
+          <ml-ace-editor
+            #outputPanel
+            [value]="output | async"
+            [readOnly]="true"
+            theme="terminal"
+            [class.hidden]="!editorService.consoleTabActive()"
+            [class.active]="editorService.consoleTabActive()"
+            mode="sh"></ml-ace-editor>
+        </ml-editor-layout-panel>
+      </ml-editor-layout-panels>
       <md-sidenav
           (open)="sidebarToggled = true"
           (close)="sidebarToggled = false"
@@ -75,10 +83,12 @@
         </ng-template>
       </md-sidenav>
     </md-sidenav-container>
-  </div>
-  <ml-footer
-    [execution]="execution"
-    [slideToggleChecked]="sidebarToggled"
-    (slideToggleClick)="executionMetadataSidebar.toggle()"
-    ></ml-footer>
-</div>
+  </ml-editor-layout-main>
+  <ml-editor-layout-footer>
+    <ml-footer
+      [execution]="execution"
+      [slideToggleChecked]="sidebarToggled"
+      (slideToggleClick)="executionMetadataSidebar.toggle()"
+      ></ml-footer>
+  </ml-editor-layout-footer>
+</ml-editor-layout>

@@ -1,0 +1,18 @@
+@import '../../../../node_modules/@angular/material/theming';
+
+@mixin ml-editor-layout-theme($theme) {
+
+  $primary: map-get($theme, primary);
+  $background: map-get($theme, background);
+
+  ml-editor-layout-nav-bar,
+  ml-editor-layout-footer {
+    background-color: mat-color($background, dialog);
+  }
+
+  ml-editor-layout-panel-cta-bar {
+    background: #607D8B;
+    color: mat-color($primary, default-contrast);
+  }
+}
+
