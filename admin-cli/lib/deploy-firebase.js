@@ -9,7 +9,7 @@ function deployFirebase(project) {
   }
 
   console.log(chalk.green(`Deploying firebase project ${project}`));
-  execute(`(cd ./firebase; firebase use ${project} && firebase deploy)`);
+  execute(`(cd ./firebase/functions; firebase use ${project} && npm run deploy)`);
 }
 
 module.exports = deployFirebase;
