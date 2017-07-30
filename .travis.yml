@@ -1,9 +1,14 @@
 language: node_js
-node_js:
-  - "7"
-before_install:
-  # Those ENVs are just needed for the build to compile. Not need for real values.
-  - export MACHINELABS_FB_PRIVATE_KEY=KEEP_MY_PRIVACY
-  - export MACHINELABS_FB_CLIENT_EMAIL=KEEP_MY_PRIVACY
-  - cd ./server
-script: npm run ci
+matrix:
+  include:
+    - node_js: "7"
+      before_install:
+        # Those ENVs are just needed for the build to compile. Not need for real values.
+        - export MACHINELABS_FB_PRIVATE_KEY=KEEP_MY_PRIVACY
+        - export MACHINELABS_FB_CLIENT_EMAIL=KEEP_MY_PRIVACY
+        - cd ./server
+      script: npm run ci
+    - node_js: "7"
+      before_install:
+        - cd ./firebase/functions
+      script: npm run test
