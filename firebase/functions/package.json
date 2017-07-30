@@ -9,7 +9,7 @@
     "mk_dist": "mkdir dist",
     "tslint": "tslint -c tslint.json src/**/*.ts",
     "tsfix": "tslint --fix -c tslint.json src/**/*.ts",
-    "test": "jest"
+    "test": "npm run tslint && jest"
   },
   "jest": {
     "transform": {
