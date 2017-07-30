@@ -20,7 +20,7 @@ describe('InvocationResolver', () => {
     let mockedInvocation: any = {
       common: {
         id: 1,
-        type: 0,
+        type: 'start_execution',
         data: {},
         timestamp: 0
       }
@@ -71,7 +71,7 @@ describe('InvocationResolver', () => {
     let mockedInvocation = {
       common: {
         id: 1,
-        type: 0,
+        type: 'start_execution',
         data: {},
         timestamp: 0
       }
@@ -112,7 +112,7 @@ describe('InvocationResolver', () => {
     let mockedInvocation: any = {
       common: {
         id: 1,
-        type: 1,
+        type: 'stop_execution',
         timestamp: 0,
         data: {
           execution_id: 1
