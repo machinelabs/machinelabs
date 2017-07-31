@@ -2,6 +2,7 @@ const chalk = require('chalk');
 
 const deployServer = require('../lib/deploy-server');
 const deployFirebase = require('../lib/deploy-firebase');
+const deployClient = require('../lib/deploy-client');
 
 
 function deploy (argv) {
@@ -13,6 +14,10 @@ function deploy (argv) {
 
   if (argv.cfg.target.googleProjectId && !argv.cfg.noFb) {
     deployFirebase(argv.cfg.target.googleProjectId);
+  }
+
+  if (argv.cfg.target.googleProjectId && argv.cfg.env && !argv.cfg.noClient) {
+    deployClient(argv.cfg.target.googleProjectId, argv.cfg.env);
   }
 }
 
