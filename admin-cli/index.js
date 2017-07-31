@@ -2,7 +2,7 @@
 
 const chalk = require('chalk');
 
-const templates = require('./target-templates/templates');
+const templates = require('./config-templates/templates');
 const deployCmd = require('./commands/deploy');
 const loginCmd = require('./commands/login');
 
