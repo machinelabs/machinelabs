@@ -2,14 +2,25 @@ import { Injectable } from '@angular/core';
 import { UrlSerializer } from '@angular/router';
 import { Location } from '@angular/common';
 import { LocationHelper } from '../util/location-helper';
+import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.service';
+import { EditorSnackbarService } from './editor-snackbar.service';
 
 import { File, Lab } from '../models/lab';
+import {
+  MessageKind,
+  ExecutionRejectionInfo,
+  ExecutionRejectionReason
+} from '../models/execution';
 
 export enum TabIndex {
   Editor,
   Console,
   Settings
 }
+
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/scan';
 
 @Injectable()
 export class EditorService {
@@ -25,7 +36,9 @@ export class EditorService {
   constructor(
     private urlSerializer: UrlSerializer,
     private location: Location,
-    private locationHelper: LocationHelper
+    private locationHelper: LocationHelper,
+    private editorSnackbar: EditorSnackbarService,
+    private rleService: RemoteLabExecService
   ) {}
 
   initLab(lab: Lab) {
@@ -37,6 +50,29 @@ export class EditorService {
   initDirectory(directory: Array<File>) {
     this.lab.directory = directory;
     this.initActiveFile();
+  }
+
+  listen(executionId: string) {
+    return this.rleService.listen(executionId);
+  }
+
+  listenAndNotify(executionId: string) {
+    let wrapper = this.rleService.listen(executionId);
+
+    let messages = wrapper.messages
+      .do(msg => {
+        if (msg.kind === MessageKind.ExecutionFinished) {
+          this.editorSnackbar.notifyExecutionFinished();
+        }
+      })
+      .filter(msg => msg.kind === MessageKind.ExecutionStarted ||
+          msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr)
+      .scan((acc, current) => `${acc}\n${current.data}`, '');
+
+    return {
+      execution: wrapper.execution,
+      messages: messages
+    };
   }
 
   selectTab(tabIndex: TabIndex) {
