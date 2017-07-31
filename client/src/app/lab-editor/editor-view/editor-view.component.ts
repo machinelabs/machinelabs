@@ -194,9 +194,19 @@ export class EditorViewComponent implements OnInit {
         });
   }
 
-  consume(wrapper: ExecutionWrapper) {
+  listenAndUpdateUrl(execution: Execution) {
+    this.locationHelper.updateUrl(['/editor', execution.lab.id, execution.id], {
+      queryParamsHandling: 'preserve'
+    });
+    this.activeExecutionId = execution.id;
+    this.listen(this.activeExecutionId);
+  }
+
+  listen(executionId: string) {
     this.slimLoadingBarService.progress = INITIAL_LOADING_INDICATOR_PROGRESS;
     this.outputPanel.clear();
+
+    let wrapper = this.editorService.listenAndNotify(executionId);
     this.execution = wrapper.execution;
 
     if (this.executionSubscription) {
@@ -215,37 +225,9 @@ export class EditorViewComponent implements OnInit {
         this.editorService.initDirectory(execution.lab.directory);
       });
 
-    let messages$ = wrapper.messages;
-
-    // Scan the notifications and build up a string with line breaks
-    // Don't make this a manual subscription without dealing with
-    // Unsubscribing. The returned Observable may not auto complete
-    // in all scenarios.
-    this.output = messages$
-                    .do(msg => {
-                      if (msg.kind === MessageKind.ExecutionFinished) {
-                        this.editorSnackbar.notifyExecutionFinished();
-                      }
-                    })
-                    .filter(msg => msg.kind === MessageKind.ExecutionStarted ||
-                        msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr)
-                    .scan((acc, current) => `${acc}\n${current.data}`, '');
-
-
-    this.editorSnackbar.notifyLateExecutionUnless(messages$);
+    this.output = wrapper.messages;
+    this.editorSnackbar.notifyLateExecutionUnless(wrapper.messages);
     this.openExecutionList();
-  }
-
-  listenAndUpdateUrl(execution: Execution) {
-    this.locationHelper.updateUrl(['/editor', execution.lab.id, execution.id], {
-      queryParamsHandling: 'preserve'
-    });
-    this.activeExecutionId = execution.id;
-    this.listen(this.activeExecutionId);
-  }
-
-  listen(executionId: string) {
-    this.consume(this.rleService.listen(executionId));
   }
 
   fork(lab: Lab) {
