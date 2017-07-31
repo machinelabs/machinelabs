@@ -2,6 +2,7 @@ const chalk = require('chalk');
 const execute = require('./execute')({displayErrors: true});
 const isRootDir = require('./is-root-dir');
 const failWith = require('./fail-with');
+const fs = require('fs');
 
 function deployServer(serverName, zone, env) {
   if (!isRootDir()) {
@@ -10,6 +11,11 @@ function deployServer(serverName, zone, env) {
 
   console.log(chalk.green('Deploying server'));
   execute(`(cd ./server; gulp build --env=${env})`);
+
+  if (!fs.existsSync('./server/dist')) {
+    console.log(chalk.red('Dist does not exist. Aborting'));
+    process.exit(1);
+  }
 
   // With our current setup transferring the ./dist isn't enough
   // We have to zip the entire directory (takes ages otherwise)
