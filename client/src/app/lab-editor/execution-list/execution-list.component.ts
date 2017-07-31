@@ -5,7 +5,7 @@ import { MdDialog, MdDialogRef } from '@angular/material';
 import { UserService } from 'app/user/user.service';
 import { RemoteLabExecService } from '../../lab-editor/remote-code-execution/remote-lab-exec.service';
 import { LabExecutionService } from '../../lab-execution.service';
-import { EditorSnackbarService } from '../editor-snackbar.service';
+import { EditorSnackbarService } from '../../editor/editor-snackbar.service';
 
 import { User } from '../../models/user';
 import { Execution, ExecutionStatus } from '../../models/execution';

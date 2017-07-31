@@ -11,7 +11,7 @@ import {
 } from '../navigation-confirm-dialog/navigation-confirm-dialog.component';
 import { RejectionDialogComponent } from '../rejection-dialog/rejection-dialog.component';
 import { RemoteLabExecService } from '../remote-code-execution/remote-lab-exec.service';
-import { EditorSnackbarService } from '../editor-snackbar.service';
+import { EditorSnackbarService } from '../../editor/editor-snackbar.service';
 import { LabStorageService } from '../../lab-storage.service';
 import { BLANK_LAB_TPL_ID } from '../../lab-template.service';
 import { Observable } from 'rxjs/Observable';
