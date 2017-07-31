@@ -174,5 +174,18 @@ describe('FileTreeComponent', () => {
         }
       );
     });
+
+    it('should not render action buttons if configured that way', () => {
+      component.showActionButtons = false;
+      fixture.detectChanges();
+
+      let addButton = fixture.debugElement.query(By.css('.ml-file-tree-cta'));
+      let editButton = fixture.debugElement.query(By.css('.ml-file-list-item-button.edit'));
+      let deleteButton = fixture.debugElement.query(By.css('.ml-file-list-item-button.delete'));
+
+      expect(addButton).toBe(null);
+      expect(editButton).toBe(null);
+      expect(deleteButton).toBe(null);
+    });
   });
 });

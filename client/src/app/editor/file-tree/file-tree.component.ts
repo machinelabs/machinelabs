@@ -29,6 +29,8 @@ export class FileTreeComponent {
 
   fileNameDialogRef: MdDialogRef<FileNameDialogComponent>;
 
+  @Input() showActionButtons = true;
+
   constructor(
     private editorService: EditorService,
     public dialog: MdDialog
