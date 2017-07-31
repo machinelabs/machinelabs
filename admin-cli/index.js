@@ -45,11 +45,11 @@ let sharedOptions = {
 let argv = yargs(process.argv.slice(2))
     .usage('$0 <cmd> [args]')
     .command('deploy [<options>]', 'Deploy MachineLabs', Object.assign({
-      noServer: {
+      'cfg.noServer': {
         describe: 'Flag to suppress deployment of server',
         boolean: true,
       },
-      noFb: {
+      'cfg.noFb': {
         describe: 'Flag to suppress deployment of firebase',
         boolean: true,
       }
