@@ -32,7 +32,7 @@
         "dev": "environments/environment.ts",
         "personal": "environments/environment.personal.ts",
         "offline": "environments/environment.offline.ts",
-        "prod": "environments/environment.prod.ts",
+        "staging": "environments/environment.staging.ts",
         "test": "environments/environment.test.ts",
         "e2e": "environments/environment.e2e.ts"
       },
