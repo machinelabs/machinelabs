@@ -1,8 +1,12 @@
-## MachineLabs server
+## MachineLabs
 
-This is the server powering machinelabs.ai
+This is the mono repository holding the code for the entire machinelabs system.
 
 ### Repository layout
+
+#### `/server`
+
+This holds the web app
 
 #### `/server`
 
@@ -12,11 +16,10 @@ This holds the actual server.
 
 This holds the cloudfunctions and database security rules for firebase
 
-#### `/scripts`
+#### `/admin-cli`
 
-This holds a collection of scripts that aren't particulary scoped to either
-the server or the firebase but rather operate on the whole system mainly
-to achieve a smooth deployment.
+This holds an alpha style version of an admin-cli to help with
+all maintenance tasks such as deployments or loging in remote servers
 
 ### Working on the server
 
