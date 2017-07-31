@@ -52,6 +52,10 @@ let argv = yargs(process.argv.slice(2))
       'cfg.noFb': {
         describe: 'Flag to suppress deployment of firebase',
         boolean: true,
+      },
+      'cfg.noClient': {
+        describe: 'Flag to suppress deployment of client',
+        boolean: true,
       }
     }, sharedOptions), deployCmd)
     .command('login [<options>]', 'Login to server', sharedOptions, loginCmd)
