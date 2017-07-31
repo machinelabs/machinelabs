@@ -6,6 +6,7 @@ import { LAB_STUB } from '../../test-helper/stubs/lab.stubs';
 
 import { LocationHelper } from '../util/location-helper';
 import { EditorService, TabIndex } from './editor.service';
+import { WindowRef } from '../window-ref.service';
 
 describe('EditorService', () => {
 
@@ -15,7 +16,11 @@ describe('EditorService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      providers: [LocationHelper, EditorService]
+      providers: [
+        WindowRef,
+        LocationHelper,
+        EditorService
+      ]
     });
 
     editorService = TestBed.get(EditorService);
