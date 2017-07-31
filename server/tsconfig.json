@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "module": "commonjs",
+    "target": "es5",
+    "sourceMap": true,
+    "pretty": true,
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "lib": ["es6", "es2016.array.include"]
+  },
+  "compileOnSave": false,
+  "buildOnSave": false,
+  "typeRoots": [
+    "./node_modules/@types"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

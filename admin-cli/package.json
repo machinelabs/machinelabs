@@ -1,0 +1,12 @@
+{
+  "name": "ml-cli",
+  "version": "0.1.0",
+  "description": "Admin CLI for Machine Labs",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^2.0.1",
+    "lodash.isstring": "^4.0.1",
+    "yargs": "^8.0.2"
+  }
+}

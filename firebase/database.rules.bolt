@@ -1,0 +1,215 @@
+isExecutionServer() {
+  return auth.uid === 'execution-server';
+}
+
+isAssignServerFn() {
+  return auth.uid === 'cloud-fn-assign-server';
+}
+
+isCurrentUser(uid) { auth != null && auth.uid == uid }
+
+isAnonymous() {
+  return auth.provider === 'anonymous';
+}
+
+isOwningUserOrExecutionServerOrAssignFn(ref) {
+  return prior(ref) !== null ? (isCurrentUser(data.child('user_id').val()) && isCurrentUser(newData.child('user_id').val())) || isExecutionServer() || isAssignServerFn() : isCurrentUser(newData.child('user_id').val())
+}
+
+isOwningUser(ref, uidFieldName) {
+  return prior(ref) !== null ? (isCurrentUser(data.child(uidFieldName).val()) && isCurrentUser(newData.child(uidFieldName).val())) : isCurrentUser(newData.child(uidFieldName).val())
+}
+
+type Lab {
+  id: String,
+  user_id: String,
+  name: String,
+  description: String,
+  has_cached_run: Boolean | Null,
+  cache_hash: String | Null
+  tags: String[],
+  directory: File[],
+  created_at: Number,
+  modified_at: Number
+}
+
+type File {
+  name: String,
+  content: String
+}
+
+type InvocationLab {
+  id: String,
+  directory: File[]
+}
+
+type InvocationExecution {
+  execution_id: String
+}
+
+type AllowOther {
+  validate() { true }
+}
+
+type Invocation {
+  id: String,
+  user_id: String,
+  timestamp: Number,
+  type: String,
+  data: InvocationLab | InvocationExecution
+}
+
+type ServerWritableString extends String {
+  validate() { isExecutionServer() }
+}
+
+type ServerWritableNumber extends Number {
+  validate() { isExecutionServer() }
+}
+
+type Execution {
+  id: ServerWritableString,
+  cache_hash: ServerWritableString,
+  started_at: ServerWritableNumber,
+  finished_at: ServerWritableNumber | Null,
+  server_id: ServerWritableString,
+  server_info: ServerWritableString,
+  hardware_type: ServerWritableString,
+  user_id: ServerWritableString,
+  lab: InvocationLab,
+  status: ServerWritableString,
+  hidden: Boolean | Null,
+  name: String | Null
+}
+
+type ExecutionMessage {
+  id: String,
+  index: Number,
+  timestamp: Number,
+  data: Any,
+  kind: String
+}
+
+type Plan {
+  id: String,
+  name: String,
+  description: String,
+  free_credit: Number
+}
+
+type AnonymousState extends Boolean {
+  validate() { this === isAnonymous() }
+}
+
+type UserId extends String {
+  validate() { this === auth.uid }
+}
+
+type UserEmail extends String {
+  validate() { this === auth.email }
+}
+
+type User {
+  id: UserId,
+  isAnonymous: AnonymousState,
+  displayName: String,
+  bio: String,
+  photoUrl: String,
+  email: UserEmail,
+}
+
+type Server {
+  id: String,
+  hardware_type: String,
+  name: String
+}
+
+path / {
+  read() { isExecutionServer() }
+  write() { false }
+}
+
+path /labs/{id}/common is Lab {
+  read() { true }
+  write() { isOwningUserOrExecutionServerOrAssignFn(this) }
+}
+
+path /labs {
+  index() { ['common/cache_hash'] }
+}
+
+path /invocations/{id}/common is Invocation {
+  read() { isCurrentUser(data.child('user_id').val()) || isAssignServerFn() }
+  write() { isOwningUserOrExecutionServerOrAssignFn(this) }
+}
+
+path /invocations/{id} {
+  read() { isAssignServerFn() || isExecutionServer() }
+  write() { isAssignServerFn() }
+}
+
+path /invocations {
+  index() { ['server/id'] }
+}
+
+path /executions/{id}/common is Execution {
+  read() { true }
+  write() { isOwningUser(this, 'user_id') || isExecutionServer() }
+}
+
+path /executions {
+  index() { ['common/cache_hash']}
+}
+
+path /executions/{id}/messages {
+  read() { true }
+  write() { isExecutionServer() }
+  index() { ['index']}
+}
+
+path /executions/{id}/messages/{mid} is ExecutionMessage {
+  read() { true }
+  write() { isExecutionServer() }
+}
+
+path /users/{id}/common is User {
+  read() { true }
+  write() { isOwningUser(this, 'id') }
+}
+
+path /users/{id}/plan {
+  read() { true }
+}
+
+path /servers {
+  read() { isExecutionServer() || isAssignServerFn() }
+  write() { false }
+}
+
+path /servers/{id} is Server {}
+
+path /idx/user_labs/{id} {
+  read() { true }
+  write() { false }
+}
+
+path /idx/lab_executions/{id} {
+  read() { true }
+  write() { false }
+}
+
+path /idx/lab_visible_executions/{id} {
+  read() { true }
+  write() { false }
+}
+
+path /idx/user_executions/{id} {
+  read() { isExecutionServer() }
+  write() { false }
+}
+
+path /idx/user_visible_executions/{id} {
+  read() { true }
+  write() { false }
+}
+

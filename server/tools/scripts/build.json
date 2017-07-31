@@ -1,0 +1,11 @@
+{
+  "outDir": "./dist",
+  "tsFiles": [
+    "./src/**/*.ts",
+    "./typings/index.d.ts",
+    "./index.ts"
+  ],
+  "copyFiles": [
+    "./package.json"
+  ]
+}

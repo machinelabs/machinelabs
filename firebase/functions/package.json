@@ -1,0 +1,46 @@
+{
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "cp__node_modules": "cp -R ./node_modules ./dist/node_modules",
+    "cp__package": "cp -R ./package.json ./dist/package.json",
+    "deploy": "npm run clean_dist && npm run mk_dist && npm run cp__node_modules && npm run cp__package && tsc && firebase deploy && npm run clean_dist",
+    "clean_dist": "rm -rf ./dist",
+    "mk_dist": "mkdir dist",
+    "tslint": "tslint -c tslint.json src/**/*.ts",
+    "tsfix": "tslint --fix -c tslint.json src/**/*.ts",
+    "test": "npm run tslint && jest"
+  },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ]
+  },
+  "dependencies": {
+    "firebase-admin": "^4.1.2",
+    "firebase-functions": "^0.5",
+    "lodash.merge": "^4.6.0",
+    "lodash.sample": "^4.2.1",
+    "lodash.toarray": "^4.4.0",
+    "moment": "^2.18.1"
+  },
+  "private": true,
+  "devDependencies": {
+    "@types/jest": "^20.0.5",
+    "jest": "^20.0.4",
+    "ts-jest": "^20.0.7",
+    "tslint": "^5.5.0",
+    "typescript": "2.4.2"
+  }
+}
