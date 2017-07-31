@@ -13,7 +13,6 @@ import { HasRunningExecutionGuard } from './has-running-execution.guard';
 import { ROUTES } from './lab-editor.routes';
 
 import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.service';
-import { EditorSnackbarService } from './editor-snackbar.service';
 import { LabConfigService } from './lab-config.service';
 
 import { EditorToolbarComponent } from './editor-toolbar/editor-toolbar.component';
@@ -68,7 +67,6 @@ import { ExecutionListComponent } from './execution-list/execution-list.componen
     HasValidExecutionGuard,
     HasRunningExecutionGuard,
     RemoteLabExecService,
-    EditorSnackbarService,
     LabConfigService,
     LocationHelper
   ],
