@@ -7,23 +7,27 @@
 
     <md-icon>description</md-icon> {{file.name}}
 
-    <button class="ml-file-list-item-button edit"
-      mdTooltip="Change filename"
-      mdTooltipPosition="below"
-      (click)="openFileNameDialog(file)"
-      ><md-icon>create</md-icon></button>
+    <ng-container *ngIf="showActionButtons">
+      <button class="ml-file-list-item-button edit"
+        mdTooltip="Change filename"
+        mdTooltipPosition="below"
+        (click)="openFileNameDialog(file)"
+        ><md-icon>create</md-icon></button>
 
-    <button class="ml-file-list-item-button delete"
-      *ngIf="isRemovable(file)"
-      mdTooltip="Delete file"
-      mdTooltipPosition="below"
-      (click)="deleteFile(file)"><md-icon>highlight_off</md-icon></button>
+      <button class="ml-file-list-item-button delete"
+        *ngIf="isRemovable(file)"
+        mdTooltip="Delete file"
+        mdTooltipPosition="below"
+        (click)="deleteFile(file)"><md-icon>highlight_off</md-icon></button>
+    </ng-container>
   </li>
 </ul>
 
-<div class="ml-file-tree-cta-bar">
-  <button md-button (click)="openFileNameDialog()" class="ml-file-tree-cta">
-    <md-icon>note_add</md-icon> Add file
-  </button>
-</div>
+<ng-container *ngIf="showActionButtons">
+  <div class="ml-file-tree-cta-bar">
+    <button md-button (click)="openFileNameDialog()" class="ml-file-tree-cta">
+      <md-icon>note_add</md-icon> Add file
+    </button>
+  </div>
+</ng-container>
 
