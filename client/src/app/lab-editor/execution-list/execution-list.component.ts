@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { MdDialog, MdDialogRef } from '@angular/material';
 
 import { UserService } from 'app/user/user.service';
-import { RemoteLabExecService } from '../../lab-editor/remote-code-execution/remote-lab-exec.service';
+import { RemoteLabExecService } from '../../editor/remote-code-execution/remote-lab-exec.service';
 import { LabExecutionService } from '../../lab-execution.service';
 import { EditorSnackbarService } from '../../editor/editor-snackbar.service';
 
