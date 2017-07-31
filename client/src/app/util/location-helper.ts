@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NavigationExtras, Router, UrlSerializer } from '@angular/router';
-import { Location } from '@angular/common';
+import { Location, LocationStrategy  } from '@angular/common';
+import { WindowRef } from '../window-ref.service';
 
 @Injectable()
 export class LocationHelper {
@@ -8,7 +9,9 @@ export class LocationHelper {
   constructor(
     private location: Location,
     private router: Router,
-    private urlSerializer: UrlSerializer
+    private urlSerializer: UrlSerializer,
+    private locationStrategy: LocationStrategy,
+    private windowRef: WindowRef
   ) {}
 
   updateUrl(urlSegments: string[], options: NavigationExtras) {
@@ -22,5 +25,11 @@ export class LocationHelper {
     currentUrlTree.queryParams = Object.assign({}, currentUrlTree.queryParams, params);
 
     this.location.go(this.urlSerializer.serialize(currentUrlTree))
+  }
+
+  openInNewTab(urlSegments: string[]) {
+    const urlTree = this.router.createUrlTree(urlSegments);
+    const url = this.locationStrategy.prepareExternalUrl(this.router.serializeUrl(urlTree));
+    this.windowRef.nativeWindow.open(url);
   }
 }
