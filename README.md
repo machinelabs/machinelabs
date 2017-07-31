@@ -4,7 +4,7 @@ This is the mono repository holding the code for the entire machinelabs system.
 
 ### Repository layout
 
-#### `/server`
+#### `/client`
 
 This holds the web app
 
@@ -109,26 +109,20 @@ If you have multiple servers, repeat this step to run them all in parallel.
 
 #### Deploying the whole system to staging
 
-This command needs to be run from the root level
-
 ```
-./admin-cli/index.js deploy --template=ahlem
+./admin-cli/index.js deploy --template=staging
 ```
 
 #### Deploying only the server to the staging system
 
-This command needs to be run from the root level
-
 ```
-./admin-cli/index.js deploy --template=ahlem --noFb
+./admin-cli/index.js deploy --template=staging --noFb --noClient
 ```
 
 #### Deploying only the cloudfunctions and security rules to the staging firebase
 
-This command needs to be run from the root level
-
 ```
-./admin-cli/index.js deploy --template=ahlem --noServer
+./admin-cli/index.js deploy --template=staging --noServer --noClient
 ```
 
 
