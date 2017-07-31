@@ -1,5 +1,5 @@
 module.exports = {
-  ahlem: {
+  staging: {
     target: {
       serverName: 'ahlem',
       zone: 'europe-west1-c',
