@@ -81,6 +81,8 @@
   <ml-editor-layout-footer>
     <ml-footer
       [execution]="execution"
+      [executionId]="activeExecutionId"
+      [lab]="lab"
       [slideToggleChecked]="sidebarToggled"
       (slideToggleClick)="executionMetadataSidebar.toggle()"
       ></ml-footer>

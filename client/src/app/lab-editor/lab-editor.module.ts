@@ -25,6 +25,7 @@ import { NavigationConfirmDialogComponent } from './navigation-confirm-dialog/na
 import { EditLabDialogComponent } from './edit-lab-dialog/edit-lab-dialog.component';
 import { RejectionDialogComponent } from './rejection-dialog/rejection-dialog.component';
 import { ShareDialogComponent } from './share-dialog/share-dialog.component';
+import { EmbedDialogComponent } from './embed-dialog/embed-dialog.component';
 import { EditExecutionDialogComponent } from './edit-execution-dialog/edit-execution-dialog.component';
 
 import { ExecutionStatusPipe } from './execution-status.pipe';
@@ -55,7 +56,8 @@ import { ExecutionListComponent } from './execution-list/execution-list.componen
     ExecutionStatusPipe,
     FooterComponent,
     ExecutionListComponent,
-    EditExecutionDialogComponent
+    EditExecutionDialogComponent,
+    EmbedDialogComponent
   ],
   providers: [
     HasValidExecutionGuard,
@@ -67,7 +69,8 @@ import { ExecutionListComponent } from './execution-list/execution-list.componen
     EditLabDialogComponent,
     RejectionDialogComponent,
     ShareDialogComponent,
-    EditExecutionDialogComponent
+    EditExecutionDialogComponent,
+    EmbedDialogComponent
   ]
 })
 export class LabEditorModule {}
