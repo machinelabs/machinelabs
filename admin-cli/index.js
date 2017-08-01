@@ -5,6 +5,7 @@ const chalk = require('chalk');
 const templates = require('./config-templates/templates');
 const deployCmd = require('./commands/deploy');
 const loginCmd = require('./commands/login');
+const cutCmd = require('./commands/cut');
 
 const yargs = require('yargs');
 
@@ -12,6 +13,10 @@ const yargs = require('yargs');
 // set process directory to root directory so that
 // we can assume all further commands are realtive to root
 setRootDir();
+
+let countTrue = (arr) => arr.reduce((acc,current) => acc + current, 0);
+let usedAtLeastOnce = (arr) => countTrue(arr) > 0;
+let usedMoreThanOnce = (arr) => countTrue(arr)  > 1;
 
 let sharedOptions = {
       'cfg.template': {
@@ -59,8 +64,35 @@ let argv = yargs(process.argv.slice(2))
       }
     }, sharedOptions), deployCmd)
     .command('login [<options>]', 'Login to server', sharedOptions, loginCmd)
+    .command('cut [<options>]', 'Cut a release', {
+      major: {
+        describe: 'Cuts a new major release',
+        boolean: true
+      },
+      minor: {
+        describe: 'Cuts a new minor release',
+        boolean: true
+      },
+      patch: {
+        describe: 'Cuts a new patch release',
+        boolean: true
+      },
+      dev: {
+        describe: 'Cuts a development pre-release',
+        boolean: true
+      },
+      'dry-run': {
+        describe: 'Does a dry run',
+        boolean: true
+      },
+      version: {
+        describe: 'Cuts a new release with a specified version',
+        type: 'string',
+        requiresArg: true
+      },
+    }, cutCmd)
+    
     .coerce('cfg', cfg => {
-
       if (cfg.template && (cfg.target || cfg.env)) {
         throw new Error("`cfg.template` option can't be used with `cfg.target` or `cfg.env`")
       }
@@ -74,12 +106,20 @@ let argv = yargs(process.argv.slice(2))
       return cfg;
     })
     .check(argv => {
-      if (!argv.cfg.target) {
+      if (!argv.cfg && argv.target) {
         throw new Error('`target` option is mandatory');
       }
 
-      if (argv.noFb && argv.noServer){
+      if (usedMoreThanOnce([argv.noFb, argv.noServer])) {
         throw new Error('`noFb` and `noServer` are mutually exclusive');
+      }
+
+      if (usedMoreThanOnce([argv.major, argv.minor, argv.patch, argv.dev])) {
+        throw new Error('`major`, `minor`, `patch` and `dev` are mutually exclusive')
+      }
+
+      if (argv.version && usedAtLeastOnce([argv.major, argv.minor, argv.patch, argv.dev])) {
+        throw new Error('`version` is mutually exclusive with `major`, `minor`, `patch` and `dev`');
       }
 
       return true;
