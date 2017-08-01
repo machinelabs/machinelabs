@@ -4,7 +4,7 @@ const isRootDir = require('./is-root-dir');
 const failWith = require('./fail-with');
 const fs = require('fs');
 
-function deployServer(serverName, zone, env) {
+function deployServer(project, serverName, zone, env) {
   if (!isRootDir()) {
     failWith('Command needs to be run from root dir');
   }
@@ -27,11 +27,11 @@ function deployServer(serverName, zone, env) {
 
   // copy over
   console.log(chalk.green('Transferring files to server'));
-  execute(`gcloud compute copy-files ./machinelabs-server.tar.gz root@${serverName}:/var/machinelabs-server.tar.gz --project "machinelabs-a73cd" --zone "${zone}"`);
+  execute(`gcloud compute copy-files ./machinelabs-server.tar.gz root@${serverName}:/var/machinelabs-server.tar.gz --project "${project}" --zone "${zone}"`);
 
   // unzip and run
   console.log(chalk.green('Unzipping and restarting services'));
-  execute(`gcloud compute --project "machinelabs-a73cd" ssh --zone "${zone}" "root@${serverName}" --command "cd /var && tar -zxvf machinelabs-server.tar.gz && rm -rf machinelabs-server && mv server machinelabs-server && pm2 restart all"`);
+  execute(`gcloud compute --project "${project}" ssh --zone "${zone}" "root@${serverName}" --command "cd /var && tar -zxvf machinelabs-server.tar.gz && rm -rf machinelabs-server && mv server machinelabs-server && pm2 restart all"`);
 
   console.log(chalk.green('Cleaning up'));
 

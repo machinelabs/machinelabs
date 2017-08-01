@@ -16,7 +16,7 @@ function deploy (argv) {
   }
 
   if (argv.cfg.target.serverName && argv.cfg.target.zone && !argv.cfg.noServer) {
-    deployServer(argv.cfg.target.serverName, argv.cfg.target.zone, argv.cfg.env);
+    deployServer(argv.cfg.target.googleProjectId, argv.cfg.target.serverName, argv.cfg.target.zone, argv.cfg.env);
   }
 
   if (argv.cfg.target.googleProjectId && !argv.cfg.noFb) {
