@@ -9,5 +9,13 @@ module.exports = {
       googleProjectId: 'machinelabs-a73cd',
     },
     env: 'staging'
+  },
+  production: {
+    target: {
+      serverName: 'hainholz',
+      zone: 'us-east1-d',
+      googleProjectId: 'machinelabs-production',
+    },
+    env: 'production'
   }
 };
