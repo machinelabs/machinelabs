@@ -106,8 +106,8 @@ let argv = yargs(process.argv.slice(2))
       return cfg;
     })
     .check(argv => {
-      if (!argv.cfg && argv.target) {
-        throw new Error('`target` option is mandatory');
+      if (!argv.cfg.target.serverName || !argv.cfg.target.googleProjectId || !argv.cfg.target.zone) {
+        throw new Error('`target` option is incomplete');
       }
 
       if (usedMoreThanOnce([argv.noFb, argv.noServer])) {
