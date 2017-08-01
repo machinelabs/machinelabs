@@ -52,7 +52,8 @@ img {
   display: none!important;
 }
 
-ml-editor-view {
+ml-editor-view,
+ml-embedded-editor-view {
   .mat-sidenav-content {
     display: flex;
     flex: 1;

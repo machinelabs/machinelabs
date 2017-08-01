@@ -1,0 +1,39 @@
+ml-toolbar {
+  box-shadow: none;
+}
+
+ml-toolbar-logo {
+  padding-left: 0.2em;
+
+  ::ng-deep {
+    img {
+      height: 18px;
+    }
+  }
+}
+
+ml-toolbar {
+  ::ng-deep {
+    .ml-toolbar-layout {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .mat-toolbar {
+      min-height: initial;
+
+      .mat-toolbar-row {
+        height: 48px;
+      }
+    }
+  }
+}
+
+.ml-toolbar-lab-info {
+  margin-left: 0.5em;
+}
+
+.ml-toolbar-lab-name {
+  font-size: 0.8em;
+}
+

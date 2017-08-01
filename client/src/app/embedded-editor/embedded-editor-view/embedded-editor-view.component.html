@@ -1,0 +1,39 @@
+<ml-editor-layout>
+  <ml-editor-layout-header>
+    <ml-embedded-editor-toolbar
+      [lab]="lab"
+      (replay)="listen()"
+      (open)="openInApp()">
+    </ml-embedded-editor-toolbar>
+  </ml-editor-layout-header>
+  <ml-editor-layout-nav-bar>
+    <div md-tab-nav-bar>
+      <a md-tab-link (click)="editorService.selectEditorTab()" [active]="editorService.editorTabActive()">Editor</a>
+      <a md-tab-link (click)="editorService.selectConsoleTab()" [active]="editorService.consoleTabActive()">Console</a>
+    </div>
+  </ml-editor-layout-nav-bar>
+  <ml-editor-layout-main>
+    <ml-editor-layout-panels>
+      <ml-editor-layout-panel [class.hidden]="!editorService.editorTabActive()">
+        <ml-editor-layout-panel-cta-bar>
+          <button md-icon-button mdTooltip="Toogle file tree" mdTooltipPosition="right" (click)="fileTreeSidebar.toggle()"><md-icon>description</md-icon></button>
+        </ml-editor-layout-panel-cta-bar>
+        <md-sidenav-container>
+          <md-sidenav mode="overlay" #fileTreeSidebar>
+            <ml-file-tree [showActionButtons]="false"></ml-file-tree>
+          </md-sidenav>
+          <ml-ace-editor [value]="activeFile.content" mode="python">
+          </ml-ace-editor>
+        </md-sidenav-container>
+      </ml-editor-layout-panel>
+      <ml-editor-layout-panel [class.hidden]="!editorService.consoleTabActive()">
+        <ml-ace-editor
+          #console
+          mode="sh"
+          theme="terminal"
+          [readOnly]="true"
+          [value]="output | async"></ml-ace-editor>
+      </ml-editor-layout-panel>
+    </ml-editor-layout-panels>
+  </ml-editor-layout-main>
+</ml-editor-layout>
