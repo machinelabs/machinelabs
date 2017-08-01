@@ -10,7 +10,8 @@ function deployClient(project, env) {
 
   console.log(chalk.green(`Deploying client to ${project} with env=${env}`));
 
-  execute(`(cd ./client;
+  execute(`(cd ./client &&
+            npm run node_modules &&
             ng build --prod --environment=${env} &&
             firebase use ${project} &&
             firebase deploy)`);
