@@ -11,6 +11,10 @@ export const APP_ROUTES: Routes = [
     loadChildren: './lab-editor/lab-editor.module#LabEditorModule',
   },
   {
+    path: 'embedded',
+    loadChildren: './embedded-editor/embedded-editor.module#EmbeddedEditorModule'
+  },
+  {
     path: ':id',
     pathMatch: 'full',
     redirectTo: 'editor/:id',

@@ -1,0 +1,20 @@
+[md-tab-link] {
+  height: 40px;
+  min-width: 100px;
+  line-height: 40px;
+}
+
+md-sidenav {
+  width: 350px;
+  box-shadow: 0 0 8px rgba(0,0,0,.24);
+}
+
+md-sidenav-container {
+  display: flex;
+  flex: 1;
+}
+
+.ml-editor-panel-cta-bar {
+  background: red;
+  width: 40px;
+}
