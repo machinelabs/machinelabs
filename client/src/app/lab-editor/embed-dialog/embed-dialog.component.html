@@ -1,0 +1,7 @@
+<ml-dialog-header>Embed this lab</ml-dialog-header>
+<ml-dialog-content>
+  <p><strong>Copy and paste</strong> the following code to embed this lab in your website</p>
+  <textarea [readOnly]="true"><iframe height="400" scrolling="no" title="{{data.lab.name}}" src="{{embedUrl}}" frameborder="no" allowtransparency="true" allowfullscreen="true" style="width: 100%;">
+      See the Lab <a href="{{editorUrl}}">{{data.lab.name}}</a> on <a href="https://machinelabs.ai">MachineLabs</a>.
+</iframe></textarea>
+</ml-dialog-content>
