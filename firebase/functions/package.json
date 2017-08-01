@@ -4,7 +4,8 @@
   "scripts": {
     "cp__node_modules": "cp -R ./node_modules ./dist/node_modules",
     "cp__package": "cp -R ./package.json ./dist/package.json",
-    "deploy": "npm run clean_dist && npm run mk_dist && npm run cp__node_modules && npm run cp__package && tsc && firebase deploy && npm run clean_dist",
+    "node_modules": "rm -rf ./node_modules && yarn install",
+    "deploy": "npm run node_modules && npm run clean_dist && npm run mk_dist && npm run cp__node_modules && npm run cp__package && tsc && firebase deploy && npm run clean_dist",
     "clean_dist": "rm -rf ./dist",
     "mk_dist": "mkdir dist",
     "tslint": "tslint -c tslint.json src/**/*.ts",
