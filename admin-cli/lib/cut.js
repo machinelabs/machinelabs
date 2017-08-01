@@ -44,7 +44,7 @@ function cut (versionOrType, dryRun) {
   
   execute(`git add -A && 
            git commit -m "Cutting release ${newVersion}" && 
-           git tag -a ${newVersion} -m "Cutting ${versionWithBuild}"`)
+           git tag -a ${newVersion} -m "chore(package.json): cutting ${versionWithBuild}"`)
 }
 
 module.exports = cut;
