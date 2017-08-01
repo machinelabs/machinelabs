@@ -1,6 +1,7 @@
 const chalk = require('chalk');
 const process = require('process');
 
+const execute = require('../lib/execute')({displayErrors: true});
 const deployServer = require('../lib/deploy-server');
 const deployFirebase = require('../lib/deploy-firebase');
 const deployClient = require('../lib/deploy-client');
@@ -25,6 +26,9 @@ function deploy (argv) {
   if (argv.cfg.target.googleProjectId && argv.cfg.env && !argv.cfg.noClient) {
     deployClient(argv.cfg.target.googleProjectId, argv.cfg.env);
   }
+
+  console.log(chalk.red('Uploading tags'));
+  execute('git push --tags');
 }
 
 module.exports = deploy;
