@@ -1,12 +1,18 @@
 const chalk = require('chalk');
+const process = require('process');
 
 const deployServer = require('../lib/deploy-server');
 const deployFirebase = require('../lib/deploy-firebase');
 const deployClient = require('../lib/deploy-client');
-
+const isTag = require('../lib/is-tag');
 
 function deploy (argv) {
   console.log(chalk.green('Deployment mode'));
+
+  if (!isTag()) {
+    console.log(chalk.red('Deployments need to be made from tags. Run `cut --help`'));
+    process.exit(1);
+  }
 
   if (argv.cfg.target.serverName && argv.cfg.target.zone && !argv.cfg.noServer) {
     deployServer(argv.cfg.target.serverName, argv.cfg.target.zone, argv.cfg.env);
