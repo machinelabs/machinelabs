@@ -7,6 +7,8 @@
   "dependencies": {
     "chalk": "^2.0.1",
     "lodash.isstring": "^4.0.1",
-    "yargs": "^8.0.2"
+    "yargs": "^8.0.2",
+    "moment": "^2.18.1",
+    "semver": "^5.4.1"
   }
 }
