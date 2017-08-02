@@ -28,8 +28,13 @@ export class LocationHelper {
   }
 
   openInNewTab(urlSegments: string[]) {
+    this.windowRef.nativeWindow.open(this.prepareExternalUrl(urlSegments));
+  }
+
+  prepareExternalUrl(urlSegments: string[], withHost = false) {
     const urlTree = this.router.createUrlTree(urlSegments);
-    const url = this.locationStrategy.prepareExternalUrl(this.router.serializeUrl(urlTree));
-    this.windowRef.nativeWindow.open(url);
+    const  url = this.locationStrategy.prepareExternalUrl(this.router.serializeUrl(urlTree));
+    const location = this.windowRef.nativeWindow.location;
+    return withHost ? `${location.protocol}//${location.host}${url}` : url;
   }
 }
