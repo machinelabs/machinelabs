@@ -27,6 +27,11 @@ function cut (versionOrType, dryRun) {
   }
 
   let versionWithBuild = `${newVersion}+${buildnumber}`
+
+  // Dev versions don't increase so it's crucial to have the build number
+  // in the tag to not have conflicting tag names
+  let tagVersion = versionOrType === 'dev' ? versionWithBuild : newVersion;
+
   console.log(chalk.green(`New version will be ${versionWithBuild}`));
 
   if (dryRun) {
@@ -43,8 +48,8 @@ function cut (versionOrType, dryRun) {
 
   
   execute(`git add -A && 
-           git commit -m "Cutting release ${newVersion}" && 
-           git tag -a ${newVersion} -m "chore(package.json): cutting ${versionWithBuild}"`)
+           git commit -m "Cutting release ${tagVersion}" && 
+           git tag -a ${tagVersion} -m "chore(package.json): cutting ${versionWithBuild}"`)
 }
 
 module.exports = cut;
