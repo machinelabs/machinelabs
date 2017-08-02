@@ -17,6 +17,7 @@ import { DATABASE } from '../app.tokens';
 
 import { DATABASE_STUB } from '../../test-helper/stubs/database.stubs';
 import { AUTH_SERVICE_STUB } from '../../test-helper/stubs/auth.service.stubs';
+import { LabExecutionService } from '../lab-execution.service';
 
 describe('EditorService', () => {
 
@@ -35,6 +36,7 @@ describe('EditorService', () => {
         EditorService,
         EditorSnackbarService,
         RemoteLabExecService,
+        LabExecutionService,
         { provide: AuthService, useValue: AUTH_SERVICE_STUB },
         { provide: DATABASE, useValue: DATABASE_STUB },
         DbRefBuilder
