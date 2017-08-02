@@ -6,7 +6,9 @@ function isCleanWorkingDir () {
   if (!isRootDir()) {
     failWith('Command needs to be run from root dir');
   }
-  
+  let ret = execute('git status --porcelain').trim();
+  console.log('ret');
+  console.log(ret);
   return execute('git status --porcelain').trim() === 0;
 }
 
