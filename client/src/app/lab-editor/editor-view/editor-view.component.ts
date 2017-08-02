@@ -135,7 +135,7 @@ export class EditorViewComponent implements OnInit {
     this.route.data.map(data => data['lab'])
               // Only init lab when it's opened for the first time
               // or when switching labs.
-              .filter(lab => !!!this.lab || lab.id !== this.lab.id)
+              .filter(lab => !this.lab || lab.id !== this.lab.id)
               .subscribe(lab => this.initLab(lab));
 
     if (this.activeExecutionId) {
