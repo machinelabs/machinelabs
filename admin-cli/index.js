@@ -106,7 +106,11 @@ let argv = yargs(process.argv.slice(2))
       return cfg;
     })
     .check(argv => {
-      if (!argv.cfg.target.serverName || !argv.cfg.target.googleProjectId || !argv.cfg.target.zone) {
+      if (argv._.includes('deploy') && !argv.target) {
+        throw new Error('`deploy` command needs `target`');
+      }
+      
+      if (argv.target && (!argv.cfg.target.serverName || !argv.cfg.target.googleProjectId || !argv.cfg.target.zone)) {
         throw new Error('`target` option is incomplete');
       }
 
