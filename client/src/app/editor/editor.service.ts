@@ -1,15 +1,20 @@
+import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { UrlSerializer } from '@angular/router';
 import { Location } from '@angular/common';
 import { LocationHelper } from '../util/location-helper';
 import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.service';
 import { EditorSnackbarService } from './editor-snackbar.service';
+import { LabExecutionService } from 'app/lab-execution.service';
 
 import { File, Lab } from '../models/lab';
 import {
   MessageKind,
   ExecutionRejectionInfo,
-  ExecutionRejectionReason
+  ExecutionRejectionReason,
+  Execution,
+  ExecutionStatus
 } from '../models/execution';
 
 export enum TabIndex {
@@ -21,6 +26,8 @@ export enum TabIndex {
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/scan';
+import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/combineLatest';
 
 @Injectable()
 export class EditorService {
@@ -33,19 +40,28 @@ export class EditorService {
 
   activeFile: File;
 
+  private localExecutions: Map<string, Execution>;
+
+  private localExecutions$: Subject<Map<string, Execution>>;
+
   constructor(
     private urlSerializer: UrlSerializer,
     private location: Location,
     private locationHelper: LocationHelper,
     private editorSnackbar: EditorSnackbarService,
-    private rleService: RemoteLabExecService
-  ) {}
+    private rleService: RemoteLabExecService,
+    private labExecutionService: LabExecutionService
+  ) {
+    this.initialize();
+  }
 
   initialize() {
     this.selectedTab = TabIndex.Editor;
     this.lab = null;
     this.latestLab = null;
     this.activeFile = null;
+    this.localExecutions = new Map<string, Execution>();
+    this.localExecutions$ = new Subject<Map<string, Execution>>();
   }
 
   initLab(lab: Lab) {
@@ -80,6 +96,44 @@ export class EditorService {
       execution: wrapper.execution,
       messages: messages
     };
+  }
+
+  addLocalExecution(id: string) {
+
+    this.localExecutions.set(id,{
+      id: id,
+      status: ExecutionStatus.Executing,
+      started_at: Date.now()
+    })
+
+    this.localExecutions$.next(this.localExecutions);
+  }
+
+  removeLocalExecution(id: string) {
+    this.localExecutions.delete(id);
+    this.localExecutions$.next(this.localExecutions);
+  }
+
+  observeExecutionsForLab(lab: Lab) {
+    return this.labExecutionService
+        .observeExecutionsForLab(this.lab)
+        .startWith([])
+        .combineLatest(this.localExecutions$.startWith(new Map()), (confirmedExecutions, localExecutions) => {
+          localExecutions.forEach((localExecution, index) => {
+            let confirmedEx = confirmedExecutions.find(execution => execution.id === localExecution.id);
+            if (confirmedEx) {
+              localExecutions.delete(localExecution.id);
+            } else {
+              confirmedExecutions = [{
+                id: localExecution.id,
+                execution: Observable.of(localExecution)
+              }, ...confirmedExecutions];
+            }
+
+          });
+          return confirmedExecutions.map(v => v.execution);
+        }).share();
+    
   }
 
   selectTab(tabIndex: TabIndex) {
