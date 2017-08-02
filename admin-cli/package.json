@@ -1,6 +1,6 @@
 {
   "name": "ml-cli",
-  "version": "0.2.0-dev+utc.2017.Aug.02-7.05.29",
+  "version": "0.2.0-dev+utc.2017.Aug.02-7.43.21",
   "description": "Admin CLI for Machine Labs",
   "main": "index.js",
   "license": "MIT",
