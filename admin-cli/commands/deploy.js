@@ -22,15 +22,15 @@ function deploy (argv) {
     process.exit(1);
   }
 
-  if (argv.cfg.target.serverName && argv.cfg.target.zone && !argv.cfg.noServer) {
+  if (argv.cfg.target.serverName && argv.cfg.target.zone && !argv.noServer) {
     deployServer(argv.cfg.target.googleProjectId, argv.cfg.target.serverName, argv.cfg.target.zone, argv.cfg.env);
   }
 
-  if (argv.cfg.target.googleProjectId && !argv.cfg.noFb) {
+  if (argv.cfg.target.googleProjectId && !argv.noFb) {
     deployFirebase(argv.cfg.target.googleProjectId);
   }
 
-  if (argv.cfg.target.googleProjectId && argv.cfg.env && !argv.cfg.noClient) {
+  if (argv.cfg.target.googleProjectId && argv.cfg.env && !argv.noClient) {
     deployClient(argv.cfg.target.googleProjectId, argv.cfg.env);
   }
 
