@@ -41,6 +41,13 @@ export class EditorService {
     private rleService: RemoteLabExecService
   ) {}
 
+  initialize() {
+    this.selectedTab = TabIndex.Editor;
+    this.lab = null;
+    this.latestLab = null;
+    this.activeFile = null;
+  }
+
   initLab(lab: Lab) {
     this.lab = lab;
     this.latestLab = Object.assign({}, this.lab);
