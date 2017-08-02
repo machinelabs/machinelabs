@@ -6,12 +6,19 @@ const deployServer = require('../lib/deploy-server');
 const deployFirebase = require('../lib/deploy-firebase');
 const deployClient = require('../lib/deploy-client');
 const isTag = require('../lib/is-tag');
+const isCleanWorkingDir = require('../lib/is-clean-working-dir');
+
 
 function deploy (argv) {
   console.log(chalk.green('Deployment mode'));
 
   if (!isTag()) {
     console.log(chalk.red('Deployments need to be made from tags. Run `cut --help`'));
+    process.exit(1);
+  }
+
+  if (!isCleanWorkingDir()) {
+    console.log(chalk.red('Working directory needs to be clean for deployments'));
     process.exit(1);
   }
 
