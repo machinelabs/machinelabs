@@ -5,6 +5,8 @@ import { MachineLabsMaterialModule } from '../ml-material.module';
 
 import { LAB_STUB } from '../../test-helper/stubs/lab.stubs';
 
+import { LabStorageService } from '../lab-storage.service';
+import { LabTemplateService } from '../lab-template.service';
 import { LocationHelper } from '../util/location-helper';
 import { EditorService, TabIndex } from './editor.service';
 import { EditorSnackbarService } from './editor-snackbar.service';
@@ -32,6 +34,8 @@ describe('EditorService', () => {
       ],
       providers: [
         LocationHelper,
+        LabStorageService,
+        LabTemplateService,
         WindowRef,
         EditorService,
         EditorSnackbarService,

@@ -109,7 +109,13 @@ export class EditorViewComponent implements OnInit {
 
   rejectionDialogRef: MdDialogRef<RejectionDialogComponent>;
 
-  activeExecutionId: string;
+  get activeExecutionId(): string {
+    return this.editorService.activeExecutionId;
+  }
+
+  set activeExecutionId(id: string) {
+    this.editorService.activeExecutionId = id;
+  }
 
   TabIndex = TabIndex;
 
@@ -268,20 +274,9 @@ export class EditorViewComponent implements OnInit {
   }
 
   save(lab: Lab, msg = 'Lab saved', fetchExecutions = false) {
-    this.labStorageService.saveLab(lab).subscribe(() => {
-      this.initLab(lab, fetchExecutions);
-
-      const urlSegments = ['/editor', lab.id];
-
-      if (this.activeExecutionId) {
-        urlSegments.push(this.activeExecutionId);
-      }
-
-      this.locationHelper.updateUrl(urlSegments, {
-        queryParamsHandling: 'preserve'
-      });
-      this.editorSnackbar.notify(msg);
-    });
+    this.editorService
+        .saveLab(lab, msg)
+        .subscribe(_ => this.initLab(lab, fetchExecutions));
   }
 
   showEditDialog(lab: Lab, options: EditLabDialogOptions = {
