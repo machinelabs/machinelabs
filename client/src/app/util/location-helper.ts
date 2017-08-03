@@ -37,4 +37,8 @@ export class LocationHelper {
     const location = this.windowRef.nativeWindow.location;
     return withHost ? `${location.protocol}//${location.host}${url}` : url;
   }
+
+  getRootUrlSegment(): string {
+    return this.windowRef.nativeWindow.location.pathname.split('/')[1];
+  }
 }
