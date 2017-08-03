@@ -1,25 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { EditorTestingModule } from './testing/editor-testing.module';
 import { Location } from '@angular/common';
-import { MachineLabsMaterialModule } from '../ml-material.module';
 
 import { LAB_STUB } from '../../test-helper/stubs/lab.stubs';
 
-import { LabStorageService } from '../lab-storage.service';
-import { LabTemplateService } from '../lab-template.service';
-import { LocationHelper } from '../util/location-helper';
 import { EditorService, TabIndex } from './editor.service';
-import { EditorSnackbarService } from './editor-snackbar.service';
-import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.service';
-import { DbRefBuilder } from '../firebase/db-ref-builder';
-import { AuthService } from '../auth';
-import { WindowRef } from '../window-ref.service';
-
-import { DATABASE } from '../app.tokens';
-
-import { DATABASE_STUB } from '../../test-helper/stubs/database.stubs';
-import { AUTH_SERVICE_STUB } from '../../test-helper/stubs/auth.service.stubs';
-import { LabExecutionService } from '../lab-execution.service';
 
 describe('EditorService', () => {
 
@@ -28,23 +13,7 @@ describe('EditorService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-        MachineLabsMaterialModule
-      ],
-      providers: [
-        LocationHelper,
-        LabStorageService,
-        LabTemplateService,
-        WindowRef,
-        EditorService,
-        EditorSnackbarService,
-        RemoteLabExecService,
-        LabExecutionService,
-        { provide: AuthService, useValue: AUTH_SERVICE_STUB },
-        { provide: DATABASE, useValue: DATABASE_STUB },
-        DbRefBuilder
-      ]
+      imports: [EditorTestingModule]
     });
 
     editorService = TestBed.get(EditorService);
