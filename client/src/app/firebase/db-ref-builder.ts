@@ -31,6 +31,10 @@ export class DbRefBuilder {
     return new ObservableDbRef(this.db.ref(`idx/user_visible_executions/${id}`));
   }
 
+  userInvocationRateRef(userId: string) {
+    return new ObservableDbRef(this.db.ref(`/idx/invocation_rate/${userId}`));
+  }
+
   executionRef(id: string) {
     return new ObservableDbRef(this.db.ref(`executions/${id}/common`));
   }

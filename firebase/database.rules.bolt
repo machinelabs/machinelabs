@@ -20,6 +20,10 @@ isOwningUser(ref, uidFieldName) {
   return prior(ref) !== null ? (isCurrentUser(data.child(uidFieldName).val()) && isCurrentUser(newData.child(uidFieldName).val())) : isCurrentUser(newData.child(uidFieldName).val())
 }
 
+isRateKey(userId, key) {
+  key === root.child('/idx/invocation_rate/' + userId + '/key').val()
+}
+
 type Lab {
   id: String,
   user_id: String,
@@ -124,6 +128,22 @@ type Server {
   name: String
 }
 
+type RateCheck {
+  timestamp: ThrottledTimeStamp,
+  key: String
+}
+
+type ThrottledTimeStamp extends Number {
+  validate() {
+    newData.isNumber() && newData.val() === now && (data.val() == null || newData.val() > data.val() + 1000)
+  }
+}
+
+path /idx/invocation_rate/{userId} is RateCheck {
+  read() { isCurrentUser($userId) }
+  write() { isCurrentUser($userId) && newData.val() != null }
+}
+
 path / {
   read() { isExecutionServer() }
   write() { false }
@@ -140,7 +160,7 @@ path /labs {
 
 path /invocations/{id}/common is Invocation {
   read() { isCurrentUser(data.child('user_id').val()) || isAssignServerFn() }
-  write() { isOwningUserOrExecutionServerOrAssignFn(this) }
+  write() { isOwningUser(this, 'user_id') && isRateKey(auth.uid, $id) || isExecutionServer() || isAssignServerFn() }
 }
 
 path /invocations/{id} {
@@ -212,4 +232,6 @@ path /idx/user_visible_executions/{id} {
   read() { true }
   write() { false }
 }
+
+
 
