@@ -24,11 +24,13 @@ export enum TabIndex {
   Settings
 }
 
+import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/combineLatest';
+import 'rxjs/add/operator/switchMap';
 
 @Injectable()
 export class EditorService {
@@ -154,6 +156,15 @@ export class EditorService {
         });
         this.editorSnackbar.notify(msg);
       });
+  }
+
+  executeLab(lab: Lab) {
+    return this.labStorageService
+      .labExists(lab.id)
+      // First check if this lab is already persisted or not. We don't want to
+      // execute labs that don't exist in the database.
+      .switchMap(exists => exists ? Observable.of(null) : this.labStorageService.saveLab(lab))
+      .switchMap(_ => this.rleService.run(lab));
   }
 
   selectTab(tabIndex: TabIndex) {
