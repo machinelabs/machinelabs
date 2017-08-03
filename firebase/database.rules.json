@@ -1,5 +1,48 @@
 {
   "rules": {
+    "idx": {
+      "invocation_rate_proof": {
+        "$userId": {
+          ".validate": "newData.hasChildren(['timestamp', 'key'])",
+          "timestamp": {
+            ".validate": "newData.isNumber() && newData.isNumber() && newData.val() == now && (data.val() == null || newData.val() > data.val() + 1000)"
+          },
+          "key": {
+            ".validate": "newData.isString()"
+          },
+          "$other": {
+            ".validate": "false"
+          },
+          ".read": "auth != null && auth.uid == $userId",
+          ".write": "auth != null && auth.uid == $userId && newData.val() != null"
+        }
+      },
+      "user_labs": {
+        "$id": {
+          ".read": "true"
+        }
+      },
+      "lab_executions": {
+        "$id": {
+          ".read": "true"
+        }
+      },
+      "lab_visible_executions": {
+        "$id": {
+          ".read": "true"
+        }
+      },
+      "user_executions": {
+        "$id": {
+          ".read": "auth.uid == 'execution-server'"
+        }
+      },
+      "user_visible_executions": {
+        "$id": {
+          ".read": "true"
+        }
+      }
+    },
     ".read": "auth.uid == 'execution-server'",
     "labs": {
       "$id": {
@@ -108,7 +151,7 @@
             ".validate": "false"
           },
           ".read": "auth != null && auth.uid == data.child('user_id').val() || auth.uid == 'cloud-fn-assign-server'",
-          ".write": "data.val() != null ? auth != null && auth.uid == data.child('user_id').val() && (auth != null && auth.uid == newData.child('user_id').val()) || auth.uid == 'execution-server' || auth.uid == 'cloud-fn-assign-server' : auth != null && auth.uid == newData.child('user_id').val()"
+          ".write": "(data.val() != null ? auth != null && auth.uid == data.child('user_id').val() && (auth != null && auth.uid == newData.child('user_id').val()) : auth != null && auth.uid == newData.child('user_id').val()) && $id == newData.parent().parent().parent().child('/idx/invocation_rate_proof/' + auth.uid + '/key').val() || auth.uid == 'execution-server' || auth.uid == 'cloud-fn-assign-server'"
         },
         ".read": "auth.uid == 'cloud-fn-assign-server' || auth.uid == 'execution-server'",
         ".write": "auth.uid == 'cloud-fn-assign-server'"
@@ -267,33 +310,6 @@
         },
         "$other": {
           ".validate": "false"
-        }
-      }
-    },
-    "idx": {
-      "user_labs": {
-        "$id": {
-          ".read": "true"
-        }
-      },
-      "lab_executions": {
-        "$id": {
-          ".read": "true"
-        }
-      },
-      "lab_visible_executions": {
-        "$id": {
-          ".read": "true"
-        }
-      },
-      "user_executions": {
-        "$id": {
-          ".read": "auth.uid == 'execution-server'"
-        }
-      },
-      "user_visible_executions": {
-        "$id": {
-          ".read": "true"
         }
       }
     }

@@ -20,6 +20,7 @@ import { DbRefBuilder } from '../../firebase/db-ref-builder';
 import { AuthService } from '../../auth';
 
 import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/share';
@@ -45,6 +46,12 @@ export class RemoteLabExecService {
     let id = this.newInvocationId();
     return this.authService
       .requireAuthOnce()
+      // Unfortunately we can't batch this. The request that sets the
+      // RateProof must come first.
+      .switchMap(login => this.db.userInvocationRateProofRef(login.uid).set({
+        timestamp: firebase.database.ServerValue.TIMESTAMP,
+        key: id
+      }).map(_ => login))
       .switchMap(login => this.db.invocationRef(id).set({
         id: id,
         user_id: login.uid,
@@ -86,7 +93,14 @@ export class RemoteLabExecService {
         executionId: id,
         persistent: false,
         rejection: null
-      });
+      })
+      .catch((e) => {
+        console.error('Rate limit exceeded.');
+        return Observable.throw({
+          executionId: id,
+          error: e
+        });
+      })
   }
 
   runAndListen(lab: Lab): Observable<ExecutionWrapper> {
