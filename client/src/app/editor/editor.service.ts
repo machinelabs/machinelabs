@@ -7,6 +7,7 @@ import { LocationHelper } from '../util/location-helper';
 import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.service';
 import { EditorSnackbarService } from './editor-snackbar.service';
 import { LabExecutionService } from 'app/lab-execution.service';
+import { LabStorageService } from '../lab-storage.service';
 
 import { File, Lab } from '../models/lab';
 import {
@@ -44,11 +45,14 @@ export class EditorService {
 
   private localExecutions$: Subject<Map<string, Execution>>;
 
+  activeExecutionId: string;
+
   constructor(
     private urlSerializer: UrlSerializer,
     private location: Location,
     private locationHelper: LocationHelper,
     private editorSnackbar: EditorSnackbarService,
+    private labStorageService: LabStorageService,
     private rleService: RemoteLabExecService,
     private labExecutionService: LabExecutionService
   ) {
@@ -134,6 +138,22 @@ export class EditorService {
           return confirmedExecutions.map(v => v.execution);
         }).share();
 
+  }
+
+  saveLab(lab: Lab, msg = 'Lab saved') {
+    return this.labStorageService
+      .saveLab(lab)
+      .do(_ => {
+        const urlSegments = [`/${this.locationHelper.getRootUrlSegment()}`, lab.id];
+
+        if (this.activeExecutionId) {
+          urlSegments.push(this.activeExecutionId);
+        }
+        this.locationHelper.updateUrl(urlSegments, {
+          queryParamsHandling: 'preserve'
+        });
+        this.editorSnackbar.notify(msg);
+      });
   }
 
   selectTab(tabIndex: TabIndex) {
