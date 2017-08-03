@@ -194,7 +194,7 @@ path /executions/{id}/messages/{mid} is ExecutionMessage {
 
 path /users/{id}/common is User {
   read() { true }
-  write() { isOwningUser(this, 'id') }
+  write() { isOwningUser(this, 'id') && isCurrentUser(id) }
 }
 
 path /users/{id}/plan {
