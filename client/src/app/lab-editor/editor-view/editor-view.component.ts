@@ -165,6 +165,7 @@ export class EditorViewComponent implements OnInit {
   }
 
   run(lab: Lab) {
+
     this.outputPanel.clear();
     this.editorService.selectConsoleTab();
 
@@ -199,7 +200,7 @@ export class EditorViewComponent implements OnInit {
                 this.openRejectionDialog(info.rejection.reason);
               }
             }
-          });
+          }, e => this.editorService.removeLocalExecution(e.executionId))
 
           this.editorSnackbar.notifyLateExecutionUnless(runInfo$.skip(1));
         });
