@@ -167,6 +167,7 @@ export class EditorViewComponent implements OnInit {
   run(lab: Lab) {
     this.outputPanel.clear();
     this.editorService.selectConsoleTab();
+
     this.latestLab = Object.assign({}, lab);
     // First check if this lab is already persisted or not. We don't want to
     // execute labs that don't exist in the database.
@@ -179,6 +180,11 @@ export class EditorViewComponent implements OnInit {
           const runInfo$ = this.rleService.run(lab).share();
 
           runInfo$.subscribe(info => {
+
+            this.editorService.addLocalExecution(info.executionId);
+            
+            this.openExecutionList();
+
             if (info.persistent) {
               this.locationHelper.updateUrl(['/editor', lab.id, info.executionId], {
                 queryParamsHandling: 'merge'
@@ -186,6 +192,7 @@ export class EditorViewComponent implements OnInit {
               this.activeExecutionId = info.executionId;
               this.listen(this.activeExecutionId);
             } else if (info.rejection) {
+              this.editorService.removeLocalExecution(info.executionId);
               if (info.rejection.reason === ExecutionRejectionReason.InvalidConfig) {
                 this.editorSnackbar.notifyInvalidConfig();
               } else {
@@ -337,7 +344,8 @@ export class EditorViewComponent implements OnInit {
   }
 
   private initExecutionList() {
-    this.executions = this.labExecutionService.observeExecutionsForLab(this.lab).share();
+    
+    this.executions = this.editorService.observeExecutionsForLab(this.lab);
     this.executions
         .take(1)
         .map(executions => executions.length > 0 ? executions[0] : null)
