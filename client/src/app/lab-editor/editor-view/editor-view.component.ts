@@ -182,7 +182,7 @@ export class EditorViewComponent implements OnInit {
           runInfo$.subscribe(info => {
 
             this.editorService.addLocalExecution(info.executionId);
-            
+            this.activeExecutionId = info.executionId;
             this.openExecutionList();
 
             if (info.persistent) {
