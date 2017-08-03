@@ -176,40 +176,34 @@ export class EditorViewComponent implements OnInit {
     this.editorService.selectConsoleTab();
 
     this.latestLab = Object.assign({}, lab);
-    // First check if this lab is already persisted or not. We don't want to
-    // execute labs that don't exist in the database.
-    this.labStorageService.labExists(lab.id)
-        // If it doesn't exist yet, we save it first and make sure to update
-        // the url accordingly, so it can be easily shared.
-        .switchMap(exists => exists ? Observable.of(null) : this.labStorageService.saveLab(lab))
-        .subscribe(_ => {
 
-          const runInfo$ = this.rleService.run(lab).share();
+    const runInfo$ = this.editorService.executeLab(lab).share();
 
-          runInfo$.subscribe(info => {
+    runInfo$.subscribe(info => {
+      this.editorService.addLocalExecution(info.executionId);
+      this.activeExecutionId = info.executionId;
+      this.openExecutionList();
 
-            this.editorService.addLocalExecution(info.executionId);
-            this.activeExecutionId = info.executionId;
-            this.openExecutionList();
-
-            if (info.persistent) {
-              this.locationHelper.updateUrl(['/editor', lab.id, info.executionId], {
-                queryParamsHandling: 'merge'
-              });
-              this.activeExecutionId = info.executionId;
-              this.listen(this.activeExecutionId);
-            } else if (info.rejection) {
-              this.editorService.removeLocalExecution(info.executionId);
-              if (info.rejection.reason === ExecutionRejectionReason.InvalidConfig) {
-                this.editorSnackbar.notifyInvalidConfig();
-              } else {
-                this.openRejectionDialog(info.rejection.reason);
-              }
-            }
-          }, e => this.editorService.removeLocalExecution(e.executionId))
-
-          this.editorSnackbar.notifyLateExecutionUnless(runInfo$.skip(1));
+      if (info.persistent) {
+        this.locationHelper.updateUrl([
+          this.locationHelper.getRootUrlSegment(),
+          lab.id,
+          info.executionId
+        ], {
+          queryParamsHandling: 'merge'
         });
+        this.activeExecutionId = info.executionId;
+        this.listen(this.activeExecutionId);
+      } else if (info.rejection) {
+        if (info.rejection.reason === ExecutionRejectionReason.InvalidConfig) {
+          this.editorSnackbar.notifyInvalidConfig();
+        } else {
+          this.openRejectionDialog(info.rejection.reason);
+        }
+      }
+    });
+
+    this.editorSnackbar.notifyLateExecutionUnless(runInfo$.skip(1));
   }
 
   listenAndUpdateUrl(execution: Execution) {
