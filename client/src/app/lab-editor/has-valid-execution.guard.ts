@@ -8,6 +8,7 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { LabExecutionService } from '../lab-execution.service';
+import { LocationHelper } from '../util/location-helper';
 
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
@@ -19,6 +20,7 @@ export class HasValidExecutionGuard implements CanActivate {
   constructor(
     private router: Router,
     private labExecutionService: LabExecutionService,
+    private locationHelper: LocationHelper,
     private route: ActivatedRoute
   ) {}
 
@@ -38,15 +40,15 @@ export class HasValidExecutionGuard implements CanActivate {
     const checkForLatestExecution$ = this.labExecutionService
                       .getLatestVisibleExecutionIdForLab(labId)
                       .do(_executionId => {
+                        const rootUrlSegment = this.locationHelper.getRootUrlSegment();
+                        const urlSegments = [`/${rootUrlSegment}`, labId];
+
                         if (_executionId) {
-                          this.router.navigate(['/editor', labId, _executionId], {
-                            queryParamsHandling: 'merge'
-                          });
-                        } else {
-                          this.router.navigate(['/editor', labId], {
-                            queryParamsHandling: 'merge'
-                          });
+                          urlSegments.push(_executionId);
                         }
+                        this.router.navigate(urlSegments, {
+                          queryParamsHandling: 'merge'
+                        });
                       })
                       // This is only to satisfy the guard API. Technically,
                       // we never really end up here as we've redirected at
