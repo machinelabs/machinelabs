@@ -288,7 +288,7 @@
             ".validate": "false"
           },
           ".read": "true",
-          ".write": "data.val() != null ? auth != null && auth.uid == data.child('id').val() && (auth != null && auth.uid == newData.child('id').val()) : auth != null && auth.uid == newData.child('id').val()"
+          ".write": "(data.val() != null ? auth != null && auth.uid == data.child('id').val() && (auth != null && auth.uid == newData.child('id').val()) : auth != null && auth.uid == newData.child('id').val()) && (auth != null && auth.uid == $id)"
         },
         "plan": {
           ".read": "true"
