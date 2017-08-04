@@ -195,13 +195,14 @@ export class EditorViewComponent implements OnInit {
         this.activeExecutionId = info.executionId;
         this.listen(this.activeExecutionId);
       } else if (info.rejection) {
+        this.editorService.removeLocalExecution(info.executionId);
         if (info.rejection.reason === ExecutionRejectionReason.InvalidConfig) {
           this.editorSnackbar.notifyInvalidConfig();
         } else {
           this.openRejectionDialog(info.rejection.reason);
         }
       }
-    });
+    }, e => this.editorService.removeLocalExecution(e.executionId));
 
     this.editorSnackbar.notifyLateExecutionUnless(runInfo$.skip(1));
   }
