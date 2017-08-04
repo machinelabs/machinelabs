@@ -1,51 +1,33 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdDialog, MdDialogRef, MdSnackBar, MdTabGroup, MdSidenav } from '@angular/material';
 import { AceEditorComponent } from '../../editor/ace-editor/ace-editor.component';
-import { EditLabDialogComponent } from '../edit-lab-dialog/edit-lab-dialog.component';
+import { EditLabDialogComponent, EditLabDialogOptions } from '../edit-lab-dialog/edit-lab-dialog.component';
 import {
   NavigationConfirmDialogComponent,
   NavigationConfirmReason
 } from '../navigation-confirm-dialog/navigation-confirm-dialog.component';
 import { RejectionDialogComponent } from '../rejection-dialog/rejection-dialog.component';
 import { EditorService, TabIndex } from '../../editor/editor.service';
-import { RemoteLabExecService } from '../../editor/remote-code-execution/remote-lab-exec.service';
 import { EditorSnackbarService } from '../../editor/editor-snackbar.service';
 import { LabStorageService } from '../../lab-storage.service';
-import { BLANK_LAB_TPL_ID } from '../../lab-template.service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Lab, File } from '../../models/lab';
 import { Directory } from '../../util/directory';
-import { LabExecutionService } from '../../lab-execution.service';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { LocationHelper } from '../../util/location-helper';
-import {
-  Execution,
-  ExecutionMessage,
-  MessageKind,
-  ExecutionRejectionInfo,
-  ExecutionRejectionReason,
-  ExecutionWrapper
-} from '../../models/execution';
+import { Execution, ExecutionRejectionReason } from '../../models/execution';
 import { EditorToolbarAction, EditorToolbarActionTypes } from '../editor-toolbar/editor-toolbar.component';
 
 import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/skip';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/take';
-import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/share';
-
-interface EditLabDialogOptions {
-  hideCancelButton: boolean;
-}
 
 const METADATA_SIDEBAR_OPEN_TIMEOUT = 600;
 const EXECUTION_START_TIMEOUT = 5000;
@@ -76,16 +58,6 @@ export class EditorViewComponent implements OnInit {
     return this.editorService.latestLab;
   }
 
-  execution: Observable<Execution>;
-
-  executionSubscription: Subscription;
-
-  executions: Observable<Array<Observable<Execution>>>;
-
-  showRestoreMessage = false;
-
-  sidebarToggled = false;
-
   set activeFile(file: File) {
     this.editorService.activeFile = file;
   }
@@ -93,21 +65,6 @@ export class EditorViewComponent implements OnInit {
   get activeFile(): File {
     return this.editorService.activeFile;
   }
-
-
-  navigationConfirmDialogRef: MdDialogRef<NavigationConfirmDialogComponent>;
-
-  @ViewChild(MdTabGroup) tabGroup: MdTabGroup;
-
-  @ViewChild('executionMetadataSidebar') executionMetadataSidebar: MdSidenav;
-
-  @ViewChild('outputPanel') outputPanel: AceEditorComponent;
-
-  @ViewChild('editor') editor: AceEditorComponent;
-
-  editLabDialogRef: MdDialogRef<EditLabDialogComponent>;
-
-  rejectionDialogRef: MdDialogRef<RejectionDialogComponent>;
 
   get activeExecutionId(): string {
     return this.editorService.activeExecutionId;
@@ -117,19 +74,38 @@ export class EditorViewComponent implements OnInit {
     this.editorService.activeExecutionId = id;
   }
 
+  execution: Observable<Execution>;
+
+  executionSubscription: Subscription;
+
+  executions: Observable<Array<Observable<Execution>>>;
+
+  editLabDialogRef: MdDialogRef<EditLabDialogComponent>;
+
+  rejectionDialogRef: MdDialogRef<RejectionDialogComponent>;
+
+  navigationConfirmDialogRef: MdDialogRef<NavigationConfirmDialogComponent>;
+
+  showRestoreMessage = false;
+
+  sidebarToggled = false;
+
+  @ViewChild('executionMetadataSidebar') executionMetadataSidebar: MdSidenav;
+
+  @ViewChild('outputPanel') outputPanel: AceEditorComponent;
+
+  @ViewChild('editor') editor: AceEditorComponent;
+
   TabIndex = TabIndex;
 
-  constructor (private rleService: RemoteLabExecService,
-               private labStorageService: LabStorageService,
+  constructor (private labStorageService: LabStorageService,
                private route: ActivatedRoute,
                private dialog: MdDialog,
-               private editorSnackbar: EditorSnackbarService,
-               private location: Location,
                private locationHelper: LocationHelper,
                private router: Router,
                public editorService: EditorService,
-               private slimLoadingBarService: SlimLoadingBarService,
-               private labExecutionService: LabExecutionService) {
+               private editorSnackbar: EditorSnackbarService,
+               private slimLoadingBarService: SlimLoadingBarService) {
   }
 
   ngOnInit () {
@@ -333,7 +309,6 @@ export class EditorViewComponent implements OnInit {
   }
 
   private initExecutionList() {
-
     this.executions = this.editorService.observeExecutionsForLab(this.lab);
     this.executions
         .take(1)
