@@ -37,6 +37,8 @@ export class AceEditorComponent implements AfterViewInit, OnChanges {
 
   @Input() showPrintMargin = false;
 
+  @Input() undo = false;
+
   @Input() set theme(value) {
     this._theme = ACE_EDITOR_THEME_PREFIX + value;
   }
@@ -93,6 +95,10 @@ export class AceEditorComponent implements AfterViewInit, OnChanges {
 
   ngAfterViewInit() {
     this.editor = ace.edit(this.element.nativeElement);
+
+    if (!this.undo) {
+      this.editor.getSession().setUndoManager(null);
+    }
 
     this.editor.setTheme(this.theme);
     this.editor.setReadOnly(this.readOnly);
