@@ -131,6 +131,7 @@ export class EditorViewComponent implements OnInit {
       case EditorToolbarActionTypes.Edit: this.edit(action.data); break;
       case EditorToolbarActionTypes.Save: this.save(action.data); break;
       case EditorToolbarActionTypes.Fork: this.fork(action.data); break;
+      case EditorToolbarActionTypes.ForkAndRun: this.forkAndRun(action.data); break;
       case EditorToolbarActionTypes.Create: this.create(); break;
     }
   }
@@ -144,6 +145,16 @@ export class EditorViewComponent implements OnInit {
     } else if (this.editorService.consoleTabActive() && this.outputPanel) {
       setTimeout(_ => this.outputPanel.resize(), 0);
     }
+  }
+
+  forkAndRun(lab: Lab) {
+    this.editorService
+      .forkLab(lab)
+      .switchMap(forkedLab => this.editorService.saveLab(forkedLab, 'Lab forked'))
+      .subscribe(savedLab => {
+        this.initLab(savedLab);
+        this.run(savedLab)
+      });
   }
 
   run(lab: Lab) {
