@@ -169,7 +169,7 @@ path /invocations/{id} {
 }
 
 path /invocations {
-  index() { ['server/id'] }
+  index() { ['server/id', 'server/ahlem/timestamp', 'server/hainholz/timestamp'] }
 }
 
 path /executions/{id}/common is Execution {
