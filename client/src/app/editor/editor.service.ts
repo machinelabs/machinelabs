@@ -142,6 +142,12 @@ export class EditorService {
 
   }
 
+  forkLab(lab: Lab) {
+    return this.labStorageService
+      .createLab(lab)
+      .do(createdLab => this.lab = createdLab);
+  }
+
   saveLab(lab: Lab, msg = 'Lab saved') {
     return this.labStorageService
       .saveLab(lab)

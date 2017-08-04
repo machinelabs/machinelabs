@@ -244,19 +244,17 @@ export class EditorViewComponent implements OnInit {
   }
 
   fork(lab: Lab) {
-    this.labStorageService.createLab(lab).subscribe(createdLab => {
-      this.lab = createdLab;
-      this.showEditDialog(createdLab, {
-        hideCancelButton: true
-      }).subscribe(info => {
+    this.editorService
+      .forkLab(lab)
+      .switchMap(createdLab => this.showEditDialog(createdLab, { hideCancelButton: true }))
+      .subscribe(info => {
         this.outputPanel.clear();
         this.activeExecutionId = null;
         this.showRestoreMessage = false;
         // we allways need to save after forking but either the
         // version from before the dialog or the one after
-        this.save(info.shouldSave ? info.lab : createdLab, 'Lab forked', true);
+        this.save(info.shouldSave ? info.lab : this.lab, 'Lab forked', true);
       });
-    });
   }
 
   edit(lab: Lab) {
