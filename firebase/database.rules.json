@@ -157,7 +157,9 @@
         ".write": "auth.uid == 'cloud-fn-assign-server'"
       },
       ".indexOn": [
-        "server/id"
+        "server/id",
+        "server/ahlem/timestamp",
+        "server/hainholz/timestamp"
       ]
     },
     "executions": {
