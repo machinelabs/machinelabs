@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { MdSnackBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 
+import 'rxjs/add/observable/timer';
+import 'rxjs/add/operator/takeUntil';
+
 @Injectable()
 export class EditorSnackbarService {
 
