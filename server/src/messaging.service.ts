@@ -120,8 +120,6 @@ export class MessagingService {
         user_id: invocation.user_id,
         status: ExecutionStatus.Executing
       })
-      .switchMap(_ => this.db.labsForHashRef(hash).onceValue())
-      .map(snapshot => snapshot.val())
       .subscribe();
   }
 
