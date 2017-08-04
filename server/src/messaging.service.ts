@@ -94,16 +94,17 @@ export class MessagingService {
               if (msg.kind === MessageKind.ExecutionFinished) {
                 this.completeExecution(invocation);
               }
-            });
+            })
+            .map((message, index) => Object.assign(message, { index }));
         }
 
         // if we don't get an approval, reject it
         return Observable.of(<ExecutionMessage>{
           kind: MessageKind.ExecutionRejected,
-          data: validationContext.validationResult
+          data: validationContext.validationResult,
+          index: 0
         });
       })
-      .map((message, index) => Object.assign(message, { index }))
       .map(message => ({ message, invocation }));
   }
 
