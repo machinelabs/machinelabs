@@ -12,6 +12,8 @@ import { ValidationContext } from './validation/validation-context';
 import { LabConfigResolver } from './validation/resolver/lab-config-resolver';
 import { ExecutionResolver } from './validation/resolver/execution-resolver';
 
+const MAX_MESSAGES_COUNT = 100000;
+
 export class MessagingService {
 
   db = new DbRefBuilder();
@@ -44,7 +46,7 @@ export class MessagingService {
     newInvocations$
       .filter((invocation: Invocation) => invocation.type === InvocationType.StartExecution)
       .flatMap(invocation => this.getOutputAsObservable(invocation))
-      .flatMap(data => this.writeExecutionMessage(data.message, data.invocation))
+      .flatMap(data => this.handleOutput(data.message, data.invocation))
       .subscribe();
 
     newInvocations$
@@ -64,7 +66,7 @@ export class MessagingService {
    * Take a run and observe the output. The run maybe cached or rejected
    * but it is guaranteed to get some message back.
    */
-  getOutputAsObservable(invocation: Invocation): Observable<any> {
+  getOutputAsObservable(invocation: Invocation): Observable<{message: ExecutionMessage, invocation: Invocation}> {
     console.log(`Starting new run ${invocation.id}`);
 
     // check if we have existing output for the requested run
@@ -106,6 +108,25 @@ export class MessagingService {
         });
       })
       .map(message => ({ message, invocation }));
+  }
+
+  handleOutput(message: ExecutionMessage, invocation: Invocation) {
+    if (message.index === MAX_MESSAGES_COUNT) {
+      // If coincidentally this message will be the ExecutionFinished message,
+      // things will still be ok because we don't change the `kind` which means
+      // it gets written just fine (despite the changed data)
+      message.data = 'Maximum output capacity reached. Process keeps going but no further output is saved.'
+      return this.writeExecutionMessage(message, invocation)
+    } else if(message.index > MAX_MESSAGES_COUNT && message.kind === MessageKind.ExecutionFinished) {
+      // We always want to handle the last message of the stream no matter how high the index is
+      // However, we need to adjust the index to what it really is
+      message.index = MAX_MESSAGES_COUNT + 1;
+      return this.writeExecutionMessage(message, invocation);
+    } else if (message.index <= MAX_MESSAGES_COUNT) {
+      return this.writeExecutionMessage(message, invocation)
+    }
+
+    return  Observable.empty();
   }
 
   createExecutionAndUpdateLabs(invocation: Invocation, hash: string) {
