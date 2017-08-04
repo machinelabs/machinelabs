@@ -3,6 +3,8 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Lab } from '../../models/lab';
 import { Invocation, InvocationType } from '../../models/invocation';
+import { TimeoutError, RateLimitError } from './errors';
+
 import {
   Execution,
   ExecutionStatus,
@@ -42,8 +44,13 @@ export class RemoteLabExecService {
     this.messageStreamOptimizer = new MessageStreamOptimizer(db, this.PARTITION_SIZE, this.FULL_FETCH_TRESHOLD);
   }
 
-  run(lab: Lab): Observable<ExecutionInvocationInfo> {
+  run(lab: Lab, timeout = 15000): Observable<ExecutionInvocationInfo> {
+
     let id = this.newInvocationId();
+
+    let timeout$ =  Observable.timer(timeout)
+                              .switchMap(_ => Observable.throw(new TimeoutError(id, 'Timeout')));
+
     return this.authService
       .requireAuthOnce()
       // Unfortunately we can't batch this. The request that sets the
@@ -94,12 +101,11 @@ export class RemoteLabExecService {
         persistent: false,
         rejection: null
       })
+      .merge(timeout$)
       .catch((e) => {
-        console.error('Rate limit exceeded.');
-        return Observable.throw({
-          executionId: id,
-          error: e
-        });
+        let error = e instanceof TimeoutError ? e : new RateLimitError(id, 'Rate limit exceeded');
+        console.error(error);
+        return Observable.throw(error);
       })
   }
 
