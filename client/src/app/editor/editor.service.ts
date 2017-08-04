@@ -161,7 +161,8 @@ export class EditorService {
           queryParamsHandling: 'preserve'
         });
         this.editorSnackbar.notify(msg);
-      });
+      })
+      .map(_ => lab);
   }
 
   executeLab(lab: Lab) {
