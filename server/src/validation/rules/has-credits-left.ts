@@ -15,7 +15,7 @@ export class HasCreditsLeftRule implements ValidationRule {
 
     return resolves
       .get(UsageStatisticResolver)
-      .map(statistic => !statistic || statistic.creditsLeft <= 0 ?
+      .map(statistic => !statistic || statistic.secondsLeft <= 0 ?
         new ExecutionRejectionInfo(ExecutionRejectionReason.OutOfCredits, 'User is out of credits') :
         true);
   }
