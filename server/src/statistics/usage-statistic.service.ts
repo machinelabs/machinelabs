@@ -6,10 +6,8 @@ import { DbRefBuilder } from '../ml-firebase/db-ref-builder';
 import { CostCalculator } from './cost-calculator';
 import { UsageStatistic } from './usage-statistic';
 
-// This is ridiculous low now so that we hopefully hit it soon
-// in our daily usage. Should be rather something like 100 once
-// we launch private beta. Also, should be read from the db.
-const FREE_MONTHLY_USD_CREDIT = 1;
+// Give everyone 72 hours per month
+const FREE_MONTHLY_COMPUTATION_SECONDS = 72 * 60 * 60;
 
 export class UsageStatisticService {
 
@@ -34,11 +32,10 @@ export class UsageStatisticService {
       .map(snapshot => snapshot.val())
       .filter(execution => execution !== null);
 
-      return this.costCalculator.calc(executions$)
-                         .map(costReport => ({
-                           costReport: costReport,
-                           creditsLeft: FREE_MONTHLY_USD_CREDIT - costReport.totalCost
-                         }));
+    return this.costCalculator.calc(executions$)
+                              .map(costReport => ({
+                                  costReport: costReport,
+                                  secondsLeft: FREE_MONTHLY_COMPUTATION_SECONDS - costReport.totalSeconds
+                                }));
   }
-
 }
