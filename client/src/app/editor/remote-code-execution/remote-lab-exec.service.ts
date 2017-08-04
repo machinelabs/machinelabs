@@ -102,6 +102,9 @@ export class RemoteLabExecService {
         rejection: null
       })
       .merge(timeout$)
+      // The API is expected to complete after two notifications but the
+      // merge of the $timeout would prevent that.
+      .take(2)
       .catch((e) => {
         let error = e instanceof TimeoutError ? e : new RateLimitError(id, 'Rate limit exceeded');
         console.error(error);
