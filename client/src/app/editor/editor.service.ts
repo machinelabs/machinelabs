@@ -8,6 +8,7 @@ import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.se
 import { EditorSnackbarService } from './editor-snackbar.service';
 import { LabExecutionService } from 'app/lab-execution.service';
 import { LabStorageService } from '../lab-storage.service';
+import { createSkipTextHelper } from './util/skip-helper';
 
 import { File, Lab } from '../models/lab';
 import {
@@ -32,6 +33,7 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/switchMap';
 
+
 @Injectable()
 export class EditorService {
 
@@ -48,6 +50,8 @@ export class EditorService {
   private localExecutions$: Subject<Map<string, Execution>>;
 
   activeExecutionId: string;
+
+  outputMaxChars = 200000;
 
   constructor(
     private urlSerializer: UrlSerializer,
@@ -88,6 +92,8 @@ export class EditorService {
   listenAndNotify(executionId: string) {
     let wrapper = this.rleService.listen(executionId);
 
+    let genSkipText = createSkipTextHelper('character');
+
     let messages = wrapper.messages
       .do(msg => {
         if (msg.kind === MessageKind.ExecutionFinished) {
@@ -96,7 +102,9 @@ export class EditorService {
       })
       .filter(msg => msg.kind === MessageKind.ExecutionStarted ||
           msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr)
-      .scan((acc, current) => `${acc}\n${current.data}`, '');
+      .scan((acc, current) => acc.length < this.outputMaxChars ?
+          `${acc}\n${current.data}` :
+          `\n${genSkipText(this.outputMaxChars)}\n${current.data}`, '');
 
     return {
       execution: wrapper.execution,

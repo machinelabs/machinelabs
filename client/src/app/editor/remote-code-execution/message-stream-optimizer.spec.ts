@@ -8,12 +8,14 @@ import { DATABASE } from '../../app.tokens';
 import { DbRefBuilder } from '../../firebase/db-ref-builder';
 import { MessageKind, ExecutionStatus } from '../../models/execution';
 import { MessageStreamOptimizer } from './message-stream-optimizer';
+import { createSkipText } from '../util/skip-helper';
 
 import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/last';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/skip';
 import 'rxjs/add/observable/from';
+
 
 let databaseStub;
 
@@ -123,7 +125,7 @@ describe('MessageStreamOptimizer', () => {
       let expectedMessages = [
         { kind: MessageKind.Stdout, data: 'some-text', index: 0 },
         { kind: MessageKind.Stdout, data: 'other-text', index: 1 },
-        messageStreamOptimizer.createSkipInfoMessage(4),
+        { kind: MessageKind.Stdout, data: createSkipText(4) },
         { kind: MessageKind.Stdout, data: 'other-text', index: 8 },
         { kind: MessageKind.Stdout, data: 'other-text', index: 9 },
         { kind: MessageKind.ExecutionFinished, data: '', index: 10 }
