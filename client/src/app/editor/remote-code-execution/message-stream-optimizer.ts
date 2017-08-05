@@ -1,6 +1,7 @@
 import { DbRefBuilder } from '../../firebase/db-ref-builder';
 import { Observable } from 'rxjs/Observable';
 import { ExecutionMessage, MessageKind } from '../../models/execution';
+import { createSkipText } from '../util/skip-helper'
 
 export class MessageStreamOptimizer {
   constructor(private db: DbRefBuilder, private partitionSize, private fullFetchTreshold) {
@@ -14,7 +15,10 @@ export class MessageStreamOptimizer {
 
   getHeadTailAndLiveMessages(executionId, maxIndex) {
     return this.getHeadMessages(executionId, this.partitionSize)
-               .concat(Observable.of(this.createSkipInfoMessage(maxIndex - (this.partitionSize * 2))))
+               .concat(Observable.of({
+                 data: createSkipText(maxIndex - (this.partitionSize * 2)),
+                 kind: MessageKind.Stdout
+                }))
                .concat(this.getTailMessages(executionId, maxIndex - this.partitionSize, this.partitionSize))
                .concat(this.getLiveMessages(executionId, maxIndex));
 
@@ -63,16 +67,4 @@ export class MessageStreamOptimizer {
                .map(snapshot => snapshot.val());
   }
 
-  createSkipInfoMessage(skippedMessages) {
-    return {
-      data: `
-##################################################################################################
-WOAH! LOOK AT ALL THIS EXCITING OUTPUT!
-
-Unfortunately, the output is a little too large, so we had to skip ${skippedMessages} messages.
-In the future you'll be able to download the entire log as a textfile.
-##################################################################################################`,
-      kind: MessageKind.Stdout
-    };
-  }
 }
