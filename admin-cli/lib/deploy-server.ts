@@ -1,10 +1,13 @@
-const chalk = require('chalk');
-const execute = require('./execute')({displayErrors: true});
-const isRootDir = require('./is-root-dir');
-const failWith = require('./fail-with');
-const fs = require('fs');
+import * as chalk from 'chalk';
+import { factory } from './execute';
+import * as fs from 'fs';
 
-function deployServer(project, serverName, zone, env) {
+import { isRootDir } from './is-root-dir';
+import { failWith } from './fail-with';
+
+let execute = factory({displayErrors: true});
+
+export function deployServer(project, serverName, zone, env) {
   if (!isRootDir()) {
     failWith('Command needs to be run from root dir');
   }
@@ -31,7 +34,10 @@ function deployServer(project, serverName, zone, env) {
 
   // unzip and run
   console.log(chalk.green('Unzipping and restarting services'));
-  execute(`gcloud compute --project "${project}" ssh --zone "${zone}" "root@${serverName}" --command "cd /var && tar -zxvf machinelabs-server.tar.gz && rm -rf machinelabs-server && mv server machinelabs-server && pm2 restart all"`);
+  execute(`gcloud compute --project "${project}" ssh --zone "${zone}" "root@${serverName}" --command "cd /var && tar -zxvf machinelabs-server.tar.gz
+           && rm -rf machinelabs-server
+           && mv server machinelabs-server
+           && pm2 restart all"`);
 
   console.log(chalk.green('Cleaning up'));
 
@@ -39,8 +45,6 @@ function deployServer(project, serverName, zone, env) {
   execute(`rm -rf ./machinelabs-server.tar.gz`);
   console.log(chalk.green('Live'));
 }
-
-module.exports = deployServer;
 
 
 

@@ -4,11 +4,24 @@
   "description": "Admin CLI for Machine Labs",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "mla": "echo \"Compiling admin-cli\" && tsc && node ./dist/index.js",
+    "tslint": "tslint -c ./tslint.json ./**/*.ts",
+    "tsfix": "tslint --fix -c ./tslint.json ./**/*.ts"
+  },
   "dependencies": {
     "chalk": "^2.0.1",
     "lodash.isstring": "^4.0.1",
     "moment": "^2.18.1",
     "semver": "^5.4.1",
     "yargs": "^8.0.2"
+  },
+  "devDependencies": {
+    "@types/chalk": "^0.4.31",
+    "@types/moment": "^2.13.0",
+    "@types/node": "^8.0.19",
+    "@types/semver": "^5.3.33",
+    "@types/yargs": "^8.0.2"
   }
 }

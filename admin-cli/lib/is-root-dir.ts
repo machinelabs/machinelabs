@@ -1,5 +1,5 @@
-var fs = require('fs');
+import * as fs from 'fs';
 
-module.exports = function isRootDir () {
+export function isRootDir () {
   return fs.existsSync('admin-cli') && fs.existsSync('server');
 }

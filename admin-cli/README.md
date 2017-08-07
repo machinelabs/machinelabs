@@ -2,6 +2,10 @@
 
 This is an alpha state CLI for all administration tasks of MachineLabs
 
+### Building the CLI
+
+Before you can use the CLI, you have to build it by running `npm run build`
+
 ### Running Commands
 
 Invoke `./admin-cli/index.js <cmd> [args]`

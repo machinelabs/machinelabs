@@ -1,13 +1,19 @@
-const process = require('process');
-const chalk = require('chalk');
-const execute = require('./execute')({displayErrors: true});
-const isRootDir = require('./is-root-dir');
-const incVersion = require('./inc-version');
-const getCurrentVersion = require('./get-version');
-const moment = require('moment');
-const semver = require('semver');
+import * as process from 'process';
 
-function cut (versionOrType, dryRun) {
+import * as chalk from 'chalk';
+import * as moment from 'moment';
+import * as semver from 'semver';
+
+import { factory } from './execute';
+import { isRootDir } from './is-root-dir';
+import { incVersion } from './inc-version';
+import { getCurrentVersion } from './get-version';
+import { failWith } from './fail-with';
+
+let execute = factory({displayErrors: true});
+
+
+export function cut (versionOrType, dryRun) {
   if (!isRootDir()) {
     failWith('Command needs to be run from root dir');
   }
@@ -26,7 +32,7 @@ function cut (versionOrType, dryRun) {
     newVersion = versionOrType;
   }
 
-  let versionWithBuild = `${newVersion}+${buildnumber}`
+  let versionWithBuild = `${newVersion}+${buildnumber}`;
 
   // Dev versions don't increase so it's crucial to have the build number
   // in the tag to not have conflicting tag names
@@ -46,10 +52,8 @@ function cut (versionOrType, dryRun) {
            (cd ./firebase/functions && ${yarnVersionCmd}) &&
            (cd ./admin-cli && ${yarnVersionCmd})`);
 
-  
-  execute(`git add -A && 
-           git commit -m "chore(package.json): cutting version ${tagVersion}" && 
-           git tag -a ${tagVersion} -m "chore: tagging ${versionWithBuild}"`)
-}
 
-module.exports = cut;
+  execute(`git add -A &&
+           git commit -m "chore(package.json): cutting version ${tagVersion}" &&
+           git tag -a ${tagVersion} -m "chore: tagging ${versionWithBuild}"`);
+}
