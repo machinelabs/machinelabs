@@ -8,16 +8,17 @@ Before you can use the CLI, you have to build it by running `npm run build`
 
 ### Running Commands
 
-Invoke `./admin-cli/index.js <cmd> [args]`
+Invoke `./admin-cli/dist/index.js <cmd> [args]`
 
 ### Commands
 
 ```
-admin-cli/index.js <cmd> [args]
+admin-cli/dist/index.js <cmd> [args]
 
 Commands:
   deploy [<options>]  Deploy MachineLabs
   login [<options>]   Login to server
+  cut [<options>]     Cut a release
 
 Options:
   --help  Show help                                                    [boolean]
@@ -26,12 +27,13 @@ Options:
 ### Deploy Command
 
 ```
-admin-cli/index.js deploy [<options>]
+admin-cli/dist/index.js deploy [<options>]
 
 Options:
   --help                        Show help                              [boolean]
   --noServer                    Flag to suppress deployment of server  [boolean]
   --noFb                        Flag to suppress deployment of firebase[boolean]
+  --noClient                    Flag to suppress deployment of client  [boolean]
   --cfg.template                Preinitialize googleProjectId, serverName and
                                 zone
                                 from a template configuration           [string]
@@ -45,7 +47,7 @@ Options:
 ### Login Command
 
 ```
-admin-cli/index.js login [<options>]
+admin-cli/dist/index.js login [<options>]
 
 Options:
   --help                        Show help                              [boolean]
@@ -56,5 +58,4 @@ Options:
   --cfg.target.serverName       Name of server to be used               [string]
   --cfg.target.zone             Zone of server                          [string]
   --cfg.env                     Environment file for server             [string]
-
 ```
