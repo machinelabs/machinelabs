@@ -131,5 +131,7 @@ let argv = yargs(process.argv.slice(2))
 
 function setRootDir() {
   process.chdir(__dirname);
-  process.chdir('../');
+  // FIXME: This is kind of fragile. We are going to directories up because we assume the CLI
+  // is located at /projectRoot/admin-cli/dist. This would fail if the CLI was somewhere else
+  process.chdir('../../');
 }
