@@ -4,11 +4,18 @@ This is an alpha state CLI for all administration tasks of MachineLabs
 
 ### Building the CLI
 
-Before you can use the CLI, you have to build it by running `npm run build`
+You can build the CLI from source by running `npm run build`
 
 ### Running Commands
 
-Invoke `./admin-cli/dist/index.js <cmd> [args]`
+You can run commands by invoking `node ./dist/index.js <cmd> [args]`. Notice however that this will just invoke the compiled CLI. If you rather want to compile and run you could run `tsc && node ./dist/index.js <cmd> [args]`. 
+
+Alternatively you may use the shorthand `npm run mla`. The catch with that is that you need to add an extra `--` before the actual command so that the actual command pattern becomes:
+
+`npm run mla -- <cmd> [args]`
+
+An example command would be `npm run mla -- login --help`
+
 
 ### Commands
 
