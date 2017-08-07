@@ -126,6 +126,7 @@ let argv = yargs(process.argv.slice(2))
 
       return true;
     })
+    .showHelp()
     .help()
     .argv;
 
