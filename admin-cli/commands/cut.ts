@@ -1,7 +1,7 @@
-const chalk = require('chalk');
-const cut = require('../lib/cut');
+import * as chalk from 'chalk';
+import { cut } from '../lib/cut';
 
-function cutCmd (argv) {
+export function cutCmd (argv) {
   console.log(chalk.green('Cutting release'));
 
   if (argv.major) {
@@ -16,5 +16,3 @@ function cutCmd (argv) {
     cut(argv.version, argv.dryRun);
   }
 }
-
-module.exports = cutCmd;

@@ -1,9 +1,12 @@
-const chalk = require('chalk');
-const execute = require('./execute')({displayErrors: true});
-const isRootDir = require('./is-root-dir');
-const failWith = require('./fail-with');
+import * as chalk from 'chalk';
+import { factory } from './execute';
 
-function deployClient(project, env) {
+import { isRootDir} from './is-root-dir';
+import { failWith } from './fail-with';
+
+let execute = factory({displayErrors: true});
+
+export function deployClient(project, env) {
   if (!isRootDir()) {
     failWith('Command needs to be run from root dir');
   }
@@ -18,5 +21,3 @@ function deployClient(project, env) {
 
   console.log(chalk.green('Everything live!'));
 }
-
-module.exports = deployClient;

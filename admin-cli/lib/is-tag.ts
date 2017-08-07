@@ -1,8 +1,8 @@
-const execSync = require('child_process').execSync;
-const isRootDir = require('./is-root-dir');
-const failWith = require('./fail-with');
+import { execSync } from 'child_process';
+import { isRootDir} from './is-root-dir';
+import { failWith } from './fail-with';
 
-function isTag () {
+export function isTag () {
   if (!isRootDir()) {
     failWith('Command needs to be run from root dir');
   }
@@ -10,10 +10,7 @@ function isTag () {
   try {
     execSync('git describe --tags --exact-match', { stdio: 'pipe' });
     return true;
-  }
-  catch (e) {
+  } catch (e) {
     return false;
   }
 }
-
-module.exports = isTag;

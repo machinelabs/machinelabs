@@ -1,4 +1,4 @@
-module.exports = {
+export const templates = {
   staging: {
     target: {
       serverName: 'ahlem',

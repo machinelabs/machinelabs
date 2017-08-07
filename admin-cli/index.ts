@@ -1,14 +1,12 @@
 #!/usr/bin/env node
 
-const chalk = require('chalk');
+import * as chalk from 'chalk';
+import * as yargs from 'yargs';
 
-const templates = require('./config-templates/templates');
-const deployCmd = require('./commands/deploy');
-const loginCmd = require('./commands/login');
-const cutCmd = require('./commands/cut');
-
-const yargs = require('yargs');
-
+import { templates } from './config-templates/templates';
+import { deploy } from './commands/deploy';
+import { login } from './commands/login';
+import { cutCmd } from './commands/cut';
 
 // set process directory to root directory so that
 // we can assume all further commands are realtive to root
@@ -62,8 +60,8 @@ let argv = yargs(process.argv.slice(2))
         describe: 'Flag to suppress deployment of client',
         boolean: true,
       }
-    }, sharedOptions), deployCmd)
-    .command('login [<options>]', 'Login to server', sharedOptions, loginCmd)
+    }, sharedOptions), deploy)
+    .command('login [<options>]', 'Login to server', sharedOptions, login)
     .command('cut [<options>]', 'Cut a release', {
       major: {
         describe: 'Cuts a new major release',
