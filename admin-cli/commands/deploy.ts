@@ -1,15 +1,16 @@
-const chalk = require('chalk');
-const process = require('process');
+import * as chalk from 'chalk';
+import * as process from 'process';
 
-const execute = require('../lib/execute')({displayErrors: true});
-const deployServer = require('../lib/deploy-server');
-const deployFirebase = require('../lib/deploy-firebase');
-const deployClient = require('../lib/deploy-client');
-const isTag = require('../lib/is-tag');
-const isCleanWorkingDir = require('../lib/is-clean-working-dir');
+import { factory } from '../lib/execute';
+import { deployServer } from '../lib/deploy-server';
+import { deployFirebase } from '../lib/deploy-firebase';
+import { deployClient } from '../lib/deploy-client';
+import { isTag } from '../lib/is-tag';
+import { isCleanWorkingDir } from '../lib/is-clean-working-dir';
 
+let execute = factory({displayErrors: true});
 
-function deploy (argv) {
+export function deploy (argv) {
   console.log(chalk.green('Deployment mode'));
 
   if (!isTag()) {
@@ -37,5 +38,3 @@ function deploy (argv) {
   console.log(chalk.red('Uploading tags'));
   execute('git push --tags');
 }
-
-module.exports = deploy;
