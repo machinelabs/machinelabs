@@ -320,8 +320,9 @@ export class EditorViewComponent implements OnInit {
     this.executions
         .take(1)
         .filter(executions => !!executions.length)
-        .do(_ => this.openExecutionList())
         .subscribe(_ => {
+          this.openExecutionList()
+
           if (this.activeExecutionId) {
             this.editorService.selectConsoleTab();
           }
