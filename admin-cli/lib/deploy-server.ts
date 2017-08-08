@@ -13,7 +13,7 @@ export function deployServer(project, serverName, zone, env) {
   }
 
   console.log(chalk.green('Deploying server'));
-  execute(`(cd ./server && npm run node_modules && gulp build --env=${env})`);
+  execute(`(cd ./server && npm run node_modules && npm run build -- --env=${env})`);
 
   if (!fs.existsSync('./server/dist')) {
     console.log(chalk.red('Dist does not exist. Aborting'));
