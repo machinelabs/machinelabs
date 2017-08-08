@@ -18,7 +18,7 @@
           (click)="selectTab(TabIndex.Console)"
           [active]="editorService.consoleTabActive()">Console</a>
 
-        <p *ngIf="showRestoreMessage" class="ml-editor-restore-message">You're viewing an older version of this lab. Want to restore latest version? <button md-button color="primary" (click)="restoreLab()">Restore</button></p>
+        <p *ngIf="activeExecutionId" class="ml-editor-restore-message">Restore saved lab directory <button md-button color="primary" (click)="restoreLab()">Restore</button></p>
       </div>
     </ml-editor-layout-nav-bar>
   </ml-editor-layout-header>
