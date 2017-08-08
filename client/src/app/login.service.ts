@@ -1,3 +1,5 @@
+import * as firebase from 'firebase';
+
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth';
 import { Router } from '@angular/router';
@@ -16,7 +18,15 @@ export class LoginService {
     private snackBar: MdSnackBar) {}
 
   loginWithGitHub() {
-    this.authService.linkOrSignInWithGitHub()
+    this.login(new firebase.auth.GithubAuthProvider());
+  }
+
+  loginWithGoogle() {
+    this.login(new firebase.auth.GoogleAuthProvider());
+  }
+
+  login(provider: firebase.auth.AuthProvider) {
+    this.authService.linkOrSignIn(provider)
                     .switchMap(loginUser => this.userService.createUserIfMissing())
                     .subscribe(user => {
 

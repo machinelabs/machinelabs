@@ -309,6 +309,18 @@
           "email": {
             ".validate": "newData.isString() && newData.val() == auth.email"
           },
+          "providers": {
+            "$key1": {
+              ".validate": "newData.isString()"
+            },
+            ".validate": "newData.hasChildren()"
+          },
+          "merged_accounts": {
+            "$key3": {
+              ".validate": "newData.isBoolean()"
+            },
+            ".validate": "newData.hasChildren() && auth.uid == 'execution-server'"
+          },
           "$other": {
             ".validate": "false"
           },
@@ -318,6 +330,28 @@
         "plan": {
           ".read": "true"
         }
+      }
+    },
+    "user_merge_requests": {
+      "$id": {
+        ".validate": "newData.hasChildren(['user_id', 'handshake_id', 'type'])",
+        "user_id": {
+          ".validate": "newData.isString()"
+        },
+        "handshake_id": {
+          ".validate": "newData.isString()"
+        },
+        "type": {
+          ".validate": "newData.isString() && (newData.val() == 'passive' || newData.val() == 'active')"
+        },
+        "$other": {
+          ".validate": "false"
+        },
+        ".read": "true",
+        ".write": "(data.val() != null ? auth != null && auth.uid == data.child('user_id').val() && (auth != null && auth.uid == newData.child('user_id').val()) : auth != null && auth.uid == newData.child('user_id').val()) && (auth != null && auth.uid == $id)",
+        ".indexOn": [
+          "handshake_id"
+        ]
       }
     },
     "servers": {

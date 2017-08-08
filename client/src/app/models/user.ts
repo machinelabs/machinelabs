@@ -1,10 +1,18 @@
+export interface AuthProvider {
+  uid: string|null;
+  providerId: string|null;
+  displayName: string|null;
+  email: string|null;
+  photoURL: string|null;
+}
+
 export interface LoginUser {
   uid: string;
   displayName: string|null;
   email: string|null;
   isAnonymous: boolean;
   photoURL: string|null;
-  providerData?: Array<any>;
+  providerData?: Array<AuthProvider>;
 }
 
 export interface User {
@@ -14,4 +22,5 @@ export interface User {
   bio?: string|null;
   isAnonymous: boolean;
   photoUrl: string|null;
+  providers: Array<string>|null;
 }

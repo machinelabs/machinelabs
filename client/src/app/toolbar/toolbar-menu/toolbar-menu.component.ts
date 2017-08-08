@@ -1,3 +1,5 @@
+import * as firebase from 'firebase';
+
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../auth/auth.service';
@@ -25,8 +27,11 @@ export class ToolbarMenuComponent implements OnInit {
     this.loginService.loginWithGitHub();
   }
 
+  loginWithGoogle() {
+    this.loginService.loginWithGoogle();
+  }
+
   logout() {
     this.loginService.logout();
   }
 }
-

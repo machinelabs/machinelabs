@@ -108,17 +108,19 @@ describe('Auth services', () => {
       });
     });
 
-    describe('.signInWithGitHub()', () => {
+    describe('.signIn()', () => {
 
-      it('should authenticate a non anonymous user', (done) => {
+      it('should authenticate a non anonymous user with Github', (done) => {
 
         let result = { user: Object.assign({}, dummyUser) };
         result.user.isAnonymous = false;
 
         spyOn(firebase.auth(), 'signInWithPopup').and.returnValue(Promise.resolve(result));
 
-        authService.signInWithGitHub().subscribe(loginUser => {
-          expect(firebase.auth().signInWithPopup).toHaveBeenCalledWith(new firebase.auth.GithubAuthProvider());
+        let githubAuthProvider = new firebase.auth.GithubAuthProvider();
+
+        authService.signIn(githubAuthProvider).subscribe(loginUser => {
+          expect(firebase.auth().signInWithPopup).toHaveBeenCalledWith(githubAuthProvider);
           expect(loginUser.uid).toEqual(dummyUser.uid);
           expect(loginUser.displayName).toEqual(dummyUser.displayName);
           expect(loginUser.email).toEqual(dummyUser.email);
@@ -128,7 +130,7 @@ describe('Auth services', () => {
       });
     });
 
-    describe('.linkOrSignInWithGitHub()', () => {
+    describe('.linkOrSignIn()', () => {
 
       it('should link anonymous user with GitHub user using firebase APIs', (done) => {
 
@@ -143,8 +145,10 @@ describe('Auth services', () => {
 
         spyOn(firebase, 'auth').and.returnValue(currentUserStub);
 
-        authService.linkOrSignInWithGitHub().subscribe(loginUser => {
-          expect(firebase.auth().currentUser.linkWithPopup).toHaveBeenCalledWith(new firebase.auth.GithubAuthProvider());
+        let githubAuthProvider = new firebase.auth.GithubAuthProvider();
+
+        authService.linkOrSignIn(githubAuthProvider).subscribe(loginUser => {
+          expect(firebase.auth().currentUser.linkWithPopup).toHaveBeenCalledWith(githubAuthProvider);
           expect(loginUser).toEqual(dummyUser);
           done();
         });
@@ -163,8 +167,10 @@ describe('Auth services', () => {
 
         spyOn(firebase, 'auth').and.returnValue(currentUserStub);
 
-        authService.linkOrSignInWithGitHub().subscribe(loginUser => {
-          expect(firebase.auth().signInWithPopup).toHaveBeenCalledWith(new firebase.auth.GithubAuthProvider());
+        let githubAuthProvider = new firebase.auth.GithubAuthProvider();
+
+        authService.linkOrSignIn(githubAuthProvider).subscribe(loginUser => {
+          expect(firebase.auth().signInWithPopup).toHaveBeenCalledWith(githubAuthProvider);
           expect(loginUser).toEqual(dummyUser);
           done();
         });
@@ -174,7 +180,7 @@ describe('Auth services', () => {
 
   describe('OfflineAuthService', () => {
 
-    let authService: OfflineAuth;
+    let authService: OfflineAuthService;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -224,10 +230,10 @@ describe('Auth services', () => {
       });
     });
 
-    describe('.singInWithGitHub()', () => {
+    describe('.singIn()', () => {
 
       it('should resolve with non-anonymous dummy user object', () => {
-        authService.signInWithGitHub().subscribe(user => {
+        authService.signIn().subscribe(user => {
           expect(user).toBeDefined();
           expect(user.displayName).toEqual('Tony Stark');
           expect(user.email).toEqual('tony@starkindustries.com');
@@ -237,10 +243,10 @@ describe('Auth services', () => {
       });
     });
 
-    describe('.linkOrSignInWithGithub()', () => {
+    describe('.linkOrSignIn()', () => {
 
       it('should resolve with non-anonymous dummy user object', () => {
-        authService.linkOrSignInWithGitHub().subscribe(user => {
+        authService.linkOrSignIn().subscribe(user => {
           expect(user).toBeDefined();
           expect(user.displayName).toEqual('Tony Stark');
           expect(user.email).toEqual('tony@starkindustries.com');
