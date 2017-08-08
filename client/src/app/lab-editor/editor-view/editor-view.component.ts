@@ -318,7 +318,7 @@ export class EditorViewComponent implements OnInit {
   private initExecutionList() {
     this.executions = this.editorService.observeExecutionsForLab(this.lab);
     this.executions
-        .take(2)
+        .take(1)
         .filter(executions => !!executions.length)
         .do(_ => this.openExecutionList())
         .subscribe(_ => {
