@@ -86,8 +86,6 @@ export class EditorViewComponent implements OnInit {
 
   navigationConfirmDialogRef: MdDialogRef<NavigationConfirmDialogComponent>;
 
-  showRestoreMessage = false;
-
   sidebarToggled = false;
 
   @ViewChild('executionMetadataSidebar') executionMetadataSidebar: MdSidenav;
@@ -221,7 +219,6 @@ export class EditorViewComponent implements OnInit {
       .take(1)
       .subscribe(execution => {
         this.slimLoadingBarService.complete();
-        this.showRestoreMessage = Directory.isSameDirectory(execution.lab.directory, this.latestLab.directory);
         this.editorService.initDirectory(execution.lab.directory);
       });
 
@@ -237,7 +234,6 @@ export class EditorViewComponent implements OnInit {
       .subscribe(info => {
         this.outputPanel.clear();
         this.activeExecutionId = null;
-        this.showRestoreMessage = false;
         // we allways need to save after forking but either the
         // version from before the dialog or the one after
         this.save(info.shouldSave ? info.lab : this.lab, 'Lab forked', true);
@@ -340,7 +336,6 @@ export class EditorViewComponent implements OnInit {
       queryParamsHandling: 'merge'
     });
     this.editorService.initDirectory(this.latestLab.directory);
-    this.showRestoreMessage = false;
 
     setTimeout(() => {
       this.executionMetadataSidebar.close();
