@@ -32,6 +32,7 @@ import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/skip';
 
 
 @Injectable()
@@ -146,7 +147,9 @@ export class EditorService {
 
           });
           return confirmedExecutions.map(v => v.execution);
-        }).share();
+        })
+        .skip(1)
+        .share();
 
   }
 
