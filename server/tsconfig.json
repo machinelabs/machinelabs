@@ -1,22 +1,24 @@
 {
   "compilerOptions": {
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
+    "declaration": true,
+    "lib": ["es6", "es2015", "es2016.array.include", "dom"],
     "module": "commonjs",
-    "target": "es5",
-    "sourceMap": true,
-    "pretty": true,
     "moduleResolution": "node",
     "outDir": "./dist",
-    "lib": ["es6", "es2016.array.include"]
-  },
-  "compileOnSave": false,
-  "buildOnSave": false,
-  "typeRoots": [
-    "./node_modules/@types"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+    "rootDir": "./src",
+    "sourceMap": true,
+    "target": "es5",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "noEmitOnError": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "inlineSources": true,
+    "stripInternal": true,
+    "paths": {  },
+    "baseUrl": "",
+    "typeRoots": [  "./node_modules/@types" ],
+    "types": [  "node"  ]
+  }
 }
