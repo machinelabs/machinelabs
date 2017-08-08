@@ -322,9 +322,8 @@ export class EditorViewComponent implements OnInit {
   private initExecutionList() {
     this.executions = this.editorService.observeExecutionsForLab(this.lab);
     this.executions
-        .take(1)
-        .map(executions => executions.length > 0 ? executions[0] : null)
-        .filter(obsExecution => !!obsExecution)
+        .take(2)
+        .filter(executions => !!executions.length)
         .do(_ => this.openExecutionList())
         .subscribe(_ => {
           if (this.activeExecutionId) {
