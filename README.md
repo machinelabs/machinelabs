@@ -95,7 +95,7 @@ firebase deploy
 
 ```
 cd ./server
-gulp build --env=demo1 && node dist/index.js
+npm run build -- --env=demo1 && node dist/index.js
 ```
 
 If you have multiple servers, repeat this step to run them all in parallel.
