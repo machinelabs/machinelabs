@@ -6,9 +6,10 @@
   "author": "Christoph Burgdorf <christoph.burgdorf@bvsn.org> (http://cburgdorf.wordpress.com/)",
   "license": "ISC",
   "dependencies": {
+    "@machinelabs/core": "file:../shared/core",
     "@reactivex/rxjs": "^5.4.2",
     "@types/js-yaml": "^3.5.30",
-    "firebase": "^3.7.1",
+    "firebase": "^4.2.0",
     "firebase-admin": "^4.2.1",
     "js-yaml": "^3.8.4",
     "minimist": "1.2.0",

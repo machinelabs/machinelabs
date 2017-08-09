@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@machinelabs/core@file:../shared/core":
+  version "0.5.0"
+  dependencies:
+    "@reactivex/rxjs" "^5.4.2"
+    "@types/node" "^8.0.19"
+    firebase "^4.2.0"
+
 "@reactivex/rxjs@^5.4.2":
   version "5.4.2"
   resolved "https://registry.yarnpkg.com/@reactivex/rxjs/-/rxjs-5.4.2.tgz#ab530dbbdab71071369828ef11c8d7ae558d5116"
@@ -34,7 +41,7 @@
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.0.tgz#69a23a3ad29caf0097f06eda59b361ee2f0639f6"
 
-"@types/node@*":
+"@types/node@*", "@types/node@^8.0.19":
   version "8.0.20"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.20.tgz#65c7375255c24b184c215a5d0b63247c32f01c91"
 
@@ -779,9 +786,9 @@ firebase-admin@^4.2.1:
     faye-websocket "0.9.3"
     jsonwebtoken "7.1.9"
 
-firebase@^3.7.1:
-  version "3.9.0"
-  resolved "https://registry.yarnpkg.com/firebase/-/firebase-3.9.0.tgz#c4237f50f58eeb25081b1839d6cbf175f8f7ed9b"
+firebase@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/firebase/-/firebase-4.2.0.tgz#9181a0a22c6afc2b27bd810789beac48a438207d"
   dependencies:
     dom-storage "^2.0.2"
     faye-websocket "0.9.3"

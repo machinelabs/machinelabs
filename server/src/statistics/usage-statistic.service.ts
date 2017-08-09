@@ -1,5 +1,5 @@
 import { Observable } from '@reactivex/rxjs';
-import { ObservableDbRef } from '../ml-firebase';
+import { ObservableDbRef } from '@machinelabs/core';
 import { DateUtil } from '../util/date';
 import { ShortMonth, toShortMonth } from '../models/months';
 import { DbRefBuilder } from '../ml-firebase/db-ref-builder';

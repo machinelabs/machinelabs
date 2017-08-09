@@ -12,5 +12,8 @@ const setRootDir = () => {
 setRootDir();
 execute('rm -rf ./dist');
 copyConfig();
+// This makes sure that the latest @machinelabs/core code is 
+// copied over to node_modules
+execute('yarn upgrade @machinelabs/core');
 execute('tsc');
 
