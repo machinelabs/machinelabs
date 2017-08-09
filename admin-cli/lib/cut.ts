@@ -48,9 +48,11 @@ export function cut (versionOrType, dryRun) {
   let yarnVersionCmd = `yarn version --no-git-tag-version --new-version ${versionWithBuild}`;
 
   execute(`(cd ./server && ${yarnVersionCmd}) &&
+           (cd ./shared/core && ${yarnVersionCmd}) &&
+           (cd ./server && yarn upgrade @machinelabs/core) &&
            (cd ./client && ${yarnVersionCmd}) &&
            (cd ./firebase/functions && ${yarnVersionCmd}) &&
-           (cd ./shared/core && ${yarnVersionCmd}) &&
+           
            (cd ./admin-cli && ${yarnVersionCmd})`);
 
 
