@@ -3,7 +3,7 @@ import { ProcessUtil } from '../util/process';
 import { Observable } from '@reactivex/rxjs';
 import { CodeRunner, ProcessStreamData } from './code-runner';
 import { Invocation } from '../models/invocation';
-import { PrivateLabConfiguration } from 'models/lab-configuration';
+import { PrivateLabConfiguration } from '../models/lab-configuration';
 
 /**
  * This is a DummyRunner that ignores the code and just invokes a ping on machinelabs.ai

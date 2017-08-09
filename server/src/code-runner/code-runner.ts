@@ -1,6 +1,6 @@
 import { Observable } from '@reactivex/rxjs';
 import { Invocation } from '../models/invocation';
-import { PrivateLabConfiguration } from 'models/lab-configuration';
+import { PrivateLabConfiguration } from '../models/lab-configuration';
 
 export interface ProcessStreamData {
   origin: string;
