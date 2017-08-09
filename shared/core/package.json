@@ -1,0 +1,14 @@
+{
+  "name": "@machinelabs/core",
+  "version": "0.5.0",
+  "description": "Fundamentals that can be shared across various projects",
+  "main": "index.js",
+  "dependencies": {
+    "@types/node": "^8.0.19",
+    "firebase": "^4.2.0",
+    "@reactivex/rxjs": "^5.4.2"
+  },
+  "devDependencies": {
+    "typescript": "^2.4.2"
+  }
+}

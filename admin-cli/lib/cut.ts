@@ -50,6 +50,7 @@ export function cut (versionOrType, dryRun) {
   execute(`(cd ./server && ${yarnVersionCmd}) &&
            (cd ./client && ${yarnVersionCmd}) &&
            (cd ./firebase/functions && ${yarnVersionCmd}) &&
+           (cd ./shared/core && ${yarnVersionCmd}) &&
            (cd ./admin-cli && ${yarnVersionCmd})`);
 
 
