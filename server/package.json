@@ -8,9 +8,10 @@
   "dependencies": {
     "@reactivex/rxjs": "^5.4.2",
     "@types/js-yaml": "^3.5.30",
-    "firebase": "^3.7.1",
+    "firebase": "^4.2.0",
     "firebase-admin": "^4.2.1",
     "js-yaml": "^3.8.4",
+    "machinelabs-core": "file:../shared/core",
     "minimist": "1.2.0",
     "moment": "^2.18.1",
     "tslint": "^5.5.0"

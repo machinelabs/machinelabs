@@ -1,5 +1,6 @@
 import { environment } from '../environments/environment';
-import { db, ObservableDbRef } from '../ml-firebase';
+import { db } from '../ml-firebase';
+import { ObservableDbRef } from 'machinelabs-core';
 import { ShortMonth } from '../models/months';
 
 export class DbRefBuilder {
