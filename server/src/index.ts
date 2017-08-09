@@ -19,7 +19,6 @@ import { WithinConcurrencyLimit } from './validation/rules/within-concurrency-li
 import { UsageStatisticResolver } from './validation/resolver/usage-statistic-resolver';
 import { CostCalculator } from './statistics/cost-calculator';
 
-
 console.log(`Starting MachineLabs server (${environment.serverId})`)
 
 const labConfigService = new LabConfigService;
