@@ -41,6 +41,11 @@ testem.log
 /client/e2e/*.js
 /client/e2e/*.map
 
+#shared
+/shared/**/*.js
+/shared/**/*.d.ts
+/shared/**/*.map
+
 #System Files
 .DS_Store
 Thumbs.db
