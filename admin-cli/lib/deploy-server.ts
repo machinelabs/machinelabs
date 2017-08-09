@@ -34,9 +34,9 @@ export function deployServer(project, serverName, zone, env) {
 
   // unzip and run
   console.log(chalk.green('Unzipping and restarting services'));
-  execute(`gcloud compute --project "${project}" ssh --zone "${zone}" "root@${serverName}" --command "cd /var && tar -zxvf machinelabs-server.tar.gz
-           && rm -rf machinelabs-server
-           && mv server machinelabs-server
+  execute(`gcloud compute --project "${project}" ssh --zone "${zone}" "root@${serverName}" --command "cd /var && tar -zxvf machinelabs-server.tar.gz 
+           && rm -rf machinelabs-server 
+           && mv server machinelabs-server 
            && pm2 restart all"`);
 
   console.log(chalk.green('Cleaning up'));
