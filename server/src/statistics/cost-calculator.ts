@@ -1,4 +1,4 @@
-import { Execution } from 'models/execution';
+import { Execution } from '../models/execution';
 import { Observable } from '@reactivex/rxjs';
 import { HardwareType } from '../models/server';
 import { COST_PER_SECOND_PER_TYPE } from './costs';

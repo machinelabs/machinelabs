@@ -4,7 +4,7 @@ import { ProcessUtil } from '../util/process';
 import { CodeRunner, ProcessStreamData } from './code-runner';
 import { File } from '../models/lab';
 import { Invocation } from '../models/invocation';
-import { PrivateLabConfiguration } from 'models/lab-configuration';
+import { PrivateLabConfiguration } from '../models/lab-configuration';
 
 const RUN_PARTITION_SIZE = '5g';
 const RUN_PARTITION_MODE = '1777';

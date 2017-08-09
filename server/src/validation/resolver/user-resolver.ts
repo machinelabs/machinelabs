@@ -1,7 +1,7 @@
 import { Observable } from '@reactivex/rxjs'
-import { Resolver } from "validation/resolver/resolver";
+import { Resolver } from './resolver';
 import { DbRefBuilder } from '../../ml-firebase';
-import { Invocation } from "models/invocation";
+import { Invocation } from '../../models/invocation';
 
 export class UserResolver implements Resolver {
 
