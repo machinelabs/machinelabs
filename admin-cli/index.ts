@@ -112,8 +112,8 @@ let argv = yargs(process.argv.slice(2))
         throw new Error('`target` option is incomplete');
       }
 
-      if (usedMoreThanOnce([argv.noFb, argv.noServer])) {
-        throw new Error('`noFb` and `noServer` are mutually exclusive');
+      if (countTrue([argv.noFb, argv.noServer, argv.noClient]) === 3) {
+        throw new Error('`noFb`, `noServer` and `noClient` can not be used in full combination');
       }
 
       if (usedMoreThanOnce([argv.major, argv.minor, argv.patch, argv.dev])) {
