@@ -16,9 +16,14 @@
     "suppressImplicitAnyIndexErrors": true,
     "inlineSources": true,
     "stripInternal": true,
-    "paths": {  },
+    "paths": {
+      "firebase": ["./node_modules/firebase"],
+      "@reactivex/*": ["./node_modules/machinelabs-core/node_modules/@reactivex/*"]
+    },
     "baseUrl": "",
-    "typeRoots": [  "./node_modules/@types" ],
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
     "types": [  "node"  ]
   }
 }
