@@ -1,7 +1,7 @@
 import 'jest';
 
 import { CostCalculator } from './cost-calculator';
-import { Execution } from 'models/execution';
+import { Execution } from '../models/execution';
 import { Observable } from '@reactivex/rxjs';
 import { HardwareType } from '../models/server';
 import { CostReport } from './cost-report';
