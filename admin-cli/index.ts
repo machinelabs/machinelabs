@@ -124,9 +124,12 @@ let argv = yargs(process.argv.slice(2))
         throw new Error('`version` is mutually exclusive with `major`, `minor`, `patch` and `dev`');
       }
 
+      if (!argv._.length) {
+        yargs.showHelp();
+      }
+
       return true;
     })
-    .showHelp()
     .help()
     .argv;
 
