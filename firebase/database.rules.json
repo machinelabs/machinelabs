@@ -41,6 +41,11 @@
         "$id": {
           ".read": "true"
         }
+      },
+      "user_visible_labs": {
+        "$id": {
+          ".read": "true"
+        }
       }
     },
     ".read": "auth.uid == 'execution-server'",
@@ -86,6 +91,9 @@
               }
             },
             ".validate": "newData.hasChildren()"
+          },
+          "hidden": {
+            ".validate": "newData.isBoolean()"
           },
           "created_at": {
             ".validate": "newData.isNumber()"
