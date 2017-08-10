@@ -33,6 +33,7 @@ type Lab {
   cache_hash: String | Null
   tags: String[],
   directory: File[],
+  hidden: Boolean,
   created_at: Number,
   modified_at: Number
 }
@@ -231,6 +232,11 @@ path /idx/user_executions/{id} {
 }
 
 path /idx/user_visible_executions/{id} {
+  read() { true }
+  write() { false }
+}
+
+path /idx/user_visible_labs/{id} {
   read() { true }
   write() { false }
 }
