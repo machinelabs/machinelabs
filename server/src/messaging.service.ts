@@ -1,11 +1,12 @@
 import * as firebase from 'firebase';
 import { Crypto } from './util/crypto';
 import { environment } from './environments/environment';
-import { db, DbRefBuilder } from './ml-firebase';
+import { db, dbRefBuilder } from './ml-firebase/db';
 import { CodeRunner, ProcessStreamData } from './code-runner/code-runner';
 import { Observable } from '@reactivex/rxjs';
 import { Invocation, InvocationType } from './models/invocation';
-import { Execution, ExecutionStatus, ExecutionMessage, MessageKind, toMessageKind } from './models/execution';
+import { Execution, ExecutionStatus } from '@machinelabs/core'
+import { ExecutionMessage, MessageKind, toMessageKind } from './models/execution';
 import { ValidationService } from './validation/validation.service';
 import { Server } from './models/server';
 import { ValidationContext } from './validation/validation-context';
@@ -16,7 +17,6 @@ const MAX_MESSAGES_COUNT = 100000;
 
 export class MessagingService {
 
-  db = new DbRefBuilder();
   server: Server;
 
   constructor(private startValidationService: ValidationService,
@@ -26,7 +26,7 @@ export class MessagingService {
 
   init() {
 
-    this.db.serverRef(environment.serverId).onceValue()
+    dbRefBuilder.serverRef(environment.serverId).onceValue()
         .map(snapshot => snapshot.val())
         .subscribe(server => {
           this.server = server;
@@ -37,7 +37,7 @@ export class MessagingService {
   initMessaging () {
 
     // Share one subscription to all incoming messages
-    let newInvocations$ = this.db.newInvocationsForServerRef(this.server.id)
+    let newInvocations$ = dbRefBuilder.newInvocationsForServerRef(this.server.id)
                                  .childAdded()
                                  .map(snapshot => snapshot.val().common)
                                  .share();
@@ -130,7 +130,7 @@ export class MessagingService {
   }
 
   createExecutionAndUpdateLabs(invocation: Invocation, hash: string) {
-    this.db.executionRef(invocation.id)
+    dbRefBuilder.executionRef(invocation.id)
       .set({
         id: invocation.id,
         cache_hash: hash,
@@ -146,7 +146,7 @@ export class MessagingService {
   }
 
   completeExecution(run: Invocation) {
-    this.db.executionRef(run.id)
+    dbRefBuilder.executionRef(run.id)
       .update({
         finished_at: firebase.database.ServerValue.TIMESTAMP,
         status: ExecutionStatus.Finished
@@ -164,6 +164,6 @@ export class MessagingService {
     let id = db.ref().push().key;
     data.id = id;
     data.timestamp = firebase.database.ServerValue.TIMESTAMP;
-    return this.db.executionMessageRef(run.id, id).set(data);
+    return dbRefBuilder.executionMessageRef(run.id, id).set(data);
   }
 }

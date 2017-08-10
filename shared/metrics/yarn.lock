@@ -2,6 +2,14 @@
 # yarn lockfile v1
 
 
+"@machinelabs/core@file:../core":
+  version "0.6.1"
+  dependencies:
+    "@reactivex/rxjs" "^5.4.2"
+    "@types/node" "^8.0.19"
+    firebase "^4.2.0"
+    moment "^2.18.1"
+
 "@reactivex/rxjs@^5.4.2":
   version "5.4.2"
   resolved "https://registry.yarnpkg.com/@reactivex/rxjs/-/rxjs-5.4.2.tgz#ab530dbbdab71071369828ef11c8d7ae558d5116"
@@ -9,8 +17,8 @@
     symbol-observable "^1.0.1"
 
 "@types/node@^8.0.19":
-  version "8.0.19"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.19.tgz#e46e2b0243de7d03f15b26b45c59ebb84f657a4e"
+  version "8.0.20"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.20.tgz#65c7375255c24b184c215a5d0b63247c32f01c91"
 
 base64url@2.0.0, base64url@^2.0.0:
   version "2.0.0"

@@ -2,7 +2,7 @@ import { spawn, exec } from 'child_process';
 import { Observable } from '@reactivex/rxjs';
 import { ProcessUtil } from '../util/process';
 import { CodeRunner, ProcessStreamData } from './code-runner';
-import { File } from '../models/lab';
+import { File } from '@machinelabs/core';
 import { Invocation } from '../models/invocation';
 import { PrivateLabConfiguration } from '../models/lab-configuration';
 

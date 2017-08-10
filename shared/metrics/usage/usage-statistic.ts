@@ -1,4 +1,4 @@
-import { CostReport } from './cost-report';
+import { CostReport } from '../costs/cost-report';
 
 export interface UsageStatistic {
   costReport: CostReport;

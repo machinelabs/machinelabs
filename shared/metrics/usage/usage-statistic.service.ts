@@ -1,9 +1,6 @@
 import { Observable } from '@reactivex/rxjs';
-import { ObservableDbRef } from '@machinelabs/core';
-import { DateUtil } from '../util/date';
-import { ShortMonth, toShortMonth } from '../models/months';
-import { DbRefBuilder } from '../ml-firebase/db-ref-builder';
-import { CostCalculator } from './cost-calculator';
+import { ObservableDbRef, ShortMonth, toShortMonth, DbRefBuilder, DateUtil } from '@machinelabs/core';
+import { CostCalculator } from '../costs/cost-calculator';
 import { UsageStatistic } from './usage-statistic';
 
 // Give everyone 72 hours per month
@@ -11,7 +8,7 @@ const FREE_MONTHLY_COMPUTATION_SECONDS = 72 * 60 * 60;
 
 export class UsageStatisticService {
 
-  constructor(private costCalculator: CostCalculator, private db = new DbRefBuilder()) {
+  constructor(private costCalculator: CostCalculator, private db: DbRefBuilder) {
 
   }
 

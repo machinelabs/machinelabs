@@ -3,8 +3,17 @@
 
 
 "@machinelabs/core@file:../shared/core":
-  version "0.5.0"
+  version "0.6.1"
   dependencies:
+    "@reactivex/rxjs" "^5.4.2"
+    "@types/node" "^8.0.19"
+    firebase "^4.2.0"
+    moment "^2.18.1"
+
+"@machinelabs/metrics@file:../shared/metrics":
+  version "0.6.1"
+  dependencies:
+    "@machinelabs/core" "file:../core"
     "@reactivex/rxjs" "^5.4.2"
     "@types/node" "^8.0.19"
     firebase "^4.2.0"

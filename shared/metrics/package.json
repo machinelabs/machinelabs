@@ -1,16 +1,16 @@
 {
-  "name": "@machinelabs/core",
+  "name": "@machinelabs/metrics",
   "version": "0.6.1+utc.2017.Aug.09-14.25.16",
-  "description": "Fundamentals that can be shared across various projects",
+  "description": "Metrics such as usage statistics",
   "main": "index.js",
   "scripts": {
     "postinstall": "tsc"
   },
   "dependencies": {
+    "@machinelabs/core": "file:../core",
     "@reactivex/rxjs": "^5.4.2",
     "@types/node": "^8.0.19",
-    "firebase": "^4.2.0",
-    "moment": "^2.18.1"
+    "firebase": "^4.2.0"
   },
   "devDependencies": {
     "typescript": "^2.4.2"

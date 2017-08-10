@@ -1,7 +1,7 @@
 import 'jest';
 
 import { Crypto } from './crypto';
-import { Lab } from '../models/lab';
+import { Lab } from '@machinelabs/core';
 
 describe('.hash()', () => {
   it('should return correct hash for string', () => {

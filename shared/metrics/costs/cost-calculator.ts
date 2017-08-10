@@ -1,6 +1,5 @@
-import { Execution } from '../models/execution';
+import { Execution, HardwareType } from '@machinelabs/core';
 import { Observable } from '@reactivex/rxjs';
-import { HardwareType } from '../models/server';
 import { COST_PER_SECOND_PER_TYPE } from './costs';
 import { CostReport } from './cost-report';
 
