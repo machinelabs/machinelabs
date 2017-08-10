@@ -47,8 +47,12 @@ export class DbRefBuilder {
     }
   }
 
-  userLabsIdsRef(id: string) {
+  userLabsRef(id: string) {
     return new ObservableDbRef(this.db.ref(`idx/user_labs/${id}`));
+  }
+
+  userVisibleLabsRef(id: string) {
+    return new ObservableDbRef(this.db.ref(`idx/user_visible_labs/${id}`));
   }
 }
 
