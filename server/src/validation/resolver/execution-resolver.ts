@@ -1,12 +1,10 @@
 import { Observable } from '@reactivex/rxjs'
 import { Resolver } from './resolver';
-import { DbRefBuilder } from '../../ml-firebase';
+import { dbRefBuilder } from '../../ml-firebase';
 import { Invocation, InvocationExecution } from '../../models/invocation';
 import { MessageKind } from '../../models/execution';
 
 export class ExecutionResolver implements Resolver {
-
-  db = new DbRefBuilder();
 
   resolve(invocation: Invocation) {
 
@@ -15,7 +13,7 @@ export class ExecutionResolver implements Resolver {
 
     return !executionId ? 
               Observable.of(null) :
-              this.db.executionRef(executionId)
+              dbRefBuilder.executionRef(executionId)
                      .onceValue()
                      .map(snapshot => snapshot.val());
   }

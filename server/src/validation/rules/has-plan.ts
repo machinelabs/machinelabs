@@ -4,7 +4,6 @@ import { ExtendedUser } from '../../models/user';
 import { Invocation } from '../../models/invocation';
 import { ValidationResult } from '../validation-result';
 import { ExecutionRejectionInfo, ExecutionRejectionReason } from '../../models/execution';
-import { DbRefBuilder } from '../../ml-firebase';
 import { UserResolver } from '../resolver/user-resolver';
 
 const PLANS = ['admin', 'beta'];

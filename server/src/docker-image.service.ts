@@ -1,9 +1,8 @@
-import { DbRefBuilder } from './ml-firebase';
+import { dbRefBuilder } from './ml-firebase/db';
 import { Observable } from '@reactivex/rxjs';
 
 export function getDockerImages() {
-  let db = new DbRefBuilder();
-  return db.dockerImagesRef()
+  return dbRefBuilder.dockerImagesRef()
     .onceValue()
     .map(snapshot => this.dockerImages = snapshot.val());
 }

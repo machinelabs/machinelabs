@@ -1,6 +1,5 @@
 import { Observable } from '@reactivex/rxjs'
 import { Resolver } from './resolver';
-import { DbRefBuilder } from '../../ml-firebase';
 import { Invocation } from '../../models/invocation';
 import { DockerImageService } from '../../docker-image.service';
 import { PublicLabConfiguration } from '../../models/lab-configuration';
