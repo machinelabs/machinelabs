@@ -1,6 +1,7 @@
 import * as admin from 'firebase-admin';
 import { environment } from '../environments/environment';
 import { Config } from '../util/config';
+import { DbRefBuilder } from '@machinelabs/core';
 
 admin.initializeApp({
   credential: admin.credential.cert(<any>{
@@ -14,3 +15,4 @@ admin.initializeApp({
 });
 
 export let db = admin.database();
+export let dbRefBuilder = new DbRefBuilder(db);

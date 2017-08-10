@@ -1,14 +1,14 @@
 import { Observable } from '@reactivex/rxjs'
 import { Resolver } from './resolver';
-import { DbRefBuilder } from '../../ml-firebase';
+import { dbRefBuilder } from '../../ml-firebase';
 import { Invocation } from '../../models/invocation';
 
 export class UserResolver implements Resolver {
 
   resolve(invocation: Invocation) {
-    return new DbRefBuilder()
-        .userRef(invocation.user_id)
-        .onceValue()
-        .map(snapshot => snapshot.val());
+    return dbRefBuilder
+            .userRef(invocation.user_id)
+            .onceValue()
+            .map(snapshot => snapshot.val());
   }
 }
