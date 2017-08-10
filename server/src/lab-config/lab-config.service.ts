@@ -1,4 +1,4 @@
-import { Lab } from '../models/lab';
+import { Lab } from '@machinelabs/core';
 import { PublicLabConfiguration } from '../models/lab-configuration';
 import { safeLoad} from 'js-yaml';
 
