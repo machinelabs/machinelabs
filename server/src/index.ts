@@ -2,7 +2,7 @@ import { DummyRunner } from './code-runner/dummy-runner.js';
 import { DockerRunner } from './code-runner/docker-runner.js';
 import { MessagingService } from './messaging.service';
 import { ValidationService } from './validation/validation.service';
-import { UsageStatisticService } from './statistics/usage-statistic.service';
+import { UsageStatisticService } from '@machinelabs/metrics';
 import { environment } from './environments/environment';
 import { DockerImageService, getDockerImages } from './docker-image.service';
 import { HasPlanRule } from './validation/rules/has-plan';
@@ -17,13 +17,14 @@ import { ExecutionResolver } from './validation/resolver/execution-resolver';
 import { OwnsExecutionRule } from './validation/rules/owns-execution';
 import { WithinConcurrencyLimit } from './validation/rules/within-concurrency-limit';
 import { UsageStatisticResolver } from './validation/resolver/usage-statistic-resolver';
-import { CostCalculator } from './statistics/cost-calculator';
+import { CostCalculator } from '@machinelabs/metrics';
+import { dbRefBuilder } from './ml-firebase';
 
 console.log(`Starting MachineLabs server (${environment.serverId})`)
 
 const labConfigService = new LabConfigService;
 const dockerImageService = new DockerImageService(getDockerImages());
-const usageStatisticService = new UsageStatisticService(new CostCalculator());
+const usageStatisticService = new UsageStatisticService(new CostCalculator(), <any>dbRefBuilder);
 
 dockerImageService
   .init()
