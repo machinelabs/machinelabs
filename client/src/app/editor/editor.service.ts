@@ -195,6 +195,13 @@ export class EditorService {
       .map(_ => lab);
   }
 
+  deleteLab(lab: Lab) {
+    lab.hidden = true;
+    return this.labStorageService
+      .saveLab(lab)
+      .do(_ => this.editorSnackbar.notifyLabDeleted());
+  }
+
   executeLab(lab: Lab) {
     return this.labStorageService
       .labExists(lab.id)
