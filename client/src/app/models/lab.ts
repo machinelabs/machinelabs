@@ -20,4 +20,5 @@ export interface Lab extends LabTemplate {
   has_cached_run?: boolean;
   created_at: number;
   modified_at: number;
+  hidden: boolean;
 }
