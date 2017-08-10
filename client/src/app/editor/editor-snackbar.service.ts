@@ -22,6 +22,10 @@ export class EditorSnackbarService {
     this.notify('New lab created');
   }
 
+  notifyLabDeleted() {
+    this.notify('Lab deleted');
+  }
+
   notifyLabRestored() {
     this.notify('Lab restored');
   }
