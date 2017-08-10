@@ -1,5 +1,13 @@
-md-input-container {
+ml-dialog-content {
   width: 500px;
+}
+
+md-tab-group {
+  margin-top: 1em;
+}
+
+md-input-container {
+  width: 100%;
 }
 
 textarea {
@@ -11,3 +19,8 @@ md-hint {
   width: 100%;
   text-align: right;
 }
+
+h4 {
+  margin: 0;
+}
+

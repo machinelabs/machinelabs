@@ -3,7 +3,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MdDialog, MdDialogRef, MdSnackBar, MdTabGroup, MdSidenav } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { AceEditorComponent } from '../../editor/ace-editor/ace-editor.component';
-import { EditLabDialogComponent, EditLabDialogOptions } from '../edit-lab-dialog/edit-lab-dialog.component';
+import {
+  EditLabDialogComponent,
+  EditLabDialogOptions,
+  EditLabDialogActions
+} from '../edit-lab-dialog/edit-lab-dialog.component';
 import {
   NavigationConfirmDialogComponent,
   NavigationConfirmReason
@@ -267,8 +271,10 @@ export class EditorViewComponent implements OnInit {
   edit(lab: Lab) {
     this.showEditDialog(lab)
         .subscribe(info => {
-          if (info.shouldSave) {
+          if (info.action === EditLabDialogActions.Save) {
             this.save(info.lab);
+          } else if (info.action === EditLabDialogActions.Delete) {
+            this.delete(info.lab);
           }
         });
   }
@@ -277,6 +283,12 @@ export class EditorViewComponent implements OnInit {
     this.editorService
         .saveLab(lab, msg)
         .subscribe(_ => this.initLab(lab, fetchExecutions));
+  }
+
+  delete(lab: Lab) {
+    this.editorService
+        .deleteLab(lab)
+        .subscribe(_ => this.router.navigate(['/editor']));
   }
 
   showEditDialog(lab: Lab, options: EditLabDialogOptions = {
