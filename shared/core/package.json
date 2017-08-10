@@ -9,7 +9,8 @@
   "dependencies": {
     "@reactivex/rxjs": "^5.4.2",
     "@types/node": "^8.0.19",
-    "firebase": "^4.2.0"
+    "firebase": "^4.2.0",
+    "moment": "^2.18.1"
   },
   "devDependencies": {
     "typescript": "^2.4.2"
