@@ -5,7 +5,7 @@ import { MdDialogModule, MdDialog } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 
-import { EditLabDialogComponent } from './edit-lab-dialog.component';
+import { EditLabDialogComponent, EditLabDialogActions } from './edit-lab-dialog.component';
 
 import { LabStorageService } from '../../lab-storage.service';
 import { DATABASE } from '../../app.tokens';
@@ -92,7 +92,7 @@ describe('EditLabDialogComponent', () => {
     component.form.value.name = 'foo';
     component.submit(component.form.value);
     setTimeout(_ => {
-      expect(dialogRef.close).toHaveBeenCalledWith({ lab: component.lab, shouldSave: true});
+      expect(dialogRef.close).toHaveBeenCalledWith({ lab: component.lab, action: EditLabDialogActions.Save });
       done();
     });
   });
