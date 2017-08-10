@@ -7,6 +7,7 @@ import { templates } from './config-templates/templates';
 import { deploy } from './commands/deploy';
 import { login } from './commands/login';
 import { cutCmd } from './commands/cut';
+import { ls } from './commands/ls-executions';
 
 // set process directory to root directory so that
 // we can assume all further commands are realtive to root
@@ -89,6 +90,8 @@ let argv = yargs(process.argv.slice(2))
         requiresArg: true
       },
     }, cutCmd)
+    .command('ls-executions [<options>]', 'Lists executions', {
+    }, ls)
     
     .coerce('cfg', cfg => {
       if (cfg.template && (cfg.target || cfg.env)) {
@@ -104,7 +107,7 @@ let argv = yargs(process.argv.slice(2))
       return cfg;
     })
     .check(argv => {
-      if ((argv._.includes('deploy') || argv._.includes('login')) && (!argv.cfg || !argv.cfg.target)) {
+      if ((argv._.includes('deploy') || argv._.includes('login') || argv._.includes('ls-executions')) && (!argv.cfg || !argv.cfg.target)) {
         throw new Error('Command needs `target`');
       }
       
