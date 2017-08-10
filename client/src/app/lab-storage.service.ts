@@ -33,6 +33,7 @@ export class LabStorageService {
           description: lab ? lab.description : '',
           tags: lab ? lab.tags : [],
           directory: lab ? lab.directory : [{ name: 'main.py', content: '' }, ML_YAML_FILE],
+          hidden: false,
           created_at: Date.now(),
           modified_at: Date.now()
         };
@@ -53,7 +54,7 @@ export class LabStorageService {
   }
 
   labExists(id: string) {
-    return this.getLab(id).map(lab => !!lab);
+    return this.getLab(id).map(lab => !!lab && !lab.hidden);
   }
 
   saveLab(lab: Lab): Observable<any> {
@@ -68,6 +69,12 @@ export class LabStorageService {
                   // doesn't have any tags yet.
                   tags: lab.tags || [],
                   directory: lab.directory,
+                  // We typecast `hidden` to boolean to ensure exsting labs that haven't
+                  // migrated yet (and therefore don't have a `hidden` property) don't
+                  // make this code break.
+                  //
+                  // TODO(pascal): This can be removed once all labs have been migrated.
+                  hidden: !!lab.hidden,
                   created_at: lab.created_at,
                   modified_at: firebase.database.ServerValue.TIMESTAMP
                 }));
