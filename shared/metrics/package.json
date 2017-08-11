@@ -3,16 +3,42 @@
   "version": "0.6.1+utc.2017.Aug.09-14.25.16",
   "description": "Metrics such as usage statistics",
   "main": "index.js",
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "transformIgnorePatterns": [
+      "/node_modules/(?!@machinelabs/core)/"
+    ],
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ]
+  },
   "scripts": {
-    "postinstall": "tsc"
+    "postinstall": "tsc",
+    "test": "./node_modules/jest/bin/jest.js",
+    "tslint": "tslint -c ./tslint.json src/**/*.ts",
+    "tsfix": "tslint --fix -c ./tslint.json src/**/*.ts",
+    "ci": "npm run tslint && npm run test"
   },
   "dependencies": {
     "@machinelabs/core": "file:../core",
     "@reactivex/rxjs": "^5.4.2",
     "@types/node": "^8.0.19",
-    "firebase": "^4.2.0"
+    "firebase": "^4.2.0",
+    "jest": "^20.0.4"
   },
   "devDependencies": {
+    "ts-jest": "^20.0.10",
+    "tslint": "^5.6.0",
     "typescript": "^2.4.2"
   }
 }

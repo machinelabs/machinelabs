@@ -22,6 +22,11 @@ matrix:
         - cd ./firebase/functions
         - npm install -g yarn
       script: npm run test
+    - node_js: "7"
+      before_install:
+        - cd ./shared/metrics
+        - npm install -g yarn
+      script: npm run ci
     - node_js: "6"
       before_install:
         - cd ./client
