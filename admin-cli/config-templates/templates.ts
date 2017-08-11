@@ -7,6 +7,9 @@ export const templates = {
       // just the project alias (which we can use for firebase) but
       // not for gcloud which needs to get the projectId
       googleProjectId: 'machinelabs-a73cd',
+      fbDatabaseUrl: 'https://machinelabs-a73cd.firebaseio.com',
+      fbPrivateKeyEnv: 'MACHINELABS_STAGING_FB_PRIVATE_KEY',
+      fbClientEmailEnv: 'MACHINELABS_STAGING_FB_CLIENT_EMAIL'
     },
     env: 'staging'
   },
@@ -15,6 +18,9 @@ export const templates = {
       serverName: 'hainholz',
       zone: 'us-east1-d',
       googleProjectId: 'machinelabs-production',
+      fbDatabaseUrl: 'https://machinelabs-production.firebaseio.com',
+      fbPrivateKeyEnv: 'MACHINELABS_PRODUCTION_FB_PRIVATE_KEY',
+      fbClientEmailEnv: 'MACHINELABS_PRODUCTION_FB_CLIENT_EMAIL'
     },
     env: 'production'
   }
