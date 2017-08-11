@@ -30,6 +30,12 @@ matrix:
         - cd ./shared/metrics
         - npm install -g yarn
       script: npm run ci
+    - node_js: "7"
+      stage: "@machinelabs/core"
+      before_install:
+        - cd ./shared/core
+        - npm install -g yarn
+      script: npm run ci
     - node_js: "6"
       stage: "client"
       before_install:
