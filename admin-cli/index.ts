@@ -10,7 +10,7 @@ import { onboardCommand } from './commands/onboard';
 import { exportUsersCommand } from './commands/export-users';
 import { migrateCommand } from './commands/migrate';
 import { buildSharedCommand } from './commands/build-shared';
-
+import { takedownCommand } from './commands/takedown';
 import { tryLoadTemplate } from './lib/load-template';
 
 // set process directory to root directory so that
@@ -23,7 +23,8 @@ const commands = [
   cutCommand,
   onboardCommand,
   migrateCommand,
-  buildSharedCommand
+  buildSharedCommand,
+  takedownCommand
 ];
 
 let sharedOptions = {
@@ -127,7 +128,8 @@ let argv = yargs(process.argv.slice(2))
           requiresArg: true
         }
     }, migrateCommand.run)
-
+    .command('takedown [<options>]', 'Taking down (overtime) executions', {}, takedownCommand.run)
+    
     .coerce('cfg', cfg => {
       if (cfg.template) {
         if (cfg.server || cfg.client || cfg.firebase) {
@@ -139,7 +141,6 @@ let argv = yargs(process.argv.slice(2))
       return cfg;
     })
     .check(argv => {
-
       commands.forEach(command => command.check(argv));
 
       if (!argv._.length) {
