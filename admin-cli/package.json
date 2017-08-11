@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "chalk": "^2.0.1",
+    "firebase-admin": "^5.1.0",
     "lodash.isstring": "^4.0.1",
     "moment": "^2.18.1",
     "semver": "^5.4.1",
