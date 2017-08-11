@@ -12,12 +12,16 @@
   },
   "dependencies": {
     "@machinelabs/core": "file:../shared/core",
+    "@machinelabs/metrics": "file:../shared/metrics",
+    "@machinelabs/supervisor": "file:../shared/supervisor",
     "@reactivex/rxjs": "^5.4.3",
     "chalk": "^2.0.1",
     "firebase-admin": "^5.1.0",
     "lodash.isstring": "^4.0.1",
+    "lodash.padstart": "^4.6.1",
     "moment": "^2.18.1",
     "node-pty": "^0.7.0",
+    "pretty-ms": "^3.1.0",
     "semver": "^5.4.1",
     "yargs": "^8.0.2"
   },
