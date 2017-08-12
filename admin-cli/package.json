@@ -11,13 +11,15 @@
     "tsfix": "tslint --fix -c ./tslint.json ./**/*.ts"
   },
   "dependencies": {
+    "@machinelabs/core": "file:../shared/core",
+    "@machinelabs/metrics": "file:../shared/metrics",
     "chalk": "^2.0.1",
     "firebase-admin": "^5.1.0",
     "lodash.isstring": "^4.0.1",
+    "lodash.padstart": "^4.6.1",
     "moment": "^2.18.1",
     "semver": "^5.4.1",
-    "yargs": "^8.0.2",
-    "@machinelabs/core": "file:../shared/core"
+    "yargs": "^8.0.2"
   },
   "devDependencies": {
     "@types/chalk": "^0.4.31",
