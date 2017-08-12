@@ -11,7 +11,11 @@ export function onboard (argv) {
 
     let db = createDb(fbPrivateKey, fbClientEmail, fbDatabaseUrl);
 
-    console.log(`Onboarding running. Abort at any time:`);
+    if (argv['dry-run']){
+      console.log('Dry run Onboarding. Abort at any time:')
+    } else {
+      console.log(`Onboarding running. Abort at any time:`);
+    }
 
     new ObservableDbRef(db.ref('/users'))
       .childAdded()
@@ -19,6 +23,11 @@ export function onboard (argv) {
         let val = snapshot.val();
 
         if (val && !val.plan){
+
+          if (argv['dry-run']){
+            return Observable.of(snapshot.val())
+          }
+
           return new ObservableDbRef(snapshot.ref).update({
             plan: {
               plan_id: 'beta',

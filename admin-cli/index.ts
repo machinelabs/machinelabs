@@ -91,6 +91,10 @@ let argv = yargs(process.argv.slice(2))
       },
     }, cutCmd)
     .command('onboard [<options>]', 'Onboard waiting users', {
+      'dry-run': {
+        describe: 'Does a dry run',
+        boolean: true
+      }
     }, onboard)
 
     .coerce('cfg', cfg => {
