@@ -17,6 +17,7 @@ import { LabResolver } from './lab.resolver';
 import { LabStorageService } from './lab-storage.service';
 import { LabTemplateService, InMemoryLabTemplateService } from './lab-template.service';
 import { LabExecutionService } from './lab-execution.service';
+import { LoginService } from './login.service';
 import { UserService } from 'app/user/user.service';
 import { AuthService, FirebaseAuthService, OfflineAuthService } from './auth';
 import { LocationHelper } from './util/location-helper';
@@ -28,7 +29,6 @@ import { APP_ROUTES } from './app.routes';
 import { environment } from '../environments/environment';
 import { DATABASE } from './app.tokens';
 import { DbRefBuilder } from './firebase/db-ref-builder';
-
 
 // We need to export this factory function to make AoT happy
 export function databaseFactory() {
@@ -53,6 +53,7 @@ const AnimationsModule = [environment.testing ? NoopAnimationsModule : BrowserAn
     SharedModule
   ],
   providers: [
+    LoginService,
     LabStorageService,
     LabExecutionService,
     LabResolver,
