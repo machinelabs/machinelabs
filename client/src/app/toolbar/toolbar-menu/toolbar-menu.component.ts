@@ -1,12 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { MdSnackBar } from '@angular/material';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../auth/auth.service';
-import { UserService, PLACEHOLDER_USERNAME } from '../../user/user.service';
+import { LoginService } from '../../login.service';
+import { UserService } from '../../user/user.service';
 import { User } from '../../models/user';
-
-import 'rxjs/add/operator/switchMap';
 
 @Component({
   selector: 'ml-toolbar-menu',
@@ -17,32 +14,19 @@ export class ToolbarMenuComponent implements OnInit {
 
   user: Observable<User>;
 
-  constructor(private authService: AuthService,
-              private userService: UserService,
-              private router: Router,
-              private snackBar: MdSnackBar) {}
+  constructor(private userService: UserService,
+              private loginService: LoginService) {}
 
   ngOnInit() {
     this.user = this.userService.observeUserChanges();
   }
 
   loginWithGitHub() {
-    this.authService.linkOrSignInWithGitHub()
-                    .switchMap(loginUser => this.userService.createUserIfMissing())
-                    .subscribe(user => {
-
-      if (user.displayName === PLACEHOLDER_USERNAME) {
-        this.router.navigate(['/user', user.id], { queryParams: { editing: true }});
-      }
-
-      this.snackBar.open(`Logged in as ${user.displayName}`, 'Dismiss', { duration: 3000 });
-    });
+    this.loginService.loginWithGitHub();
   }
 
   logout() {
-    this.authService.signOut().subscribe(_ => {
-      this.snackBar.open('Logged out successfully', 'Dismiss', { duration: 3000 });
-    });
+    this.loginService.logout();
   }
 }
 

@@ -12,6 +12,7 @@ import { UserService } from '../../user/user.service';
 import { DATABASE } from '../../app.tokens';
 import { FirebaseMock } from '../../../test-helper/firebase-mock';
 import { DbRefBuilder } from '../../firebase/db-ref-builder';
+import { LoginService } from '../../../app/login.service';
 
 let authServiceStub = {
   requireAuth: () => {},
@@ -43,6 +44,7 @@ describe('ToolbarMenuComponent', () => {
         { provide: AuthService, useValue: authServiceStub },
         { provide: DATABASE, useValue: fbMock.mockDb() },
         UserService,
+        LoginService,
         DbRefBuilder,
       ],
       schemas: [NO_ERRORS_SCHEMA]
