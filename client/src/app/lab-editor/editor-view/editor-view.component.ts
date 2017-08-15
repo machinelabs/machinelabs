@@ -177,7 +177,6 @@ export class EditorViewComponent implements OnInit {
         ], {
           queryParamsHandling: 'merge'
         });
-        this.activeExecutionId = info.executionId;
         this.listen(this.activeExecutionId);
       } else if (info.rejection) {
         this.editorService.removeLocalExecution(info.executionId);
@@ -186,6 +185,7 @@ export class EditorViewComponent implements OnInit {
         } else {
           this.openRejectionDialog(info.rejection.reason);
         }
+        this.activeExecutionId = null;
       }
     }, e => this.editorService.removeLocalExecution(e.executionId));
 
