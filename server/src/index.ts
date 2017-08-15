@@ -34,8 +34,8 @@ dockerImageService
 
     const validationService = new ValidationService();
     validationService
-      .addRule(new HasPlanRule())
       .addRule(new NoAnonymousRule())
+      .addRule(new HasPlanRule())
       .addRule(new HasValidConfigRule())
       .addRule(new HasCreditsLeftRule())
       .addRule(new WithinConcurrencyLimit())
