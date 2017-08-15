@@ -25,7 +25,7 @@ export class UserService {
                                                       .map(snapshot => snapshot.val())
                                                       .map(existingUser => ({existingUser, user})))
                .switchMap(data => !data.existingUser || this.isDifferent(data.user, data.existingUser)
-                                    ? this.saveUser(this.mapUserToLoginUser(data.user))
+                                    ? this.saveUser(this.mapLoginUserToUser(data.user))
                                     : Observable.of(data.existingUser)
                                   );
   }
@@ -47,7 +47,7 @@ export class UserService {
     return this.userHasProviderData(loginUser) ? loginUser.providerData[0].photoURL : loginUser.photoURL;
   }
 
-  mapUserToLoginUser(fromUser: LoginUser): User {
+  mapLoginUserToUser(fromUser: LoginUser): User {
     return {
       id: fromUser.uid,
       displayName: this.getDisplayName(fromUser) || PLACEHOLDER_USERNAME,
@@ -79,7 +79,7 @@ export class UserService {
 
   observeUserChanges(): Observable<User> {
     return this.authService.requireAuth()
-                           .map(loginUser => this.mapUserToLoginUser(loginUser));
+                           .map(loginUser => this.mapLoginUserToUser(loginUser));
   }
 
   isLoggedInUser(id: string): Observable <boolean> {
