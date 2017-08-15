@@ -51,14 +51,7 @@ export class RemoteLabExecService {
     let timeout$ =  Observable.timer(timeout)
                               .switchMap(_ => Observable.throw(new TimeoutError(id, 'Timeout')));
 
-    return this.authService
-      .requireAuthOnce()
-      // Unfortunately we can't batch this. The request that sets the
-      // RateProof must come first.
-      .switchMap(login => this.db.userInvocationRateProofRef(login.uid).set({
-        timestamp: firebase.database.ServerValue.TIMESTAMP,
-        key: id
-      }).map(_ => login))
+    return this.startWithRateProof(id)
       .switchMap(login => this.db.invocationRef(id).set({
         id: id,
         user_id: login.uid,
@@ -158,20 +151,26 @@ export class RemoteLabExecService {
 
     let id = this.newInvocationId();
 
+    return this.startWithRateProof(id)
+              .switchMap(login => this.db.invocationRef(id).set({
+                id: id,
+                type: InvocationType.StopExecution,
+                data: { execution_id: executionId },
+                user_id: login.uid,
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+              })).subscribe();
+  }
+
+  private startWithRateProof(id) {
     return this.authService
       .requireAuthOnce()
+      // Unfortunately we can't batch this. The request that sets the
+      // RateProof must come first.
       .switchMap(login => this.db.userInvocationRateProofRef(login.uid).set({
         timestamp: firebase.database.ServerValue.TIMESTAMP,
         key: id
       })
       .map(_ => login))
-      .switchMap(login => this.db.invocationRef(id).set({
-        id: id,
-        type: InvocationType.StopExecution,
-        data: { execution_id: executionId },
-        user_id: login.uid,
-        timestamp: firebase.database.ServerValue.TIMESTAMP
-      })).subscribe();
   }
 
   private newInvocationId() {
