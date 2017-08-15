@@ -1,12 +1,24 @@
 <ng-container [ngSwitch]="data.rejectionReason">
-  <ng-container *ngSwitchCase="ExecutionRejectionReason.NoPlan || ExecutionRejectionReason.NoAnonymous">
-    <ml-dialog-header>Request <strong>your beta invite</strong></ml-dialog-header>
+  <ng-container *ngSwitchCase="ExecutionRejectionReason.NoAnonymous">
+    <ml-dialog-header>Login to start executions</ml-dialog-header>
     <ml-dialog-content>
-      <p>Hoppla, looks like you aren't part of our <strong>private beta</strong> yet!</p>
-      <p>Without an invite you can only view existing executions. To run your own experiments you have to request an invite.</p>
+      <p>You're just one click away from running that code!</p>
+      <p>No complicated setup, no credit cards! All you need to do is to <strong>login with your GitHub account</strong>.</p>
     </ml-dialog-content>
     <ml-dialog-cta-bar>
-      <a md-button href="http://get.machinelabs.ai" title="Request an invite for our private beta!" target="_blank"><md-icon>send</md-icon> Request invite</a>
+      <button md-button [md-dialog-close]="true" (click)="loginWithGithub()">Login with GitHub</button>
+      <button md-button [md-dialog-close]="true">No, thanks</button>
+    </ml-dialog-cta-bar>
+  </ng-container>
+  <ng-container *ngSwitchCase="ExecutionRejectionReason.NoPlan">
+    <ml-dialog-header>Wait for <strong>your beta invite</strong></ml-dialog-header>
+    <ml-dialog-content>
+      <p>Hoppla, looks like you aren't part of our <strong>private beta</strong> yet!</p>
+      <p>In order to guarantee a smooth experience for everyone, we onboard people in batches.</p>
+      <p>We'll get back to you soon. In the meantime, here's an <a href="https://machinelabs.ai/editor/r1JhQGJDb/1501670948383-rk2mAQkvZ?file=main.py" title="MNIST example">MNIST example</a> for you to play with!</p>
+    </ml-dialog-content>
+    <ml-dialog-cta-bar>
+      <button md-button [md-dialog-close]="true">Ok, I'll wait</button>
     </ml-dialog-cta-bar>
   </ng-container>
   <ng-container *ngSwitchCase="ExecutionRejectionReason.OutOfCredits">
