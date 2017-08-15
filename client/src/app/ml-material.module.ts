@@ -15,7 +15,8 @@ import {
   MdTabsModule,
   MdTooltipModule,
   MdCardModule,
-  MdExpansionModule
+  MdExpansionModule,
+  MdCheckboxModule
 } from '@angular/material';
 
 @NgModule({
@@ -35,7 +36,8 @@ import {
     MdTabsModule,
     MdTooltipModule,
     MdCardModule,
-    MdExpansionModule
+    MdExpansionModule,
+    MdCheckboxModule
   ]
 })
 export class MachineLabsMaterialModule {}
