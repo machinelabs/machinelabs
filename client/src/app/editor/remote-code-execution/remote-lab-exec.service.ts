@@ -160,6 +160,11 @@ export class RemoteLabExecService {
 
     return this.authService
       .requireAuthOnce()
+      .switchMap(login => this.db.userInvocationRateProofRef(login.uid).set({
+        timestamp: firebase.database.ServerValue.TIMESTAMP,
+        key: id
+      })
+      .map(_ => login))
       .switchMap(login => this.db.invocationRef(id).set({
         id: id,
         type: InvocationType.StopExecution,
