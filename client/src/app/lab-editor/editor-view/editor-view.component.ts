@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdDialog, MdDialogRef, MdSnackBar, MdTabGroup, MdSidenav } from '@angular/material';
+import { FormControl } from '@angular/forms';
 import { AceEditorComponent } from '../../editor/ace-editor/ace-editor.component';
 import { EditLabDialogComponent, EditLabDialogOptions } from '../edit-lab-dialog/edit-lab-dialog.component';
 import {
@@ -95,6 +96,8 @@ export class EditorViewComponent implements OnInit {
   @ViewChild('editor') editor: AceEditorComponent;
 
   TabIndex = TabIndex;
+
+  pauseModeControl = new FormControl(false);
 
   constructor (private labStorageService: LabStorageService,
                private route: ActivatedRoute,
@@ -204,7 +207,19 @@ export class EditorViewComponent implements OnInit {
     this.slimLoadingBarService.progress = INITIAL_LOADING_INDICATOR_PROGRESS;
     this.outputPanel.clear();
 
-    let wrapper = this.editorService.listenAndNotify(executionId);
+    let wrapper = this.editorService.listenAndNotify(executionId, {
+      inPauseMode: () => {
+        return this.pauseModeControl.value
+      },
+      pauseModeExecutionStartedAction: () => {
+        this.pauseModeControl.setValue(false);
+      },
+      pauseModeExecutionFinishedAction: () => {
+        this.pauseModeControl.setValue(false);
+        this.listen(executionId);
+      }
+    });
+
     this.execution = wrapper.execution;
 
     if (this.executionSubscription) {
@@ -223,7 +238,16 @@ export class EditorViewComponent implements OnInit {
       });
 
     this.output = wrapper.messages;
-    this.editorSnackbar.notifyLateExecutionUnless(wrapper.messages);
+
+    // When in pause mode and switching executions, there's no messages being emitted.
+    // That's why we want to make sure that we only show the server is not responding message,
+    // when not in pause mode.
+    this.pauseModeControl.valueChanges.take(1).subscribe(paused => {
+      if (!paused) {
+        this.editorSnackbar.notifyLateExecutionUnless(wrapper.messages);
+      }
+    });
+
     this.openExecutionList();
   }
 

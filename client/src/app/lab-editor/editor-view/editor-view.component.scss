@@ -29,6 +29,20 @@ md-sidenav-container {
   }
 }
 
+.ml-scroll-checkbox {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: transparent;
+  color: #fff;
+  padding: 1em 2em;
+  font-size: 0.9em;
+
+  ::ng-deep .mat-checkbox-frame {
+    border-color: #fff;
+  }
+}
+
 .ml-execution-metadata-no-execution-message {
   margin-top: 7em;
   margin-left: 2.5em;
