@@ -34,6 +34,11 @@ import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/skip';
 
+export interface ListenAndNotifyOptions {
+  inPauseMode: () => boolean;
+  pauseModeExecutionStartedAction?: () => void;
+  pauseModeExecutionFinishedAction?: () => void;
+}
 
 @Injectable()
 export class EditorService {
@@ -90,7 +95,7 @@ export class EditorService {
     return this.rleService.listen(executionId);
   }
 
-  listenAndNotify(executionId: string) {
+  listenAndNotify(executionId: string, options?: ListenAndNotifyOptions) {
     let wrapper = this.rleService.listen(executionId);
 
     let genSkipText = createSkipTextHelper('character');
@@ -100,7 +105,18 @@ export class EditorService {
         if (msg.kind === MessageKind.ExecutionFinished) {
           this.editorSnackbar.notifyExecutionFinished();
         }
+        if (options.inPauseMode()) {
+          if (msg.kind === MessageKind.ExecutionStarted) {
+            this.editorSnackbar.notifyExecutionStartedPauseMode().onAction()
+              .subscribe(_ => { options.pauseModeExecutionStartedAction() });
+          }
+          if (msg.kind === MessageKind.ExecutionFinished) {
+            this.editorSnackbar.notifyExecutionFinishedPauseMode().onAction()
+              .subscribe(_ => { options.pauseModeExecutionFinishedAction() });
+          }
+        }
       })
+      .filter(_ => !options.inPauseMode())
       .filter(msg => msg.kind === MessageKind.ExecutionStarted ||
           msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr)
       .scan((acc, current) => acc.length < this.outputMaxChars ?
