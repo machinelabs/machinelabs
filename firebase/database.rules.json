@@ -233,14 +233,18 @@
           ".read": "true",
           ".write": "auth.uid == 'execution-server'",
           ".indexOn": [
-            "index"
+            "index",
+            "virtual_index"
           ],
           "$mid": {
-            ".validate": "newData.hasChildren(['id', 'index', 'timestamp', 'data', 'kind'])",
+            ".validate": "newData.hasChildren(['id', 'index', 'virtual_index', 'timestamp', 'data', 'kind'])",
             "id": {
               ".validate": "newData.isString()"
             },
             "index": {
+              ".validate": "newData.isNumber()"
+            },
+            "virtual_index": {
               ".validate": "newData.isNumber()"
             },
             "timestamp": {

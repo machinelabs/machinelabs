@@ -12,6 +12,9 @@ import { Server } from './models/server';
 import { ValidationContext } from './validation/validation-context';
 import { LabConfigResolver } from './validation/resolver/lab-config-resolver';
 import { ExecutionResolver } from './validation/resolver/execution-resolver';
+import { recycleCmdFactory } from './messaging/recycle-cmd-factory';
+import { RecycleAccumulator } from './messaging/recycle-accumulator';
+import { recycle } from './messaging/recycle';
 
 const MAX_MESSAGES_COUNT = 100000;
 
@@ -97,14 +100,20 @@ export class MessagingService {
                 this.completeExecution(invocation);
               }
             })
-            .map((message, index) => Object.assign(message, { index }));
+            .mergeScan((acc: RecycleAccumulator, message: ExecutionMessage) => 
+              acc.pass(acc, message), new RecycleAccumulator(invocation.id, recycle, 7000, 6000, 5000), 1)
+            .map(val => val.message);
         }
+
+        //1000 + 5000 + 1000
+        //100 + 500 + 100
 
         // if we don't get an approval, reject it
         return Observable.of(<ExecutionMessage>{
           kind: MessageKind.ExecutionRejected,
           data: validationContext.validationResult,
-          index: 0
+          index: 0,
+          virtual_index: 0
         });
       })
       .map(message => ({ message, invocation }));
