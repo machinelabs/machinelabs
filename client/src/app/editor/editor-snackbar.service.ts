@@ -38,6 +38,17 @@ export class EditorSnackbarService {
     this.notify('Lab stopped');
   }
 
+  notifyExecutionStartedPauseMode() {
+    return this.notify('Execution started', {
+      actionLabel:  'Unpause to see output',
+      duration: 5000
+    });
+  }
+
+  notifyExecutionFinishedPauseMode() {
+    return this.notify('Execution finished', { actionLabel: 'Show output', duration: 0 });
+  }
+
   notifyExecutionFinished() {
     this.notify('Execution finished');
   }
