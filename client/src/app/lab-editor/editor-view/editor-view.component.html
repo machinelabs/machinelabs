@@ -45,6 +45,7 @@
             #outputPanel
             [value]="output | async"
             [readOnly]="true"
+            [wordWrap]="true"
             theme="terminal"
             [class.hidden]="!editorService.consoleTabActive()"
             [class.active]="editorService.consoleTabActive()"

@@ -39,6 +39,8 @@ export class AceEditorComponent implements AfterViewInit, OnChanges {
 
   @Input() undo = false;
 
+  @Input() wordWrap = false;
+
   @Input() set theme(value) {
     this._theme = ACE_EDITOR_THEME_PREFIX + value;
   }
@@ -90,6 +92,10 @@ export class AceEditorComponent implements AfterViewInit, OnChanges {
       if (changes.hlActiveLine) {
         this.editor.setHighlightActiveLine(this.hlActiveLine);
       }
+
+      if (changes.wordWrap) {
+        this.editor.setUseWrapMode(this.wordWrap);
+      }
     }
   }
 
@@ -106,6 +112,7 @@ export class AceEditorComponent implements AfterViewInit, OnChanges {
     this.editor.setShowPrintMargin(this.showPrintMargin);
 
     this.editor.getSession().setMode(this.mode);
+    this.editor.getSession().setUseWrapMode(this.wordWrap);
     this.editor.renderer.setShowGutter(this.showGutter);
 
     // if content children are used `value` might be null
