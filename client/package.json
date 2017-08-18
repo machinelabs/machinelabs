@@ -30,6 +30,7 @@
     "@types/shortid": "0.0.28",
     "@types/socket.io-client": "1.4.29",
     "ace-builds": "1.2.6",
+    "autotrack": "^2.4.1",
     "core-js": "2.4.1",
     "date-fns": "^1.28.4",
     "firebase": "3.6.4",
