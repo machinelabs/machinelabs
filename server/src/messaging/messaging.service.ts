@@ -46,13 +46,20 @@ export class MessagingService {
 
     // Invoke new processes for incoming StartExecution Invocations
     newInvocations$
-      .filter((invocation: Invocation) => invocation.type === InvocationType.StartExecution)
-      .flatMap(invocation => this.getOutputAsObservable(invocation))
-      .flatMap(data => this.handleOutput(data.message, data.invocation))
-      .subscribe(null, (error) => {
-        console.error('Message processing ended unexpectedly');;
-        console.error(error);
-      });
+    .filter((invocation: Invocation) => invocation.type === InvocationType.StartExecution)
+    .subscribe(invocation => {
+
+      this.getOutputAsObservable(invocation)
+          .flatMap(data => this.handleOutput(data.message, data.invocation))
+          .subscribe(null, (error) => {
+            console.error(`Message processing of execution ${invocation.id} ended unexpectedly`);
+            console.error(error);
+            console.log(`Stopping execution ${invocation.id} now`);
+            this.codeRunner.stop(invocation.id);
+            this.completeExecution(invocation, ExecutionStatus.Failed);
+          });
+    });
+
 
     newInvocations$
       .filter((invocation: Invocation) => invocation.type === InvocationType.StopExecution)
@@ -151,11 +158,11 @@ export class MessagingService {
       .subscribe();
   }
 
-  completeExecution(run: Invocation) {
+  completeExecution(run: Invocation, status = ExecutionStatus.Finished) {
     dbRefBuilder.executionRef(run.id)
       .update({
         finished_at: firebase.database.ServerValue.TIMESTAMP,
-        status: ExecutionStatus.Finished
+        status: status
       });
   }
 
