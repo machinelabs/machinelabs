@@ -119,9 +119,12 @@ export class EditorService {
       .filter(_ => !options.inPauseMode())
       .filter(msg => msg.kind === MessageKind.ExecutionStarted ||
           msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr)
-      .scan((acc, current) => acc.length < this.outputMaxChars ?
-          `${acc}\n${current.data}` :
-          `\n${genSkipText(this.outputMaxChars)}\n${current.data}`, '');
+      .scan((acc, current) => {
+        if (acc.length < this.outputMaxChars) {
+          return /\r|\n/.exec(<string>current.data) ? `${acc}\n${current.data}` : `${acc}${current.data}`;
+        }
+        return `\n${genSkipText(this.outputMaxChars)}\n${current.data}`;
+      }, '');
 
     return {
       execution: wrapper.execution,
