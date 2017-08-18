@@ -53,6 +53,7 @@ export class RecycleAccumulator {
               return this.config.messageRepository
                          .bulkUpdate(cmdInfo.cmd)
                          .map(() => {
+                           console.log(`Recycled message space for execution ${this.executionId}`);
                            acc.index = acc.index - this.config.deleteCount;
                            acc.message.index = acc.index;
                            return acc;
