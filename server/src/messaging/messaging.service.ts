@@ -49,7 +49,10 @@ export class MessagingService {
       .filter((invocation: Invocation) => invocation.type === InvocationType.StartExecution)
       .flatMap(invocation => this.getOutputAsObservable(invocation))
       .flatMap(data => this.handleOutput(data.message, data.invocation))
-      .subscribe();
+      .subscribe(null, (error) => {
+        console.error('Message processing ended unexpectedly');;
+        console.error(error);
+      });
 
     newInvocations$
       .filter((invocation: Invocation) => invocation.type === InvocationType.StopExecution)
