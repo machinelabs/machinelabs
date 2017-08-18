@@ -1,6 +1,4 @@
 import './polyfills.ts';
-import 'autotrack';
-import 'autotrack/lib/plugins/url-change-tracker';
 
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { enableProdMode } from '@angular/core';
