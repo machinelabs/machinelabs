@@ -51,6 +51,7 @@
             [class.active]="editorService.consoleTabActive()"
             mode="sh"></ml-ace-editor>
             <div class="ml-scroll-checkbox">
+              <button md-button (click)="scrollToBottom()"><md-icon>keyboard_arrow_down</md-icon> Scroll to bottom</button>
               <md-checkbox [formControl]="pauseModeControl">Pause output</md-checkbox>
             </div>
         </ml-editor-layout-panel>
