@@ -39,6 +39,7 @@
     "node_modules": "rm -rf ./node_modules && yarn install",
     "build": "node ./build/build.js",
     "test": "./node_modules/jest/bin/jest.js",
+    "debug-test": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand",
     "tslint": "tslint -c ./tslint.json src/**/*.ts",
     "tsfix": "tslint --fix -c ./tslint.json src/**/*.ts",
     "ci": "node ./build/build.js --env=staging && npm run tslint && npm run test"
