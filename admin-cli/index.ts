@@ -7,6 +7,7 @@ import { deploy } from './commands/deploy';
 import { login } from './commands/login';
 import { cutCmd } from './commands/cut';
 import { onboard } from './commands/onboard';
+import { migrate } from './commands/migrate';
 
 import { tryLoadTemplate } from './lib/load-template';
 
@@ -97,6 +98,19 @@ let argv = yargs(process.argv.slice(2))
         boolean: true
       }
     }, onboard)
+    .command(
+      'migrate [<options>]',
+      `Migrates database with a migration file that contains a function
+      with a reference to a firebase database to perform operations for
+      migrations.`, {
+        'file': {
+          describe: `Path to migration file that contains a function
+            with a reference to a firebase database to perform database
+            operations for migrations.`,
+          type: 'string',
+          requiresArg: true
+        }
+    }, migrate)
 
     .coerce('cfg', cfg => {
       if (cfg.template) {
@@ -109,7 +123,7 @@ let argv = yargs(process.argv.slice(2))
       return cfg;
     })
     .check(argv => {
-      if ((argv._.includes('deploy') || argv._.includes('login') || argv._.includes('onboard')) && (!argv.cfg || !argv.cfg.target)) {
+      if ((argv._.includes('deploy') || argv._.includes('login') || argv._.includes('migrate') || argv._.includes('onboard')) && (!argv.cfg || !argv.cfg.target)) {
         throw new Error('Command needs `target`');
       }
       
@@ -127,6 +141,10 @@ let argv = yargs(process.argv.slice(2))
 
       if (argv.version && usedAtLeastOnce([argv.major, argv.minor, argv.patch, argv.dev])) {
         throw new Error('`version` is mutually exclusive with `major`, `minor`, `patch` and `dev`');
+      }
+
+      if (argv._.includes('migrate') && !argv.file) {
+        throw new Error('Please specify path to migration file using `file` option.');
       }
 
       if (!argv._.length) {
