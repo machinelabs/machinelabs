@@ -3,11 +3,12 @@
 import * as chalk from 'chalk';
 import * as yargs from 'yargs';
 
-import { templates } from './config-templates/templates';
 import { deploy } from './commands/deploy';
 import { login } from './commands/login';
 import { cutCmd } from './commands/cut';
 import { onboard } from './commands/onboard';
+
+import { tryLoadTemplate } from './lib/load-template';
 
 // set process directory to root directory so that
 // we can assume all further commands are realtive to root
@@ -98,15 +99,12 @@ let argv = yargs(process.argv.slice(2))
     }, onboard)
 
     .coerce('cfg', cfg => {
-      if (cfg.template && (cfg.target || cfg.env)) {
-        throw new Error("`cfg.template` option can't be used with `cfg.target` or `cfg.env`")
-      }
-
-      if (cfg.template && templates[cfg.template]) {
-        cfg.target = templates[cfg.template].target;
-        cfg.env = templates[cfg.template].env;
-      } else if (cfg.template) {
-        throw new Error(`Can't find template ${cfg.template}`);
+      if (cfg.template) {
+        if (cfg.target || cfg.env) {
+          throw new Error("`cfg.template` option can't be used with `cfg.target` or `cfg.env`")
+        }
+        const templateConfig = tryLoadTemplate(cfg.template);
+        cfg = Object.assign(cfg, templateConfig);
       }
       return cfg;
     })
