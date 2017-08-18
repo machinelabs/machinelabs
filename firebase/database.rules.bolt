@@ -89,6 +89,7 @@ type Execution {
 type ExecutionMessage {
   id: String,
   index: Number,
+  virtual_index: Number,
   timestamp: Number,
   data: Any,
   kind: String
@@ -184,7 +185,7 @@ path /executions {
 path /executions/{id}/messages {
   read() { true }
   write() { isExecutionServer() }
-  index() { ['index']}
+  index() { ['index', 'virtual_index']}
 }
 
 path /executions/{id}/messages/{mid} is ExecutionMessage {

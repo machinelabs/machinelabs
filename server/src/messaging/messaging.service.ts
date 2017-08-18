@@ -1,17 +1,18 @@
 import * as firebase from 'firebase';
-import { Crypto } from './util/crypto';
-import { environment } from './environments/environment';
-import { db, dbRefBuilder } from './ml-firebase/db';
-import { CodeRunner, ProcessStreamData } from './code-runner/code-runner';
+import { Crypto } from '../util/crypto';
+import { environment } from '../environments/environment';
+import { db, dbRefBuilder } from '../ml-firebase/db';
+import { CodeRunner, ProcessStreamData } from '../code-runner/code-runner';
 import { Observable } from '@reactivex/rxjs';
-import { Invocation, InvocationType } from './models/invocation';
-import { Execution, ExecutionStatus } from '@machinelabs/core'
-import { ExecutionMessage, MessageKind, toMessageKind } from './models/execution';
-import { ValidationService } from './validation/validation.service';
-import { Server } from './models/server';
-import { ValidationContext } from './validation/validation-context';
-import { LabConfigResolver } from './validation/resolver/lab-config-resolver';
-import { ExecutionResolver } from './validation/resolver/execution-resolver';
+import { Invocation, InvocationType } from '../models/invocation';
+import { Execution, ExecutionStatus } from '@machinelabs/core';
+import { ExecutionMessage, MessageKind, toMessageKind } from '../models/execution';
+import { ValidationService } from '../validation/validation.service';
+import { Server } from '../models/server';
+import { ValidationContext } from '../validation/validation-context';
+import { LabConfigResolver } from '../validation/resolver/lab-config-resolver';
+import { ExecutionResolver } from '../validation/resolver/execution-resolver';
+import { RecycleService } from './recycling/recycle.service';
 
 const MAX_MESSAGES_COUNT = 100000;
 
@@ -21,6 +22,7 @@ export class MessagingService {
 
   constructor(private startValidationService: ValidationService,
               private stopValidationService: ValidationService,
+              private recycleService: RecycleService,
               private codeRunner: CodeRunner) {
   }
 
@@ -54,8 +56,8 @@ export class MessagingService {
       .flatMap(invocation => this.stopValidationService.validate(invocation))
       .subscribe(validationContext => {
           let execution = validationContext.resolved.get(ExecutionResolver);
-          if (validationContext.isApproved() && execution){
-            this.codeRunner.stop(execution.id)
+          if (validationContext.isApproved() && execution) {
+            this.codeRunner.stop(execution.id);
           } else {
             console.log('Request to stop invocation was invalid');
           }
@@ -97,14 +99,15 @@ export class MessagingService {
                 this.completeExecution(invocation);
               }
             })
-            .map((message, index) => Object.assign(message, { index }));
+            .let(msgs => this.recycleService.watch(invocation.id, msgs));
         }
 
         // if we don't get an approval, reject it
         return Observable.of(<ExecutionMessage>{
           kind: MessageKind.ExecutionRejected,
           data: validationContext.validationResult,
-          index: 0
+          index: 0,
+          virtual_index: 0
         });
       })
       .map(message => ({ message, invocation }));
@@ -115,15 +118,15 @@ export class MessagingService {
       // If coincidentally this message will be the ExecutionFinished message,
       // things will still be ok because we don't change the `kind` which means
       // it gets written just fine (despite the changed data)
-      message.data = 'Maximum output capacity reached. Process keeps going but no further output is saved.'
-      return this.writeExecutionMessage(message, invocation)
-    } else if(message.index > MAX_MESSAGES_COUNT && message.kind === MessageKind.ExecutionFinished) {
+      message.data = 'Maximum output capacity reached. Process keeps going but no further output is saved.';
+      return this.writeExecutionMessage(message, invocation);
+    } else if (message.index > MAX_MESSAGES_COUNT && message.kind === MessageKind.ExecutionFinished) {
       // We always want to handle the last message of the stream no matter how high the index is
       // However, we need to adjust the index to what it really is
       message.index = MAX_MESSAGES_COUNT + 1;
       return this.writeExecutionMessage(message, invocation);
     } else if (message.index <= MAX_MESSAGES_COUNT) {
-      return this.writeExecutionMessage(message, invocation)
+      return this.writeExecutionMessage(message, invocation);
     }
 
     return  Observable.empty();

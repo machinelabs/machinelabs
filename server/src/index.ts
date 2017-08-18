@@ -1,6 +1,8 @@
 import { DummyRunner } from './code-runner/dummy-runner.js';
 import { DockerRunner } from './code-runner/docker-runner.js';
-import { MessagingService } from './messaging.service';
+import { MessagingService } from './messaging/messaging.service';
+import { RecycleService } from './messaging/recycling/recycle.service';
+import { MessageRepository } from './messaging/message-repository';
 import { ValidationService } from './validation/validation.service';
 import { UsageStatisticService } from '@machinelabs/metrics';
 import { environment } from './environments/environment';
@@ -25,6 +27,12 @@ console.log(`Starting MachineLabs server (${environment.serverId})`)
 const labConfigService = new LabConfigService;
 const dockerImageService = new DockerImageService(getDockerImages());
 const usageStatisticService = new UsageStatisticService(new CostCalculator(), <any>dbRefBuilder);
+const recycleService = new RecycleService({ 
+  messageRepository: new MessageRepository(),
+  triggerIndex: 7000,
+  tailLength: 6000,
+  deleteCount: 5000
+});
 
 dockerImageService
   .init()
@@ -49,7 +57,7 @@ dockerImageService
       .addRule(new OwnsExecutionRule())
       .addResolver(ExecutionResolver, new ExecutionResolver());
 
-    const messagingService = new MessagingService(validationService, stopValidationService, runner);
+    const messagingService = new MessagingService(validationService, stopValidationService, recycleService, runner);
     messagingService.init();
 
     console.log(`Using runner: ${runner.constructor.name}`);

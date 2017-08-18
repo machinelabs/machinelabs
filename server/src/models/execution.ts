@@ -12,6 +12,7 @@ export enum MessageKind {
 export interface ExecutionMessage {
   id?: string;
   index?: number;
+  virtual_index?: number;
   data: string | ExecutionRejectionInfo;
   kind: MessageKind;
   timestamp?: number | object;
