@@ -48,6 +48,10 @@ export class DbRefBuilder {
     return new ObservableDbRef(this.db.ref(`executions/${id}/common`));
   }
 
+  executionMessagesRef(id: string) {
+    return new ObservableDbRef(this.db.ref(`executions/${id}/messages`));
+  }
+
   userExecutionsByMonthRef(userId: string, year: number, month: ShortMonth) {
     return new ObservableDbRef(this.db.ref(`idx/user_executions/${userId}/${year}/${month}`));
   }
