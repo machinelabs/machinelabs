@@ -59,5 +59,8 @@ server/src/environments/environment.ts
 # Personal environemt files
 server/src/environments/personal
 
+# Personal admin-cli configs folder
+admin-cli/config-templates/personal
+
 # Zipped server dist package
 machinelabs-server.tar.gz
