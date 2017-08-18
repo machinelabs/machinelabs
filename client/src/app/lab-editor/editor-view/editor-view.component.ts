@@ -321,6 +321,10 @@ export class EditorViewComponent implements OnInit {
       });
   }
 
+  scrollToBottom() {
+    this.outputPanel.scrollToBottom();
+  }
+
   log(value) {
     console.log(value);
   }
