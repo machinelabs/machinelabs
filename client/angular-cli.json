@@ -25,7 +25,8 @@
         "../node_modules/ace-builds/src-noconflict/theme-github.js",
         "../node_modules/ace-builds/src-noconflict/theme-terminal.js",
         "../node_modules/ace-builds/src-noconflict/mode-python.js",
-        "../node_modules/ace-builds/src-noconflict/mode-sh.js"
+        "../node_modules/ace-builds/src-noconflict/mode-sh.js",
+        "../node_modules/autotrack/autotrack.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
