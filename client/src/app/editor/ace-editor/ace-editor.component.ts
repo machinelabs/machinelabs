@@ -138,4 +138,12 @@ export class AceEditorComponent implements AfterViewInit, OnChanges {
       this.editor.resize();
     }
   }
+
+  scrollToLine(line: number) {
+    this.editor.scrollToLine(line);
+  }
+
+  scrollToBottom() {
+    this.scrollToLine(this.editor.getSession().getValue().length);
+  }
 }
