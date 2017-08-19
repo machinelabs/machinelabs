@@ -6,6 +6,7 @@ import { MessageRepository } from '../message-repository';
 export interface RecycleConfig {
   messageRepository: MessageRepository;
   triggerIndex: number;
+  triggerIndexStep: number;
   tailLength: number;
   deleteCount: number;
 }
@@ -19,6 +20,7 @@ export class RecycleService {
         acc.pass(acc, message), new RecycleAccumulator(executionId, {
           messageRepository: this.config.messageRepository,
           triggerIndex: this.config.triggerIndex,
+          triggerIndexStep: this.config.triggerIndexStep,
           tailLength: this.config.tailLength,
           deleteCount: this.config.deleteCount
         }), 1)

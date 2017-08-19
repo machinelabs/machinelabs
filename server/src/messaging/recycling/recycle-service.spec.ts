@@ -8,6 +8,11 @@ import { RecycleService, RecycleConfig } from './recycle.service';
 
 let toSnapshot = (v:any) => ({ val: () => v})
 
+const createGetMessages = (msgs: Array<ExecutionMessage>) => (executionId: string, fromVirtualIndex:number, toVirtualIndex: number) => {
+  return Observable.of(msgs.filter(msg => msg.virtual_index >= fromVirtualIndex && msg.virtual_index <= toVirtualIndex)
+                           .map(toSnapshot));
+} 
+
 describe('createRecycleCommand()', () => {
   it('should call correct delete command', () => {
 
@@ -24,10 +29,7 @@ describe('createRecycleCommand()', () => {
       { id: '7', index: 6, virtual_index: 6, data: '', timestamp: Date.now(), kind: MessageKind.ExecutionFinished }
     ];
 
-    const getMessages = jest.fn((executionId: string, fromVirtualIndex:number, toVirtualIndex: number) => {
-      return Observable.of(msgs.filter(msg => msg.virtual_index >= fromVirtualIndex && msg.virtual_index <= toVirtualIndex)
-                               .map(toSnapshot));
-    });
+    const getMessages = jest.fn(createGetMessages(msgs));
 
     const bulkUpdate = jest.fn().mockReturnValue(Observable.of({}));
 
@@ -38,6 +40,7 @@ describe('createRecycleCommand()', () => {
     let recycleService = new RecycleService({
       messageRepository: mockRepository,
       triggerIndex: 5,
+      triggerIndexStep: 1,
       tailLength: 3,
       deleteCount: 2
     });
@@ -106,6 +109,7 @@ describe('createRecycleCommand()', () => {
     let recycleService = new RecycleService({
       messageRepository: mockRepository,
       triggerIndex: 5,
+      triggerIndexStep: 1,
       tailLength: 3,
       deleteCount: 2
     });
@@ -142,11 +146,13 @@ describe('createRecycleCommand()', () => {
 
         // There should be no update because recycling was skipped
         expect(mockRepository.bulkUpdate.mock.calls.length).toBe(0);
+        // We tried it a second time because of the increasing trigger index
+        expect(mockRepository.getMessages.mock.calls.length).toBe(2);
       });
   });
 
 
-  it('should leave index untouched if bulk update fails', () => {
+  it('should leave index untouched and retry later if bulk update fails', () => {
 
     let msgs: Array<any> = [
       { id: '1', index: 0, virtual_index: 0, data: '', timestamp: Date.now(), kind: MessageKind.ExecutionStarted },
@@ -155,22 +161,22 @@ describe('createRecycleCommand()', () => {
       { id: '4', index: 3, virtual_index: 3, data: '', timestamp: Date.now(), kind: MessageKind.Stdout },
       { id: '5', index: 4, virtual_index: 4, data: '', timestamp: Date.now(), kind: MessageKind.Stdout },
       { id: '6', index: 5, virtual_index: 5, data: '', timestamp: Date.now(), kind: MessageKind.Stdout },
+      // It should retry at the following message
       { id: '7', index: 6, virtual_index: 6, data: '', timestamp: Date.now(), kind: MessageKind.ExecutionFinished }
     ];
 
+    const getMessages = jest.fn(createGetMessages(msgs));
 
-    const getMessages = jest.fn((executionId: string, fromVirtualIndex:number, toVirtualIndex: number) => {
-      return Observable.of(msgs.filter(msg => msg.virtual_index >= fromVirtualIndex && msg.virtual_index <= toVirtualIndex)
-                               .map(toSnapshot));
-    });
-
-    const bulkUpdate = jest.fn().mockReturnValue(Observable.throw('no internet'));
+    const bulkUpdate = jest.fn()
+                            .mockReturnValueOnce(Observable.throw('no internet'))
+                            .mockReturnValueOnce(Observable.of({}));
 
     let mockRepository = { getMessages, bulkUpdate };
 
     let recycleService = new RecycleService({
       messageRepository: mockRepository,
       triggerIndex: 5,
+      triggerIndexStep: 1,
       tailLength: 3,
       deleteCount: 2
     });
@@ -202,15 +208,33 @@ describe('createRecycleCommand()', () => {
         expect(outboundMsgs[5].index).toBe(5);
         expect(outboundMsgs[5].virtual_index).toBe(5);
 
-        expect(outboundMsgs[6].index).toBe(6);
+        //This is the message that triggered the recycle at the second attempt
+        expect(outboundMsgs[6].index).toBe(4);
         expect(outboundMsgs[6].virtual_index).toBe(6);
 
-        // There should be no update because recycling was skipped
-        expect(mockRepository.bulkUpdate.mock.calls.length).toBe(1);
+        // Second call because first call fails
+        expect(mockRepository.bulkUpdate.mock.calls.length).toBe(2);
+
+        // That's the one that failed
+        expect(mockRepository.bulkUpdate.mock.calls[0])
+        .toEqual([{
+          '/executions/1/messages/3': null,
+          '/executions/1/messages/4': null,
+          '/executions/1/messages/5/index': 2
+        }]);
+
+        // That's the second call that worked
+        expect(mockRepository.bulkUpdate.mock.calls[1])
+        .toEqual([{
+          '/executions/1/messages/4': null,
+          '/executions/1/messages/5': null,
+          '/executions/1/messages/6/index': 3
+        }]);
+
       });
   });
 
-  it('should leave index untouched getMessages fails', () => {
+  it('should leave index untouched but retry later if getMessages fails', () => {
 
     let msgs: Array<any> = [
       { id: '1', index: 0, virtual_index: 0, data: '', timestamp: Date.now(), kind: MessageKind.ExecutionStarted },
@@ -223,9 +247,9 @@ describe('createRecycleCommand()', () => {
     ];
 
 
-    const getMessages = jest.fn((executionId: string, fromVirtualIndex:number, toVirtualIndex: number) => {
-      return Observable.throw('no internet');
-    });
+    //First call fails, second works
+    const getMessages = jest.fn(createGetMessages(msgs))
+                            .mockImplementationOnce(() => Observable.throw('no internet'));
 
     const bulkUpdate = jest.fn().mockReturnValue(Observable.of({}));
 
@@ -234,6 +258,7 @@ describe('createRecycleCommand()', () => {
     let recycleService = new RecycleService({
       messageRepository: mockRepository,
       triggerIndex: 5,
+      triggerIndexStep: 1,
       tailLength: 3,
       deleteCount: 2
     });
@@ -265,11 +290,18 @@ describe('createRecycleCommand()', () => {
         expect(outboundMsgs[5].index).toBe(5);
         expect(outboundMsgs[5].virtual_index).toBe(5);
 
-        expect(outboundMsgs[6].index).toBe(6);
+        expect(outboundMsgs[6].index).toBe(4);
         expect(outboundMsgs[6].virtual_index).toBe(6);
 
-        // There should be no update because recycling was skipped
-        expect(mockRepository.bulkUpdate.mock.calls.length).toBe(0);
+        // Only one call for the second attempt
+        expect(mockRepository.bulkUpdate.mock.calls.length).toBe(1);
+
+        expect(mockRepository.bulkUpdate.mock.calls[0])
+        .toEqual([{
+          '/executions/1/messages/4': null,
+          '/executions/1/messages/5': null,
+          '/executions/1/messages/6/index': 3
+        }]);
       });
   });
 
