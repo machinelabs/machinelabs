@@ -52,7 +52,9 @@ export class RecycleAccumulator {
 
             let cmdInfo = recycleCmdFactory(this.executionId, messages, this.config.deleteCount);
             if (cmdInfo.patched === expectedPatchCount && cmdInfo.removed === this.config.deleteCount) {
-      
+
+              console.log(`About to bulk update messages to recycled space for execution ${this.executionId} at ${Date.now()}`);
+
               return this.config.messageRepository
                          .bulkUpdate(cmdInfo.cmd)
                          .map(() => {
