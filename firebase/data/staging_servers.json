@@ -3,5 +3,11 @@
     "hardware_type": "economy",
     "id": "ahlem",
     "name": "Ahlem"
+  },
+  "list": {
+    "hardware_type": "economy",
+    "id": "list",
+    "name": "List",
+    "disabled": true
   }
 }
