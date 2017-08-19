@@ -304,7 +304,7 @@
     "servers": {
       ".read": "auth.uid == 'execution-server' || auth.uid == 'cloud-fn-assign-server'",
       "$id": {
-        ".validate": "newData.hasChildren(['id', 'hardware_type', 'name'])",
+        ".validate": "newData.hasChildren(['id', 'hardware_type', 'name', 'disabled'])",
         "id": {
           ".validate": "newData.isString()"
         },
@@ -313,6 +313,9 @@
         },
         "name": {
           ".validate": "newData.isString()"
+        },
+        "disabled": {
+          ".validate": "newData.isBoolean()"
         },
         "$other": {
           ".validate": "false"
