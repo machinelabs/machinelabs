@@ -57,7 +57,12 @@ export class RecycleAccumulator {
                            acc.index = acc.index - this.config.deleteCount;
                            acc.message.index = acc.index;
                            return acc;
-                         });
+                         })
+                        .catch((err) => {
+                          console.error(`Unexpected error during bulk update of message recycling for execution ${this.executionId} at ${Date.now()}`);
+                          console.error(err);
+                          return Observable.of(acc)
+                        });
             }
 
             console.error(`Skipped recycling unexpectedly at ${Date.now()}.`);

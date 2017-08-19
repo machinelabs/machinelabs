@@ -144,4 +144,70 @@ describe('createRecycleCommand()', () => {
         expect(mockRepository.bulkUpdate.mock.calls.length).toBe(0);
       });
   });
+
+
+  it('should leave index untouched if bulk update fails', () => {
+
+    let msgs: Array<any> = [
+      { id: '1', index: 0, virtual_index: 0, data: '', timestamp: Date.now(), kind: MessageKind.ExecutionStarted },
+      { id: '2', index: 1, virtual_index: 1, data: '', timestamp: Date.now(), kind: MessageKind.Stdout },
+      { id: '3', index: 2, virtual_index: 2, data: '', timestamp: Date.now(), kind: MessageKind.Stdout },
+      { id: '4', index: 3, virtual_index: 3, data: '', timestamp: Date.now(), kind: MessageKind.Stdout },
+      { id: '5', index: 4, virtual_index: 4, data: '', timestamp: Date.now(), kind: MessageKind.Stdout },
+      { id: '6', index: 5, virtual_index: 5, data: '', timestamp: Date.now(), kind: MessageKind.Stdout },
+      { id: '7', index: 6, virtual_index: 6, data: '', timestamp: Date.now(), kind: MessageKind.ExecutionFinished }
+    ];
+
+
+    const getMessages = jest.fn((executionId: string, fromVirtualIndex:number, toVirtualIndex: number) => {
+      return Observable.of(msgs.filter(msg => msg.virtual_index >= fromVirtualIndex && msg.virtual_index <= toVirtualIndex)
+                               .map(toSnapshot));
+    });
+
+    const bulkUpdate = jest.fn().mockReturnValue(Observable.throw('no internet'));
+
+    let mockRepository = { getMessages, bulkUpdate };
+
+    let recycleService = new RecycleService({
+      messageRepository: mockRepository,
+      triggerIndex: 5,
+      tailLength: 3,
+      deleteCount: 2
+    });
+
+    let outboundMsgs: Array<ExecutionMessage> = [];
+
+    return Observable
+      .from(msgs)
+      .let(msgs => recycleService.watch('1', msgs))
+      .do(val => outboundMsgs.push(val))
+      .toPromise()
+      .then(() => {
+
+        expect(outboundMsgs[0].index).toBe(0);
+        expect(outboundMsgs[0].virtual_index).toBe(0);
+
+        expect(outboundMsgs[1].index).toBe(1);
+        expect(outboundMsgs[1].virtual_index).toBe(1);
+
+        expect(outboundMsgs[2].index).toBe(2);
+        expect(outboundMsgs[2].virtual_index).toBe(2);
+
+        expect(outboundMsgs[3].index).toBe(3);
+        expect(outboundMsgs[3].virtual_index).toBe(3);
+
+        expect(outboundMsgs[4].index).toBe(4);
+        expect(outboundMsgs[4].virtual_index).toBe(4);
+
+        expect(outboundMsgs[5].index).toBe(5);
+        expect(outboundMsgs[5].virtual_index).toBe(5);
+
+        expect(outboundMsgs[6].index).toBe(6);
+        expect(outboundMsgs[6].virtual_index).toBe(6);
+
+        // There should be no update because recycling was skipped
+        expect(mockRepository.bulkUpdate.mock.calls.length).toBe(1);
+      });
+  });
+
 });
