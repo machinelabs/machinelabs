@@ -30,6 +30,7 @@ const usageStatisticService = new UsageStatisticService(new CostCalculator(), <a
 const recycleService = new RecycleService({ 
   messageRepository: new MessageRepository(),
   triggerIndex: 7000,
+  triggerIndexStep: 100,
   tailLength: 6000,
   deleteCount: 5000
 });

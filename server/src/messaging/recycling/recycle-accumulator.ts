@@ -8,9 +8,12 @@ export class RecycleAccumulator {
 
   index = 0;
   virtualIndex = 0;
+  triggerIndex = 0;
   message: ExecutionMessage = null;
 
-  constructor(private executionId: string, private config: RecycleConfig) {}
+  constructor(private executionId: string, private config: RecycleConfig) {
+    this.triggerIndex = config.triggerIndex;
+  }
 
   pass (acc: RecycleAccumulator, message: ExecutionMessage): Observable<RecycleAccumulator> {
     return this.invoke(acc.clone(), message);
@@ -35,7 +38,7 @@ export class RecycleAccumulator {
 
   private recycleOrContinue(acc: RecycleAccumulator): Observable<RecycleAccumulator> {
 
-    if (acc.index === this.config.triggerIndex) {
+    if (acc.index === acc.triggerIndex) {
 
       let fromVirtualIndex = acc.virtualIndex - this.config.tailLength;
       let toVirtualIndex = acc.virtualIndex - 1;
@@ -61,6 +64,8 @@ export class RecycleAccumulator {
                         .catch((err) => {
                           console.error(`Unexpected error during bulk update of message recycling for execution ${this.executionId} at ${Date.now()}`);
                           console.error(err);
+                          
+                          this.increaseTriggerIndex(acc);
                           return Observable.of(acc)
                         });
             }
@@ -69,12 +74,14 @@ export class RecycleAccumulator {
             console.log(`patched / expected patched: ${cmdInfo.patched} / ${expectedPatchCount}`);
             console.log(`removed / expected removed: ${cmdInfo.removed} / ${this.config.deleteCount}`);
 
+            this.increaseTriggerIndex(acc);
             return Observable.of(acc);
           })
           .catch(err => {
             console.error(`Unexpected error during 'getMessages' of message recycling for execution ${this.executionId} at ${Date.now()}`);
             console.error(err);
 
+            this.increaseTriggerIndex(acc);
             return Observable.of(acc);
           })
     }
@@ -82,12 +89,16 @@ export class RecycleAccumulator {
     return Observable.of(acc);
   }
 
+  private increaseTriggerIndex(acc: RecycleAccumulator) {
+    acc.triggerIndex = acc.triggerIndex + this.config.triggerIndexStep;
+  }
 
   clone () : RecycleAccumulator {
     let acc = new RecycleAccumulator(this.executionId, this.config);
     acc.index = this.index;
     acc.virtualIndex = this.virtualIndex;
     acc.message = this.message;
+    acc.triggerIndex = this.triggerIndex;
     return acc;
   }
 }
