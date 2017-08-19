@@ -70,7 +70,13 @@ export class RecycleAccumulator {
             console.log(`removed / expected removed: ${cmdInfo.removed} / ${this.config.deleteCount}`);
 
             return Observable.of(acc);
-          });
+          })
+          .catch(err => {
+            console.error(`Unexpected error during 'getMessages' of message recycling for execution ${this.executionId} at ${Date.now()}`);
+            console.error(err);
+
+            return Observable.of(acc);
+          })
     }
 
     return Observable.of(acc);
