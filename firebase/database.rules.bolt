@@ -127,6 +127,7 @@ type Server {
   id: String,
   hardware_type: String,
   name: String
+  disabled: Boolean
 }
 
 type RateProof {

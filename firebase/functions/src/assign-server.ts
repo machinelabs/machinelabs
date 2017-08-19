@@ -26,7 +26,7 @@ function getServerIdForHardwareType(hardwareType) {
        .once('value')
        .then(snapshot => snapshot.val())
        // pick a random server
-       .then(val => sample(toArray(val)))
+       .then(val => sample(toArray(val).filter(server => !server.disabled)))
        .then(server => server ? server.id : null)
        .then(serverId => {
          console.log(`Assigning randomly picked server ${serverId}`);
