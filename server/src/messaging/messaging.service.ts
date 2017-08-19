@@ -52,11 +52,13 @@ export class MessagingService {
       this.getOutputAsObservable(invocation)
           .flatMap(data => this.handleOutput(data.message, data.invocation))
           .subscribe(null, (error) => {
-            console.error(`Message processing of execution ${invocation.id} ended unexpectedly`);
+            console.error(`Message processing of execution ${invocation.id} ended unexpectedly at ${Date.now()}`);
             console.error(error);
             console.log(`Stopping execution ${invocation.id} now`);
             this.codeRunner.stop(invocation.id);
             this.completeExecution(invocation, ExecutionStatus.Failed);
+          }, () => {
+            console.log(`Message stream completed for execution ${invocation.id} at ${Date.now()}`);
           });
     });
 
