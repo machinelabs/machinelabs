@@ -17,13 +17,7 @@ export class RecycleService {
   watch(executionId: string, messages: Observable<ExecutionMessage>) {
     return messages
       .mergeScan((acc: RecycleAccumulator, message: ExecutionMessage) =>
-        acc.pass(acc, message), new RecycleAccumulator(executionId, {
-          messageRepository: this.config.messageRepository,
-          triggerIndex: this.config.triggerIndex,
-          triggerIndexStep: this.config.triggerIndexStep,
-          tailLength: this.config.tailLength,
-          deleteCount: this.config.deleteCount
-        }), 1)
+        acc.pass(acc, message), new RecycleAccumulator(executionId, this.config), 1)
       .map(val => val.message)
   }
 }
