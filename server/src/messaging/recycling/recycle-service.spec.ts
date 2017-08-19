@@ -8,9 +8,11 @@ import { RecycleService, RecycleConfig } from './recycle.service';
 
 let toSnapshot = (v:any) => ({ val: () => v})
 
-const createGetMessages = (msgs: Array<ExecutionMessage>) => (executionId: string, fromVirtualIndex:number, toVirtualIndex: number) => {
-  return Observable.of(msgs.filter(msg => msg.virtual_index >= fromVirtualIndex && msg.virtual_index <= toVirtualIndex)
+const createGetMessages = (msgs: Array<ExecutionMessage>, delay = 0) => (executionId: string, fromVirtualIndex:number, toVirtualIndex: number) => {
+  let msgs$ = Observable.of(msgs.filter(msg => msg.virtual_index >= fromVirtualIndex && msg.virtual_index <= toVirtualIndex)
                            .map(toSnapshot));
+
+  return delay > 0 ? msgs$.delay(delay) : msgs$;
 } 
 
 describe('createRecycleCommand()', () => {
@@ -304,5 +306,88 @@ describe('createRecycleCommand()', () => {
         }]);
       });
   });
+
+
+  it('should queue up messages during recycle phase', () => {
+
+        let msgs: Array<any> = [
+          { id: '1', index: 0, virtual_index: 0, data: '', timestamp: Date.now(), kind: MessageKind.ExecutionStarted },
+          { id: '2', index: 1, virtual_index: 1, data: '', timestamp: Date.now(), kind: MessageKind.Stdout },
+          { id: '3', index: 2, virtual_index: 2, data: '', timestamp: Date.now(), kind: MessageKind.Stdout },
+          { id: '4', index: 3, virtual_index: 3, data: '', timestamp: Date.now(), kind: MessageKind.Stdout },
+          { id: '5', index: 4, virtual_index: 4, data: '', timestamp: Date.now(), kind: MessageKind.Stdout },
+          { id: '6', index: 5, virtual_index: 5, data: '', timestamp: Date.now(), kind: MessageKind.Stdout },
+          { id: '7', index: 6, virtual_index: 6, data: '', timestamp: Date.now(), kind: MessageKind.ExecutionFinished }
+        ];
+
+        //Getting the messages takes one seconds. This is expected to make
+        //messages index > 5 queue up.
+        let getMessageDelay = 1000;
+        const getMessages = jest.fn(createGetMessages(msgs, getMessageDelay));
+
+        let bulkUpdateDelay = 1000;
+        // The bulk update takes another second to execute. We are expecting all messages
+        // index > 5 to queue up for a total of 2 seconds
+        const bulkUpdate = jest.fn().mockReturnValue(Observable.of({}).delay(bulkUpdateDelay));
+
+        let mockRepository = { getMessages, bulkUpdate };
+
+        let recycleService = new RecycleService({
+          messageRepository: mockRepository,
+          triggerIndex: 5,
+          triggerIndexStep: 1,
+          tailLength: 3,
+          deleteCount: 2
+        });
+
+        let outboundMsgs: Array<ExecutionMessage> = [];
+
+        return Observable
+          .from(msgs)
+          .let(msgs => recycleService.watch('1', msgs))
+          .do(val => {
+            // We are getting a timestamp at the moment where the messages
+            // come out of the recycleService. Therefore we can compare if
+            // messages actually come out defered.
+            val['received_at'] = Date.now();
+            outboundMsgs.push(val);
+          })
+          .toPromise()
+          .then(() => {
+            expect(outboundMsgs[0].index).toBe(0);
+            expect(outboundMsgs[0].virtual_index).toBe(0);
+
+            expect(outboundMsgs[1].index).toBe(1);
+            expect(outboundMsgs[1].virtual_index).toBe(1);
+
+            expect(outboundMsgs[2].index).toBe(2);
+            expect(outboundMsgs[2].virtual_index).toBe(2);
+
+            expect(outboundMsgs[3].index).toBe(3);
+            expect(outboundMsgs[3].virtual_index).toBe(3);
+
+            expect(outboundMsgs[4].index).toBe(4);
+            expect(outboundMsgs[4].virtual_index).toBe(4);
+
+            let preRecycleReceivedAt = outboundMsgs[4]['received_at'];
+            let expectedDelay = getMessageDelay + bulkUpdateDelay;
+            expect(outboundMsgs[5]['received_at'] - preRecycleReceivedAt).toBeGreaterThanOrEqual(expectedDelay)
+            expect(outboundMsgs[5].index).toBe(3);
+            expect(outboundMsgs[5].virtual_index).toBe(5);
+
+            expect(outboundMsgs[6]['received_at'] - preRecycleReceivedAt).toBeGreaterThanOrEqual(expectedDelay)
+            expect(outboundMsgs[6].index).toBe(4);
+            expect(outboundMsgs[6].virtual_index).toBe(6);
+
+            expect(mockRepository.bulkUpdate.mock.calls.length).toBe(1);
+
+            expect(mockRepository.bulkUpdate.mock.calls[0])
+            .toEqual([{
+              '/executions/1/messages/3': null,
+              '/executions/1/messages/4': null,
+              '/executions/1/messages/5/index': 2
+            }]);
+          });
+      });
 
 });
