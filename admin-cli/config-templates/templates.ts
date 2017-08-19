@@ -13,6 +13,20 @@ export const templates = {
     },
     env: 'staging'
   },
+  staging2: {
+    target: {
+      serverName: 'list',
+      zone: 'europe-west1-c',
+      // We can't use `machinelabs-staging` here because that is
+      // just the project alias (which we can use for firebase) but
+      // not for gcloud which needs to get the projectId
+      googleProjectId: 'machinelabs-a73cd',
+      fbDatabaseUrl: 'https://machinelabs-a73cd.firebaseio.com',
+      fbPrivateKeyEnv: 'MACHINELABS_STAGING_FB_PRIVATE_KEY',
+      fbClientEmailEnv: 'MACHINELABS_STAGING_FB_CLIENT_EMAIL'
+    },
+    env: 'staging2'
+  },
   production: {
     target: {
       serverName: 'hainholz',
