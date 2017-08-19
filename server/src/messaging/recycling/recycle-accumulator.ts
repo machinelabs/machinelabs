@@ -53,12 +53,16 @@ export class RecycleAccumulator {
               return this.config.messageRepository
                          .bulkUpdate(cmdInfo.cmd)
                          .map(() => {
-                           console.log(`Recycled message space for execution ${this.executionId}`);
+                           console.log(`Recycled message space for execution ${this.executionId} at ${Date.now()}`);
                            acc.index = acc.index - this.config.deleteCount;
                            acc.message.index = acc.index;
                            return acc;
                          });
             }
+
+            console.error(`Skipped recycling unexpectedly at ${Date.now()}.`);
+            console.log(`patched / expected patched: ${cmdInfo.patched} / ${expectedPatchCount}`);
+            console.log(`removed / expected removed: ${cmdInfo.removed} / ${this.config.deleteCount}`);
 
             return Observable.of(acc);
           });
