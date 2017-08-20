@@ -97,7 +97,10 @@ export class MessagingService {
 
           return this.codeRunner
             .run(invocation, config)
-            .do(data => console.log(`Execution ${invocation.id} messaged: ${data.str} at ${Date.now()}`))
+            .do(data => {
+              console.log(`Execution ${invocation.id} messaged at ${Date.now()}`);
+              console.log(data.str);
+            })
             .map(data => this.processStreamDataToExecutionMessage(data))
             .startWith(<ExecutionMessage>{
               kind: MessageKind.ExecutionStarted,
@@ -112,7 +115,11 @@ export class MessagingService {
                 this.completeExecution(invocation);
               }
             })
-            .let(msgs => this.recycleService.watch(invocation.id, msgs));
+            .let(msgs => this.recycleService.watch(invocation.id, msgs))
+            .do((msg: ExecutionMessage) => {
+              console.log(`Execution ${invocation.id} out of recycler at ${Date.now()}`);
+              console.log(msg.data);
+            });
         }
 
         // if we don't get an approval, reject it

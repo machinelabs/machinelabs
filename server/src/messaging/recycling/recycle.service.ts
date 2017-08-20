@@ -17,7 +17,8 @@ export class RecycleService {
   watch(executionId: string, messages: Observable<ExecutionMessage>) {
     return messages
       .mergeScan((acc: RecycleAccumulator, message: ExecutionMessage) => {
-        console.log(`Execution ${executionId}: Passing message: ${message.data} at ${Date.now()}`);
+        console.log(`Execution ${executionId}: Passing message at ${Date.now()}`);
+        console.log(message.data);
         return acc.pass(acc, message);
       }, new RecycleAccumulator(executionId, this.config), 1)
       .map(val => val.message)
