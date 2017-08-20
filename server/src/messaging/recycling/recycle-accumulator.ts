@@ -38,7 +38,11 @@ export class RecycleAccumulator {
 
   private recycleOrContinue(acc: RecycleAccumulator): Observable<RecycleAccumulator> {
 
+    console.log(`recycleOrContinue at ${Date.now()}`)
+
     if (acc.index === acc.triggerIndex) {
+
+      console.log(`Entering recycle phase at ${Date.now()}`)
 
       let fromVirtualIndex = acc.virtualIndex - this.config.tailLength;
       let toVirtualIndex = acc.virtualIndex - 1;
@@ -48,6 +52,7 @@ export class RecycleAccumulator {
       return this.config
           .messageRepository
           .getMessages(this.executionId, fromVirtualIndex, toVirtualIndex)
+          .takeUntil(Observable.timer(this.config.getMessageTimeout).switchMap(() => Observable.throw(new Error('Timeout'))))
           .flatMap(messages => {
 
             let cmdInfo = recycleCmdFactory(this.executionId, messages, this.config.deleteCount);
@@ -57,6 +62,7 @@ export class RecycleAccumulator {
 
               return this.config.messageRepository
                          .bulkUpdate(cmdInfo.cmd)
+                         .takeUntil(Observable.timer(this.config.bulkUpdateTimeout).switchMap(() => Observable.throw(new Error('Timeout'))))
                          .map(() => {
                            console.log(`Recycled message space for execution ${this.executionId} at ${Date.now()}`);
                            acc.index = acc.index - this.config.deleteCount;

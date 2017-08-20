@@ -5,6 +5,8 @@ import { MessageRepository } from '../message-repository';
 
 export interface RecycleConfig {
   messageRepository: MessageRepository;
+  getMessageTimeout: number;
+  bulkUpdateTimeout: number;
   triggerIndex: number;
   triggerIndexStep: number;
   tailLength: number;
