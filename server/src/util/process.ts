@@ -22,7 +22,15 @@ export class ProcessUtil {
 
     let closeStream = Observable.fromEvent(process, 'close').share();
 
-    return Observable.merge(stdOutStream, stdErrStream).takeUntil(closeStream);
+    let merged$ = Observable.merge(stdOutStream, stdErrStream).takeUntil(closeStream);
+
+    return Observable.create((observer:any) => {
+      let subscription = merged$.subscribe(observer);
+      return () => {
+        console.log(`Unsubscribed at ${Date.now()}`);
+        subscription.unsubscribe();
+      };
+    });
   }
 
   // TODO: Do the logging based on an env variable (e.g. !production)
