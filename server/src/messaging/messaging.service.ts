@@ -133,9 +133,6 @@ export class MessagingService {
       message.data = 'Maximum output capacity reached. Process keeps going but no further output is saved.';
       return this.writeExecutionMessage(message, invocation);
     } else if (message.index > MAX_MESSAGES_COUNT && message.kind === MessageKind.ExecutionFinished) {
-      // We always want to handle the last message of the stream no matter how high the index is
-      // However, we need to adjust the index to what it really is
-      message.index = MAX_MESSAGES_COUNT + 1;
       return this.writeExecutionMessage(message, invocation);
     } else if (message.index <= MAX_MESSAGES_COUNT) {
       return this.writeExecutionMessage(message, invocation);
