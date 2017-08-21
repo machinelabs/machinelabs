@@ -14,7 +14,7 @@ export function migrate(argv) {
 
   console.log(chalk.green(`Executing migration ${argv['file']}`));
 
-  require(file)(db).then(_ => {
+  require(file)(db, argv).then(_ => {
     console.log(chalk.green('Finished!'));
     process.exit(0);
   }, err => {
