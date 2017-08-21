@@ -97,10 +97,6 @@ export class MessagingService {
 
           return this.codeRunner
             .run(invocation, config)
-            .do(data => {
-              console.log(`Execution ${invocation.id} messaged at ${Date.now()}`);
-              console.log(data.str);
-            })
             .map(data => this.processStreamDataToExecutionMessage(data))
             .startWith(<ExecutionMessage>{
               kind: MessageKind.ExecutionStarted,
