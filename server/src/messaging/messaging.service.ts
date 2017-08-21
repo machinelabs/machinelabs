@@ -98,6 +98,7 @@ export class MessagingService {
           return this.codeRunner
             .run(invocation, config)
             .map(data => this.processStreamDataToExecutionMessage(data))
+            .throttleTime(50)
             .startWith(<ExecutionMessage>{
               kind: MessageKind.ExecutionStarted,
               data: 'Execution started... (this might take a little while)'
