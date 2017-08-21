@@ -4,7 +4,7 @@ import { CostCalculator } from '../costs/cost-calculator';
 import { UsageStatistic } from './usage-statistic';
 
 // Give everyone 72 hours per month
-const FREE_MONTHLY_COMPUTATION_SECONDS = 72 * 60 * 60;
+const FREE_MONTHLY_COMPUTATION_SECONDS = 200 * 60 * 60;
 
 export class UsageStatisticService {
 
