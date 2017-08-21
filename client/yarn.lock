@@ -35,14 +35,14 @@
   dependencies:
     tslib "^1.7.1"
 
-"@angular/cli@1.4.0-beta.1":
-  version "1.4.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@angular/cli/-/cli-1.4.0-beta.1.tgz#10f2ce9b52bc1efe581342ff5fc6452a0a15385d"
+"@angular/cli@1.4.0-beta.2":
+  version "1.4.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@angular/cli/-/cli-1.4.0-beta.2.tgz#fd0e24aeb4a2e6a0b201148a2038d81fd4334939"
   dependencies:
     "@angular-devkit/build-optimizer" "0.0.13"
     "@angular-devkit/schematics" "0.0.17"
     "@ngtools/json-schema" "1.1.0"
-    "@ngtools/webpack" "1.7.0-beta.1"
+    "@ngtools/webpack" "1.7.0-beta.2"
     "@schematics/angular" "0.0.27"
     autoprefixer "^6.5.3"
     chalk "^2.0.1"
@@ -182,9 +182,9 @@
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@ngtools/json-schema/-/json-schema-1.1.0.tgz#c3a0c544d62392acc2813a42c8a0dc6f58f86922"
 
-"@ngtools/webpack@1.7.0-beta.1":
-  version "1.7.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-1.7.0-beta.1.tgz#9dbef601930bed7aa65b40995ace75223b0af036"
+"@ngtools/webpack@1.7.0-beta.2":
+  version "1.7.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-1.7.0-beta.2.tgz#3ad985e78b235e85820f4c28f4dd4b4b75b3f75f"
   dependencies:
     enhanced-resolve "^3.1.0"
     loader-utils "^1.0.2"
