@@ -29,6 +29,7 @@ const dockerImageService = new DockerImageService(getDockerImages());
 const usageStatisticService = new UsageStatisticService(new CostCalculator(), <any>dbRefBuilder);
 const recycleService = new RecycleService({ 
   messageRepository: new MessageRepository(),
+  getMessageTimeout: 5000,
   triggerIndex: 7000,
   triggerIndexStep: 100,
   tailLength: 6000,
