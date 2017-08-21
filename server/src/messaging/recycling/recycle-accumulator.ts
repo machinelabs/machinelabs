@@ -40,6 +40,10 @@ export class RecycleAccumulator {
 
     if (acc.index === acc.triggerIndex) {
 
+      let recycleId = Date.now();
+
+      console.log(`RecycleId ${recycleId} at ${Date.now()}: Entering recycle phase`)
+
       let fromVirtualIndex = acc.virtualIndex - this.config.tailLength;
       let toVirtualIndex = acc.virtualIndex - 1;
       let expectedPatchCount = this.config.tailLength - this.config.deleteCount;
@@ -48,39 +52,42 @@ export class RecycleAccumulator {
       return this.config
           .messageRepository
           .getMessages(this.executionId, fromVirtualIndex, toVirtualIndex)
+          .takeUntil(Observable.timer(this.config.getMessageTimeout).switchMap(() => Observable.throw(new Error('Timeout'))))
           .flatMap(messages => {
 
             let cmdInfo = recycleCmdFactory(this.executionId, messages, this.config.deleteCount);
             if (cmdInfo.patched === expectedPatchCount && cmdInfo.removed === this.config.deleteCount) {
 
-              console.log(`About to bulk update messages to recycled space for execution ${this.executionId} at ${Date.now()}`);
+              console.log(`RecycleId ${recycleId} at ${Date.now()}: About to bulk update messages to recycled space for execution ${this.executionId}`);
 
-              return this.config.messageRepository
-                         .bulkUpdate(cmdInfo.cmd)
-                         .map(() => {
-                           console.log(`Recycled message space for execution ${this.executionId} at ${Date.now()}`);
-                           acc.index = acc.index - this.config.deleteCount;
-                           acc.message.index = acc.index;
-                           return acc;
-                         })
-                        .catch((err) => {
-                          console.error(`Unexpected error during bulk update of message recycling for execution ${this.executionId} at ${Date.now()}`);
-                          console.error(err);
-                          
-                          this.increaseTriggerIndex(acc);
-                          return Observable.of(acc)
-                        });
+              this.config.messageRepository
+                  .bulkUpdate(cmdInfo.cmd)
+                  .subscribe(() => {
+                    console.log(`RecycleId ${recycleId} at ${Date.now()}: Bulk update completed for execution ${this.executionId}`);
+                  }, (err) => {
+                    // Not exactly sure what we should do here. We need to take this into account for
+                    // the index somehow. But I don't know yet if we would ever run into this with the
+                    // Realtime API.
+                    console.error(`RecycleId ${recycleId} at ${Date.now()}: Unexpected error during bulk update of message recycling for execution ${this.executionId}`);
+                    console.error(err);
+                  });
+
+              console.log(`RecycleId ${recycleId} at ${Date.now()}: Sent bulk update for execution ${this.executionId}`);
+              acc.index = acc.index - this.config.deleteCount;
+              acc.message.index = acc.index;
+
+              return Observable.of(acc);
             }
 
-            console.error(`Skipped recycling unexpectedly at ${Date.now()}.`);
-            console.log(`patched / expected patched: ${cmdInfo.patched} / ${expectedPatchCount}`);
-            console.log(`removed / expected removed: ${cmdInfo.removed} / ${this.config.deleteCount}`);
+            console.error(`RecycleId ${recycleId} at ${Date.now()}: Skipped recycling unexpectedly`);
+            console.error(`patched / expected patched: ${cmdInfo.patched} / ${expectedPatchCount}`);
+            console.error(`removed / expected removed: ${cmdInfo.removed} / ${this.config.deleteCount}`);
 
             this.increaseTriggerIndex(acc);
             return Observable.of(acc);
           })
           .catch(err => {
-            console.error(`Unexpected error during 'getMessages' of message recycling for execution ${this.executionId} at ${Date.now()}`);
+            console.error(`RecycleId ${recycleId}  at ${Date.now()}: Unexpected error during 'getMessages' of message recycling for execution ${this.executionId}`);
             console.error(err);
 
             this.increaseTriggerIndex(acc);

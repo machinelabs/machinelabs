@@ -5,6 +5,7 @@ import { MessageRepository } from '../message-repository';
 
 export interface RecycleConfig {
   messageRepository: MessageRepository;
+  getMessageTimeout: number;
   triggerIndex: number;
   triggerIndexStep: number;
   tailLength: number;
@@ -16,8 +17,7 @@ export class RecycleService {
 
   watch(executionId: string, messages: Observable<ExecutionMessage>) {
     return messages
-      .mergeScan((acc: RecycleAccumulator, message: ExecutionMessage) =>
-        acc.pass(acc, message), new RecycleAccumulator(executionId, this.config), 1)
+      .mergeScan((acc: RecycleAccumulator, message: ExecutionMessage) => acc.pass(acc, message), new RecycleAccumulator(executionId, this.config), 1)
       .map(val => val.message)
   }
 }
