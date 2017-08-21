@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "declaration": true,
+    "allowJs": true,
     "lib": ["es6", "es2015", "es2016.array.include", "es2016", "dom"],
     "module": "commonjs",
     "moduleResolution": "node",
