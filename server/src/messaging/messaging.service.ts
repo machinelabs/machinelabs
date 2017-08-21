@@ -14,7 +14,7 @@ import { LabConfigResolver } from '../validation/resolver/lab-config-resolver';
 import { ExecutionResolver } from '../validation/resolver/execution-resolver';
 import { RecycleService } from './recycling/recycle.service';
 
-const MAX_MESSAGES_COUNT = 100000;
+const MAX_MESSAGES_COUNT = 10000;
 
 export class MessagingService {
 
