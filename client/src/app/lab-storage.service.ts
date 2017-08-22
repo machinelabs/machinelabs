@@ -35,7 +35,8 @@ export class LabStorageService {
           directory: lab ? lab.directory : [{ name: 'main.py', content: '' }, ML_YAML_FILE],
           hidden: false,
           created_at: Date.now(),
-          modified_at: Date.now()
+          modified_at: Date.now(),
+          fork_of: lab && (<Lab>lab).id ? (<Lab>lab).id : null
         };
       });
   }
@@ -76,7 +77,8 @@ export class LabStorageService {
                   // TODO(pascal): This can be removed once all labs have been migrated.
                   hidden: !!lab.hidden,
                   created_at: lab.created_at,
-                  modified_at: firebase.database.ServerValue.TIMESTAMP
+                  modified_at: firebase.database.ServerValue.TIMESTAMP,
+                  fork_of: lab.fork_of
                 }));
   }
 
