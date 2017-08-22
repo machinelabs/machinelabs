@@ -22,7 +22,8 @@ let lab: Lab = {
     }
   ],
   created_at: Date.now(),
-  modified_at: Date.now()
+  modified_at: Date.now(),
+  hidden: false
 };
 
 let labWithPascalCase: Lab = {
@@ -39,7 +40,8 @@ let labWithPascalCase: Lab = {
     }
   ],
   created_at: Date.now(),
-  modified_at: Date.now()
+  modified_at: Date.now(),
+  hidden: false
 };
 
 let labWithInvalidConfig: Lab = {
@@ -56,7 +58,8 @@ let labWithInvalidConfig: Lab = {
     }
   ],
   created_at: Date.now(),
-  modified_at: Date.now()
+  modified_at: Date.now(),
+  hidden: false
 };
 
 let labWithoutConfig: Lab = {
@@ -68,7 +71,8 @@ let labWithoutConfig: Lab = {
   has_cached_run: false,
   directory: [],
   created_at: Date.now(),
-  modified_at: Date.now()
+  modified_at: Date.now(),
+  hidden: false
 };
 
 let svc: LabConfigService;

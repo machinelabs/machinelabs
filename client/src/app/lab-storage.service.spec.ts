@@ -19,7 +19,8 @@ let testLab = {
   directory: [],
   has_cached_run: false,
   created_at: Date.now(),
-  modified_at: Date.now()
+  modified_at: Date.now(),
+  hidden: false
 };
 
 let authServiceStub = {
