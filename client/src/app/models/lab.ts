@@ -21,4 +21,5 @@ export interface Lab extends LabTemplate {
   created_at: number;
   modified_at: number;
   hidden: boolean;
+  fork_of?: string;
 }
