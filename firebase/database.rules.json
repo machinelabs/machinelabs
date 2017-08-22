@@ -101,6 +101,9 @@
           "modified_at": {
             ".validate": "newData.isNumber()"
           },
+          "fork_of": {
+            ".validate": "newData.isString()"
+          },
           "$other": {
             ".validate": "false"
           },

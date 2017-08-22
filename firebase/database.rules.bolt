@@ -35,7 +35,8 @@ type Lab {
   directory: File[],
   hidden: Boolean,
   created_at: Number,
-  modified_at: Number
+  modified_at: Number,
+  fork_of: String | Null
 }
 
 type File {
