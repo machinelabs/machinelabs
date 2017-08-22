@@ -4,7 +4,7 @@ import { LabTemplate } from './models/lab';
 import { LAB_TEMPLATES } from './data/lab-templates';
 
 export const BLANK_LAB_TPL_ID = 'blank';
-export const DEFAULT_LAB_TPL_ID = 'xor';
+export const DEFAULT_LAB_TPL_ID = 'mnist';
 
 import 'rxjs/add/observable/of';
 
