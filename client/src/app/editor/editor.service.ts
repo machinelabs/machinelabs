@@ -105,7 +105,7 @@ export class EditorService {
         if (msg.kind === MessageKind.ExecutionFinished) {
           this.editorSnackbar.notifyExecutionFinished();
         }
-        if (options.inPauseMode()) {
+        if (options && options.inPauseMode()) {
           if (msg.kind === MessageKind.ExecutionStarted) {
             this.editorSnackbar.notifyExecutionStartedPauseMode().onAction()
               .subscribe(_ => { options.pauseModeExecutionStartedAction() });
@@ -116,7 +116,7 @@ export class EditorService {
           }
         }
       })
-      .filter(_ => !options.inPauseMode())
+      .filter(_ => !options || !options.inPauseMode())
       .filter(msg => msg.kind === MessageKind.ExecutionStarted ||
           msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr)
       .scan((acc, current) => {
