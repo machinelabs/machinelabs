@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { MdSnackBar } from '@angular/material';
 import { Lab } from './models/lab';
 import { LabStorageService } from './lab-storage.service';
 import { Observable } from 'rxjs/Observable';
@@ -11,7 +12,10 @@ import 'rxjs/add/operator/switchMap';
 @Injectable()
 export class LabResolver implements Resolve<Lab> {
 
-  constructor(private labStorageService: LabStorageService) {
+  constructor(
+    private labStorageService: LabStorageService,
+    private router: Router,
+    private snackBar: MdSnackBar) {
 
   }
 
@@ -21,7 +25,14 @@ export class LabResolver implements Resolve<Lab> {
       // a new empty lab if no lab with the given id exists.
       return this.labStorageService
                   .getLab(route.paramMap.get('id'))
-                  .switchMap(lab => lab ? Observable.of(lab) : this.labStorageService.createLab());
+                  .do(lab => {
+                    if (!lab || lab.hidden) {
+                      this.snackBar.open('This lab doesn\'t exist anymore', 'Dismiss', {
+                        duration: 3000
+                      });
+                      this.router.navigate(['/editor']);
+                    }
+                  });
     }
 
     // If a template id is specified, create a lab from that template,
