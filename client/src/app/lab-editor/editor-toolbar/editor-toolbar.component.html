@@ -16,6 +16,10 @@
 
       <ng-template #userInfo>
         <span class="ml-toolbar-user-info">
+          <ng-container *ngIf="forkedLab && forkOwner">
+            forked from <a title="Go to fork" [routerLink]="['/editor', forkedLab.id]">{{forkOwner.displayName + '/' + forkedLab.name | words: 10}}</a>
+          </ng-container>
+
           <ng-container *ngIf="(labOwner | async); else anonymousUser; let user;">
             by <img src="{{user.photoUrl}}" alt="User profile picture"> <a title="{{user.displayName}}'s profile" [routerLink]="['/user', user.id]">{{user.displayName}}</a>
           </ng-container>
@@ -23,7 +27,7 @@
       </ng-template>
 
       <ng-template #anonymousUser>
-        created by <md-icon>account_circle</md-icon> anonymous user
+        by <md-icon>account_circle</md-icon> anonymous user
       </ng-template>
     </div>
   </ml-toolbar-content>

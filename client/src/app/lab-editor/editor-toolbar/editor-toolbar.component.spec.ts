@@ -11,16 +11,14 @@ import { AuthService, dummyUser } from '../../auth/';
 import { EditorToolbarComponent, EditorToolbarActionTypes } from './editor-toolbar.component';
 import { ExecutionStatus } from '../../models/execution';
 import { UserService } from '../../user/user.service';
+import { LabStorageService } from '../../lab-storage.service';
+import { LabTemplateService, InMemoryLabTemplateService } from '../../lab-template.service';
 import { DbRefBuilder } from '../../firebase/db-ref-builder';
 import { DATABASE } from '../../app.tokens';
 import { FirebaseMock } from '../../../test-helper/firebase-mock';
 import { EditLabDialogComponent } from '../edit-lab-dialog/edit-lab-dialog.component';
-
-let authServiceStub = {
-  requireAuth: () => {},
-  requireAuthOnce: () => {},
-  linkOrSignInWithGitHub: () => {}
-};
+import { AUTH_SERVICE_STUB } from '../../../test-helper/stubs/auth.service.stubs';
+import { ROUTER_STUB, ACTIVATED_ROUTE_STUB } from '../../../test-helper/stubs/router.stubs';
 
 let testLab = {
   id: 'some-id',
@@ -33,16 +31,6 @@ let testLab = {
   created_at: Date.now(),
   modified_at: Date.now(),
   hidden: false
-};
-
-let routerStub = {
-  navigateByUrl: (str) => {}
-};
-
-let activatedRouteStub = {
-  snapShot: {},
-  params: {},
-  data: {}
 };
 
 describe('EditorToolbarComponent', () => {
@@ -64,10 +52,12 @@ describe('EditorToolbarComponent', () => {
         SharedModule
       ],
       providers: [
-        { provide: AuthService, useValue: authServiceStub },
+        { provide: AuthService, useValue: AUTH_SERVICE_STUB },
+        { provide: LabTemplateService, useClass: InMemoryLabTemplateService },
         { provide: DATABASE, useValue: fbMock.mockDb() },
-        { provide: Router, useValue: routerStub },
-        { provide: ActivatedRoute, useValue: activatedRouteStub },
+        { provide: Router, useValue: ROUTER_STUB },
+        { provide: ActivatedRoute, useValue: ACTIVATED_ROUTE_STUB },
+        LabStorageService,
         DbRefBuilder,
         UserService
       ],
