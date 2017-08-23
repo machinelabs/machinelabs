@@ -126,7 +126,7 @@ let argv = yargs(process.argv.slice(2))
       if ((argv._.includes('deploy') || argv._.includes('login') || argv._.includes('migrate') || argv._.includes('onboard')) && (!argv.cfg || !argv.cfg.target)) {
         throw new Error('Command needs `target`');
       }
-      
+
       if (argv.cfg && argv.cfg.target && (!argv.cfg.target.serverName || !argv.cfg.target.googleProjectId || !argv.cfg.target.zone)) {
         throw new Error('`target` option is incomplete');
       }
