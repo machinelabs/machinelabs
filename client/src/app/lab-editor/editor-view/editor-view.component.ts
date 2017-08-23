@@ -137,7 +137,7 @@ export class EditorViewComponent implements OnInit {
       case EditorToolbarActionTypes.Save: this.save(action.data); break;
       case EditorToolbarActionTypes.Fork: this.fork(action.data); break;
       case EditorToolbarActionTypes.ForkAndRun: this.forkAndRun(action.data); break;
-      case EditorToolbarActionTypes.Create: this.create(); break;
+      case EditorToolbarActionTypes.Create: this.create(action.data); break;
     }
   }
 
@@ -314,7 +314,7 @@ export class EditorViewComponent implements OnInit {
             });
   }
 
-  create() {
+  create(labTemplate?: string) {
     this.navigationConfirmDialogRef = this.dialog.open(NavigationConfirmDialogComponent, {
       disableClose: false,
       data: {
@@ -324,7 +324,10 @@ export class EditorViewComponent implements OnInit {
 
     this.navigationConfirmDialogRef.afterClosed()
       .filter(confirmed => confirmed)
-      .switchMap(_ => this.labStorageService.createLab())
+      .switchMap(_ => labTemplate ?
+        this.labStorageService.createLabFromTemplate(labTemplate) :
+        this.labStorageService.createLab()
+      )
       .subscribe(lab => {
         this.outputPanel.clear();
         this.goToLab();
