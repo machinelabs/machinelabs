@@ -35,8 +35,8 @@ import '../../rx/takeWhileInclusive';
 @Injectable()
 export class RemoteLabExecService {
 
-  PARTITION_SIZE = 100;
-  FULL_FETCH_TRESHOLD = 500;
+  PARTITION_SIZE = 1000;
+  FULL_FETCH_TRESHOLD = 5000;
 
   messageStreamOptimizer: MessageStreamOptimizer;
 
