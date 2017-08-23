@@ -6,5 +6,9 @@ export const environment = {
     storageBucket: 'machinelabs-a73cd.appspot.com',
     messagingSenderId: '351438476852'
   },
-  serverId: 'list'
+  serverId: 'list',
+  slackLogging: {
+    allChannel: 'log-staging-all',
+    errorChannel: 'log-staging-error'
+  }
 };

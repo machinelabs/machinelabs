@@ -21,8 +21,11 @@ import { WithinConcurrencyLimit } from './validation/rules/within-concurrency-li
 import { UsageStatisticResolver } from './validation/resolver/usage-statistic-resolver';
 import { CostCalculator } from '@machinelabs/metrics';
 import { dbRefBuilder } from './ml-firebase';
+import { replaceConsole } from './logging';
 
-console.log(`Starting MachineLabs server (${environment.serverId})`)
+replaceConsole();
+
+console.log(`Starting MachineLabs server (${environment.serverId})`);
 
 const labConfigService = new LabConfigService;
 const dockerImageService = new DockerImageService(getDockerImages());

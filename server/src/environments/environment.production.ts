@@ -7,5 +7,9 @@ export const environment = {
     storageBucket: 'machinelabs-production.appspot.com',
     messagingSenderId: '273257478502'
   },
-  serverId: 'hainholz'
+  serverId: 'hainholz',
+  slackLogging: {
+    allChannel: 'log-production-all',
+    errorChannel: 'log-production-error'
+  }
 };
