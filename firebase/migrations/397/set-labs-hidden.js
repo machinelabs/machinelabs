@@ -29,7 +29,7 @@ module.exports = function (db, argv) {
         delta[`/labs/${lab.common.id}/common/hidden`] = false;
 
         console.log(chalk.blue(`Adding lab: ${lab.common.id} to visible labs for user: ${lab.common.user_id}`));
-        delta[`/idx/user_visible_labs/${lab.common.user_id}/${lab.id}`] = true;
+        delta[`/idx/user_visible_labs/${lab.common.user_id}/${lab.common.id}`] = true;
       });
     })
     .then(_ => {
