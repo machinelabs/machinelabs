@@ -38,7 +38,7 @@ EOL
                                 'run',
                                 '--cap-drop=ALL',
                                 '--security-opt=no-new-privileges',
-                                '-i',
+                                '-t',
                                 '--read-only',
                                 '--tmpfs',
                                 `/run:rw,size=${RUN_PARTITION_SIZE},mode=${RUN_PARTITION_MODE}`,
