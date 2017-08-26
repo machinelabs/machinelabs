@@ -1,10 +1,13 @@
-import { spawn, exec } from 'child_process';
+import { exec } from 'child_process';
 import { Observable } from '@reactivex/rxjs';
 import { ProcessUtil } from '../util/process';
 import { CodeRunner, ProcessStreamData } from './code-runner';
 import { File } from '@machinelabs/core';
 import { Invocation } from '../models/invocation';
 import { PrivateLabConfiguration } from '../models/lab-configuration';
+import { trimNewLines } from '@machinelabs/core';
+import { spawnShell, spawn } from '../util/reactive-process';
+import { mute } from '../rx/mute';
 
 const RUN_PARTITION_SIZE = '5g';
 const RUN_PARTITION_MODE = '1777';
@@ -34,28 +37,30 @@ EOL
 }`)
                                 .join(` & `);
 
-    let ps = spawn(`docker`, [
-                                'run',
-                                '--cap-drop=ALL',
-                                '--security-opt=no-new-privileges',
-                                '-i',
-                                '--read-only',
-                                '--tmpfs',
-                                `/run:rw,size=${RUN_PARTITION_SIZE},mode=${RUN_PARTITION_MODE}`,
-                                '--tmpfs',
-                                `/tmp:rw,size=${TMP_PARTITION_SIZE},mode=${TMP_PARTITION_MODE}`,
-                                '--rm',
-                                `--name`,
-                                invocation.id,
-                                configuration.imageWithDigest,
-                                '/bin/bash',
-                                '-c',
-                                `cd /run && (${writeCommand}) && python main.py`
-                                ]);
-
     this.processCount++;
-    return ProcessUtil.toObservableProcess(ps)
-                      .finally(() => this.processCount--);
+
+    return spawn('docker', [
+      'create',
+      '--cap-drop=ALL',
+      '--security-opt=no-new-privileges',
+      '-t',
+      '--read-only',
+      '--tmpfs',
+      `/run:rw,size=${RUN_PARTITION_SIZE},mode=${RUN_PARTITION_MODE}`,
+      '--tmpfs',
+      `/tmp:rw,size=${TMP_PARTITION_SIZE},mode=${TMP_PARTITION_MODE}`,
+      `--name`,
+      invocation.id,
+      configuration.imageWithDigest,
+      '/bin/bash'
+    ])
+    .map(msg => trimNewLines(msg.str))
+    .flatMap(containerId =>
+      spawnShell(`docker start ${containerId}`).let(mute)
+          .concat(spawn('docker', ['exec', containerId, '/bin/bash', '-c', `cd /run && (${writeCommand}) && python main.py`]))
+          .concat(spawnShell(`docker rm -f ${containerId}`).let(mute))
+    )
+    .finally(() => this.processCount--);
   }
 
   stop (id: string, attempt = 0) {
