@@ -1,12 +1,7 @@
 import { Observable } from '@reactivex/rxjs';
 import { Invocation } from '../models/invocation';
 import { PrivateLabConfiguration } from '../models/lab-configuration';
-
-export interface ProcessStreamData {
-  origin: string;
-  raw: any;
-  str: string;
-}
+import { ProcessStreamData } from '@machinelabs/core';
 
 export interface CodeRunner {
   run (invocation: Invocation, configuration: PrivateLabConfiguration): Observable<ProcessStreamData>;

@@ -1,6 +1,5 @@
 import { Observable } from '@reactivex/rxjs';
-import { spawnShell } from './reactive-process';
-import { trimNewLines } from '@machinelabs/core';
+import { trimNewLines, spawnShell } from '@machinelabs/core';
 
 const spawnOptions = { stdio: 'pipe' };
 

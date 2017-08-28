@@ -1,12 +1,10 @@
 import { exec } from 'child_process';
 import { Observable } from '@reactivex/rxjs';
-import { ProcessUtil } from '../util/process';
-import { CodeRunner, ProcessStreamData } from './code-runner';
+import { CodeRunner } from './code-runner';
 import { File } from '@machinelabs/core';
 import { Invocation } from '../models/invocation';
 import { PrivateLabConfiguration } from '../models/lab-configuration';
-import { trimNewLines } from '@machinelabs/core';
-import { spawnShell, spawn } from '../util/reactive-process';
+import { trimNewLines, spawnShell, spawn, ProcessStreamData, stdoutMsg } from '@machinelabs/core';
 import { mute } from '../rx/mute';
 import { getAccessToken } from '../util/gcloud';
 import { environment } from '../environments/environment';
@@ -112,9 +110,10 @@ EOL
 
   private handleUpload (execution: string, containerId: string) {
     return getAccessToken()
+            // tslint:disable-next-line
             .flatMap(token => spawn('docker', ['exec', containerId, '/bin/bash', '-c', `cd /run/outputs && find . -maxdepth 1 -type f -printf "%f\n" | xargs -I{} curl -v --upload-file {} -H "Authorization: Bearer ${token}" https://storage.googleapis.com/${environment.firebaseConfig.storageBucket}/executions/${execution}/outputs/{}`]))
             .let(mute)
-            .startWith({ origin: 'stdout', str: 'Uploading files...hold tight\r\n'});
+            .startWith(stdoutMsg('Uploading files...hold tight\r\n'));
   }
 
 }
