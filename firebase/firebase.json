@@ -4,5 +4,8 @@
   },
   "functions": {
     "source": "functions/dist"
+  },
+  "storage": {
+    "rules": "storage.rules"
   }
 }
