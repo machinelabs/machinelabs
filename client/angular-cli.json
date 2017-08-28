@@ -18,14 +18,15 @@
       "prefix": "ml",
       "mobile": false,
       "styles": [
-        "styles.scss"
+        "styles.scss",
+        "../node_modules/xterm/dist/xterm.css"
       ],
       "scripts": [
+        "../node_modules/xterm/dist/xterm.js",
+        "../node_modules/xterm/dist/addons/fit/fit.js",
         "../node_modules/ace-builds/src-noconflict/ace.js",
         "../node_modules/ace-builds/src-noconflict/theme-github.js",
-        "../node_modules/ace-builds/src-noconflict/theme-terminal.js",
         "../node_modules/ace-builds/src-noconflict/mode-python.js",
-        "../node_modules/ace-builds/src-noconflict/mode-sh.js",
         "../node_modules/autotrack/autotrack.js"
       ],
       "environmentSource": "environments/environment.ts",
