@@ -8,6 +8,8 @@ import { PrivateLabConfiguration } from '../models/lab-configuration';
 import { trimNewLines } from '@machinelabs/core';
 import { spawnShell, spawn } from '../util/reactive-process';
 import { mute } from '../rx/mute';
+import { getAccessToken } from '../util/gcloud';
+import { environment } from '../environments/environment';
 
 const RUN_PARTITION_SIZE = '5g';
 const RUN_PARTITION_MODE = '1777';
@@ -65,6 +67,7 @@ EOL
             '-c',
             `cd /run && (${writeCommand}) && python main.py`
           ]))
+          .concat(this.handleUpload(invocation.id, containerId))
           .concat(spawnShell(`docker rm -f ${containerId}`).let(mute))
     )
     .finally(() => this.processCount--);
@@ -107,5 +110,11 @@ EOL
     return this.processCount;
   }
 
+  private handleUpload (execution: string, containerId: string) {
+    return getAccessToken()
+            .flatMap(token => spawn('docker', ['exec', containerId, '/bin/bash', '-c', `cd /run/outputs && find . -maxdepth 1 -type f -printf "%f\n" | xargs -I{} curl -v --upload-file {} -H "Authorization: Bearer ${token}" https://storage.googleapis.com/${environment.firebaseConfig.storageBucket}/executions/${execution}/outputs/{}`]))
+            .let(mute)
+            .startWith({ origin: 'stdout', str: 'Uploading files...hold tight\r\n'});
+  }
 
 }
