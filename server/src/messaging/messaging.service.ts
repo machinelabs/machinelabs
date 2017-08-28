@@ -100,11 +100,11 @@ export class MessagingService {
             .map(data => this.processStreamDataToExecutionMessage(data))
             .startWith(<ExecutionMessage>{
               kind: MessageKind.ExecutionStarted,
-              data: '\r\nExecution started... (this might take a little while)\r\n',
+              data: '\r\nExecution started... (this might take a little while)\r\n'
             })
             .concat(Observable.of(<ExecutionMessage>{
               kind: MessageKind.ExecutionFinished,
-              data: '',
+              data: ''
             }))
             .do(msg => {
               if (msg.kind === MessageKind.ExecutionFinished) {
