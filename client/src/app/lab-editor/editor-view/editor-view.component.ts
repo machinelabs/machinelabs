@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MdDialog, MdDialogRef, MdSnackBar, MdTabGroup, MdDrawer } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { AceEditorComponent } from '../../editor/ace-editor/ace-editor.component';
+import { XtermComponent } from '../../editor/xterm/xterm.component';
 import {
   EditLabDialogComponent,
   EditLabDialogOptions,
@@ -95,7 +96,7 @@ export class EditorViewComponent implements OnInit {
 
   @ViewChild('executionMetadataSidebar') executionMetadataSidebar: MdDrawer;
 
-  @ViewChild('outputPanel') outputPanel: AceEditorComponent;
+  @ViewChild('outputPanel') outputPanel: XtermComponent;
 
   @ViewChild('editor') editor: AceEditorComponent;
 
@@ -164,7 +165,7 @@ export class EditorViewComponent implements OnInit {
 
   run(lab: Lab) {
 
-    this.outputPanel.clear();
+    this.outputPanel.reset();
     this.editorService.selectConsoleTab();
 
     this.latestLab = Object.assign({}, lab);
@@ -209,7 +210,7 @@ export class EditorViewComponent implements OnInit {
 
   listen(executionId: string) {
     this.slimLoadingBarService.progress = INITIAL_LOADING_INDICATOR_PROGRESS;
-    this.outputPanel.clear();
+    this.outputPanel.reset();
 
     let wrapper = this.editorService.listenAndNotify(executionId, {
       inPauseMode: () => {
@@ -260,7 +261,7 @@ export class EditorViewComponent implements OnInit {
       .forkLab(lab)
       .switchMap(createdLab => this.showEditDialog(createdLab, { hideCancelButton: true }))
       .subscribe(info => {
-        this.outputPanel.clear();
+        this.outputPanel.reset();
         this.activeExecutionId = null;
         // we allways need to save after forking but either the
         // version from before the dialog or the one after
@@ -329,7 +330,7 @@ export class EditorViewComponent implements OnInit {
         this.labStorageService.createLab()
       )
       .subscribe(lab => {
-        this.outputPanel.clear();
+        this.outputPanel.reset();
         this.goToLab();
         this.initLab(lab);
         this.editorSnackbar.notifyLabCreated();
@@ -374,7 +375,7 @@ export class EditorViewComponent implements OnInit {
 
   restoreLab() {
     this.editorService.selectEditorTab();
-    this.outputPanel.clear();
+    this.outputPanel.reset();
     this.activeExecutionId = null;
     this.locationHelper.updateUrl(['/editor', this.lab.id], {
       queryParamsHandling: 'merge'

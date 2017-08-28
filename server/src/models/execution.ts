@@ -16,6 +16,7 @@ export interface ExecutionMessage {
   data: string | ExecutionRejectionInfo;
   kind: MessageKind;
   timestamp?: number | object;
+  terminal_mode: boolean;
 }
 
 export enum ExecutionRejectionReason {

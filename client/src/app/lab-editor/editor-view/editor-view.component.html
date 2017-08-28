@@ -41,19 +41,15 @@
           </md-drawer-container>
         </ml-editor-layout-panel>
         <ml-editor-layout-panel [class.hidden]="!editorService.consoleTabActive()">
-          <ml-ace-editor
+          <ml-xterm
             #outputPanel
-            [value]="output | async"
-            [readOnly]="true"
-            [wordWrap]="true"
-            theme="terminal"
-            [class.hidden]="!editorService.consoleTabActive()"
-            [class.active]="editorService.consoleTabActive()"
-            mode="sh"></ml-ace-editor>
-            <div class="ml-scroll-checkbox">
-              <button md-button (click)="scrollToBottom()"><md-icon>keyboard_arrow_down</md-icon> Scroll to bottom</button>
-              <md-checkbox [formControl]="pauseModeControl">Pause output</md-checkbox>
-            </div>
+            [messages]="output"
+            [scrollback]="5000"
+          ></ml-xterm>
+          <div class="ml-scroll-checkbox">
+            <button md-button (click)="scrollToBottom()"><md-icon>keyboard_arrow_down</md-icon> Scroll to bottom</button>
+            <md-checkbox [formControl]="pauseModeControl">Pause output</md-checkbox>
+          </div>
         </ml-editor-layout-panel>
       </ml-editor-layout-panels>
       <md-drawer
