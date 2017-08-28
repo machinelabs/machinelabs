@@ -98,14 +98,13 @@ export class MessagingService {
           return this.codeRunner
             .run(invocation, config)
             .map(data => this.processStreamDataToExecutionMessage(data))
-            .throttleTime(50)
             .startWith(<ExecutionMessage>{
               kind: MessageKind.ExecutionStarted,
-              data: 'Execution started... (this might take a little while)'
+              data: '\r\nExecution started... (this might take a little while)\r\n',
             })
             .concat(Observable.of(<ExecutionMessage>{
               kind: MessageKind.ExecutionFinished,
-              data: ''
+              data: '',
             }))
             .do(msg => {
               if (msg.kind === MessageKind.ExecutionFinished) {
@@ -122,6 +121,10 @@ export class MessagingService {
           index: 0,
           virtual_index: 0
         });
+      })
+      .map(msg => {
+        msg.terminal_mode = true;
+        return msg;
       })
       .map(message => ({ message, invocation }));
   }
@@ -169,7 +172,8 @@ export class MessagingService {
   processStreamDataToExecutionMessage(data: ProcessStreamData): ExecutionMessage {
     return {
       data: data.str,
-      kind: toMessageKind(data.origin)
+      kind: toMessageKind(data.origin),
+      terminal_mode: true
     };
   }
 

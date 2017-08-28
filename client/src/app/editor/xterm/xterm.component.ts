@@ -25,7 +25,7 @@ export class XtermComponent implements OnInit, AfterViewInit, AfterViewChecked, 
 
   @Input() messages: Observable<string> = null;
 
-  @Input() cursorBlink: boolean = false;
+  @Input() cursorBlink = false;
 
   @Input() scrollback = 1000;
 

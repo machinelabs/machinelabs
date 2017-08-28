@@ -119,12 +119,10 @@ export class EditorService {
       .filter(_ => !options || !options.inPauseMode())
       .filter(msg => msg.kind === MessageKind.ExecutionStarted ||
           msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr)
-      .scan((acc, current) => {
-        if (acc.length < this.outputMaxChars) {
-          return /\r|\n/.exec(<string>current.data) ? `${acc}\n${current.data}` : `${acc}${current.data}`;
-        }
-        return `\n${genSkipText(this.outputMaxChars)}\n${current.data}`;
-      }, '');
+      // We replace newlines with carriage returns to ensure all messages start
+      // at the beginning of a new line. This needed when rendering messages in
+      // a terminal emulation, that haven't been produced by a tty emulation.
+      .map(msg => msg.terminal_mode ? <string>msg.data : (<string>msg.data).replace(/[\n]/g, '\n\r'));
 
     return {
       execution: wrapper.execution,

@@ -27,13 +27,11 @@
         </md-drawer-container>
       </ml-editor-layout-panel>
       <ml-editor-layout-panel [class.hidden]="!editorService.consoleTabActive()">
-        <ml-ace-editor
+        <ml-xterm
           #console
-          mode="sh"
-          theme="terminal"
-          [readOnly]="true"
-          [wordWrap]="true"
-          [value]="output | async"></ml-ace-editor>
+          [scrollback]="5000"
+          [messages]="output">
+        </ml-xterm>
       </ml-editor-layout-panel>
     </ml-editor-layout-panels>
   </ml-editor-layout-main>

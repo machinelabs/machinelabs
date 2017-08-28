@@ -94,7 +94,8 @@ type ExecutionMessage {
   virtual_index: Number,
   timestamp: Number,
   data: Any,
-  kind: String
+  kind: String,
+  terminal_mode: Boolean
 }
 
 type Plan {
