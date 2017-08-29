@@ -8,6 +8,7 @@ import { trimNewLines, spawnShell, spawn, ProcessStreamData, stdoutMsg } from '@
 import { mute } from '../rx/mute';
 import { getAccessToken } from '../util/gcloud';
 import { environment } from '../environments/environment';
+import { getCurlForUpload } from '../util/file-upload';
 
 const RUN_PARTITION_SIZE = '5g';
 const RUN_PARTITION_MODE = '1777';
@@ -110,10 +111,31 @@ EOL
 
   private handleUpload (invocation:Invocation, containerId: string) {
     return getAccessToken()
-            // tslint:disable-next-line
-            .flatMap(token => spawn('docker', ['exec', containerId, '/bin/bash', '-c', `cd /run/outputs && find . -maxdepth 1 -type f -printf "%f\n" | xargs -I{} curl -v -H "x-goog-meta-name:{}" -H "x-goog-meta-user_id:${invocation.user_id}" -H "x-goog-meta-execution_id:${invocation.id}" -H "x-goog-meta-type:execution_output" --upload-file {} -H "Authorization: Bearer ${token}" https://storage.googleapis.com/${environment.firebaseConfig.storageBucket}/executions/${invocation.id}/outputs/{}`]))
+            .flatMap(token => {
+              // tslint:disable-next-line
+              return spawn('docker', ['exec', containerId, '/bin/bash', '-c', `cd /run/outputs && find . -maxdepth 1 -type f -printf "%f,"`])
+                      .map(val => val.str.split(',').filter(name => name.length > 0))
+                      .flatMap(fileList => Observable.from(fileList))
+                      .map(file => this.getCurlForUpload(invocation, file, token))
+            })
+            .flatMap(cmd => spawn('docker', ['exec', containerId, '/bin/bash', '-c', `cd /run/outputs && ${cmd}`]))
             .let(mute)
             .startWith(stdoutMsg('Uploading files...hold tight\r\n'));
+  }
+
+  private getCurlForUpload(invocation: Invocation, file: string, token: string) {
+    let headers = new Map([
+      ['x-goog-meta-name', file],
+      ['x-goog-meta-user_id', invocation.user_id],
+      ['x-goog-meta-execution_id', invocation.id],
+      ['x-goog-meta-type', 'execution_upload']
+    ]);
+    
+    return getCurlForUpload(environment.firebaseConfig.storageBucket,
+                            file,
+                            `executions/${invocation.id}/outputs/${file}`,
+                            token,
+                            headers);
   }
 
 }
