@@ -57,7 +57,14 @@ EOL
     .map(msg => trimNewLines(msg.str))
     .flatMap(containerId =>
       spawnShell(`docker start ${containerId}`).let(mute)
-          .concat(spawn('docker', ['exec', containerId, '/bin/bash', '-c', `cd /run && (${writeCommand}) && python main.py`]))
+          .concat(spawn('docker', [
+            'exec',
+            '-t',
+            containerId,
+            '/bin/bash',
+            '-c',
+            `cd /run && (${writeCommand}) && python main.py`
+          ]))
           .concat(spawnShell(`docker rm -f ${containerId}`).let(mute))
     )
     .finally(() => this.processCount--);
