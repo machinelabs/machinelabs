@@ -65,7 +65,7 @@ EOL
             '-c',
             `cd /run && (${writeCommand}) && python main.py`
           ]))
-          .concat(this.handleUpload(invocation.id, containerId))
+          .concat(this.handleUpload(invocation, containerId))
           .concat(spawnShell(`docker rm -f ${containerId}`).let(mute))
     )
     .finally(() => this.processCount--);
@@ -108,10 +108,10 @@ EOL
     return this.processCount;
   }
 
-  private handleUpload (execution: string, containerId: string) {
+  private handleUpload (invocation:Invocation, containerId: string) {
     return getAccessToken()
             // tslint:disable-next-line
-            .flatMap(token => spawn('docker', ['exec', containerId, '/bin/bash', '-c', `cd /run/outputs && find . -maxdepth 1 -type f -printf "%f\n" | xargs -I{} curl -v --upload-file {} -H "Authorization: Bearer ${token}" https://storage.googleapis.com/${environment.firebaseConfig.storageBucket}/executions/${execution}/outputs/{}`]))
+            .flatMap(token => spawn('docker', ['exec', containerId, '/bin/bash', '-c', `cd /run/outputs && find . -maxdepth 1 -type f -printf "%f\n" | xargs -I{} curl -v -H "x-goog-meta-name:{}" -H "x-goog-meta-user_id:${invocation.user_id}" -H "x-goog-meta-execution_id:${invocation.id}" -H "x-goog-meta-type:execution_output" --upload-file {} -H "Authorization: Bearer ${token}" https://storage.googleapis.com/${environment.firebaseConfig.storageBucket}/executions/${invocation.id}/outputs/{}`]))
             .let(mute)
             .startWith(stdoutMsg('Uploading files...hold tight\r\n'));
   }
