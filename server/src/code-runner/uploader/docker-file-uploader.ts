@@ -4,7 +4,7 @@ import { getAccessToken } from '../../util/gcloud';
 import { mute } from '../../rx/mute';
 import { getCurlForUpload } from '../../util/file-upload';
 import { environment } from '../../environments/environment';
-import { spawn, stdoutMsg } from '@machinelabs/core';
+import { ProcessStreamData, spawn, stdoutMsg, stderrMsg, stdout } from '@machinelabs/core';
 
 class FileInfo {
   name: string;
@@ -24,17 +24,33 @@ export class DockerFileUploader {
     let visibleOutput$ = this.generateUserVisibleOutput(fileInfos$);
     let uploadFiles$ = this.uploadFiles(fileInfos$, containerId, invocation);
 
-    return uploadFiles$.let(mute).merge(visibleOutput$);
+    return uploadFiles$.merge(visibleOutput$);
   }
 
   private uploadFiles(files: Observable<FileInfo>, containerId: string, invocation: Invocation) {
     let uploadFiles$ = files.filter(fileInfo => fileInfo.sizeBytes <= this.maxFileSize)
       .take(this.maxFileCount);
 
+    let genericError = 'An error occured during the upload'
+
     return getAccessToken()
       .flatMap(token => uploadFiles$.map(fileInfo => ({ fileInfo, token })))
       .map(val => this.getCurlForUpload(invocation, val.fileInfo.name, val.token))
-      .flatMap(cmd => spawn('docker', ['exec', containerId, '/bin/bash', '-c', `cd /run/outputs && ${cmd}`]));
+      .flatMap(cmd => spawn('docker', ['exec', containerId, '/bin/bash', '-c', `cd /run/outputs && ${cmd}`]))
+      .map((val) => {
+        // For some reason stdout and stderr are swapped for the curl output (strangest thing!)
+        // We work around it by muting everything except errors with --silent --show-errors
+        // Errors will still appear on STDOUT but we know that when we make it this far that
+        // it has to be an error even though it's coming through STDOUT
+        console.error(genericError, val.str)
+        return stderrMsg(`${genericError}\r\n`)
+      })
+      // We don't want the generic error to show up n times (once per failure)
+      .distinctUntilChanged((a, b) => a.str == b.str)
+      .catch(err => {
+        console.error(`Could not get access token from gcloud`, err);
+        return stdout(`${genericError}\r\n`);
+      });
   }
 
   private getFileList(containerId: string): Observable<FileInfo> {
