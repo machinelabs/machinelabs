@@ -8,10 +8,10 @@ import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
     <ml-dialog-header>Add new file</ml-dialog-header>
     <form [formGroup]="form" (ngSubmit)="submit(form)">
       <ml-dialog-content>
-        <md-input-container>
+        <md-form-field>
           <input mdInput placeholder="File name" formControlName="filename">
           <md-hint *ngIf="!form.valid && !form.pristine">This field is required.</md-hint>
-        </md-input-container>
+        </md-form-field>
       </ml-dialog-content>
       <ml-dialog-cta-bar>
         <button md-button [disabled]="!form.valid" type="submit">Ok</button>
@@ -24,7 +24,7 @@ import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
       display: block;
       width: 500px;
     }
-    md-input-container {
+    md-form-field {
       width: 100%;
     }
     md-hint {

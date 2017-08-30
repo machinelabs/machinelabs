@@ -8,13 +8,13 @@
       <div md-tab-nav-bar class="ml-editor-view-nav-bar">
         <a routerLink="."
           queryParamsHandling="merge"
-          md-tab-link
+          mdTabLink
           (click)="selectTab(TabIndex.Editor)"
           [active]="editorService.editorTabActive()">Editor</a>
 
         <a routerLink="."
           queryParamsHandling="merge"
-          md-tab-link
+          mdTabLink
           (click)="selectTab(TabIndex.Console)"
           [active]="editorService.consoleTabActive()">Console</a>
 
@@ -23,22 +23,22 @@
     </ml-editor-layout-nav-bar>
   </ml-editor-layout-header>
   <ml-editor-layout-main>
-    <md-sidenav-container>
+    <md-drawer-container>
       <ml-editor-layout-panels>
         <ml-editor-layout-panel [class.hidden]="!editorService.editorTabActive()">
           <ml-editor-layout-panel-cta-bar>
           <button md-icon-button mdTooltip="Toogle file tree" mdTooltipPosition="right" (click)="fileTreeSidebar.toggle()"><md-icon>description</md-icon></button>
         </ml-editor-layout-panel-cta-bar>
-          <md-sidenav-container>
-            <md-sidenav mode="side" #fileTreeSidebar [opened]="true">
+          <md-drawer-container>
+            <md-drawer mode="side" #fileTreeSidebar [opened]="true">
               <ml-file-tree></ml-file-tree>
-            </md-sidenav>
+            </md-drawer>
             <ml-ace-editor
               #editor
               [(value)]="activeFile.content"
               mode="python"
               [class.active]="editorService.editorTabActive()"></ml-ace-editor>
-          </md-sidenav-container>
+          </md-drawer-container>
         </ml-editor-layout-panel>
         <ml-editor-layout-panel [class.hidden]="!editorService.consoleTabActive()">
           <ml-ace-editor
@@ -56,7 +56,7 @@
             </div>
         </ml-editor-layout-panel>
       </ml-editor-layout-panels>
-      <md-sidenav
+      <md-drawer
           (open)="sidebarToggled = true"
           (close)="sidebarToggled = false"
           mode="side"
@@ -80,8 +80,8 @@
             <p class="ml-execution-metadata-no-execution-message-text">Execute your lab and its execution data will show up here.</p>
           </div>
         </ng-template>
-      </md-sidenav>
-    </md-sidenav-container>
+      </md-drawer>
+    </md-drawer-container>
   </ml-editor-layout-main>
   <ml-editor-layout-footer>
     <ml-footer

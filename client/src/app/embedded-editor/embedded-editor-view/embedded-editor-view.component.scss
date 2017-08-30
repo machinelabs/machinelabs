@@ -1,15 +1,15 @@
-[md-tab-link] {
+[mdTabLink] {
   height: 40px;
   min-width: 100px;
   line-height: 40px;
 }
 
-md-sidenav {
+md-drawer {
   width: 350px;
   box-shadow: 0 0 8px rgba(0,0,0,.24);
 }
 
-md-sidenav-container {
+md-drawer-container {
   display: flex;
   flex: 1;
 }

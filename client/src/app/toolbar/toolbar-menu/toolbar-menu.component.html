@@ -1,5 +1,5 @@
 <ng-container *ngIf="user | async as user">
-  <button md-icon-button [md-menu-trigger-for]="menu">
+  <button md-icon-button [mdMenuTriggerFor]="menu">
     <md-icon *ngIf="user?.isAnonymous">more_vert</md-icon>
     <img *ngIf="user && user.photoUrl" [src]="user.photoUrl" alt="{{user.displayName}} profile picture" class="ml-login-avatar">
   </button>
