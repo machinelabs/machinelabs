@@ -3,14 +3,14 @@
 
 
 "@machinelabs/core@file:../shared/core":
-  version "0.6.1"
+  version "0.10.0"
   dependencies:
     "@reactivex/rxjs" "^5.4.2"
     "@types/node" "^8.0.19"
     firebase "^4.2.0"
     moment "^2.18.1"
 
-"@reactivex/rxjs@^5.4.2":
+"@reactivex/rxjs@^5.4.2", "@reactivex/rxjs@^5.4.3":
   version "5.4.3"
   resolved "https://registry.yarnpkg.com/@reactivex/rxjs/-/rxjs-5.4.3.tgz#d28f83ed19f10cf4bc9dc84db3c424788a1c541e"
   dependencies:
@@ -345,9 +345,19 @@ ms@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
 
+nan@^2.6.2:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.7.0.tgz#d95bf721ec877e08db276ed3fc6eb78f9083ad46"
+
 node-forge@0.7.1:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.7.1.tgz#9da611ea08982f4b94206b3beb4cc9665f20c300"
+
+node-pty@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/node-pty/-/node-pty-0.7.0.tgz#993038692d3a2921811a152658fc7dc211323ac2"
+  dependencies:
+    nan "^2.6.2"
 
 normalize-package-data@^2.3.2:
   version "2.4.0"

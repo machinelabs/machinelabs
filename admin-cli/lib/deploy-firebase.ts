@@ -1,16 +1,19 @@
 import * as chalk from 'chalk';
+import { Observable } from '@reactivex/rxjs';
 import { factory } from './execute';
 
 import { isRootDir} from './is-root-dir';
 import { failWith } from './fail-with';
-
-let execute = factory({displayErrors: true});
+import { stdout, spawnShell } from '@machinelabs/core';
 
 export function deployFirebase(project) {
   if (!isRootDir()) {
     failWith('Command needs to be run from root dir');
   }
 
-  console.log(chalk.green(`Deploying firebase project ${project}`));
-  execute(`(cd ./firebase/functions; firebase use ${project} && npm run deploy)`);
+  return Observable.concat(
+    stdout(chalk.green(`Deploying firebase project ${project}`)),
+    spawnShell(`(cd ./firebase/functions; firebase use ${project} && npm run deploy)`),
+    stdout(chalk.green('Firebase functions and rules successfully deployed'))
+  );
 }
