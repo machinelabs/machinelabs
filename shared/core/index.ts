@@ -6,3 +6,4 @@ export * from './models/months';
 export * from './models/lab';
 export * from './util/date';
 export * from './util/string';
+export * from './io/reactive-process/index';
