@@ -14,6 +14,7 @@ import { EditorLayoutFooterComponent } from './layout/editor-layout-footer.compo
 import { FileTreeComponent } from './file-tree/file-tree.component';
 import { FileNameDialogComponent } from './file-name-dialog/file-name-dialog.component';
 import { AceEditorComponent } from './ace-editor/ace-editor.component';
+import { XtermComponent } from './xterm/xterm.component';
 
 import { EditorService } from './editor.service';
 import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.service';
@@ -26,6 +27,7 @@ import { EditorSnackbarService } from './editor-snackbar.service';
   ],
   declarations: [
     AceEditorComponent,
+    XtermComponent,
     EditorLayoutComponent,
     EditorLayoutHeaderComponent,
     EditorLayoutNavbarComponent,
@@ -44,6 +46,7 @@ import { EditorSnackbarService } from './editor-snackbar.service';
   ],
   exports: [
     AceEditorComponent,
+    XtermComponent,
     EditorLayoutComponent,
     EditorLayoutHeaderComponent,
     EditorLayoutNavbarComponent,

@@ -52,7 +52,7 @@
     "labs": {
       "$id": {
         "common": {
-          ".validate": "newData.hasChildren(['id', 'user_id', 'name', 'description', 'created_at', 'modified_at'])",
+          ".validate": "newData.hasChildren(['id', 'user_id', 'name', 'description', 'hidden', 'created_at', 'modified_at'])",
           "id": {
             ".validate": "newData.isString()"
           },
@@ -248,7 +248,7 @@
             "virtual_index"
           ],
           "$mid": {
-            ".validate": "newData.hasChildren(['id', 'index', 'virtual_index', 'timestamp', 'data', 'kind'])",
+            ".validate": "newData.hasChildren(['id', 'index', 'virtual_index', 'timestamp', 'data', 'kind', 'terminal_mode'])",
             "id": {
               ".validate": "newData.isString()"
             },
@@ -266,6 +266,9 @@
             },
             "kind": {
               ".validate": "newData.isString()"
+            },
+            "terminal_mode": {
+              ".validate": "newData.isBoolean()"
             },
             "$other": {
               ".validate": "false"
