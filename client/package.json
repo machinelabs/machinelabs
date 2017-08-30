@@ -1,6 +1,6 @@
 {
   "name": "machinelabs-client",
-  "version": "0.10.0+utc.2017.Aug.24-12.09.21",
+  "version": "0.10.0-dev+utc.2017.Aug.30-18.11.02",
   "license": "MIT",
   "angular-cli": {},
   "scripts": {
