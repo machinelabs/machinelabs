@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MdDialog, MdDialogRef, MdSnackBar, MdTabGroup, MdSidenav } from '@angular/material';
+import { MdDialog, MdDialogRef, MdSnackBar, MdTabGroup, MdDrawer } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { AceEditorComponent } from '../../editor/ace-editor/ace-editor.component';
 import {
@@ -93,7 +93,7 @@ export class EditorViewComponent implements OnInit {
 
   sidebarToggled = false;
 
-  @ViewChild('executionMetadataSidebar') executionMetadataSidebar: MdSidenav;
+  @ViewChild('executionMetadataSidebar') executionMetadataSidebar: MdDrawer;
 
   @ViewChild('outputPanel') outputPanel: AceEditorComponent;
 

@@ -41,7 +41,7 @@
     </ng-template>
     <button md-button (click)="emitAction(EditorToolbarActionTypes.Save, lab)" *ngIf="userService.userOwnsLab(user, lab)"><md-icon>save</md-icon> Save</button>
     <button md-button (click)="emitAction(EditorToolbarActionTypes.Fork, lab)"><md-icon>share</md-icon> Fork</button>
-    <button md-button [md-menu-trigger-for]="menu"><md-icon>keyboard_arrow_down</md-icon> New</button>
+    <button md-button [mdMenuTriggerFor]="menu"><md-icon>keyboard_arrow_down</md-icon> New</button>
 
     <md-menu #menu="mdMenu" [overlapTrigger]="false" xPosition="before">
       <button md-menu-item (click)="emitAction(EditorToolbarActionTypes.Create, 'blank')">Blank Lab</button>

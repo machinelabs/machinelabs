@@ -3,20 +3,20 @@
   <ml-dialog-content>
     <div fxLayout="column">
       <p class="ml-edit-user-profile-dialog-no-name-message" *ngIf="form.get('displayName').errors?.placeholderName"><md-icon>info</md-icon> Seems like you don't have a username yet.</p>
-      <md-input-container fxFlex>
+      <md-form-field fxFlex>
         <input mdInput placeholder="Profile name" formControlName="displayName">
         <md-hint *ngIf="!form.valid && form.get('displayName').errors.required">This field is required.</md-hint>
         <md-hint *ngIf="data.showNoUsernameMessage">
 
         </md-hint>
-      </md-input-container>
-      <md-input-container fxFlex>
+      </md-form-field>
+      <md-form-field fxFlex>
         <textarea mdInput maxlength="200" placeholder="Tell us a little bit about you" formControlName="bio"></textarea>
-      </md-input-container>
+      </md-form-field>
     </div>
   </ml-dialog-content>
   <ml-dialog-cta-bar>
     <button md-button [disabled]="!form.valid" type="submit">Save</button>
-    <button md-button type="button" md-dialog-close>Cancel</button>
+    <button md-button type="button" mdDialogClose>Cancel</button>
   </ml-dialog-cta-bar>
 </form>
