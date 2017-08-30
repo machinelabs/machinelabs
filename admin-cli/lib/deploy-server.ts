@@ -1,48 +1,80 @@
 import * as chalk from 'chalk';
+import { Observable } from '@reactivex/rxjs';
+import { OutputType, stdout, spawnShell } from '@machinelabs/core';
 import { factory } from './execute';
 import * as fs from 'fs';
+import * as pty from 'node-pty';
 
 import { isRootDir } from './is-root-dir';
 import { failWith } from './fail-with';
-
-let execute = factory({displayErrors: true});
+import { processify } from './processify';
 
 export function deployServer(project, serverName, zone, env) {
   if (!isRootDir()) {
     failWith('Command needs to be run from root dir');
   }
 
-  console.log(chalk.green('Deploying server'));
-  execute(`(cd ./server && npm run node_modules && npm run build -- --env=${env})`);
+  return Observable.concat(
+    stdout(chalk.green('Deploying server')),
 
-  if (!fs.existsSync('./server/dist')) {
-    console.log(chalk.red('Dist does not exist. Aborting'));
-    process.exit(1);
-  }
+    spawnShell(`(cd ./server && npm run node_modules && npm run build -- --env=${env})`),
 
-  // With our current setup transferring the ./dist isn't enough
-  // We have to zip the entire directory (takes ages otherwise)
-  // Send it over, and then unzip it on the other end
+    processify(() => {
+      if (!fs.existsSync('./server/dist')) {
+        console.log(chalk.red('Dist does not exist. Aborting'));
+        process.exit(1);
+      }
+    }),
 
-  // zip the server directory
-  console.log(chalk.green('Zipping files for better performance'));
-  execute(`tar -zcvf machinelabs-server.tar.gz ./server`);
+    // With our current setup transferring the ./dist isn't enough
+    // We have to zip the entire directory (takes ages otherwise)
+    // Send it over, and then unzip it on the other end
 
-  // copy over
-  console.log(chalk.green('Transferring files to server'));
-  execute(`gcloud compute copy-files ./machinelabs-server.tar.gz root@${serverName}:/var/machinelabs-server.tar.gz --project "${project}" --zone "${zone}"`);
+    // zip the server directory
+    stdout(chalk.green('Zipping files for better performance')),
+    spawnShell(`tar -zcf machinelabs-server.tar.gz ./server`),
 
-  // unzip and run
-  console.log(chalk.green('Unzipping and restarting services'));
-   // tslint:disable-next-line
-  execute(`gcloud compute --project "${project}" ssh --zone "${zone}" "root@${serverName}" --command "cd /var && tar -zxvf machinelabs-server.tar.gz && rm -rf machinelabs-server && mv server machinelabs-server && pm2 restart all"`);
+    // copy over
+    stdout(chalk.green('Transferring files to server')),
+    copyServer(serverName, project, zone),
 
-  console.log(chalk.green('Cleaning up'));
+    // unzip and run
+    stdout(chalk.green('Unzipping and restarting services')),
+    // tslint:disable-next-line
+    spawnShell(`gcloud compute --project "${project}" ssh --zone "${zone}" "root@${serverName}" --command "cd /var && tar -zxf machinelabs-server.tar.gz && rm -rf machinelabs-server && mv server machinelabs-server && pm2 restart all"`),
 
-  // Cleanup
-  execute(`rm -rf ./machinelabs-server.tar.gz`);
-  console.log(chalk.green('Live'));
+    // // Cleanup
+    stdout(chalk.green('Cleaning up')),
+    spawnShell(`rm -rf ./machinelabs-server.tar.gz`),
+    stdout(chalk.green('Live'))
+  );
 }
 
+const copyServer = (serverName: string, project:string, zone:string) => {
 
+  // In order to get live progress updates we have to use a TTY.
+  // Using `stdio: inherit` (aka using the tty of the host process)
+  // messes up everything Instead we are using a fake tty and then
+  // just forward all the output as if it wasn't for a TTY.
+  // Doesn't give us the same progress updater experience as with
+  // a real TTY but better than nothing.
 
+  // There's no way to tell when the process is finished so we have to
+  // concat the command with an echo and use a unique indicator and
+  // scan for its appearance
+  let endOfProcessIndicator = 'a1c80580-1505-4555-814c-301b1c5fff98';
+
+  return Observable.defer(() => {
+    var term = pty.spawn(`/bin/bash`, ['-c', `gcloud compute copy-files ./machinelabs-server.tar.gz root@${serverName}:/var/machinelabs-server.tar.gz --project "${project}" --zone "${zone}"; echo ${endOfProcessIndicator}`], {
+      name: 'xterm-color',
+      cols: 80,
+      rows: 30,
+      cwd: process.cwd(),
+      env: process.env
+    });
+
+    return Observable.fromEvent(term, 'data')
+              .takeWhile((data:string) => !data.trim().endsWith(endOfProcessIndicator))
+              .flatMap((data:string) => stdout(data))
+  });
+}
