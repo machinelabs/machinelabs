@@ -65,6 +65,18 @@ export class EditorSnackbarService {
     return this.notify('Execution updated');
   }
 
+  notifyExecutionFailed() {
+    return this.notify('Execution failed, please try again');
+  }
+
+  notifyServerNotAvailable() {
+    return this.notify('The server doesn\'t seem to be available, please try again');
+  }
+
+  notifyExecutionRateLimitExceeded() {
+    return this.notify('Execution rate limit exceeded, slow down a little.');
+  }
+
   notifyError() {
     this.notify('Request failed, please try again');
   }
