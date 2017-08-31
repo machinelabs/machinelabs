@@ -17,6 +17,7 @@ import { RejectionDialogComponent } from '../rejection-dialog/rejection-dialog.c
 import { EditorService, TabIndex } from '../../editor/editor.service';
 import { EditorSnackbarService } from '../../editor/editor-snackbar.service';
 import { LabStorageService } from '../../lab-storage.service';
+import { UserService } from '../../user/user.service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Lab, File } from '../../models/lab';
@@ -112,6 +113,7 @@ export class EditorViewComponent implements OnInit {
                private router: Router,
                public editorService: EditorService,
                private editorSnackbar: EditorSnackbarService,
+               private userService: UserService,
                private slimLoadingBarService: SlimLoadingBarService) {
   }
 
@@ -165,47 +167,55 @@ export class EditorViewComponent implements OnInit {
   }
 
   run(lab: Lab) {
-
-    this.outputPanel.reset();
-    this.editorService.selectConsoleTab();
-
-    this.latestLab = Object.assign({}, lab);
-
-    const runInfo$ = this.editorService.executeLab(lab).share();
-
-    runInfo$.subscribe(info => {
-      this.editorService.addLocalExecution(info.executionId);
-      this.activeExecutionId = info.executionId;
-      this.openExecutionList();
-
-      if (info.persistent) {
-        this.locationHelper.updateUrl([
-          this.locationHelper.getRootUrlSegment(),
-          lab.id,
-          info.executionId
-        ], {
-          queryParamsHandling: 'merge'
-        });
-        this.listen(this.activeExecutionId);
-      } else if (info.rejection) {
-        this.editorService.removeLocalExecution(info.executionId);
-        if (info.rejection.reason === ExecutionRejectionReason.InvalidConfig) {
-          this.editorSnackbar.notifyInvalidConfig();
+    this.userService
+      .observeUserChanges()
+      .take(1)
+      .subscribe(user => {
+        if (user.isAnonymous) {
+          this.openRejectionDialog(ExecutionRejectionReason.NoAnonymous);
         } else {
-          this.openRejectionDialog(info.rejection.reason);
-        }
-        this.activeExecutionId = null;
-      }
-    }, e => {
-      this.editorService.removeLocalExecution(e.executionId);
-      if (e instanceof TimeoutError) {
-        this.editorSnackbar.notifyServerNotAvailable();
-      } else if (e instanceof RateLimitError) {
-        this.editorSnackbar.notifyExecutionRateLimitExceeded();
-      }
-    });
+          this.outputPanel.reset();
+          this.editorService.selectConsoleTab();
 
-    this.editorSnackbar.notifyLateExecutionUnless(runInfo$.skip(1));
+          this.latestLab = Object.assign({}, lab);
+
+          const runInfo$ = this.editorService.executeLab(lab).share();
+
+          runInfo$.subscribe(info => {
+            this.editorService.addLocalExecution(info.executionId);
+            this.activeExecutionId = info.executionId;
+            this.openExecutionList();
+
+            if (info.persistent) {
+              this.locationHelper.updateUrl([
+                this.locationHelper.getRootUrlSegment(),
+                lab.id,
+                info.executionId
+              ], {
+                queryParamsHandling: 'merge'
+              });
+              this.listen(this.activeExecutionId);
+            } else if (info.rejection) {
+              this.editorService.removeLocalExecution(info.executionId);
+              if (info.rejection.reason === ExecutionRejectionReason.InvalidConfig) {
+                this.editorSnackbar.notifyInvalidConfig();
+              } else {
+                this.openRejectionDialog(info.rejection.reason);
+              }
+              this.activeExecutionId = null;
+            }
+          }, e => {
+            this.editorService.removeLocalExecution(e.executionId);
+            if (e instanceof TimeoutError) {
+              this.editorSnackbar.notifyServerNotAvailable();
+            } else if (e instanceof RateLimitError) {
+              this.editorSnackbar.notifyExecutionRateLimitExceeded();
+            }
+          });
+
+          this.editorSnackbar.notifyLateExecutionUnless(runInfo$.skip(1));
+        }
+      })
   }
 
   listenAndUpdateUrl(execution: Execution) {
