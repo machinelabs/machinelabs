@@ -1,52 +1,66 @@
 export const templates = {
   staging: {
-    target: {
-      serverName: 'ahlem',
+    server: {
+      name: 'ahlem',
       zone: 'europe-west1-c',
-      // We can't use `machinelabs-staging` here because that is
-      // just the project alias (which we can use for firebase) but
-      // not for gcloud which needs to get the projectId
-      googleProjectId: 'machinelabs-a73cd',
-      fbDatabaseUrl: 'https://machinelabs-a73cd.firebaseio.com',
-      fbPrivateKeyEnv: 'MACHINELABS_STAGING_FB_PRIVATE_KEY',
-      fbClientEmailEnv: 'MACHINELABS_STAGING_FB_CLIENT_EMAIL'
+      env: 'staging'
     },
-    env: 'staging'
+    client: {
+      env: 'staging'
+    },
+    firebase: {
+      databaseUrl: 'https://machinelabs-a73cd.firebaseio.com',
+      privateKeyEnv: 'MACHINELABS_STAGING_FB_PRIVATE_KEY',
+      clientEmailEnv: 'MACHINELABS_STAGING_FB_CLIENT_EMAIL'
+    },
+    googleProjectId: 'machinelabs-a73cd'
   },
   staging2: {
-    target: {
-      serverName: 'list',
+    server: {
+      name: 'list',
       zone: 'europe-west1-c',
-      // We can't use `machinelabs-staging` here because that is
-      // just the project alias (which we can use for firebase) but
-      // not for gcloud which needs to get the projectId
-      googleProjectId: 'machinelabs-a73cd',
-      fbDatabaseUrl: 'https://machinelabs-a73cd.firebaseio.com',
-      fbPrivateKeyEnv: 'MACHINELABS_STAGING_FB_PRIVATE_KEY',
-      fbClientEmailEnv: 'MACHINELABS_STAGING_FB_CLIENT_EMAIL'
+      env: 'staging2'
     },
-    env: 'staging2'
+    client: {
+      env: 'staging'
+    },
+    firebase: {
+      databaseUrl: 'https://machinelabs-a73cd.firebaseio.com',
+      privateKeyEnv: 'MACHINELABS_STAGING_FB_PRIVATE_KEY',
+      clientEmailEnv: 'MACHINELABS_STAGING_FB_CLIENT_EMAIL'
+    },
+    googleProjectId: 'machinelabs-a73cd'
   },
   production: {
-    target: {
-      serverName: 'hainholz',
+    server: {
+      name: 'hainholz',
       zone: 'us-east1-d',
-      googleProjectId: 'machinelabs-production',
-      fbDatabaseUrl: 'https://machinelabs-production.firebaseio.com',
-      fbPrivateKeyEnv: 'MACHINELABS_PRODUCTION_FB_PRIVATE_KEY',
-      fbClientEmailEnv: 'MACHINELABS_PRODUCTION_FB_CLIENT_EMAIL'
+      env: 'production'
     },
-    env: 'production'
+    client: {
+      env: 'production'
+    },
+    firebase: {
+      databaseUrl: 'https://machinelabs-production.firebaseio.com',
+      privateKeyEnv: 'MACHINELABS_PRODUCTION_FB_PRIVATE_KEY',
+      clientEmailEnv: 'MACHINELABS_PRODUCTION_FB_CLIENT_EMAIL'
+    },
+    googleProjectId: 'machinelabs-production'
   },
   production2: {
-    target: {
-      serverName: 'stephanskirchen',
+    server: {
+      name: 'stephanskirchen',
       zone: 'europe-west1-c',
-      googleProjectId: 'machinelabs-production',
-      fbDatabaseUrl: 'https://machinelabs-production.firebaseio.com',
-      fbPrivateKeyEnv: 'MACHINELABS_PRODUCTION_FB_PRIVATE_KEY',
-      fbClientEmailEnv: 'MACHINELABS_PRODUCTION_FB_CLIENT_EMAIL'
+      env: 'production2'
     },
-    env: 'production2'
+    client: {
+      env: 'production'
+    },
+    firebase: {
+      databaseUrl: 'https://machinelabs-production.firebaseio.com',
+      privateKeyEnv: 'MACHINELABS_PRODUCTION_FB_PRIVATE_KEY',
+      clientEmailEnv: 'MACHINELABS_PRODUCTION_FB_CLIENT_EMAIL'
+    },
+    googleProjectId: 'machinelabs-production'
   }
 };
