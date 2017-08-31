@@ -37,5 +37,16 @@ export const templates = {
       fbClientEmailEnv: 'MACHINELABS_PRODUCTION_FB_CLIENT_EMAIL'
     },
     env: 'production'
+  },
+  production2: {
+    target: {
+      serverName: 'stephanskirchen',
+      zone: 'europe-west1-c',
+      googleProjectId: 'machinelabs-production',
+      fbDatabaseUrl: 'https://machinelabs-production.firebaseio.com',
+      fbPrivateKeyEnv: 'MACHINELABS_PRODUCTION_FB_PRIVATE_KEY',
+      fbClientEmailEnv: 'MACHINELABS_PRODUCTION_FB_CLIENT_EMAIL'
+    },
+    env: 'production'
   }
 };
