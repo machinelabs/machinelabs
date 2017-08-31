@@ -4,10 +4,16 @@ import * as chalk from 'chalk';
 import { createDb } from '../lib/create-db';
 import { getEnv } from '../lib/get-env';
 
-export function migrate(argv) {
-  let fbPrivateKey = getEnv(argv.cfg.target.fbPrivateKeyEnv);
-  let fbClientEmail = getEnv(argv.cfg.target.fbClientEmailEnv);
-  let fbDatabaseUrl = argv.cfg.target.fbDatabaseUrl;
+const hasArgsForMigrate = argv => argv.cfg.firebase.privateKeyEnv &&
+                                         argv.cfg.firebase.clientEmailEnv &&
+                                         argv.cfg.firebase.databaseUrl &&
+                                         argv.file;
+
+
+const migrate = (argv) => {
+  let fbPrivateKey = getEnv(argv.cfg.firebase.privateKeyEnv);
+  let fbClientEmail = getEnv(argv.cfg.firebase.clientEmailEnv);
+  let fbDatabaseUrl = argv.cfg.firebase.databaseUrl;
 
   let db = createDb(fbPrivateKey, fbClientEmail, fbDatabaseUrl);
   let file = path.resolve(argv['file']);
@@ -22,3 +28,14 @@ export function migrate(argv) {
     process.exit(1);
   });
 }
+
+const check = argv => {
+  if (argv._.includes('migrate') && !hasArgsForMigrate(argv)) {
+    throw new Error('Command needs `cfg.firebase.privateKeyEnv`, `cfg.firebase.clientEmailEnv`, `cfg.firebase.databaseUrl` and `file`');
+  }
+}
+
+export const migrateCommand = {
+  run: migrate,
+  check: check
+};

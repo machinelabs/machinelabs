@@ -1,7 +1,21 @@
 import { loginServer } from '../lib/login-server';
 
-export function login (argv) {
-  if (argv.cfg.target.serverName && argv.cfg.target.zone && argv.cfg.target.googleProjectId) {
-    loginServer(argv.cfg.target.googleProjectId, argv.cfg.target.zone, argv.cfg.target.serverName);
+const hasArgsForLogin = (argv) => argv.cfg.server.name && argv.cfg.server.zone && argv.cfg.googleProjectId;
+
+const login = (argv) => {
+  if (hasArgsForLogin(argv)) {
+    loginServer(argv.cfg.googleProjectId, argv.cfg.server.zone, argv.cfg.server.name);
   }
 }
+
+const check = argv => {
+  if (argv._.includes('login') && !hasArgsForLogin(argv)) {
+    throw new Error('Command needs `cfg.server.name`, `cfg.server.zone` and `cfg.googleProjectId`');
+  }
+}
+
+export const loginCommand = {
+  run: login,
+  check: check
+};
+

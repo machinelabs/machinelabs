@@ -3,11 +3,15 @@ import { getEnv } from '../lib/get-env';
 import { ObservableDbRef } from '@machinelabs/core';
 import { Observable } from '@reactivex/rxjs';
 
-export function onboard (argv) {
-  if (argv.cfg.target.fbPrivateKeyEnv && argv.cfg.target.fbClientEmailEnv && argv.cfg.target.fbDatabaseUrl) {
-    let fbPrivateKey = getEnv(argv.cfg.target.fbPrivateKeyEnv);
-    let fbClientEmail = getEnv(argv.cfg.target.fbClientEmailEnv);
-    let fbDatabaseUrl = argv.cfg.target.fbDatabaseUrl;
+const hasArgsForOnboard = argv => argv.cfg.firebase.privateKeyEnv &&
+                                  argv.cfg.firebase.clientEmailEnv &&
+                                  argv.cfg.firebase.databaseUrl;
+
+const onboard = (argv) => {
+  if (hasArgsForOnboard(argv)) {
+    let fbPrivateKey = getEnv(argv.cfg.firebase.privateKeyEnv);
+    let fbClientEmail = getEnv(argv.cfg.firebase.clientEmailEnv);
+    let fbDatabaseUrl = argv.cfg.firebase.databaseUrl;
 
     let db = createDb(fbPrivateKey, fbClientEmail, fbDatabaseUrl);
 
@@ -48,3 +52,14 @@ export function onboard (argv) {
       });
   }
 }
+
+const check = argv => {
+  if (argv._.includes('onboard') && !hasArgsForOnboard(argv)) {
+    throw new Error('Command needs `cfg.firebase.privateKeyEnv`, `cfg.firebase.clientEmailEnv` and `cfg.firebase.databaseUrl`');
+  }
+};
+
+export const onboardCommand = {
+  run: onboard,
+  check: check
+};
