@@ -170,7 +170,8 @@
       ".indexOn": [
         "server/id",
         "server/ahlem/timestamp",
-        "server/hainholz/timestamp"
+        "server/hainholz/timestamp",
+        "server/stephanskirchen/timestamp"
       ]
     },
     "executions": {
