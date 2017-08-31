@@ -12,7 +12,7 @@ md-toolbar {
 .ml-execution-panel-header {
   font-weight: 400;
   md-icon {
-    vertical-align: -20%;
+    vertical-align: -25%;
     font-size: 22px;
     width: initial;
     height: initial;
@@ -23,11 +23,11 @@ md-toolbar {
     height: 27px;
     display: inline-block;
     margin-right: 0.2em;
-    vertical-align: -12%;
+    vertical-align: -45%;
 
     .mat-expanded & {
       height: 40px;
-      vertical-align: -20%;
+      vertical-align: -80%;
     }
   }
 
