@@ -22,9 +22,6 @@ describe('Editor-View Component', function() {
   it('should show the correct editor theme when switching editor views', () => {
     expect(editorView.editorMode).toEqual('python');
 
-    editorView.getTabByLabel('Console').click();
-    expect(editorView.editorMode).toEqual('sh');
-
     editorView.getTabByLabel('Editor').click();
     expect(editorView.editorMode).toEqual('python');
   });
