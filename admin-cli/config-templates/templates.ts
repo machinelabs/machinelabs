@@ -47,6 +47,6 @@ export const templates = {
       fbPrivateKeyEnv: 'MACHINELABS_PRODUCTION_FB_PRIVATE_KEY',
       fbClientEmailEnv: 'MACHINELABS_PRODUCTION_FB_CLIENT_EMAIL'
     },
-    env: 'production'
+    env: 'production2'
   }
 };
