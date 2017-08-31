@@ -3,11 +3,11 @@
 import * as chalk from 'chalk';
 import * as yargs from 'yargs';
 
-import { deploy } from './commands/deploy';
-import { login } from './commands/login';
-import { cutCmd } from './commands/cut';
-import { onboard } from './commands/onboard';
-import { migrate } from './commands/migrate';
+import { deployCommand } from './commands/deploy';
+import { loginCommand } from './commands/login';
+import { cutCommand } from './commands/cut';
+import { onboardCommand } from './commands/onboard';
+import { migrateCommand } from './commands/migrate';
 
 import { tryLoadTemplate } from './lib/load-template';
 
@@ -15,9 +15,7 @@ import { tryLoadTemplate } from './lib/load-template';
 // we can assume all further commands are realtive to root
 setRootDir();
 
-let countTrue = (arr) => arr.reduce((acc,current) => acc + current, 0);
-let usedAtLeastOnce = (arr) => countTrue(arr) > 0;
-let usedMoreThanOnce = (arr) => countTrue(arr)  > 1;
+const commands = [ deployCommand, loginCommand, cutCommand, onboardCommand, migrateCommand];
 
 let sharedOptions = {
       'cfg.template': {
@@ -26,22 +24,27 @@ let sharedOptions = {
         type: 'string',
         requiresArg: true
       },
-      'cfg.target.googleProjectId': {
+      'cfg.googleProjectId': {
         describe: `GoogleProjectId to be used`,
         type: 'string',
         requiresArg: true
       },
-      'cfg.target.serverName': {
+      'cfg.server.name': {
         describe: `Name of server to be used`,
         type: 'string',
         requiresArg: true
       },
-      'cfg.target.zone': {
+      'cfg.server.zone': {
         describe: `Zone of server`,
         type: 'string',
         requiresArg: true
       },
-      'cfg.env': {
+      'cfg.server.env': {
+        describe: `Environment file for server`,
+        type: 'string',
+        requiresArg: true
+      },
+      'cfg.client.env': {
         describe: `Environment file for server`,
         type: 'string',
         requiresArg: true
@@ -63,8 +66,8 @@ let argv = yargs(process.argv.slice(2))
         describe: 'Flag to suppress deployment of client',
         boolean: true,
       }
-    }, sharedOptions), deploy)
-    .command('login [<options>]', 'Login to server', sharedOptions, login)
+    }, sharedOptions), deployCommand.run)
+    .command('login [<options>]', 'Login to server', sharedOptions, loginCommand.run)
     .command('cut [<options>]', 'Cut a release', {
       major: {
         describe: 'Cuts a new major release',
@@ -91,13 +94,13 @@ let argv = yargs(process.argv.slice(2))
         type: 'string',
         requiresArg: true
       },
-    }, cutCmd)
+    }, cutCommand.run)
     .command('onboard [<options>]', 'Onboard waiting users', {
       'dry-run': {
         describe: 'Does a dry run',
         boolean: true
       }
-    }, onboard)
+    }, onboardCommand.run)
     .command(
       'migrate [<options>]',
       `Migrates database with a migration file that contains a function
@@ -110,12 +113,12 @@ let argv = yargs(process.argv.slice(2))
           type: 'string',
           requiresArg: true
         }
-    }, migrate)
+    }, migrateCommand.run)
 
     .coerce('cfg', cfg => {
       if (cfg.template) {
-        if (cfg.target || cfg.env) {
-          throw new Error("`cfg.template` option can't be used with `cfg.target` or `cfg.env`")
+        if (cfg.server || cfg.client || cfg.firebase) {
+          throw new Error("`cfg.template` option can't be used with `cfg.server`, `cfg.client`, `cfg.firebase`")
         }
         const templateConfig = tryLoadTemplate(cfg.template);
         cfg = Object.assign(cfg, templateConfig);
@@ -123,29 +126,8 @@ let argv = yargs(process.argv.slice(2))
       return cfg;
     })
     .check(argv => {
-      if ((argv._.includes('deploy') || argv._.includes('login') || argv._.includes('migrate') || argv._.includes('onboard')) && (!argv.cfg || !argv.cfg.target)) {
-        throw new Error('Command needs `target`');
-      }
 
-      if (argv.cfg && argv.cfg.target && (!argv.cfg.target.serverName || !argv.cfg.target.googleProjectId || !argv.cfg.target.zone)) {
-        throw new Error('`target` option is incomplete');
-      }
-
-      if (countTrue([argv.noFb, argv.noServer, argv.noClient]) === 3) {
-        throw new Error('`noFb`, `noServer` and `noClient` can not be used in full combination');
-      }
-
-      if (usedMoreThanOnce([argv.major, argv.minor, argv.patch, argv.dev])) {
-        throw new Error('`major`, `minor`, `patch` and `dev` are mutually exclusive')
-      }
-
-      if (argv.version && usedAtLeastOnce([argv.major, argv.minor, argv.patch, argv.dev])) {
-        throw new Error('`version` is mutually exclusive with `major`, `minor`, `patch` and `dev`');
-      }
-
-      if (argv._.includes('migrate') && !argv.file) {
-        throw new Error('Please specify path to migration file using `file` option.');
-      }
+      commands.forEach(command => command.check(argv));
 
       if (!argv._.length) {
         yargs.showHelp();
