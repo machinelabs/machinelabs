@@ -3,5 +3,11 @@
     "hardware_type": "economy",
     "id": "hainholz",
     "name": "Hainholz"
+  },
+  "stephanskirchen": {
+    "hardware_type": "economy",
+    "id": "stephanskirchen",
+    "name": "Stephanskirchen",
+    "disabled": true
   }
 }
