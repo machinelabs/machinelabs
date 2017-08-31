@@ -25,6 +25,7 @@ import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { LocationHelper } from '../../util/location-helper';
 import { Execution, ExecutionRejectionReason } from '../../models/execution';
 import { EditorToolbarAction, EditorToolbarActionTypes } from '../editor-toolbar/editor-toolbar.component';
+import { TimeoutError, RateLimitError } from '../../editor/remote-code-execution/errors';
 
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
@@ -195,7 +196,14 @@ export class EditorViewComponent implements OnInit {
         }
         this.activeExecutionId = null;
       }
-    }, e => this.editorService.removeLocalExecution(e.executionId));
+    }, e => {
+      this.editorService.removeLocalExecution(e.executionId);
+      if (e instanceof TimeoutError) {
+        this.editorSnackbar.notifyServerNotAvailable();
+      } else if (e instanceof RateLimitError) {
+        this.editorSnackbar.notifyExecutionRateLimitExceeded();
+      }
+    });
 
     this.editorSnackbar.notifyLateExecutionUnless(runInfo$.skip(1));
   }
