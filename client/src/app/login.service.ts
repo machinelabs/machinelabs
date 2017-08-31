@@ -25,7 +25,7 @@ export class LoginService {
       }
 
       this.snackBar.open(`Logged in as ${user.displayName}`, 'Dismiss', { duration: 3000 });
-    });
+    }, e => this.snackBar.open('Login failed, please try again.', 'Dismiss', { duration: 3000 }));
   }
 
   logout() {
