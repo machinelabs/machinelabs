@@ -67,7 +67,6 @@ export class EmbeddedEditorViewComponent implements OnInit {
   }
 
   listen() {
-    this.editorService.selectConsoleTab();
     this.console.clear();
     let wrapper = this.editorService.listenAndNotify(this.executionId);
 

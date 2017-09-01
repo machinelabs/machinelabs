@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { EditorTestingModule } from './testing/editor-testing.module';
 import { Location } from '@angular/common';
+import { UrlSerializer } from '@angular/router';
 
 import { LAB_STUB } from '../../test-helper/stubs/lab.stubs';
 
@@ -10,6 +11,7 @@ describe('EditorService', () => {
 
   let editorService: EditorService;
   let location: Location;
+  let urlSerializer: UrlSerializer;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -18,6 +20,7 @@ describe('EditorService', () => {
 
     editorService = TestBed.get(EditorService);
     location = TestBed.get(Location);
+    urlSerializer = TestBed.get(UrlSerializer);
   });
 
   describe('.initLab()', () => {
@@ -37,7 +40,14 @@ describe('EditorService', () => {
 
     it('should update query param with first active file in lab directory', () => {
       editorService.initLab(expectedLab);
-      expect(location.path()).toEqual(`/?file=${expectedLab.directory[0].name}`);
+      expect(urlSerializer.parse(location.path()).queryParams.file)
+        .toEqual(expectedLab.directory[0].name);
+    });
+
+    it('should set tab query param to \'editor\' by default', () => {
+      editorService.initLab(expectedLab);
+      expect(urlSerializer.parse(location.path()).queryParams.tab)
+        .toEqual(TabIndex.Editor);
     });
 
     it('should activate query param file', () => {
@@ -61,6 +71,21 @@ describe('EditorService', () => {
       editorService.initLab(expectedLab);
       editorService.initDirectory(expectedLab.directory);
       expect(editorService.activeFile).toEqual(expectedLab.directory[0]);
+    });
+  });
+
+  describe('.selectTab()', () => {
+
+    it('should update tab query param accordingly', () => {
+      editorService.selectTab(TabIndex.Editor);
+
+      expect(urlSerializer.parse(location.path()).queryParams.tab)
+        .toEqual(TabIndex.Editor);
+
+      editorService.selectTab(TabIndex.Console);
+
+      expect(urlSerializer.parse(location.path()).queryParams.tab)
+        .toEqual(TabIndex.Console);
     });
   });
 

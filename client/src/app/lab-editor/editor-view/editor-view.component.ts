@@ -371,7 +371,6 @@ export class EditorViewComponent implements OnInit {
 
   initLab(lab: Lab, fetchExecutions = true) {
     this.editorService.initLab(lab);
-    this.selectTab(TabIndex.Editor);
     if (fetchExecutions) {
       this.initExecutionList();
     }
@@ -384,8 +383,7 @@ export class EditorViewComponent implements OnInit {
         .filter(executions => !!executions.length)
         .subscribe(_ => {
           this.openExecutionList()
-
-          if (this.activeExecutionId) {
+          if (this.activeExecutionId && !this.route.snapshot.queryParamMap.get('tab')) {
             this.editorService.selectConsoleTab();
           }
         });
