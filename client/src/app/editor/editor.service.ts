@@ -20,9 +20,9 @@ import {
 } from '../models/execution';
 
 export enum TabIndex {
-  Editor,
-  Console,
-  Settings
+  Editor = 'editor',
+  Console = 'console',
+  Settings = 'settings'
 }
 
 import 'rxjs/add/observable/of';
@@ -72,7 +72,20 @@ export class EditorService {
   }
 
   initialize() {
-    this.selectedTab = TabIndex.Editor;
+    const tabParam = this.urlSerializer.parse(this.location.path()).queryParams.tab;
+
+    switch (tabParam) {
+      case TabIndex.Editor:
+        this.selectEditorTab();
+        break;
+      case TabIndex.Console:
+        this.selectConsoleTab();
+        break;
+      default:
+        this.selectEditorTab();
+        break;
+    }
+
     this.lab = null;
     this.latestLab = null;
     this.activeFile = null;
@@ -211,6 +224,9 @@ export class EditorService {
 
   selectTab(tabIndex: TabIndex) {
     this.selectedTab = tabIndex;
+    this.locationHelper.updateQueryParams(this.location.path(), {
+      tab: tabIndex
+    });
   }
 
   openFile(file: File) {
