@@ -182,6 +182,10 @@ path /executions/{id}/common is Execution {
   write() { isOwningUser(this, 'user_id') || isExecutionServer() }
 }
 
+path /executions/{id}/outputs {
+  read() { true }
+}
+
 path /executions {
   index() { ['common/cache_hash']}
 }
