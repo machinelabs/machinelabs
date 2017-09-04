@@ -66,7 +66,7 @@ EOL
             containerId,
             '/bin/bash',
             '-c',
-            `cd /run && (${writeCommand}) && python main.py`
+            `mkdir /run/outputs && cd /run && (${writeCommand}) && python main.py`
           ]))
           .concat(this.uploader.handleUpload(invocation, containerId))
           .concat(spawnShell(`docker rm -f ${containerId}`).let(mute))
