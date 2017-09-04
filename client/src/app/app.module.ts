@@ -17,6 +17,7 @@ import { LabResolver } from './lab.resolver';
 import { LabStorageService } from './lab-storage.service';
 import { LabTemplateService, InMemoryLabTemplateService } from './lab-template.service';
 import { LabExecutionService } from './lab-execution.service';
+import { OutputFilesService } from './output-files.service';
 import { LoginService } from './login.service';
 import { UserService } from 'app/user/user.service';
 import { AuthService, FirebaseAuthService, OfflineAuthService } from './auth';
@@ -56,6 +57,7 @@ const AnimationsModule = [environment.testing ? NoopAnimationsModule : BrowserAn
     LoginService,
     LabStorageService,
     LabExecutionService,
+    OutputFilesService,
     LabResolver,
     { provide: LabTemplateService, useClass: InMemoryLabTemplateService },
     UserService,

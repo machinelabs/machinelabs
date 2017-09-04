@@ -241,6 +241,9 @@
           ".read": "true",
           ".write": "(data.val() != null ? auth != null && auth.uid == data.child('user_id').val() && (auth != null && auth.uid == newData.child('user_id').val()) : auth != null && auth.uid == newData.child('user_id').val()) || auth.uid == 'execution-server'"
         },
+        "outputs": {
+          ".read": "true"
+        },
         "messages": {
           ".read": "true",
           ".write": "auth.uid == 'execution-server'",
