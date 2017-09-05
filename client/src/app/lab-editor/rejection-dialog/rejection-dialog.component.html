@@ -2,8 +2,8 @@
   <ng-container *ngSwitchCase="ExecutionRejectionReason.NoAnonymous">
     <ml-dialog-header>Login to start executions</ml-dialog-header>
     <ml-dialog-content>
-      <p>You're just one click away from running that code!</p>
-      <p>No complicated setup, no credit cards! All you need to do is to <strong>login with your GitHub account</strong>.</p>
+      <p>Almost there! To prevent abuse of our platform, only logged in users can launch executions.</p>
+      <p>Just <strong>login with your GitHub account</strong> and do Machine Learning without the hassle.</p>
     </ml-dialog-content>
     <ml-dialog-cta-bar>
       <button md-button [mdDialogClose]="true" (click)="loginWithGithub()">Login with GitHub</button>
