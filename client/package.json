@@ -33,7 +33,7 @@
     "autotrack": "^2.4.1",
     "core-js": "2.4.1",
     "date-fns": "^1.28.4",
-    "firebase": "3.6.4",
+    "firebase": "4.3.0",
     "js-yaml": "^3.8.4",
     "ng2-slim-loading-bar": "^4.0.0",
     "rxjs": "5.4.2",

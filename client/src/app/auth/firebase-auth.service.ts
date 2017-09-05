@@ -39,7 +39,7 @@ export class FirebaseAuthService extends AuthService {
   }
 
   refreshToken() {
-    return Observable.fromPromise(<Promise<any>>firebase.auth().currentUser.getToken(true));
+    return Observable.fromPromise(<Promise<any>>firebase.auth().currentUser.getIdToken(true));
   }
 
   signOut(): Observable<any> {
@@ -64,7 +64,7 @@ export class FirebaseAuthService extends AuthService {
     // to link again, firebase will throw an error. That's when we know that
     // user credentials do already exist and we can simply sign in using GitHub.
     return Observable.fromPromise(<Promise<any>>linkPromise)
-                     .switchMap(loginUser  => this.refreshToken().map(_ => loginUser))
+                     .switchMap(loginUser => this.refreshToken().map(_ => loginUser))
                      .catch(error => this.signInWithGitHub());
 
   }
