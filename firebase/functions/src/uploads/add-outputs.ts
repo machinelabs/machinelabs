@@ -6,7 +6,7 @@ import { UploadType } from './upload-type';
 
 export const bucketChange = functions.storage.object().onChange(event => {
 
-  if (!event.data || !event.data.metadata || event.data.metadata['type'] !== UploadType.ExecutionOutput) {
+  if (!event.data || event.data.metageneration > 1 || !event.data.metadata || event.data.metadata['type'] !== UploadType.ExecutionOutput) {
     return Promise.resolve(true);
   }
 
