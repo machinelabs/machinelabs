@@ -10,6 +10,7 @@ let sharedLibs = new Map();
 sharedLibs.set('models', []);
 sharedLibs.set('core', ['@machinelabs/models']);
 sharedLibs.set('metrics', ['@machinelabs/models', '@machinelabs/core']);
+sharedLibs.set('supervisor', ['@machinelabs/models', '@machinelabs/core']);
 
 const buildShared = (argv) => {
   console.log('Building shared libs');
