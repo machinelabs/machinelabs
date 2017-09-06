@@ -1,7 +1,7 @@
 {
-  "name": "@machinelabs/metrics",
+  "name": "@machinelabs/supervisor",
   "version": "0.21.2+utc.2017.Nov.22-9.06.52",
-  "description": "Metrics such as usage statistics",
+  "description": "This lib has super powers to rule over the whole system",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "jest": {
@@ -35,6 +35,7 @@
     "@reactivex/rxjs": "^5.4.2",
     "@types/node": "^8.0.19",
     "firebase": "^4.2.0",
+    "firebase-admin": "^4.2.1",
     "jest": "^20.0.4"
   },
   "devDependencies": {
