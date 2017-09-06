@@ -6,3 +6,4 @@ export * from './directory';
 export * from './mount';
 export * from './mountoption';
 export * from './invocation';
+export * from './special-user';
