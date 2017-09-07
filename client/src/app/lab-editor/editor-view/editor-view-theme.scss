@@ -5,7 +5,7 @@
   $background: map-get($theme, background);
   $foreground: map-get($theme, foreground);
 
-  .ml-execution-metadata-no-execution-message {
+  .ml-no-information-message {
     color: mat-color($foreground, secondary-text);
   }
 
