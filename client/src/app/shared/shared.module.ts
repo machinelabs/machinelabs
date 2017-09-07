@@ -10,6 +10,7 @@ import {
 import { TruncateWordsPipe } from './truncate-words.pipe';
 import { DistanceInWordsStrictPipe } from './distance-in-words-strict.pipe';
 import { DistanceInWordsToNowPipe } from './distance-in-words-to-now.pipe';
+import { DigitalFormatUnitPipe } from './digital-format-unit.pipe';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { DistanceInWordsToNowPipe } from './distance-in-words-to-now.pipe';
     DialogCtaBarComponent,
     TruncateWordsPipe,
     DistanceInWordsStrictPipe,
-    DistanceInWordsToNowPipe
+    DistanceInWordsToNowPipe,
+    DigitalFormatUnitPipe
   ],
   imports: [MachineLabsMaterialModule, CommonModule],
   exports: [
@@ -32,7 +34,8 @@ import { DistanceInWordsToNowPipe } from './distance-in-words-to-now.pipe';
     DialogCtaBarComponent,
     TruncateWordsPipe,
     DistanceInWordsStrictPipe,
-    DistanceInWordsToNowPipe
+    DistanceInWordsToNowPipe,
+    DigitalFormatUnitPipe
   ]
 })
 export class SharedModule {}
