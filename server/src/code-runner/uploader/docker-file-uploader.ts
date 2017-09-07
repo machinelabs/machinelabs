@@ -4,7 +4,7 @@ import { getAccessToken } from '../../util/gcloud';
 import { mute } from '../../rx/mute';
 import { getCurlForUpload } from '../../util/file-upload';
 import { environment } from '../../environments/environment';
-import { ProcessStreamData, spawn, stdoutMsg, stderrMsg, stdout } from '@machinelabs/core';
+import { ProcessStreamData, spawn, stdoutMsg, stderrMsg, stdout, OutputType } from '@machinelabs/core';
 
 class FileInfo {
   name: string;
@@ -55,6 +55,7 @@ export class DockerFileUploader {
 
   private getFileList(containerId: string): Observable<FileInfo> {
     return spawn('docker', ['exec', containerId, '/bin/bash', '-c', 'cd /run/outputs && find . -maxdepth 1 -type f | xargs stat --printf "%n:::%s"'])
+      .filter(val => val.origin === OutputType.Stdout)
       .map(val => val.str.split('./').filter(name => name.length > 0).map(val => val.split(':::')))
       .flatMap(fileList => Observable.from(fileList))
       .map(fileInfo => ({ name: fileInfo[0], sizeBytes: parseInt(fileInfo[1], 10) }));
@@ -74,7 +75,7 @@ export class DockerFileUploader {
         }
       })
       .take(this.maxFileCount + 1)
-      .startWith(stdoutMsg('Uploading files...hold tight\r\n'));
+      .startWith(stdoutMsg('Uploading files from ./outputs (if any)...hold tight\r\n'));
   }
 
   private getCurlForUpload(invocation: Invocation, file: string, token: string) {
