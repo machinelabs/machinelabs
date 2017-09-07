@@ -59,3 +59,24 @@ ml-embedded-editor-view {
     flex: 1;
   }
 }
+
+.ml-no-information-message {
+  text-align: center;
+}
+
+.ml-no-information-message-icon {
+  font-size: 7em;
+  height: initial!important;
+  width: initial!important;
+  margin-bottom: 0.2em;
+}
+
+.ml-no-information-message-headline {
+  margin: 0;
+  font-size: 1.5em;
+  font-weight: 400;
+}
+
+.ml-no-information-message-text {
+  line-height: 1.4;
+}
