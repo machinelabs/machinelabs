@@ -1,0 +1,47 @@
+<md-card>
+  <md-card-content>
+    <ng-container *ngIf="executionId; else noOutputMessage">
+      <ng-container *ngIf="hasOutput | async; else noOutputMessage">
+        <h3 md-subheader>Output Files</h3>
+        <md-table #table [dataSource]="dataSource">
+          <ng-container mdColumnDef="name">
+            <md-header-cell *mdHeaderCellDef>Name</md-header-cell>
+            <md-cell *mdCellDef="let row"><md-icon>description</md-icon> {{row.name}} </md-cell>
+          </ng-container>
+
+          <ng-container mdColumnDef="created">
+            <md-header-cell *mdHeaderCellDef>Created</md-header-cell>
+            <md-cell *mdCellDef="let row"> {{row.created_at | date}} </md-cell>
+          </ng-container>
+
+          <ng-container mdColumnDef="size">
+            <md-header-cell *mdHeaderCellDef>Size</md-header-cell>
+            <md-cell *mdCellDef="let row">{{row.size_bytes | digitalFormatUnit}}</md-cell>
+          </ng-container>
+
+          <ng-container mdColumnDef="contentType">
+            <md-header-cell *mdHeaderCellDef>Content Type</md-header-cell>
+            <md-cell *mdCellDef="let row">{{row.content_type || '-'}}</md-cell>
+          </ng-container>
+
+          <ng-container mdColumnDef="actions">
+            <md-header-cell *mdHeaderCellDef></md-header-cell>
+            <md-cell *mdCellDef="let row">
+              <a md-button color="primary" [attr.download]="row.name" target="_blank" [href]="row.download_url" title="Download file"><md-icon>file_download</md-icon> Download</a>
+            </md-cell>
+          </ng-container>
+
+          <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
+          <md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>
+        </md-table>
+      </ng-container>
+    </ng-container>
+    <ng-template #noOutputMessage>
+      <div class="ml-no-information-message">
+        <md-icon class="ml-no-information-message-icon">info_outline</md-icon>
+        <h4 class="ml-no-information-message-headline">No outputs available</h4>
+        <p class="ml-no-information-message-text">Select an execution that has generated output files.</p>
+      </div>
+    </ng-template>
+  </md-card-content>
+</md-card>

@@ -22,7 +22,8 @@ import {
 export enum TabIndex {
   Editor = 'editor',
   Console = 'console',
-  Settings = 'settings'
+  Settings = 'settings',
+  Outputs = 'outputs'
 }
 
 import 'rxjs/add/observable/of';
@@ -254,6 +255,10 @@ export class EditorService {
 
   consoleTabActive() {
     return this.tabActive(TabIndex.Console);
+  }
+
+  outputsTabActive() {
+    return this.tabActive(TabIndex.Outputs);
   }
 
   private initActiveFile() {

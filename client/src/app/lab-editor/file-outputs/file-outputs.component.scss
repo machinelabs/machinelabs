@@ -1,0 +1,25 @@
+:host {
+  padding: 1em;
+  display: block;
+  width: 100%;
+}
+
+md-card {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 66.66%;
+}
+
+md-cell {
+  md-icon {
+    vertical-align: -25%;
+    color: #607d8b;
+    font-size: 1.7em;
+    width: initial;
+    height: initial;
+  }
+
+  a md-icon {
+    vertical-align: -38%;
+  }
+}
