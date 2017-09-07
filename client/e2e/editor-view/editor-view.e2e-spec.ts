@@ -12,7 +12,7 @@ describe('Editor-View Component', function() {
   });
 
   it('should contain the "Editor" and "Console" tabs', () => {
-    expect(editorView.tabsLabels).toEqual(['Editor', 'Console']);
+    expect(editorView.tabsLabels).toEqual(['Editor', 'Console', 'Outputs']);
   });
 
   it('should have the "Editor" tab selected by default', () => {

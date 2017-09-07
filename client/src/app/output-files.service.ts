@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/mergeMap';
 
 const fromSnapshot = snapshot => snapshot.val();
@@ -31,6 +32,12 @@ export class OutputFilesService {
     return Observable.fromPromise(firebase.storage()
                                           .ref(path)
                                           .getDownloadURL());
+  }
+
+  hasOutputFiles(executionId: string) {
+    return this.observeOutputFilesFromExecution(executionId)
+        .take(1)
+        .map(output => !!output);
   }
 }
 

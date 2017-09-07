@@ -18,6 +18,12 @@
           (click)="selectTab(TabIndex.Console)"
           [active]="editorService.consoleTabActive()">Console</a>
 
+        <a routerLink="."
+           queryParamsHanding="merge"
+           mdTabLink
+           (click)="selectTab(TabIndex.Outputs)"
+           [active]="editorService.outputsTabActive()">Outputs</a>
+
         <p *ngIf="activeExecutionId" class="ml-editor-restore-message"><button md-button color="primary" (click)="restoreLab()"><md-icon>settings_backup_restore</md-icon> Unselect execution</button></p>
       </div>
     </ml-editor-layout-nav-bar>
@@ -50,6 +56,9 @@
             <button md-button (click)="scrollToBottom()"><md-icon>keyboard_arrow_down</md-icon> Scroll to bottom</button>
             <md-checkbox [formControl]="pauseModeControl">Pause output</md-checkbox>
           </div>
+        </ml-editor-layout-panel>
+        <ml-editor-layout-panel [class.hidden]="!editorService.outputsTabActive()">
+          <ml-file-outputs [executionId]="activeExecutionId"></ml-file-outputs>
         </ml-editor-layout-panel>
       </ml-editor-layout-panels>
       <md-drawer

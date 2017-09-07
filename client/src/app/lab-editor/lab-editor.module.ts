@@ -19,6 +19,7 @@ import { EditorViewComponent } from './editor-view/editor-view.component';
 import { PanelComponent } from './panel/panel.component';
 import { PanelTitleComponent } from './panel/panel-title.component';
 import { ExecutionStatusComponent } from './execution-status/execution-status.component';
+import { FileOutputsComponent } from './file-outputs/file-outputs.component';
 import { FooterComponent } from './editor-footer/editor-footer.component';
 
 import { NavigationConfirmDialogComponent } from './navigation-confirm-dialog/navigation-confirm-dialog.component';
@@ -57,7 +58,8 @@ import { ExecutionListComponent } from './execution-list/execution-list.componen
     FooterComponent,
     ExecutionListComponent,
     EditExecutionDialogComponent,
-    EmbedDialogComponent
+    EmbedDialogComponent,
+    FileOutputsComponent
   ],
   providers: [
     HasValidExecutionGuard,
