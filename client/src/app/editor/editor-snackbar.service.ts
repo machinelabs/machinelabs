@@ -85,7 +85,7 @@ export class EditorSnackbarService {
     this.notify('Undone');
   }
 
-  notifyUnless<T>(notifier$: Observable<T>, message: string, waitMs = 5000) {
+  notifyUnless<T>(notifier$: Observable<T>, message: string, waitMs = 10000) {
     Observable.timer(waitMs)
               .takeUntil(notifier$)
               .subscribe(_ => this.notify(message));
