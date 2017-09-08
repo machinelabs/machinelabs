@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/mergeMap';
 
@@ -36,8 +37,9 @@ export class OutputFilesService {
 
   hasOutputFiles(executionId: string) {
     return this.observeOutputFilesFromExecution(executionId)
-        .take(1)
-        .map(output => !!output);
+        .map(output => !!output)
+        .startWith(false)
+        .take(2)
   }
 }
 
