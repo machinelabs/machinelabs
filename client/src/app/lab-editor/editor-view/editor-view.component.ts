@@ -38,7 +38,6 @@ import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/share';
 
 const METADATA_SIDEBAR_OPEN_TIMEOUT = 600;
-const EXECUTION_START_TIMEOUT = 5000;
 const INITIAL_LOADING_INDICATOR_PROGRESS = 10;
 
 @Component({
