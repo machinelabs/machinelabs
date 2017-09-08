@@ -8,5 +8,6 @@ export abstract class AuthService {
   abstract signOut(): Observable<any>;
   abstract signInWithGitHub(): Observable<LoginUser>;
   abstract linkOrSignInWithGitHub(): Observable<LoginUser>;
+  abstract sendEmailVerification(): Observable<any>;
 }
 

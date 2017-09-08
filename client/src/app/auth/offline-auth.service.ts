@@ -11,6 +11,7 @@ export let dummyUser = {
   uid: 'some unique id',
   displayName: 'Tony Stark',
   email: 'tony@starkindustries.com',
+  emailVerified: false,
   isAnonymous: true,
   photoURL: null,
   photoUrl: null,
@@ -46,6 +47,10 @@ export class OfflineAuthService implements OfflineAuth {
 
   signOut(): Observable<any> {
     this.user.isAnonymous = true;
+    return Observable.of();
+  }
+
+  sendEmailVerification() {
     return Observable.of();
   }
 }

@@ -17,6 +17,11 @@ export class LoginService {
 
   loginWithGitHub() {
     this.authService.linkOrSignInWithGitHub()
+                    .do(loginUser => {
+                      if (!loginUser.emailVerified) {
+                        this.authService.sendEmailVerification();
+                      }
+                    })
                     .switchMap(loginUser => this.userService.createUserIfMissing())
                     .subscribe(user => {
 
