@@ -58,6 +58,20 @@ describe('FileTreeComponent', () => {
       });
     });
 
+    describe('.isEditable()', () => {
+
+      it('shouldn\'t be editable when file is the main file', () => {
+
+        component.files = [
+          { name: 'main.py', content: '' },
+          { name: 'second.py', content: '' }
+        ];
+
+        expect(component.isEditable(component.files[0])).toBe(false);
+        expect(component.isEditable(component.files[1])).toBe(true);
+      });
+    });
+
     describe('.deleteFile()', () => {
 
       it('should delete given file', () => {
@@ -130,6 +144,13 @@ describe('FileTreeComponent', () => {
       expect(editorService.openFile).toHaveBeenCalledWith(testFiles[1])
     });
 
+    it('shouldn\'t render edit button for files that aren\'t editable', () => {
+      let items = fixture.debugElement.queryAll(By.css('.ml-file-list-item'));
+
+      let editButton = items[0].queryAll(By.css('.ml-file-list-item-button.edit'));
+      expect(editButton.length).toBe(0);
+    });
+
     it('shouldn\'t select file when edit button is clicked', () => {
       let editButton = fixture.debugElement.query(By.css('.ml-file-list-item-button.edit'));
       let deleteButton = fixture.debugElement.query(By.css('.ml-file-list-item-button.delete'));
@@ -138,6 +159,10 @@ describe('FileTreeComponent', () => {
 
       editButton.triggerEventHandler('click', null);
       expect(editorService.openFile).not.toHaveBeenCalled();
+    });
+
+    it('shouldn\'t have an edit button for the lab\'s main.py file', () => {
+      let editButton = fixture.debugElement.query(By.css('.ml-file-list-item-button.edit'));
     });
 
     it('should open filename dialog to add files', () => {
@@ -159,7 +184,7 @@ describe('FileTreeComponent', () => {
       let editButton = fixture.debugElement.query(By.css('.ml-file-list-item-button.edit'));
 
       let fileToEdit = {
-        name: 'main.py',
+        name: 'second.py',
         content: ''
       };
 

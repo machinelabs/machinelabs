@@ -35,10 +35,10 @@ describe('Editor-View Component', function() {
     });
 
     it('should allow users to edit file names', () => {
-      let fileIndex = 0;
+      let fileIndex = 1;
 
-      editorView.changeFileName(fileIndex, 'main.py');
-      expect(editorView.getFileName(fileIndex)).toContain('main.py');
+      editorView.changeFileName(fileIndex, 'ml.yaml');
+      expect(editorView.getFileName(fileIndex)).toContain('ml.yaml');
     });
 
     it('should allow users to add new files', () => {

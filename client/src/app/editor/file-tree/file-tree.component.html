@@ -11,6 +11,7 @@
       <button class="ml-file-list-item-button edit"
         mdTooltip="Change filename"
         mdTooltipPosition="below"
+        *ngIf="isEditable(file)"
         (click)="openFileNameDialog(file)"
         ><md-icon>create</md-icon></button>
 
