@@ -117,6 +117,10 @@ export class EditorViewComponent implements OnInit {
   }
 
   ngOnInit () {
+
+    this.editorService.selectedTabChange
+                      .subscribe(tabIndex => this.outputPanel.enabled = tabIndex === TabIndex.Console);
+
     // Since editorServicec is stateful, we need to reinitialize it
     // every time we want a fresh use. Pretty much the same behavior
     // one would get when all the state would live in the component.
