@@ -116,25 +116,28 @@ export class EditorService {
 
     let genSkipText = createSkipTextHelper('character');
 
+    this.editorSnackbar.notifyLateExecutionUnless(wrapper.messages);
+
+    wrapper.messages
+           .subscribe(msg => {
+            if (msg.kind === MessageKind.ExecutionFinished) {
+              this.editorSnackbar.notifyExecutionFinished();
+            }
+            if (options && options.inPauseMode()) {
+              if (msg.kind === MessageKind.ExecutionStarted) {
+                this.editorSnackbar.notifyExecutionStartedPauseMode().onAction()
+                  .subscribe(_ => { options.pauseModeExecutionStartedAction() });
+              }
+              if (msg.kind === MessageKind.ExecutionFinished) {
+                this.editorSnackbar.notifyExecutionFinishedPauseMode().onAction()
+                  .subscribe(_ => { options.pauseModeExecutionFinishedAction() });
+              }
+            }
+          });
+
     let messages = wrapper.messages
-      .do(msg => {
-        if (msg.kind === MessageKind.ExecutionFinished) {
-          this.editorSnackbar.notifyExecutionFinished();
-        }
-        if (options && options.inPauseMode()) {
-          if (msg.kind === MessageKind.ExecutionStarted) {
-            this.editorSnackbar.notifyExecutionStartedPauseMode().onAction()
-              .subscribe(_ => { options.pauseModeExecutionStartedAction() });
-          }
-          if (msg.kind === MessageKind.ExecutionFinished) {
-            this.editorSnackbar.notifyExecutionFinishedPauseMode().onAction()
-              .subscribe(_ => { options.pauseModeExecutionFinishedAction() });
-          }
-        }
-      })
       .filter(_ => !options || !options.inPauseMode())
-      .filter(msg => msg.kind === MessageKind.ExecutionStarted ||
-          msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr)
+      .filter(msg => msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr)
       // We replace newlines with carriage returns to ensure all messages start
       // at the beginning of a new line. This needed when rendering messages in
       // a terminal emulation, that haven't been produced by a tty emulation.
