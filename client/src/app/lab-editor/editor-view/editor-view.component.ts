@@ -47,7 +47,12 @@ const INITIAL_LOADING_INDICATOR_PROGRESS = 10;
 })
 export class EditorViewComponent implements OnInit {
 
-  output: Observable<string>;
+  // We set this as soon as an execution is selected but
+  // we bind to `consumedOutput` and assign `executionOutput`
+  // to it only when the Output tab becomes active
+  executionOutput: Observable<string>;
+
+  consumedOutput: Observable<string>;
 
   set lab(lab: Lab) {
     this.editorService.lab = lab;
@@ -117,10 +122,13 @@ export class EditorViewComponent implements OnInit {
   }
 
   ngOnInit () {
+    this.editorService.selectedTabChange.subscribe(tabIndex => this.onTabIndexChange(tabIndex));
+
     // Since editorServicec is stateful, we need to reinitialize it
     // every time we want a fresh use. Pretty much the same behavior
     // one would get when all the state would live in the component.
     this.editorService.initialize();
+
     this.activeExecutionId = this.route.snapshot.paramMap.get('executionId');
     this.route.data.map(data => data['lab'])
               // Only init lab when it's opened for the first time
@@ -144,15 +152,21 @@ export class EditorViewComponent implements OnInit {
     }
   }
 
-  selectTab(tabIndex: TabIndex) {
-    this.editorService.selectTab(tabIndex);
+  onTabIndexChange(tabIndex: TabIndex) {
     if (this.editorService.editorTabActive() && this.editor) {
       // This has to run in the next tick after the editor has become visible
       // https://github.com/ajaxorg/ace/issues/3070
       setTimeout(_ => this.editor.resize(), 0);
     } else if (this.editorService.consoleTabActive() && this.outputPanel) {
-      setTimeout(_ => this.outputPanel.resize(), 0);
+      setTimeout(_ => {
+        this.outputPanel.resize();
+        this.consumedOutput = this.executionOutput;
+      }, 0);
     }
+  }
+
+  selectTab(tabIndex: TabIndex) {
+    this.editorService.selectTab(tabIndex);
   }
 
   forkAndRun(lab: Lab) {
@@ -259,7 +273,7 @@ export class EditorViewComponent implements OnInit {
         this.editorService.initDirectory(execution.lab.directory);
       });
 
-    this.output = wrapper.messages;
+    this.executionOutput = wrapper.messages;
 
     // When in pause mode and switching executions, there's no messages being emitted.
     // That's why we want to make sure that we only show the server is not responding message,
