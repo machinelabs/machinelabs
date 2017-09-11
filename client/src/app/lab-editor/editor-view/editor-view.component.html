@@ -49,7 +49,7 @@
         <ml-editor-layout-panel [class.hidden]="!editorService.consoleTabActive()">
           <ml-xterm
             #outputPanel
-            [messages]="output"
+            [messages]="consumedOutput"
             [scrollback]="5000"
           ></ml-xterm>
           <div class="ml-scroll-checkbox">
