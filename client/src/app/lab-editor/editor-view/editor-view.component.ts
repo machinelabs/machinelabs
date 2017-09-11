@@ -265,15 +265,6 @@ export class EditorViewComponent implements OnInit {
 
     this.output = wrapper.messages;
 
-    // When in pause mode and switching executions, there's no messages being emitted.
-    // That's why we want to make sure that we only show the server is not responding message,
-    // when not in pause mode.
-    this.pauseModeControl.valueChanges.take(1).subscribe(paused => {
-      if (!paused) {
-        this.editorSnackbar.notifyLateExecutionUnless(wrapper.messages);
-      }
-    });
-
     this.openExecutionList();
   }
 
