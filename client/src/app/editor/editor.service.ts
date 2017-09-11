@@ -46,6 +46,8 @@ export class EditorService {
 
   selectedTab: TabIndex;
 
+  tabs: Map<string, string> = new Map();
+
   lab: Lab;
 
   latestLab: Lab;
@@ -75,16 +77,14 @@ export class EditorService {
   initialize() {
     const tabParam = this.urlSerializer.parse(this.location.path()).queryParams.tab;
 
-    switch (tabParam) {
-      case TabIndex.Editor:
-        this.selectEditorTab();
-        break;
-      case TabIndex.Console:
-        this.selectConsoleTab();
-        break;
-      default:
-        this.selectEditorTab();
-        break;
+    Object.keys(TabIndex).forEach(key => {
+      this.tabs.set(TabIndex[key], key);
+    });
+
+    if (this.tabs.has(tabParam)) {
+      this.selectTab(TabIndex[this.tabs.get(tabParam)]);
+    } else {
+      this.selectTab(TabIndex.Editor);
     }
 
     this.lab = null;
@@ -249,6 +249,10 @@ export class EditorService {
     this.selectTab(TabIndex.Console);
   }
 
+  selectOutputsTab() {
+    this.selectTab(TabIndex.Outputs);
+  }
+
   editorTabActive() {
     return this.tabActive(TabIndex.Editor);
   }
@@ -266,5 +270,4 @@ export class EditorService {
       .find(f => f.name === this.urlSerializer.parse(this.location.path()).queryParams.file);
     this.openFile(file || this.lab.directory[0]);
   }
-
 }

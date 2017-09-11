@@ -23,6 +23,32 @@ describe('EditorService', () => {
     urlSerializer = TestBed.get(UrlSerializer);
   });
 
+  describe('.initialize()', () => {
+
+    it('should select editor tab if no tab query param is given', () => {
+      editorService.initialize();
+      expect(editorService.selectedTab).toEqual(TabIndex.Editor);
+    });
+
+    it('should fallback to editor tab if unknown tab param is given', () => {
+      location.go(`/?tab=foo`);
+      editorService.initialize();
+      expect(editorService.selectedTab).toEqual(TabIndex.Editor);
+    });
+
+    it('should select correct tab based on tab query param', () => {
+      location.go(`/?tab=${TabIndex.Editor}`);
+      editorService.initialize();
+      expect(editorService.selectedTab).toEqual(TabIndex.Editor);
+      location.go(`/?tab=${TabIndex.Console}`);
+      editorService.initialize();
+      expect(editorService.selectedTab).toEqual(TabIndex.Console);
+      location.go(`/?tab=${TabIndex.Outputs}`);
+      editorService.initialize();
+      expect(editorService.selectedTab).toEqual(TabIndex.Outputs);
+    });
+  });
+
   describe('.initLab()', () => {
 
     const expectedLab = Object.assign({}, LAB_STUB);
