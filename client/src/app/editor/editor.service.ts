@@ -46,7 +46,7 @@ export class EditorService {
 
   selectedTab: TabIndex;
 
-  tabs: Map<string, string> = new Map();
+  tabs = new Map(<[string, string][]>Object.keys(TabIndex).map(key => [TabIndex[key], key]));
 
   lab: Lab;
 
@@ -76,10 +76,6 @@ export class EditorService {
 
   initialize() {
     const tabParam = this.urlSerializer.parse(this.location.path()).queryParams.tab;
-
-    Object.keys(TabIndex).forEach(key => {
-      this.tabs.set(TabIndex[key], key);
-    });
 
     if (this.tabs.has(tabParam)) {
       this.selectTab(TabIndex[this.tabs.get(tabParam)]);
