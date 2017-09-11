@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { UrlSerializer } from '@angular/router';
 import { Location } from '@angular/common';
 import { LocationHelper } from '../util/location-helper';
@@ -43,6 +43,8 @@ export interface ListenAndNotifyOptions {
 
 @Injectable()
 export class EditorService {
+
+  selectedTabChange = new EventEmitter<TabIndex>();
 
   selectedTab: TabIndex;
 
@@ -224,6 +226,7 @@ export class EditorService {
     this.locationHelper.updateQueryParams(this.location.path(), {
       tab: tabIndex
     });
+    this.selectedTabChange.emit(tabIndex);
   }
 
   openFile(file: File) {

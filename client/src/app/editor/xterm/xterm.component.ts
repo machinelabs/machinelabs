@@ -23,11 +23,27 @@ export class XtermComponent implements OnInit, AfterViewInit, AfterViewChecked, 
 
   private messagesSubscription = null;
 
+  private consumedMessages: Observable<string> = null;
+
   @Input() messages: Observable<string> = null;
 
   @Input() cursorBlink = false;
 
   @Input() scrollback = 1000;
+
+  private _enabled = false;
+
+  @Input()
+  set enabled (val) {
+    this._enabled = val;
+
+    if (this.messages !== this.consumedMessages) {
+      this.consumeMessages();
+    }
+  }
+  get enabled () {
+    return this._enabled;
+  }
 
   constructor(private element: ElementRef) { }
 
@@ -37,13 +53,8 @@ export class XtermComponent implements OnInit, AfterViewInit, AfterViewChecked, 
 
   ngOnChanges(changes) {
     if (this.term) {
-      if (changes.messages && this.messages !== null) {
-
-        if (this.messagesSubscription !== null) {
-          this.messagesSubscription.unsubscribe();
-          this.clear();
-        }
-        this.messagesSubscription = this.messages.subscribe(val => this.write(val))
+      if (changes.messages) {
+        this.consumeMessages();
       }
 
       if (changes.cursorBlink) {
@@ -56,11 +67,25 @@ export class XtermComponent implements OnInit, AfterViewInit, AfterViewChecked, 
     }
   }
 
+  private consumeMessages () {
+
+    if (!this.enabled || !this.messages) {
+      return;
+    }
+
+    if (this.messagesSubscription !== null) {
+      this.messagesSubscription.unsubscribe();
+      this.clear();
+    }
+    this.consumedMessages = this.messages;
+    this.messagesSubscription = this.messages.subscribe(val => this.write(val));
+  }
+
   ngAfterViewInit() {
     this.term.open(this.element.nativeElement, true);
 
-    if (this.messages && !this.messagesSubscription) {
-      this.messagesSubscription = this.messages.subscribe(val => this.write(val));
+    if (!this.messagesSubscription) {
+      this.consumeMessages();
     }
 
     this.setOption('scrollback', this.scrollback);

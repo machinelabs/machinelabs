@@ -4,11 +4,12 @@ import { MdDialog, MdDialogRef } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 
 import { LabExecutionService } from '../../lab-execution.service';
-import { EditorService } from '../../editor/editor.service';
+import { EditorService, TabIndex } from '../../editor/editor.service';
 import { LocationHelper } from '../../util/location-helper';
 import { Lab, File } from '../../models/lab';
 
 import { AceEditorComponent } from '../../editor/ace-editor/ace-editor.component';
+import { XtermComponent } from '../../editor/xterm/xterm.component';
 import { NoExecutionDialogComponent } from '../no-execution-dialog/no-execution-dialog.component';
 
 import 'rxjs/add/operator/do';
@@ -33,7 +34,7 @@ export class EmbeddedEditorViewComponent implements OnInit {
 
   output: Observable<string>;
 
-  @ViewChild('console') console: AceEditorComponent;
+  @ViewChild('console') console: XtermComponent;
 
   noExecutionDialogRef: MdDialogRef<NoExecutionDialogComponent>;
 
@@ -47,6 +48,11 @@ export class EmbeddedEditorViewComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+
+    this.editorService.selectedTabChange
+                      .subscribe(tabIndex => this.console.enabled = tabIndex === TabIndex.Console);
+
+
     // Since editorServicec is stateful, we need to reinitialize it
     // every time we want a fresh use. Pretty much the same behavior
     // one would get when all the state would live in the component.
