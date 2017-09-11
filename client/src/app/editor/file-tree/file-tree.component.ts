@@ -40,6 +40,10 @@ export class FileTreeComponent {
     return file.name === MAIN_PYTHON_FILENAME ? false : this.files.length > 1;
   }
 
+  isEditable(file: File) {
+    return file.name !== MAIN_PYTHON_FILENAME;
+  }
+
   selectFile(event, file: File) {
     if (event.target.nodeName === 'LI') {
       this.editorService.openFile(file);
