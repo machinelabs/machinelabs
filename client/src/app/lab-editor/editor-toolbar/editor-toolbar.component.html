@@ -45,7 +45,11 @@
 
     <md-menu #menu="mdMenu" [overlapTrigger]="false" xPosition="before">
       <button md-menu-item (click)="emitAction(EditorToolbarActionTypes.Create, 'blank')">Blank Lab</button>
-      <button md-menu-item (click)="emitAction(EditorToolbarActionTypes.Create, 'mnist')">MNIST Template</button>
+      <button md-menu-item [mdMenuTriggerFor]="templates">Templates</button>
+    </md-menu>
+
+    <md-menu #templates="mdMenu">
+      <button md-menu-item (click)="emitAction(EditorToolbarActionTypes.Create, 'mnist')">MNIST</button>
     </md-menu>
   </ml-toolbar-cta-bar>
   <ml-toolbar-menu></ml-toolbar-menu>
