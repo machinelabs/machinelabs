@@ -22,6 +22,7 @@ import { DbRefBuilder } from '../../firebase/db-ref-builder';
 import { AuthService } from '../../auth';
 
 import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
@@ -118,11 +119,24 @@ export class RemoteLabExecService {
 
     let messages$ = this.messageStreamOptimizer.listenForMessages(executionId);
 
-    return this.consumeExecution(messages$, execution$);
+
+    // Control messages are `ExecutionRejected`, `ExecutionStarted` and `ExecutionFinished`.
+    // This stream is a very lightweight stream that filters these messages on the server.
+    // Hence subscribing to the control messages further down the road is very cheap and
+    // can be done individually from subscribing to the default messages.
+    // This is very important because the control messages are internally used even when
+    // the caller is only interested in the `Observable<Execution>`
+    // and not in the `Observable<ExecutionMessages>`.
+    let controlMessages$ = this.observeControlMessages(executionId);
+
+    return this.consumeExecution(messages$, controlMessages$, execution$);
   }
 
-  consumeExecution(messages: Observable<ExecutionMessage>, execution: Observable<Execution>): ExecutionWrapper {
+  consumeExecution(messages: Observable<ExecutionMessage>,
+                   controlMessages: Observable<ExecutionMessage>,
+                   execution: Observable<Execution>): ExecutionWrapper {
 
+    let controlMessages$ = controlMessages.share();
     let sharedMessages = messages.share();
     let sharedExecution = execution.share();
 
@@ -134,7 +148,7 @@ export class RemoteLabExecService {
 
     let messages$ = sharedMessages.takeWhileInclusive(messagesNotFinishedOrRejected);
 
-    let rejectedMessage = sharedMessages.filter(msg => msg.kind === MessageKind.ExecutionRejected);
+    let rejectedMessage = controlMessages$.filter(msg => msg.kind === MessageKind.ExecutionRejected);
 
     let execution$ = sharedExecution
                       .filter(exec => !!exec)
@@ -143,6 +157,7 @@ export class RemoteLabExecService {
 
     return {
       messages: messages$,
+      controlMessages: controlMessages$,
       execution: execution$
     };
   }
@@ -175,5 +190,24 @@ export class RemoteLabExecService {
 
   private newInvocationId() {
     return `${Date.now()}-${shortid.generate()}`;
+  }
+
+  private observeControlMessages(executionId: string) {
+    return Observable.merge(
+      this.observeControlMessage(executionId, MessageKind.ExecutionRejected),
+      this.observeControlMessage(executionId, MessageKind.ExecutionStarted),
+      this.observeControlMessage(executionId, MessageKind.ExecutionFinished)
+    )
+    .takeWhileInclusive((msg: ExecutionMessage) => msg.kind === MessageKind.ExecutionStarted);
+  }
+
+  private observeControlMessage(executionId: string, kind: MessageKind) {
+    return this.db.executionMessageRef(executionId)
+                  .orderByChild('kind')
+                  .equalTo(kind)
+                  .limitToFirst(1)
+                  .childAdded()
+                  .take(1)
+                  .map(snapshot => snapshot.val());
   }
 }

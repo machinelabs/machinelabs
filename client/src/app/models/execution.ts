@@ -64,6 +64,7 @@ export class ExecutionRejectionInfo {
 export interface ExecutionWrapper {
   execution: Observable<Execution>;
   messages: Observable<ExecutionMessage>;
+  controlMessages: Observable<ExecutionMessage>;
 }
 
 export interface ExecutionInvocationInfo {

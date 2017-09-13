@@ -14,6 +14,7 @@ import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/last';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/skip';
+import 'rxjs/add/operator/finally';
 import 'rxjs/add/observable/from';
 
 

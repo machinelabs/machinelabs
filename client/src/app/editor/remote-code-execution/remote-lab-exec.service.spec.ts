@@ -97,7 +97,7 @@ describe('RemoteLabExecService', () => {
 
   describe('.run()', () => {
     it('should handle ProcessFinished gracefully', (done) => {
-      let doneWhen = new DoneWhen(done).calledNTimes(4);
+      let doneWhen = new DoneWhen(done).calledNTimes(5);
 
       let playedMessages = [
         { id: '0', kind: MessageKind.Stdout, data: 'some-text' },
@@ -105,6 +105,16 @@ describe('RemoteLabExecService', () => {
         { id: '2', kind: MessageKind.ExecutionFinished, data: '' },
         { id: '3', kind: MessageKind.Stdout, data: 'other text' }
       ] as Array<ExecutionMessage>;
+
+      let controlMessagesSubscriber = 0;
+
+      let controllMessages$ = new Observable<ExecutionMessage>(obs => {
+        controlMessagesSubscriber++;
+        obs.next(playedMessages[2]);
+        return () => {
+          doneWhen.call();
+        };
+      });
 
       let messagesSubscriber = 0;
 
@@ -145,11 +155,12 @@ describe('RemoteLabExecService', () => {
       let actualExecutions = [];
 
       doneWhen.assertBeforeDone(() => {
+        expect(controlMessagesSubscriber).toBe(1);
         expect(messagesSubscriber).toBe(1);
         expect(executionsSubscriber).toBe(1);
       });
 
-      const wrapper = rleService.consumeExecution(messages$, executions$);
+      const wrapper = rleService.consumeExecution(messages$, controllMessages$, executions$);
 
       wrapper.messages
               .do(msg => actualMessages.push(msg))
@@ -172,12 +183,22 @@ describe('RemoteLabExecService', () => {
     });
 
     it('should handle ExecutionRejected gracefully', (done) => {
-      let doneWhen = new DoneWhen(done).calledNTimes(4);
+      let doneWhen = new DoneWhen(done).calledNTimes(5);
 
       let playedMessages = [
         { id: '0', kind: MessageKind.ExecutionRejected, data: 'meh' },
         { id: '1', kind: MessageKind.Stdout, data: 'other-text' }
       ] as Array<ExecutionMessage>;
+
+      let controlMessagesSubscriber = 0;
+
+      let controllMessages$ = new Observable<ExecutionMessage>(obs => {
+        controlMessagesSubscriber++;
+        obs.next(playedMessages[0]);
+        return () => {
+          doneWhen.call();
+        };
+      });
 
       let messagesSubscriber = 0;
 
@@ -217,10 +238,11 @@ describe('RemoteLabExecService', () => {
 
       doneWhen.assertBeforeDone(() => {
         expect(messagesSubscriber).toBe(1);
+        expect(controlMessagesSubscriber).toBe(1);
         expect(executionsSubscriber).toBe(1);
       });
 
-      const wrapper = rleService.consumeExecution(messages$, executions$);
+      const wrapper = rleService.consumeExecution(messages$, controllMessages$, executions$);
 
       wrapper.messages
               .do(msg => actualMessages.push(msg))

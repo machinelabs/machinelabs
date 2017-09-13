@@ -112,9 +112,9 @@ export class EditorService {
 
     let genSkipText = createSkipTextHelper('character');
 
-    this.editorSnackbar.notifyLateExecutionUnless(wrapper.messages);
+    this.editorSnackbar.notifyLateExecutionUnless(wrapper.controlMessages);
 
-    wrapper.messages
+    wrapper.controlMessages
            .subscribe(msg => {
             if (msg.kind === MessageKind.ExecutionFinished) {
               this.editorSnackbar.notifyExecutionFinished();
