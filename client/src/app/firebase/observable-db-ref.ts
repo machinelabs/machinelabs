@@ -28,6 +28,10 @@ export class ObservableDbRef {
     return new ObservableDbRef(this.ref.startAt(value, key));
   }
 
+  equalTo(value: any) {
+    return new ObservableDbRef(this.ref.equalTo(value));
+  }
+
   once(eventType: string): Observable<firebase.database.DataSnapshot> {
     return Observable.fromPromise(this.ref.once(eventType));
   }
