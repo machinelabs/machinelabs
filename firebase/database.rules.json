@@ -249,7 +249,8 @@
           ".write": "auth.uid == 'execution-server'",
           ".indexOn": [
             "index",
-            "virtual_index"
+            "virtual_index",
+            "kind"
           ],
           "$mid": {
             ".validate": "newData.hasChildren(['id', 'index', 'virtual_index', 'timestamp', 'data', 'kind', 'terminal_mode'])",

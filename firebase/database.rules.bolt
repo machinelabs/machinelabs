@@ -193,7 +193,7 @@ path /executions {
 path /executions/{id}/messages {
   read() { true }
   write() { isExecutionServer() }
-  index() { ['index', 'virtual_index']}
+  index() { ['index', 'virtual_index', 'kind']}
 }
 
 path /executions/{id}/messages/{mid} is ExecutionMessage {
