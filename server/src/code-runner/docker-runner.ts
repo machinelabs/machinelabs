@@ -25,7 +25,7 @@ export class DockerRunner implements CodeRunner {
               private spawnShell: SpawnShellFn,
               private uploader: DockerFileUploader) {}
 
-  processCount = 0;
+  private processCount = 0;
 
   run(invocation: Invocation, configuration: PrivateLabConfiguration): Observable<ProcessStreamData> {
 
