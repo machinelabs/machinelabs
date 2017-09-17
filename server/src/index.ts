@@ -22,6 +22,8 @@ import { UsageStatisticResolver } from './validation/resolver/usage-statistic-re
 import { CostCalculator } from '@machinelabs/metrics';
 import { dbRefBuilder } from './ml-firebase';
 import { replaceConsole } from './logging';
+import { DockerFileUploader } from './code-runner/uploader/docker-file-uploader';
+import { spawn, spawnShell } from "@machinelabs/core";
 
 replaceConsole();
 
@@ -39,11 +41,14 @@ const recycleService = new RecycleService({
   deleteCount: 5000
 });
 
+const uploader = new DockerFileUploader(5, 5);
+
+
 dockerImageService
   .init()
   .subscribe(_ => {
     const DUMMY_RUNNER = process.argv.includes('--dummy-runner');
-    let runner = DUMMY_RUNNER ? new DummyRunner() : new DockerRunner();
+    let runner = DUMMY_RUNNER ? new DummyRunner() : new DockerRunner(spawn, spawnShell, uploader);
 
     const validationService = new ValidationService();
     validationService

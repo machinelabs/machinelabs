@@ -4,7 +4,7 @@ import { CodeRunner } from './code-runner';
 import { File } from '@machinelabs/core';
 import { Invocation } from '../models/invocation';
 import { PrivateLabConfiguration } from '../models/lab-configuration';
-import { trimNewLines, spawnShell, spawn, ProcessStreamData, stdoutMsg } from '@machinelabs/core';
+import { trimNewLines, ProcessStreamData, stdoutMsg, SpawnShellFn, SpawnFn } from '@machinelabs/core';
 import { mute } from '../rx/mute';
 import { getAccessToken } from '../util/gcloud';
 import { environment } from '../environments/environment';
@@ -21,8 +21,11 @@ const TMP_PARTITION_MODE = '1777';
  */
 export class DockerRunner implements CodeRunner {
 
+  constructor(private spawn: SpawnFn,
+              private spawnShell: SpawnShellFn,
+              private uploader: DockerFileUploader) {}
+
   processCount = 0;
-  uploader = new DockerFileUploader(5, 5);
 
   run(invocation: Invocation, configuration: PrivateLabConfiguration): Observable<ProcessStreamData> {
 
@@ -42,7 +45,7 @@ EOL
 
     this.processCount++;
 
-    return spawn('docker', [
+    return this.spawn('docker', [
       'create',
       '--cap-drop=ALL',
       '--security-opt=no-new-privileges',
@@ -59,8 +62,8 @@ EOL
     ])
     .map(msg => trimNewLines(msg.str))
     .flatMap(containerId =>
-      spawnShell(`docker start ${containerId}`).let(mute)
-          .concat(spawn('docker', [
+      this.spawnShell(`docker start ${containerId}`).let(mute)
+          .concat(this.spawn('docker', [
             'exec',
             '-t',
             containerId,
@@ -69,7 +72,7 @@ EOL
             `mkdir /run/outputs && cd /run && (${writeCommand}) && python main.py`
           ]))
           .concat(this.uploader.handleUpload(invocation, containerId))
-          .concat(spawnShell(`docker rm -f ${containerId}`).let(mute))
+          .concat(this.spawnShell(`docker rm -f ${containerId}`).let(mute))
     )
     .finally(() => this.processCount--);
   }
