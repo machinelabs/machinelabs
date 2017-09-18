@@ -2,7 +2,7 @@ import 'jest';
 import { Observable } from '@reactivex/rxjs';
 import { DockerRunner } from './docker-runner';
 import { Lab, stdout, ProcessStreamData, stdoutMsg } from '@machinelabs/core';
-import { PublicLabConfiguration, PrivateLabConfiguration } from '../models/lab-configuration';
+import { PublicLabConfiguration, InternalLabConfiguration } from '../models/lab-configuration';
 import { Invocation, InvocationType } from '../models/invocation';
 
 describe('.run(lab)', () => {
@@ -39,7 +39,7 @@ describe('.run(lab)', () => {
       }
     };
 
-    let conf: PrivateLabConfiguration = {
+    let conf: InternalLabConfiguration = {
       dockerImageId: 'foo',
       imageWithDigest: 'bar'
     };
