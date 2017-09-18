@@ -3,7 +3,7 @@ import { Observable } from '@reactivex/rxjs';
 import { CodeRunner } from './code-runner';
 import { File } from '@machinelabs/core';
 import { Invocation } from '../models/invocation';
-import { PrivateLabConfiguration } from '../models/lab-configuration';
+import { InternalLabConfiguration } from '../models/lab-configuration';
 import { trimNewLines, ProcessStreamData, stdoutMsg, SpawnShellFn, SpawnFn } from '@machinelabs/core';
 import { mute } from '../rx/mute';
 import { getAccessToken } from '../util/gcloud';
@@ -27,7 +27,7 @@ export class DockerRunner implements CodeRunner {
 
   private processCount = 0;
 
-  run(invocation: Invocation, configuration: PrivateLabConfiguration): Observable<ProcessStreamData> {
+  run(invocation: Invocation, configuration: InternalLabConfiguration): Observable<ProcessStreamData> {
 
     // construct a shell command to create all files.
     // The `&` makes sure that file creation happens asynchronously rather than sequentially.
