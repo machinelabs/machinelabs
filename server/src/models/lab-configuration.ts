@@ -1,5 +1,11 @@
+export interface LabInput {
+  url: string;
+  name: string;
+}
+
 export class PublicLabConfiguration {
   dockerImageId: string;
+  inputs: Array<LabInput> = [];
 }
 
 export class InternalLabConfiguration extends PublicLabConfiguration {
