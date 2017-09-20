@@ -21,7 +21,11 @@ describe('.run(lab)', () => {
       handleUpload: jest.fn().mockReturnValue(stdout('uploader output'))
     };
 
-    let runner = new DockerRunner(spawn, spawnShell, uploader);
+    let downloader: any = {
+      fetch: jest.fn().mockReturnValue(stdout('downloader output'))
+    };
+
+    let runner = new DockerRunner(spawn, spawnShell, uploader, downloader);
 
 
     let inv: Invocation = {
@@ -41,7 +45,8 @@ describe('.run(lab)', () => {
 
     let conf: InternalLabConfiguration = {
       dockerImageId: 'foo',
-      imageWithDigest: 'bar'
+      imageWithDigest: 'bar',
+      inputs: []
     };
 
     let outgoingMessages: Array<ProcessStreamData> = [];
@@ -54,9 +59,10 @@ describe('.run(lab)', () => {
        .concat(Observable.of())
        .subscribe(null, null, () => {
          expect(runner.count()).toBe(0);
-         expect(outgoingMessages.length).toBe(2);
-         expect(outgoingMessages[0]).toEqual(stdoutMsg('execution output'));
-         expect(outgoingMessages[1]).toEqual(stdoutMsg('uploader output'));
+         expect(outgoingMessages.length).toBe(3);
+         expect(outgoingMessages[0]).toEqual(stdoutMsg('downloader output'));
+         expect(outgoingMessages[1]).toEqual(stdoutMsg('execution output'));
+         expect(outgoingMessages[2]).toEqual(stdoutMsg('uploader output'));
          // tslint:disable-next-line
          expect(spawn.mock.calls[0]).toEqual(['docker', ['create', '--cap-drop=ALL', '--security-opt=no-new-privileges', '-t', '--read-only', '--tmpfs', '/run:rw,size=5g,mode=1777', '--tmpfs', '/tmp:rw,size=1g,mode=1777', '--name', '4711', 'bar', '/bin/bash']]);
          // tslint:disable-next-line

@@ -23,8 +23,8 @@ import { CostCalculator } from '@machinelabs/metrics';
 import { dbRefBuilder } from './ml-firebase';
 import { replaceConsole } from './logging';
 import { DockerFileUploader } from './code-runner/uploader/docker-file-uploader';
+import { DockerFileDownloader } from './code-runner/downloader/docker-file-downloader';
 import { spawn, spawnShell } from '@machinelabs/core';
-
 const { version } = require('../package.json');
 
 replaceConsole();
@@ -44,12 +44,13 @@ const recycleService = new RecycleService({
 });
 
 const uploader = new DockerFileUploader(5, 5);
+const downloader = new DockerFileDownloader(spawn);
 
 dockerImageService
   .init()
   .subscribe(_ => {
     const DUMMY_RUNNER = process.argv.includes('--dummy-runner');
-    let runner = DUMMY_RUNNER ? new DummyRunner() : new DockerRunner(spawn, spawnShell, uploader);
+    let runner = DUMMY_RUNNER ? new DummyRunner() : new DockerRunner(spawn, spawnShell, uploader, downloader);
 
     const validationService = new ValidationService();
     validationService

@@ -10,6 +10,7 @@ import { getAccessToken } from '../util/gcloud';
 import { environment } from '../environments/environment';
 import { getCurlForUpload } from '../util/file-upload';
 import { DockerFileUploader } from './uploader/docker-file-uploader';
+import { DockerFileDownloader } from './downloader/docker-file-downloader';
 
 const RUN_PARTITION_SIZE = '5g';
 const RUN_PARTITION_MODE = '1777';
@@ -23,7 +24,8 @@ export class DockerRunner implements CodeRunner {
 
   constructor(private spawn: SpawnFn,
               private spawnShell: SpawnShellFn,
-              private uploader: DockerFileUploader) {}
+              private uploader: DockerFileUploader,
+              private downloader: DockerFileDownloader) {}
 
   private processCount = 0;
 
@@ -63,6 +65,7 @@ EOL
     .map(msg => trimNewLines(msg.str))
     .flatMap(containerId =>
       this.spawnShell(`docker start ${containerId}`).let(mute)
+          .concat(this.downloader.fetch(containerId, configuration.inputs))
           .concat(this.spawn('docker', [
             'exec',
             '-t',
