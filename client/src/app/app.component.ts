@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationError, NavigationCancel } from '@angular/router';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 
+Hello World
+
+
 @Component({
   selector: 'ml-app',
   template: `
