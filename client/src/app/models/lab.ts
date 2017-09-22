@@ -1,13 +1,10 @@
-export interface File {
-  name: string;
-  content: string;
-}
+import { LabDirectory } from '@machinelabs/core/models/directory';
 
 export interface LabTemplate {
   name: string;
   description: string;
   tags: string[];
-  directory: File[];
+  directory: LabDirectory;
 }
 
 export interface Lab extends LabTemplate {

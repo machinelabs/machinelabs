@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MdDialog, MdDialogRef } from '@angular/material';
+import { File } from '@machinelabs/core/models/directory';
 import { Observable } from 'rxjs/Observable';
 
 import { LabExecutionService } from '../../lab-execution.service';
 import { EditorService, TabIndex } from '../../editor/editor.service';
 import { LocationHelper } from '../../util/location-helper';
-import { Lab, File } from '../../models/lab';
+import { Lab } from '../../models/lab';
 
 import { AceEditorComponent } from '../../editor/ace-editor/ace-editor.component';
 import { XtermComponent } from '../../editor/xterm/xterm.component';

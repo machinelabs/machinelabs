@@ -3,6 +3,9 @@ import { Observable } from 'rxjs/Observable';
 import { Injectable, EventEmitter } from '@angular/core';
 import { UrlSerializer, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import {
+  LabDirectory
+} from '@machinelabs/core/models/directory';
 import { LocationHelper } from '../util/location-helper';
 import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.service';
 import { EditorSnackbarService } from './editor-snackbar.service';
@@ -98,7 +101,7 @@ export class EditorService {
     this.initActiveFile();
   }
 
-  initDirectory(directory: Array<File>) {
+  initDirectory(directory: LabDirectory) {
     this.lab.directory = directory;
     this.initActiveFile();
   }

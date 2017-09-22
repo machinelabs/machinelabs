@@ -3,11 +3,11 @@ import { By } from '@angular/platform-browser';
 
 import { NO_ERRORS_SCHEMA, Component, Input } from '@angular/core';
 import { MdDialogModule } from '@angular/material';
+import { File } from '@machinelabs/core/models/directory';
 
 import { LAB_STUB } from '../../../test-helper/stubs/lab.stubs';
 
 import { EditorService } from '../editor.service';
-import { File } from '../../models/lab';
 import { FileTreeComponent } from './file-tree.component';
 import { FileNameDialogComponent } from '../file-name-dialog/file-name-dialog.component';
 
@@ -49,12 +49,12 @@ describe('FileTreeComponent', () => {
           { name: 'second.py', content: '' }
         ];
 
-        expect(component.isRemovable(component.files[0])).toBe(false);
-        expect(component.isRemovable(component.files[1])).toBe(true);
+        expect(component.isRemovable(<File>component.files[0])).toBe(false);
+        expect(component.isRemovable(<File>component.files[1])).toBe(true);
 
         // if it's the only file it's not removable either
         component.files = [{ name: 'second.py', content: '' }];
-        expect(component.isRemovable(component.files[0])).toBe(false);
+        expect(component.isRemovable(<File>component.files[0])).toBe(false);
       });
     });
 
@@ -67,8 +67,8 @@ describe('FileTreeComponent', () => {
           { name: 'second.py', content: '' }
         ];
 
-        expect(component.isEditable(component.files[0])).toBe(false);
-        expect(component.isEditable(component.files[1])).toBe(true);
+        expect(component.isEditable(<File>component.files[0])).toBe(false);
+        expect(component.isEditable(<File>component.files[1])).toBe(true);
       });
     });
 
@@ -76,7 +76,7 @@ describe('FileTreeComponent', () => {
 
       it('should delete given file', () => {
         expect(component.files).toEqual(editorService.lab.directory);
-        component.deleteFile(editorService.lab.directory[1]);
+        component.deleteFile(<File>editorService.lab.directory[1]);
         expect(component.files).toEqual([editorService.lab.directory[0]]);
       });
     });
@@ -88,7 +88,7 @@ describe('FileTreeComponent', () => {
           name: 'update.py',
           content: ''
         }
-        component.updateFile(editorService.lab.directory[0], updateFile);
+        component.updateFile(<File>editorService.lab.directory[0], updateFile);
         expect(editorService.lab.directory[0]).toEqual(updateFile);
       });
     });
