@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { MdDialog, MdDialogRef } from '@angular/material';
+import { File, LabDirectory } from '@machinelabs/core/models/directory';
+import { getMainFile } from '../util/file-tree-helper';
 
 import { FileNameDialogComponent } from '../file-name-dialog/file-name-dialog.component';
 
 import { EditorService } from '../editor.service';
-import { File } from '../../models/lab';
 
 const MAIN_PYTHON_FILENAME = 'main.py';
 
@@ -15,11 +16,11 @@ const MAIN_PYTHON_FILENAME = 'main.py';
 })
 export class FileTreeComponent {
 
-  set files(files: File[]) {
+  set files(files: LabDirectory) {
     this.editorService.lab.directory = files;
   }
 
-  get files(): File[] {
+  get files(): LabDirectory {
     return this.editorService.lab.directory;
   }
 
@@ -80,6 +81,6 @@ export class FileTreeComponent {
 
   deleteFile(file: File) {
     this.editorService.lab.directory.splice(this.editorService.lab.directory.indexOf(file), 1);
-    this.editorService.openFile(this.editorService.lab.directory[0]);
+    this.editorService.openFile(getMainFile(this.editorService.lab.directory));
   }
 }
