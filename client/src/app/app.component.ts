@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostBinding } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationError, NavigationCancel } from '@angular/router';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
+const { version } = require('../../package.json');
 
 @Component({
   selector: 'ml-app',
@@ -21,7 +22,9 @@ import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private router: Router, private slimLoadingBarService: SlimLoadingBarService) {}
+  @HostBinding('attr.ml-version') version = version;
+
+  constructor(private router: Router, private slimLoadingBarService: SlimLoadingBarService) { }
 
   ngOnInit() {
     this.router.events
