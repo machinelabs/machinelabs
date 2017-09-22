@@ -25,6 +25,8 @@ import { replaceConsole } from './logging';
 import { DockerFileUploader } from './code-runner/uploader/docker-file-uploader';
 import { spawn, spawnShell } from "@machinelabs/core";
 
+const { version } = require('../package.json');
+
 replaceConsole();
 
 console.log(`Starting MachineLabs server (${environment.serverId})`);
@@ -32,7 +34,7 @@ console.log(`Starting MachineLabs server (${environment.serverId})`);
 const labConfigService = new LabConfigService;
 const dockerImageService = new DockerImageService(getDockerImages());
 const usageStatisticService = new UsageStatisticService(new CostCalculator(), <any>dbRefBuilder);
-const recycleService = new RecycleService({ 
+const recycleService = new RecycleService({
   messageRepository: new MessageRepository(),
   getMessageTimeout: 5000,
   triggerIndex: 7000,
@@ -42,7 +44,6 @@ const recycleService = new RecycleService({
 });
 
 const uploader = new DockerFileUploader(5, 5);
-
 
 dockerImageService
   .init()
@@ -71,7 +72,5 @@ dockerImageService
     messagingService.init();
 
     console.log(`Using runner: ${runner.constructor.name}`);
-    console.log(`machinelabs server running (${environment.serverId})`);
+    console.log(`MachineLabs server running (${environment.serverId} on v${version})`);
   });
-
-
