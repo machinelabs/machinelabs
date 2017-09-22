@@ -1,4 +1,4 @@
-import { File } from '../models/lab';
+import { File } from '@machinelabs/core/models/directory';
 
 export class Directory {
 
