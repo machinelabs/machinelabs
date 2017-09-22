@@ -14,6 +14,6 @@ export const instanceOfFile = (object: any): object is File => {
   return object && 'content' in object;
 };
 
-export const instanceOfDirectory = (object: any): object is File => {
+export const instanceOfDirectory = (object: any): object is Directory => {
   return object && 'contents' in object;
 };
