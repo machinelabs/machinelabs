@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdDialog, MdDialogRef, MdSnackBar, MdTabGroup, MdDrawer } from '@angular/material';
 import { FormControl } from '@angular/forms';
+import { File } from '@machinelabs/core/models/directory';
 import { AceEditorComponent } from '../../editor/ace-editor/ace-editor.component';
 import { XtermComponent } from '../../editor/xterm/xterm.component';
 import {
@@ -20,7 +21,7 @@ import { LabStorageService } from '../../lab-storage.service';
 import { UserService } from '../../user/user.service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { Lab, File } from '../../models/lab';
+import { Lab } from '../../models/lab';
 import { Directory } from '../../util/directory';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { LocationHelper } from '../../util/location-helper';

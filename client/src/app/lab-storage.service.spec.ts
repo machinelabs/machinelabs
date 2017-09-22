@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { Inject } from '@angular/core';
+import { File } from '@machinelabs/core/models/directory';
 import { Observable } from 'rxjs/Observable';
 
 import { LabStorageService } from './lab-storage.service';
@@ -76,7 +77,7 @@ describe('LabStorageService', () => {
         expect(lab.directory.length).toBe(2);
         expect(lab.directory[0].name).toEqual('main.py');
         expect(lab.directory[1].name).toEqual('ml.yaml');
-        expect(lab.directory[0].content).toEqual('');
+        expect((<File>lab.directory[0]).content).toEqual('');
       });
     });
 
@@ -109,7 +110,7 @@ describe('LabStorageService', () => {
         expect(labStorageService.createLab).toHaveBeenCalledWith(LAB_TEMPLATES[TEMPLATE]);
         expect(lab.directory.length).toBe(2);
         expect(lab.name).toEqual(`Fork of ${LAB_TEMPLATES[TEMPLATE].name}`);
-        expect(lab.directory[0].content).toEqual(LAB_TEMPLATES[TEMPLATE].directory[0].content);
+        expect((<File>lab.directory[0]).content).toEqual(LAB_TEMPLATES[TEMPLATE].directory[0].content);
       });
     });
   });

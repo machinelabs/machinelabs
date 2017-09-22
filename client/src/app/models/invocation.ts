@@ -1,4 +1,4 @@
-import { File } from './lab';
+import { File } from '@machinelabs/core/models/directory';
 
 export enum InvocationType {
   StartExecution = 'start_execution',
