@@ -4,7 +4,11 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { UrlSerializer, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import {
-  LabDirectory
+  instanceOfFile,
+  instanceOfDirectory,
+  LabDirectory,
+  File,
+  Directory
 } from '@machinelabs/core/models/directory';
 import { LocationHelper } from '../util/location-helper';
 import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.service';
@@ -13,7 +17,8 @@ import { LabExecutionService } from 'app/lab-execution.service';
 import { LabStorageService } from '../lab-storage.service';
 import { createSkipTextHelper } from './util/skip-helper';
 
-import { File, Lab } from '../models/lab';
+import { Lab } from '../models/lab';
+import { getMainFile } from './util/file-tree-helper';
 import {
   MessageKind,
   ExecutionRejectionInfo,
@@ -43,6 +48,18 @@ export interface ListenAndNotifyOptions {
   pauseModeExecutionStartedAction?: () => void;
   pauseModeExecutionFinishedAction?: () => void;
 }
+
+const findFile = (name: string) => {
+  return (fileOrDirectory: File | Directory) => {
+    return fileOrDirectory.name === name && instanceOfFile(fileOrDirectory);
+  };
+};
+
+const findDirectory = (name: string) => {
+  return (fileOrDirectory: File | Directory) => {
+    return fileOrDirectory.name === name && instanceOfDirectory(fileOrDirectory);
+  }
+};
 
 @Injectable()
 export class EditorService {
@@ -238,10 +255,10 @@ export class EditorService {
     this.selectedTabChange.emit(tabIndex);
   }
 
-  openFile(file: File) {
+  openFile(file: File, path?: string) {
     this.activeFile = file;
     this.locationHelper.updateQueryParams(this.location.path(), {
-      file: file.name,
+      file: path ? path : file.name
     });
   }
 
@@ -274,8 +291,45 @@ export class EditorService {
   }
 
   private initActiveFile() {
-    const file = this.lab.directory
-      .find(f => f.name === this.urlSerializer.parse(this.location.path()).queryParams.file);
-    this.openFile(file || this.lab.directory[0]);
+    const path = this.urlSerializer.parse(this.location.path()).queryParams.file;
+    let file = path ? this.getFileFromPath(path) : null;
+    this.openFile(file || getMainFile(this.lab.directory), file ? path : null);
+  }
+
+  private getFileFromPath(path: string): File | null {
+    let pathSegments = this.normalizePathSegments(path);
+    let currentDirectory = this.lab.directory;
+    let file = null;
+
+    for (let i = 0; i < pathSegments.length; i++) {
+      let name = pathSegments[i];
+      let lookingForDirectory = i !== pathSegments.length - 1;
+
+      let fileOrDirectory = currentDirectory
+          .find(lookingForDirectory ? findDirectory(name) : findFile(name));
+
+      if (!fileOrDirectory) {
+        break;
+      }
+
+      if (lookingForDirectory) {
+        if (instanceOfDirectory(fileOrDirectory)) {
+          currentDirectory = fileOrDirectory.contents;
+        }
+      } else {
+        if (instanceOfFile(fileOrDirectory)) {
+          file = fileOrDirectory;
+        }
+      }
+    }
+    return file;
+  }
+
+  private normalizePathSegments(path: string) {
+    let segments = path.split('/');
+    if (segments[0] === '') {
+      segments.splice(0, 1);
+    }
+    return segments;
   }
 }
