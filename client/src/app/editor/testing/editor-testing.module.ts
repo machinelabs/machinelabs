@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MdDialogModule } from '@angular/material';
 import { MachineLabsMaterialModule } from '../../ml-material.module';
 import { EditorModule } from '../editor.module';
 
@@ -22,7 +23,8 @@ import { AUTH_SERVICE_STUB } from '../../../test-helper/stubs/auth.service.stubs
 @NgModule({
   imports: [
     RouterTestingModule,
-    MachineLabsMaterialModule
+    MachineLabsMaterialModule,
+    MdDialogModule
   ],
   exports: [
     RouterModule,
