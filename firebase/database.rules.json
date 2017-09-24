@@ -52,7 +52,7 @@
     "labs": {
       "$id": {
         "common": {
-          ".validate": "newData.hasChildren(['id', 'user_id', 'name', 'description', 'hidden', 'created_at', 'modified_at'])",
+          ".validate": "newData.hasChildren(['id', 'user_id', 'name', 'description', 'directory', 'hidden', 'created_at', 'modified_at'])",
           "id": {
             ".validate": "newData.isString()"
           },
@@ -78,19 +78,7 @@
             ".validate": "newData.hasChildren()"
           },
           "directory": {
-            "$key2": {
-              ".validate": "newData.hasChildren(['name', 'content'])",
-              "name": {
-                ".validate": "newData.isString()"
-              },
-              "content": {
-                ".validate": "newData.isString()"
-              },
-              "$other": {
-                ".validate": "false"
-              }
-            },
-            ".validate": "newData.hasChildren()"
+            ".validate": "newData.isString()"
           },
           "hidden": {
             ".validate": "newData.isBoolean()"
@@ -132,24 +120,12 @@
             ".validate": "newData.isString()"
           },
           "data": {
-            ".validate": "newData.hasChildren() && newData.hasChildren(['id']) || newData.hasChildren() && newData.hasChildren(['execution_id'])",
+            ".validate": "newData.hasChildren() && newData.hasChildren(['id', 'directory']) || newData.hasChildren() && newData.hasChildren(['execution_id'])",
             "id": {
               ".validate": "newData.isString()"
             },
             "directory": {
-              "$key2": {
-                ".validate": "newData.hasChildren() && newData.hasChildren(['name', 'content'])",
-                "name": {
-                  ".validate": "newData.isString()"
-                },
-                "content": {
-                  ".validate": "newData.isString()"
-                },
-                "$other": {
-                  ".validate": "false"
-                }
-              },
-              ".validate": "newData.hasChildren()"
+              ".validate": "newData.isString()"
             },
             "$other": {
               ".validate": "false"
@@ -203,24 +179,12 @@
             ".validate": "newData.isString() && auth.uid == 'execution-server'"
           },
           "lab": {
-            ".validate": "newData.hasChildren(['id'])",
+            ".validate": "newData.hasChildren(['id', 'directory'])",
             "id": {
               ".validate": "newData.isString()"
             },
             "directory": {
-              "$key2": {
-                ".validate": "newData.hasChildren(['name', 'content'])",
-                "name": {
-                  ".validate": "newData.isString()"
-                },
-                "content": {
-                  ".validate": "newData.isString()"
-                },
-                "$other": {
-                  ".validate": "false"
-                }
-              },
-              ".validate": "newData.hasChildren()"
+              ".validate": "newData.isString()"
             },
             "$other": {
               ".validate": "false"

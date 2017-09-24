@@ -60,7 +60,7 @@ export class RemoteLabExecService {
         type: InvocationType.StartExecution,
         data: {
           id: lab.id,
-          directory: lab.directory
+          directory: JSON.stringify(lab.directory)
         }
       }))
       .switchMap(_ =>  this.db.executionMessageRef(id).limitToFirst(1).childAdded().take(1))
@@ -115,7 +115,13 @@ export class RemoteLabExecService {
 
     let execution$ = this.db.executionRef(executionId)
                             .value()
-                            .map(snapshot => snapshot.val());
+                            .map(snapshot => snapshot.val())
+                            .map(execution => {
+                              if (typeof execution.lab.directory === 'string') {
+                                execution.lab.directory = JSON.parse(execution.lab.directory);
+                              }
+                              return execution;
+                            });
 
     let messages$ = this.messageStreamOptimizer.listenForMessages(executionId);
 

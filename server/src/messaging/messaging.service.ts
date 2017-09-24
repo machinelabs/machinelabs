@@ -47,8 +47,14 @@ export class MessagingService {
     // Invoke new processes for incoming StartExecution Invocations
     newInvocations$
     .filter((invocation: Invocation) => invocation.type === InvocationType.StartExecution)
+    .map(invocation => {
+      if (typeof invocation.data.directory === 'string') {
+        invocation.data.directory = JSON.parse(invocation.data.directory);
+      }
+      return invocation;
+    })
     .subscribe(invocation => {
-
+      
       this.getOutputAsObservable(invocation)
           .flatMap(data => this.handleOutput(data.message, data.invocation))
           .subscribe(null, (error) => {
@@ -146,11 +152,16 @@ export class MessagingService {
   }
 
   createExecutionAndUpdateLabs(invocation: Invocation, hash: string) {
+
+    const lab = Object.assign({}, invocation.data, {
+      directory: JSON.stringify(invocation.data.directory)
+    });
+
     dbRefBuilder.executionRef(invocation.id)
       .set({
         id: invocation.id,
         cache_hash: hash,
-        lab: invocation.data,
+        lab: lab,
         server_info: `${this.server.name} (${this.server.hardware_type})`,
         hardware_type: this.server.hardware_type,
         server_id: this.server.id,
