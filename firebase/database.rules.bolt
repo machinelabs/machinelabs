@@ -32,7 +32,7 @@ type Lab {
   has_cached_run: Boolean | Null,
   cache_hash: String | Null
   tags: String[],
-  directory: File[],
+  directory: String,
   hidden: Boolean,
   created_at: Number,
   modified_at: Number,
@@ -46,7 +46,7 @@ type File {
 
 type InvocationLab {
   id: String,
-  directory: File[]
+  directory: String
 }
 
 type InvocationExecution {

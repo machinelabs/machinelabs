@@ -1,0 +1,64 @@
+.ml-file-list {
+  max-height: 400px;
+  overflow: auto;
+  list-style: none;
+  margin: 0;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 1.2em;
+  padding-bottom: 1.2em;
+}
+
+.ml-file-list-item {
+  font-size: 0.9em;
+  font-weight: 400;
+  padding: 0.4em 0.4em;
+  line-height: 1.4;
+  position: relative;
+
+  md-icon {
+    font-size: 1.2em;
+    vertical-align: -22%;
+    height: 18px;
+    width: 18px;
+  }
+
+  &:hover {
+    cursor: pointer;
+
+    .ml-file-list-item-button {
+      display: block;
+    }
+  }
+}
+
+.ml-file-list-item-button {
+  background: transparent;
+  border: none;
+  position: absolute;
+  cursor: pointer;
+  display: none;
+
+  md-icon { font-size: 1.6em; }
+
+  &.add {
+    right: 80px;
+    top: 5px;
+  }
+
+  &.add-folder {
+    right: 54px;
+    top: 5px;
+  }
+
+  &.edit {
+    right: 28px;
+    top: 5px;
+  }
+
+  &.delete {
+    right: 2px;
+    top: 6px;
+  }
+}
+

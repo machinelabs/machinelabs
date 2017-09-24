@@ -12,6 +12,7 @@ import { EditorLayoutPanelCtaBarComponent } from './layout/editor-layout-panel-c
 import { EditorLayoutFooterComponent } from './layout/editor-layout-footer.component';
 
 import { FileTreeComponent } from './file-tree/file-tree.component';
+import { FileListComponent } from './file-list/file-list.component';
 import { FileNameDialogComponent } from './file-name-dialog/file-name-dialog.component';
 import { AceEditorComponent } from './ace-editor/ace-editor.component';
 import { XtermComponent } from './xterm/xterm.component';
@@ -43,6 +44,7 @@ import { FILE_PREVIEW_DIALOG_SCROLL_STRATEGY_PROVIDER } from './file-preview/fil
     EditorLayoutPanelCtaBarComponent,
     EditorLayoutFooterComponent,
     FileTreeComponent,
+    FileListComponent,
     FileNameDialogComponent,
     FileOutputsComponent,
     FilePreviewDialogComponent,
