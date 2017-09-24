@@ -4,7 +4,7 @@ import { File, Directory, LabDirectory } from '@machinelabs/core/models/director
 export const EDITOR_SERVICE_STUB = {
   lab: Object.assign({}, LAB_STUB),
   openFile: (file: File) => {},
-  deleteFileFromDirectory: (file: File, directory: Directory) => {
+  deleteFromDirectory: (file: File | Directory, directory: Directory) => {
     directory.contents.splice(directory.contents.indexOf(file), 1);
   },
   updateFileInDirectory: (file: File, newFile: File, directory: Directory) => {
