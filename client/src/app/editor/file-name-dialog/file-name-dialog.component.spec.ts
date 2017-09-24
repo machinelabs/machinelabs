@@ -26,9 +26,12 @@ describe('FileNameDialogComponent', () => {
   }));
 
   it('should have an invalid form if no file name is entered', () => {
+    let directory = { name: '', contents: [] };
+    let file = { name: '', content: '' };
     let dialogRef = dialog.open(FileNameDialogComponent, {
       data: {
-        fileName: '',
+        fileOrDirectory: file,
+        parentDirectory: directory
       }
     });
 
@@ -41,9 +44,12 @@ describe('FileNameDialogComponent', () => {
   });
 
   it('should be pre-filled with a file name if data is given', () => {
+    let directory = { name: '', contents: [] };
+    let file = { name: 'test', content: '' };
     let dialogRef = dialog.open(FileNameDialogComponent, {
       data: {
-        fileName: testName
+        fileOrDirectory: file,
+        parentDirectory: directory
       }
     });
 
@@ -53,9 +59,12 @@ describe('FileNameDialogComponent', () => {
   });
 
   it('should emit close event with entered file name', () => {
+    let directory = { name: '', contents: [] };
+    let file = { name: 'test', content: '' };
     let dialogRef = dialog.open(FileNameDialogComponent, {
       data: {
-        fileName: '',
+        fileOrDirectory: file,
+        parentDirectory: directory
       }
     });
 
