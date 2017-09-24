@@ -3,11 +3,14 @@ import { EditorTestingModule } from './testing/editor-testing.module';
 import { Location } from '@angular/common';
 import { UrlSerializer } from '@angular/router';
 import { File } from '@machinelabs/core/models/directory';
+import { Observable } from 'rxjs/Observable';
 
 import { LAB_STUB } from '../../test-helper/stubs/lab.stubs';
 
 import { EditorService, TabIndex } from './editor.service';
 import { LocationHelper } from '../util/location-helper';
+
+import { FileNameDialogComponent } from './file-name-dialog/file-name-dialog.component';
 
 describe('EditorService', () => {
 
@@ -294,6 +297,49 @@ describe('EditorService', () => {
     it('should select TabIndex.Console', () => {
       editorService.selectConsoleTab();
       expect(editorService.selectedTab).toEqual(TabIndex.Console);
+    });
+  });
+
+  describe('openNameDialog', () => {
+
+    it('should open dialog to add files and folders with new file or folder', () => {
+      let directory = { name: 'foo', contents: [] };
+      let file = { name: '', content: '' };
+      spyOn(editorService.dialog, 'open').and.returnValue({
+        afterClosed: () => {
+          return Observable.of(null)
+        }
+      });
+      editorService.openNameDialog(directory , file);
+      expect(editorService.dialog.open)
+        .toHaveBeenCalledWith(FileNameDialogComponent, {
+          disableClose: false,
+          data: {
+            fileOrDirectory: file,
+            parentDirectory: directory
+          }
+        });
+    });
+
+    it('should open dialog to edit files and folder', () => {
+      spyOn(editorService.dialog, 'open').and.returnValue({
+        afterClosed: () => {
+          return Observable.of(null)
+        }
+      });
+
+      let directory = { name: '', contents: [] };
+      let fileToEdit = { name: 'main.py', content: '' };
+
+      editorService.openNameDialog(directory, fileToEdit);
+      expect(editorService.dialog.open)
+        .toHaveBeenCalledWith(FileNameDialogComponent, {
+          disableClose: false,
+          data: {
+            fileOrDirectory: fileToEdit,
+            parentDirectory: directory
+          }
+        });
     });
   });
 });

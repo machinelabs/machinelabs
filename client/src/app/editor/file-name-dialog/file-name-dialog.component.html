@@ -1,0 +1,20 @@
+<ml-dialog-header>Add new file</ml-dialog-header>
+<form [formGroup]="form" (ngSubmit)="submit(form)">
+  <ml-dialog-content>
+    <md-form-field>
+      <input mdInput placeholder="File name" formControlName="filename">
+      <md-hint *ngIf="!form.valid && !form.pristine">
+        <ng-container *ngIf="form.get('filename').hasError('required')">
+          This field is required.
+        </ng-container>
+        <ng-container *ngIf="form.get('filename').hasError('alreadyExists')">
+          Already exists in this directory.
+        </ng-container>
+      </md-hint>
+    </md-form-field>
+  </ml-dialog-content>
+  <ml-dialog-cta-bar>
+    <button md-button [disabled]="!form.valid" type="submit">Ok</button>
+    <button md-button type="button" (click)="dialogRef.close()">Cancel</button>
+  </ml-dialog-cta-bar>
+</form>
