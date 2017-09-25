@@ -11,15 +11,17 @@ import { LabConfigResolver } from '../resolver/lab-config-resolver';
 
 export class HasValidConfigRule implements ValidationRule {
 
+  constructor (private labConfigService: LabConfigService) {}
+
   check(validationContext: Invocation, resolves: Map<Function, Observable<any>>): Observable<ValidationResult> {
 
     if (!resolves.has(LabConfigResolver)) {
-      throw new Error('Missing resoler: LabConfigResolver');
+      throw new Error('Missing resolver: LabConfigResolver');
     }
 
     return resolves
       .get(LabConfigResolver)
-      .map(config => !config || !config.imageWithDigest ?
+      .map(config => !config || !this.labConfigService.isValidInternalConfig(config) ?
         new ExecutionRejectionInfo(ExecutionRejectionReason.InvalidConfig, 'Config (ml.yaml) is invalid') :
         true);
   }

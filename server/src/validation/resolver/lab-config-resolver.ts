@@ -15,6 +15,8 @@ export class LabConfigResolver implements Resolver {
   resolve(invocation: Invocation) {
 
     let config = this.labConfigService.readConfig(invocation.data);
+
+    // Run transformations to turn public config into internal config
     if (config) {
       config.imageWithDigest = this.dockerImageService.getImageNameWithDigest(config.dockerImageId);
     }
