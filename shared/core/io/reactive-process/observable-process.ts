@@ -23,4 +23,4 @@ export const toObservableProcess = (process: ChildProcess) => {
   let closeStream = Observable.fromEvent(process, 'close').share();
 
   return Observable.merge(stdOutStream, stdErrStream).takeUntil(closeStream);
-}
+};
