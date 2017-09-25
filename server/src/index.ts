@@ -23,7 +23,7 @@ import { CostCalculator } from '@machinelabs/metrics';
 import { dbRefBuilder } from './ml-firebase';
 import { replaceConsole } from './logging';
 import { DockerFileUploader } from './code-runner/uploader/docker-file-uploader';
-import { spawn, spawnShell } from "@machinelabs/core";
+import { spawn, spawnShell } from '@machinelabs/core';
 
 const { version } = require('../package.json');
 

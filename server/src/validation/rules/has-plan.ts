@@ -1,4 +1,4 @@
-import { Observable } from '@reactivex/rxjs'
+import { Observable } from '@reactivex/rxjs';
 import { ValidationRule } from './rule';
 import { ExtendedUser } from '../../models/user';
 import { Invocation } from '../../models/invocation';

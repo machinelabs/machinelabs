@@ -1,4 +1,4 @@
-import { Observable } from '@reactivex/rxjs'
+import { Observable } from '@reactivex/rxjs';
 import { Resolver } from './resolver';
 import { Invocation } from '../../models/invocation';
 import { DockerImageService } from '../../docker-image.service';

@@ -1,4 +1,4 @@
-import { Observable } from '@reactivex/rxjs'
+import { Observable } from '@reactivex/rxjs';
 import { Resolver } from './resolver';
 import { Invocation } from '../../models/invocation';
 import { UsageStatisticService } from '@machinelabs/metrics';

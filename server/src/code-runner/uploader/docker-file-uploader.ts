@@ -31,7 +31,7 @@ export class DockerFileUploader {
     let uploadFiles$ = files.filter(fileInfo => fileInfo.sizeBytes <= this.maxFileSize)
       .take(this.maxFileCount);
 
-    let genericError = 'An error occured during the upload'
+    let genericError = 'An error occured during the upload';
 
     return getAccessToken()
       .flatMap(token => uploadFiles$.map(fileInfo => ({ fileInfo, token })))
@@ -42,8 +42,8 @@ export class DockerFileUploader {
         // We work around it by muting everything except errors with --silent --show-errors
         // Errors will still appear on STDOUT but we know that when we make it this far that
         // it has to be an error even though it's coming through STDOUT
-        console.error(genericError, val.str)
-        return stderrMsg(`${genericError}\r\n`)
+        console.error(genericError, val.str);
+        return stderrMsg(`${genericError}\r\n`);
       })
       // We don't want the generic error to show up n times (once per failure)
       .distinctUntilChanged((a, b) => a.str == b.str)
@@ -56,7 +56,7 @@ export class DockerFileUploader {
   private getFileList(containerId: string): Observable<FileInfo> {
     return spawn('docker', ['exec', containerId, '/bin/bash', '-c', 'cd /run/outputs && find . -maxdepth 1 -type f | xargs stat --printf "%n:::%s"'])
       .filter(val => val.origin === OutputType.Stdout)
-      .map(val => val.str.split('./').filter(name => name.length > 0).map(val => val.split(':::')))
+      .map(val => val.str.split('./').filter(name => name.length > 0).map(output => output.split(':::')))
       .flatMap(fileList => Observable.from(fileList))
       .map(fileInfo => ({ name: fileInfo[0], sizeBytes: parseInt(fileInfo[1], 10) }));
   }

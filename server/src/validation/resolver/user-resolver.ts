@@ -1,4 +1,4 @@
-import { Observable } from '@reactivex/rxjs'
+import { Observable } from '@reactivex/rxjs';
 import { Resolver } from './resolver';
 import { dbRefBuilder } from '../../ml-firebase';
 import { Invocation } from '../../models/invocation';

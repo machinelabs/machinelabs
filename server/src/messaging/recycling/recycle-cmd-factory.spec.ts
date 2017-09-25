@@ -3,7 +3,7 @@ import 'jest';
 import { recycleCmdFactory, RecycleCmdInfo } from './recycle-cmd-factory';
 import { ExecutionMessage, MessageKind } from '../../models/execution';
 
-let toSnapshot = (v:any) => ({ val: () => v})
+let toSnapshot = (v: any) => ({ val: () => v});
 
 describe('createRecycleCommand()', () => {
   it('should generate command to replace messages at the beginning', () => {

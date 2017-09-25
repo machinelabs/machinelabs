@@ -1,8 +1,8 @@
 import { ExecutionMessage } from '../../models/execution';
-import isNumber = require('lodash.isnumber')
+import isNumber = require('lodash.isnumber');
 
 export interface ForeEachable {
-  forEach(fn:(val: any) => boolean| void): void;
+  forEach(fn: (val: any) => boolean| void): void;
 }
 
 export interface RecycleCmdInfo {
@@ -13,7 +13,7 @@ export interface RecycleCmdInfo {
   rest: number;
 }
 
-export function recycleCmdFactory(executionId:string, msgs: ForeEachable, deleteCount: number) : RecycleCmdInfo {
+export function recycleCmdFactory(executionId: string, msgs: ForeEachable, deleteCount: number): RecycleCmdInfo {
   let cmd = {};
 
   let index = 0;
@@ -27,7 +27,7 @@ export function recycleCmdFactory(executionId:string, msgs: ForeEachable, delete
       removeCount++;
     } else if (isNumber(msg.index)) {
       cmd[`/executions/${executionId}/messages/${msg.id}/index`] = msg.index - removeCount;
-      patchCount++
+      patchCount++;
     }
 
     index++;
@@ -40,5 +40,5 @@ export function recycleCmdFactory(executionId:string, msgs: ForeEachable, delete
     patched: patchCount,
     // A rest can only happen if there are messages without index
     rest: index - removeCount - patchCount
-  }
+  };
 }
