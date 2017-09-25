@@ -1,7 +1,8 @@
 import { Lab } from '@machinelabs/core';
-import { PublicLabConfiguration, InternalLabConfiguration } from '../models/lab-configuration';
+import { PublicLabConfiguration, InternalLabConfiguration, ScriptParameter } from '../models/lab-configuration';
 import { safeLoad} from 'js-yaml';
 import isString = require('lodash.isstring');
+import isObject = require('lodash.isobject');
 
 const CONFIG_FILE_NAME = 'ml.yaml';
 
@@ -37,6 +38,11 @@ export class LabConfigService {
 
   public isValidInternalConfig(config: InternalLabConfiguration) {
     return isString(config.imageWithDigest) && config.imageWithDigest.length > 0 &&
-           Array.isArray(config.inputs);
+      Array.isArray(config.inputs) && this.hasValidParameters(config);
+  }
+
+  private hasValidParameters(config: InternalLabConfiguration) {
+    return Array.isArray(config.parameters) &&
+      config.parameters.every(param => isObject(param) && !!param['pass-as']);
   }
 }

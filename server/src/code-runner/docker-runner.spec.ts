@@ -46,7 +46,11 @@ describe('.run(lab)', () => {
     let conf: InternalLabConfiguration = {
       dockerImageId: 'foo',
       imageWithDigest: 'bar',
-      inputs: []
+      inputs: [],
+      parameters: [
+        { 'pass-as': '--learning_rate=5' },
+        { 'pass-as': '--max_steps=200' }
+      ]
     };
 
     let outgoingMessages: Array<ProcessStreamData> = [];
@@ -69,7 +73,7 @@ describe('.run(lab)', () => {
          expect(spawn.mock.calls[1]).toEqual(['docker', ['exec', '-t', containerId, '/bin/bash', '-c', `mkdir /run/outputs && cd /run && ({ cat <<'EOL' > foo.py
 foo
 EOL
-}) && python main.py`]]);
+}) && python main.py --learning_rate=5 --max_steps=200`]]);
          expect(uploader.handleUpload.mock.calls.length).toBe(1);
          done();
        });
