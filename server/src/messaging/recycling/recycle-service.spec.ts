@@ -6,14 +6,14 @@ import { ExecutionMessage, MessageKind } from '../../models/execution';
 import { recycleCmdFactory } from './recycle-cmd-factory';
 import { RecycleService, RecycleConfig } from './recycle.service';
 
-let toSnapshot = (v:any) => ({ val: () => v})
+let toSnapshot = (v: any) => ({ val: () => v});
 
-const createGetMessages = (msgs: Array<ExecutionMessage>, delay = 0) => (executionId: string, fromVirtualIndex:number, toVirtualIndex: number) => {
+const createGetMessages = (msgs: Array<ExecutionMessage>, delay = 0) => (executionId: string, fromVirtualIndex: number, toVirtualIndex: number) => {
   let msgs$ = Observable.of(msgs.filter(msg => msg.virtual_index >= fromVirtualIndex && msg.virtual_index <= toVirtualIndex)
                            .map(toSnapshot));
 
   return delay > 0 ? msgs$.delay(delay) : msgs$;
-} 
+};
 
 describe('createRecycleCommand()', () => {
   it('should call correct delete command', () => {
@@ -50,7 +50,7 @@ describe('createRecycleCommand()', () => {
 
     return Observable
       .from(msgs)
-      .let(msgs => recycleService.watch('1', msgs))
+      .let(msgs$ => recycleService.watch('1', msgs$))
       .do(val => outboundMsgs.push(val))
       .toPromise()
       .then(() => {
@@ -100,7 +100,7 @@ describe('createRecycleCommand()', () => {
     ];
 
 
-    const getMessages = jest.fn((executionId: string, fromVirtualIndex:number, toVirtualIndex: number) => {
+    const getMessages = jest.fn((executionId: string, fromVirtualIndex: number, toVirtualIndex: number) => {
       // Here we mock that the database is not returning the expected number of messages
       return Observable.of([msgs[2], msgs[3]].map(toSnapshot));
     });
@@ -122,11 +122,11 @@ describe('createRecycleCommand()', () => {
 
     return Observable
       .from(msgs)
-      .let(msgs => recycleService.watch('1', msgs))
+      .let(msgs$ => recycleService.watch('1', msgs$))
       .do(val => outboundMsgs.push(val))
       .toPromise()
       .then(() => {
-        
+
         expect(outboundMsgs[0].index).toBe(0);
         expect(outboundMsgs[0].virtual_index).toBe(0);
 
@@ -189,7 +189,7 @@ describe('createRecycleCommand()', () => {
 
     return Observable
       .from(msgs)
-      .let(msgs => recycleService.watch('1', msgs))
+      .let(msgs$ => recycleService.watch('1', msgs$))
       .do(val => outboundMsgs.push(val))
       .toPromise()
       .then(() => {
@@ -240,7 +240,7 @@ describe('createRecycleCommand()', () => {
     ];
 
 
-    //First call fails, second works
+    // First call fails, second works
     const getMessages = jest.fn(createGetMessages(msgs))
                             .mockImplementationOnce(() => Observable.throw('no internet'));
 
@@ -261,7 +261,7 @@ describe('createRecycleCommand()', () => {
 
     return Observable
       .from(msgs)
-      .let(msgs => recycleService.watch('1', msgs))
+      .let(msgs$ => recycleService.watch('1', msgs$))
       .do(val => outboundMsgs.push(val))
       .toPromise()
       .then(() => {
@@ -312,7 +312,7 @@ describe('createRecycleCommand()', () => {
     ];
 
 
-    //First call fails, second works
+    // First call fails, second works
     const getMessages = jest.fn(createGetMessages(msgs))
                             .mockImplementationOnce(() => Observable.of().delay(1500));
 
@@ -333,7 +333,7 @@ describe('createRecycleCommand()', () => {
 
     return Observable
       .from(msgs)
-      .let(msgs => recycleService.watch('1', msgs))
+      .let(msgs$ => recycleService.watch('1', msgs$))
       .do(val => outboundMsgs.push(val))
       .toPromise()
       .then(() => {
@@ -383,8 +383,8 @@ describe('createRecycleCommand()', () => {
           { id: '7', index: 6, virtual_index: 6, data: '', timestamp: Date.now(), kind: MessageKind.ExecutionFinished }
         ];
 
-        //Getting the messages takes half a second. This is expected to make
-        //messages index > 5 queue up.
+        // Getting the messages takes half a second. This is expected to make
+        // messages index > 5 queue up.
         let getMessageDelay = 500;
         const getMessages = jest.fn(createGetMessages(msgs, getMessageDelay));
 
@@ -408,7 +408,7 @@ describe('createRecycleCommand()', () => {
 
         return Observable
           .from(msgs)
-          .let(msgs => recycleService.watch('1', msgs))
+          .let(msgs$ => recycleService.watch('1', msgs$))
           .do(val => {
             // We are getting a timestamp at the moment where the messages
             // come out of the recycleService. Therefore we can compare if
@@ -434,11 +434,11 @@ describe('createRecycleCommand()', () => {
             expect(outboundMsgs[4].virtual_index).toBe(4);
 
             let preRecycleReceivedAt = outboundMsgs[4]['received_at'];
-            expect(outboundMsgs[5]['received_at'] - preRecycleReceivedAt).toBeGreaterThanOrEqual(getMessageDelay)
+            expect(outboundMsgs[5]['received_at'] - preRecycleReceivedAt).toBeGreaterThanOrEqual(getMessageDelay);
             expect(outboundMsgs[5].index).toBe(3);
             expect(outboundMsgs[5].virtual_index).toBe(5);
 
-            expect(outboundMsgs[6]['received_at'] - preRecycleReceivedAt).toBeGreaterThanOrEqual(getMessageDelay)
+            expect(outboundMsgs[6]['received_at'] - preRecycleReceivedAt).toBeGreaterThanOrEqual(getMessageDelay);
             expect(outboundMsgs[6].index).toBe(4);
             expect(outboundMsgs[6].virtual_index).toBe(6);
 

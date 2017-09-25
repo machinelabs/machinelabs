@@ -21,15 +21,15 @@ export class RecycleAccumulator {
 
   private invoke (acc: RecycleAccumulator, message: ExecutionMessage): Observable<RecycleAccumulator> {
 
-    Object.assign(message, { 
+    Object.assign(message, {
       index: acc.index,
       virtual_index: acc.virtualIndex
     });
 
     acc.message = message;
-    
+
     return this.recycleOrContinue(acc)
-               .map((currentAcc:RecycleAccumulator) => {
+               .map((currentAcc: RecycleAccumulator) => {
                   currentAcc.index++;
                   currentAcc.virtualIndex++;
                   return currentAcc;
@@ -42,7 +42,7 @@ export class RecycleAccumulator {
 
       let recycleId = Date.now();
 
-      console.log(`RecycleId ${recycleId} at ${Date.now()}: Entering recycle phase`)
+      console.log(`RecycleId ${recycleId} at ${Date.now()}: Entering recycle phase`);
 
       let fromVirtualIndex = acc.virtualIndex - this.config.tailLength;
       let toVirtualIndex = acc.virtualIndex - 1;
@@ -92,7 +92,7 @@ export class RecycleAccumulator {
 
             this.increaseTriggerIndex(acc);
             return Observable.of(acc);
-          })
+          });
     }
 
     return Observable.of(acc);
@@ -102,7 +102,7 @@ export class RecycleAccumulator {
     acc.triggerIndex = acc.triggerIndex + this.config.triggerIndexStep;
   }
 
-  clone () : RecycleAccumulator {
+  clone (): RecycleAccumulator {
     let acc = new RecycleAccumulator(this.executionId, this.config);
     acc.index = this.index;
     acc.virtualIndex = this.virtualIndex;

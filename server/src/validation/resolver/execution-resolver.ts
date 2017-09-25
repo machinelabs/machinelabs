@@ -1,4 +1,4 @@
-import { Observable } from '@reactivex/rxjs'
+import { Observable } from '@reactivex/rxjs';
 import { Resolver } from './resolver';
 import { dbRefBuilder } from '../../ml-firebase';
 import { Invocation, InvocationExecution } from '../../models/invocation';
@@ -11,7 +11,7 @@ export class ExecutionResolver implements Resolver {
     let invocationExecution: InvocationExecution = invocation.data;
     let executionId = invocationExecution.execution_id;
 
-    return !executionId ? 
+    return !executionId ?
               Observable.of(null) :
               dbRefBuilder.executionRef(executionId)
                      .onceValue()

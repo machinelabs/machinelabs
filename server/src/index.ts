@@ -23,7 +23,7 @@ import { CostCalculator } from '@machinelabs/metrics';
 import { dbRefBuilder } from './ml-firebase';
 import { replaceConsole } from './logging';
 import { DockerFileUploader } from './code-runner/uploader/docker-file-uploader';
-import { spawn, spawnShell } from "@machinelabs/core";
+import { spawn, spawnShell } from '@machinelabs/core';
 
 replaceConsole();
 
@@ -32,7 +32,7 @@ console.log(`Starting MachineLabs server (${environment.serverId})`);
 const labConfigService = new LabConfigService;
 const dockerImageService = new DockerImageService(getDockerImages());
 const usageStatisticService = new UsageStatisticService(new CostCalculator(), <any>dbRefBuilder);
-const recycleService = new RecycleService({ 
+const recycleService = new RecycleService({
   messageRepository: new MessageRepository(),
   getMessageTimeout: 5000,
   triggerIndex: 7000,
