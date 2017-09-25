@@ -47,6 +47,8 @@ EOL
 
     this.processCount++;
 
+    const args = configuration.parameters.map(param => param['pass-as']).join(' ');
+
     return this.spawn('docker', [
       'create',
       '--cap-drop=ALL',
@@ -72,7 +74,7 @@ EOL
             containerId,
             '/bin/bash',
             '-c',
-            `mkdir /run/outputs && cd /run && (${writeCommand}) && python main.py`
+            `mkdir /run/outputs && cd /run && (${writeCommand}) && python main.py ${args}`
           ]))
           .concat(this.uploader.handleUpload(invocation, containerId))
           .concat(this.spawnShell(`docker rm -f ${containerId}`).let(mute))

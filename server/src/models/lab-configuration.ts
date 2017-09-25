@@ -3,9 +3,14 @@ export interface LabInput {
   name: string;
 }
 
+export interface ScriptParameter {
+  'pass-as': string;
+}
+
 export class PublicLabConfiguration {
   dockerImageId: string;
   inputs: Array<LabInput> = [];
+  parameters: Array<ScriptParameter> = [];
 }
 
 export class InternalLabConfiguration extends PublicLabConfiguration {
