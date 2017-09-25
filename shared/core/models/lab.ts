@@ -1,9 +1,6 @@
-export interface File {
-  name: string;
-  content: string;
-}
+import { LabDirectory } from './directory';
 
 export interface Lab {
   id: string;
-  directory: File[];
+  directory: LabDirectory;
 }
