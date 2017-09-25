@@ -25,8 +25,8 @@
   "scripts": {
     "postinstall": "tsc",
     "test": "./node_modules/jest/bin/jest.js",
-    "tslint": "tslint -c ./tslint.json src/**/*.ts",
-    "tsfix": "tslint --fix -c ./tslint.json src/**/*.ts",
+    "tslint": "tslint  -c ./tslint.json './**/*.ts' --exclude './node_modules/**/*.ts' --exclude './**/*.d.ts'",
+    "tsfix": "tslint --fix -c ./tslint.json './**/*.ts' --exclude './node_modules/**/*.ts' --exclude './**/*.d.ts'",
     "ci": "npm run tslint && npm run test"
   },
   "dependencies": {
