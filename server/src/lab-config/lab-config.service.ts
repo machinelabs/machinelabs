@@ -1,6 +1,7 @@
 import { Lab } from '@machinelabs/core';
-import { PublicLabConfiguration } from '../models/lab-configuration';
+import { PublicLabConfiguration, InternalLabConfiguration } from '../models/lab-configuration';
 import { safeLoad} from 'js-yaml';
+import isString = require('lodash.isstring');
 
 const CONFIG_FILE_NAME = 'ml.yaml';
 
@@ -17,7 +18,7 @@ export class LabConfigService {
       let config = safeLoad(configFile.content);
 
       let actualConfig = Object.assign(new PublicLabConfiguration(), config);
-      return this.isValidConfig(actualConfig) ? actualConfig : null;
+      return this.isValidPublicConfig(actualConfig) ? actualConfig : null;
     } catch (error) {
       return null;
     }
@@ -29,7 +30,13 @@ export class LabConfigService {
     return file;
   }
 
-  private isValidConfig(config: PublicLabConfiguration) {
+  public isValidPublicConfig(config: PublicLabConfiguration) {
+    // The dockerImageId is the only mandatory property on the public config
     return !!config.dockerImageId;
+  }
+
+  public isValidInternalConfig(config: InternalLabConfiguration) {
+    return isString(config.imageWithDigest) && config.imageWithDigest.length > 0 &&
+           Array.isArray(config.inputs);
   }
 }

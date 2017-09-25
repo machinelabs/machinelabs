@@ -56,7 +56,7 @@ dockerImageService
     validationService
       .addRule(new NoAnonymousRule())
       .addRule(new HasPlanRule())
-      .addRule(new HasValidConfigRule())
+      .addRule(new HasValidConfigRule(labConfigService))
       .addRule(new HasCreditsLeftRule())
       .addRule(new WithinConcurrencyLimit())
       .addRule(new ServerHasCapacityRule(runner))
