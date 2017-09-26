@@ -6,7 +6,10 @@ import { ValidationResult } from '../validation-result';
 import { ExecutionRejectionInfo, ExecutionRejectionReason } from '../../models/execution';
 import { UserResolver } from '../resolver/user-resolver';
 
-const PLANS = ['admin', 'beta'];
+export enum Plans {
+  Admin = 'admin',
+  Beta = 'beta'
+}
 
 export class HasPlanRule implements ValidationRule {
 
@@ -18,7 +21,7 @@ export class HasPlanRule implements ValidationRule {
 
     return resolves
       .get(UserResolver)
-      .map(user => (user && user.plan && PLANS.includes(user.plan.plan_id)) ||
+      .map(user => (user && user.plan && Object.values(Plans).includes(user.plan.plan_id)) ||
         new ExecutionRejectionInfo(ExecutionRejectionReason.NoPlan, 'Missing plan that allows executions'));
   }
 }
