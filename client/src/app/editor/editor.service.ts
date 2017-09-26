@@ -1,7 +1,7 @@
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { Injectable, EventEmitter } from '@angular/core';
-import { UrlSerializer } from '@angular/router';
+import { UrlSerializer, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { LocationHelper } from '../util/location-helper';
 import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.service';
@@ -71,7 +71,8 @@ export class EditorService {
     private editorSnackbar: EditorSnackbarService,
     private labStorageService: LabStorageService,
     private rleService: RemoteLabExecService,
-    private labExecutionService: LabExecutionService
+    private labExecutionService: LabExecutionService,
+    private route: ActivatedRoute
   ) {
     this.initialize();
   }
@@ -201,7 +202,8 @@ export class EditorService {
           urlSegments.push(this.activeExecutionId);
         }
         this.locationHelper.updateUrl(urlSegments, {
-          queryParamsHandling: 'preserve'
+          queryParamsHandling: 'preserve',
+          queryParams: this.route.snapshot.queryParams
         });
         this.editorSnackbar.notify(msg);
       })
