@@ -29,8 +29,8 @@ const isNameAllowed = (fileOrDirectory: File|Directory, parentDirectory: Directo
 };
 
 @Component({
-  selector: 'ml-file-name-dialog',
-  templateUrl: './file-name-dialog.component.html',
+  selector: 'ml-name-dialog',
+  templateUrl: './name-dialog.component.html',
   styles: [`
     :host {
       display: block;
@@ -45,12 +45,12 @@ const isNameAllowed = (fileOrDirectory: File|Directory, parentDirectory: Directo
     }
   `]
 })
-export class FileNameDialogComponent implements OnInit {
+export class NameDialogComponent implements OnInit {
 
   form: FormGroup;
 
   constructor(
-    public dialogRef: MdDialogRef<FileNameDialogComponent>,
+    public dialogRef: MdDialogRef<NameDialogComponent>,
     private formBuilder: FormBuilder,
     @Inject(MD_DIALOG_DATA) private data: NameDialogData
   ) { }
