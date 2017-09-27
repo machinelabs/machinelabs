@@ -1,6 +1,6 @@
 {
   "name": "@machinelabs/core",
-  "version": "0.15.0+utc.2017.Sep.26-8.20.15",
+  "version": "0.15.1+utc.2017.Sep.27-9.51.26",
   "description": "Fundamentals that can be shared across various projects",
   "main": "index.js",
   "jest": {
