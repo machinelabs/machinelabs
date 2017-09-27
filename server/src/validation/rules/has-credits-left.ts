@@ -5,7 +5,7 @@ import { ValidationResult } from '../validation-result';
 import { UserResolver } from '../resolver/user-resolver';
 import { ExecutionRejectionInfo, ExecutionRejectionReason } from '../../models/execution';
 import { UsageStatisticResolver } from '../resolver/usage-statistic-resolver';
-import { Plans } from './has-plan';
+import { Plans } from '../../models/plans';
 
 export class HasCreditsLeftRule implements ValidationRule {
 

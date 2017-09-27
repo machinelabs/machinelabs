@@ -5,11 +5,7 @@ import { Invocation } from '../../models/invocation';
 import { ValidationResult } from '../validation-result';
 import { ExecutionRejectionInfo, ExecutionRejectionReason } from '../../models/execution';
 import { UserResolver } from '../resolver/user-resolver';
-
-export enum Plans {
-  Admin = 'admin',
-  Beta = 'beta'
-}
+import { Plans } from '../../models/plans';
 
 export class HasPlanRule implements ValidationRule {
 
