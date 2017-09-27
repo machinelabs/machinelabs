@@ -1,0 +1,32 @@
+:host {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  color: white;
+  background: linear-gradient(to bottom,rgba(0,0,0,0.65) 0%,transparent 100%);
+  z-index: 1;
+}
+
+.left, .middle, .right {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  padding-top: 1em;
+  margin: 0 1.5em;
+}
+
+.left {
+  text-align: left;
+}
+
+.middle {
+  text-align: center;
+  justify-content: center;
+}
+
+.right {
+  flex-direction: row-reverse;
+  text-align: right;
+}

@@ -5,7 +5,8 @@ import { TagListComponent } from './tag-list/tag-list.component';
 import {
   DialogHeaderComponent,
   DialogContentComponent,
-  DialogCtaBarComponent
+  DialogCtaBarComponent,
+  DialogErrorComponent
 } from './dialog/dialog.component';
 import { TruncateWordsPipe } from './truncate-words.pipe';
 import { DistanceInWordsStrictPipe } from './distance-in-words-strict.pipe';
@@ -19,6 +20,7 @@ import { DigitalFormatUnitPipe } from './digital-format-unit.pipe';
     DialogHeaderComponent,
     DialogContentComponent,
     DialogCtaBarComponent,
+    DialogErrorComponent,
     TruncateWordsPipe,
     DistanceInWordsStrictPipe,
     DistanceInWordsToNowPipe,
@@ -32,6 +34,7 @@ import { DigitalFormatUnitPipe } from './digital-format-unit.pipe';
     DialogHeaderComponent,
     DialogContentComponent,
     DialogCtaBarComponent,
+    DialogErrorComponent,
     TruncateWordsPipe,
     DistanceInWordsStrictPipe,
     DistanceInWordsToNowPipe,

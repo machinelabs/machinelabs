@@ -27,6 +27,9 @@
           <ng-container mdColumnDef="actions">
             <md-header-cell *mdHeaderCellDef></md-header-cell>
             <md-cell *mdCellDef="let row">
+              <button md-icon-button color="primary" mdTooltip="Preview" (click)="openPreview(row)"
+                [disabled]="!isImage(row.name)" title="Preview file"><md-icon>visibility</md-icon>
+              </button>
               <a md-button color="primary" [attr.download]="row.name" target="_blank" [href]="row.download_url" title="Download file"><md-icon>file_download</md-icon> Download</a>
             </md-cell>
           </ng-container>
