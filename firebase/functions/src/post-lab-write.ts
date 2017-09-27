@@ -23,15 +23,12 @@ function updateIndices(event) {
   delta[`/idx/user_labs/${data.user_id}/${data.id}`] = true;
   delta[`/idx/user_visible_labs/${data.user_id}/${data.id}`] = data.hidden ? null : true;
 
-
   // We need to find all executions that are attached to this lab
   // and hide them as well.
   //
   // Notice we don't update `lab_visible_executions` because we only
   // need to hide them for the users not for the labs.
-  return admin.database().ref('executions')
-    .orderByChild('common/lab/id')
-    .equalTo(data.id)
+  return admin.database().ref(`/idx/lab_executions/${data.id}`)
     .once('value')
     .then(snapshot => snapshot.val())
     .then(val => val ? Object.keys(val) : [])
