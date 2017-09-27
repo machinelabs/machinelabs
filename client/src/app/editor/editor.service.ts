@@ -18,7 +18,7 @@ import { LabExecutionService } from 'app/lab-execution.service';
 import { LabStorageService } from '../lab-storage.service';
 import { createSkipTextHelper } from './util/skip-helper';
 
-import { FileNameDialogComponent } from './file-name-dialog/file-name-dialog.component';
+import { NameDialogComponent } from './name-dialog/name-dialog.component';
 
 import { Lab } from '../models/lab';
 import { getMainFile } from './util/file-tree-helper';
@@ -87,7 +87,7 @@ export class EditorService {
 
   outputMaxChars = 200000;
 
-  fileNameDialogRef: MdDialogRef<FileNameDialogComponent>;
+  fileNameDialogRef: MdDialogRef<NameDialogComponent>;
 
   constructor(
     private urlSerializer: UrlSerializer,
@@ -303,7 +303,7 @@ export class EditorService {
   }
 
   openNameDialog(parentDirectory: Directory, fileOrDirectory: File | Directory) {
-    this.fileNameDialogRef = this.dialog.open(FileNameDialogComponent, {
+    this.fileNameDialogRef = this.dialog.open(NameDialogComponent, {
       disableClose: false,
       data: {
         parentDirectory,
