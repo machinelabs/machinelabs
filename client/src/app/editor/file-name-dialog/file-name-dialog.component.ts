@@ -11,7 +11,7 @@ export interface NameDialogData {
 const isNameAllowed = (fileOrDirectory: File|Directory, parentDirectory: Directory) => {
   return (c: FormControl) => {
 
-    const f = parentDirectory.contents.find(f => f.name === c.value);
+    const f = parentDirectory.contents.find(_f => _f.name === c.value);
 
     if (!f) {
       return null;
@@ -57,7 +57,14 @@ export class FileNameDialogComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      filename: [this.data.fileOrDirectory ? this.data.fileOrDirectory.name : '', Validators.required]
+      filename: [
+        this.data.fileOrDirectory ? this.data.fileOrDirectory.name : '', [
+        Validators.required,
+        isNameAllowed(
+          this.data.fileOrDirectory,
+          this.data.parentDirectory
+        )
+      ]]
     });
   }
 
