@@ -7,7 +7,7 @@
 md-card {
   margin-left: auto;
   margin-right: auto;
-  max-width: 66.66%;
+  max-width: 80%;
 }
 
 md-cell {
@@ -23,3 +23,23 @@ md-cell {
     vertical-align: -38%;
   }
 }
+
+[md-icon-button][disabled] {
+  md-icon {
+    opacity: 0.2;
+  }
+}
+
+.mat-column-name {
+  display: inline-block;
+  min-width: 20%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mat-column-actions {
+  display: flex;
+  min-width: 30%;
+}
+

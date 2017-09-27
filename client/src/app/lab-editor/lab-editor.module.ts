@@ -33,6 +33,11 @@ import { ExecutionStatusPipe } from './execution-status.pipe';
 
 import { ExecutionListComponent } from './execution-list/execution-list.component';
 
+import { FilePreviewDialogService } from './file-preview/file-preview-dialog.service';
+import { FilePreviewDialogToolbarComponent } from './file-preview/file-preview-dialog-toolbar/file-preview-dialog-toolbar.component';
+import { FilePreviewDialogComponent } from './file-preview/file-preview-dialog/file-preview-dialog.component';
+import { FILE_PREVIEW_DIALOG_SCROLL_STRATEGY_PROVIDER } from './file-preview/file-preview.tokens';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -59,12 +64,16 @@ import { ExecutionListComponent } from './execution-list/execution-list.componen
     ExecutionListComponent,
     EditExecutionDialogComponent,
     EmbedDialogComponent,
-    FileOutputsComponent
+    FileOutputsComponent,
+    FilePreviewDialogComponent,
+    FilePreviewDialogToolbarComponent
   ],
   providers: [
     HasValidExecutionGuard,
     HasRunningExecutionGuard,
     LabConfigService,
+    FilePreviewDialogService,
+    FILE_PREVIEW_DIALOG_SCROLL_STRATEGY_PROVIDER
   ],
   entryComponents: [
     NavigationConfirmDialogComponent,
@@ -72,7 +81,8 @@ import { ExecutionListComponent } from './execution-list/execution-list.componen
     RejectionDialogComponent,
     ShareDialogComponent,
     EditExecutionDialogComponent,
-    EmbedDialogComponent
+    EmbedDialogComponent,
+    FilePreviewDialogComponent
   ]
 })
 export class LabEditorModule {}

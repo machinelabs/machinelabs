@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NavigationExtras, Router, UrlSerializer } from '@angular/router';
-import { Location, LocationStrategy  } from '@angular/common';
+import { Location, LocationStrategy } from '@angular/common';
 import { WindowRef } from '../window-ref.service';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class LocationHelper {
     private urlSerializer: UrlSerializer,
     private locationStrategy: LocationStrategy,
     private windowRef: WindowRef
-  ) {}
+  ) { }
 
   updateUrl(urlSegments: string[], options: NavigationExtras) {
     this.location.go(this.urlSerializer.serialize(
@@ -29,7 +29,7 @@ export class LocationHelper {
     const currentUrlTree = this.router.parseUrl(path);
     currentUrlTree.queryParams = Object.assign({}, currentUrlTree.queryParams, params);
 
-    this.location.go(this.urlSerializer.serialize(currentUrlTree))
+    this.location.go(this.urlSerializer.serialize(currentUrlTree));
   }
 
   removeQueryParams(path: string, keys: Array<string> | string) {
@@ -48,7 +48,7 @@ export class LocationHelper {
 
   prepareExternalUrl(urlSegments: string[], withHost = false) {
     const urlTree = this.router.createUrlTree(urlSegments);
-    const  url = this.locationStrategy.prepareExternalUrl(this.router.serializeUrl(urlTree));
+    const url = this.locationStrategy.prepareExternalUrl(this.router.serializeUrl(urlTree));
     const location = this.windowRef.nativeWindow.location;
     return withHost ? `${location.protocol}//${location.host}${url}` : url;
   }

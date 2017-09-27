@@ -1,0 +1,41 @@
+$back-button-size: 35px;
+
+:host {
+  display: block;
+}
+
+ml-dialog-content {
+  img {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+  }
+}
+
+.back {
+  width: $back-button-size;
+  height: $back-button-size;
+  font-size: $back-button-size;
+  line-height: $back-button-size;
+}
+
+md-icon + span {
+  margin-left: 10px;
+}
+
+::ng-deep {
+  .cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+    &.dark-backdrop {
+      background: #000;
+      opacity: 0.85 !important;
+    }
+  }
+}
+
+ml-dialog-error {
+  color: white;
+
+  md-icon {
+    margin-right: 5px;
+  }
+}
