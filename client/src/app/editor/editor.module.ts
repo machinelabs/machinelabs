@@ -13,7 +13,7 @@ import { EditorLayoutFooterComponent } from './layout/editor-layout-footer.compo
 
 import { FileTreeComponent } from './file-tree/file-tree.component';
 import { FileListComponent } from './file-list/file-list.component';
-import { FileNameDialogComponent } from './file-name-dialog/file-name-dialog.component';
+import { NameDialogComponent } from './name-dialog/name-dialog.component';
 import { AceEditorComponent } from './ace-editor/ace-editor.component';
 import { XtermComponent } from './xterm/xterm.component';
 import { FileOutputsComponent } from './file-outputs/file-outputs.component';
@@ -45,10 +45,10 @@ import { FILE_PREVIEW_DIALOG_SCROLL_STRATEGY_PROVIDER } from './file-preview/fil
     EditorLayoutFooterComponent,
     FileTreeComponent,
     FileListComponent,
-    FileNameDialogComponent,
     FileOutputsComponent,
     FilePreviewDialogComponent,
-    FilePreviewDialogToolbarComponent
+    FilePreviewDialogToolbarComponent,
+    NameDialogComponent
   ],
   providers: [
     EditorService,
@@ -74,8 +74,8 @@ import { FILE_PREVIEW_DIALOG_SCROLL_STRATEGY_PROVIDER } from './file-preview/fil
     FilePreviewDialogToolbarComponent
   ],
   entryComponents: [
-    FileNameDialogComponent,
-    FilePreviewDialogComponent
+    FilePreviewDialogComponent,
+    NameDialogComponent
   ]
 })
 export class EditorModule {}
