@@ -10,7 +10,7 @@ import { LAB_STUB } from '../../test-helper/stubs/lab.stubs';
 import { EditorService, TabIndex } from './editor.service';
 import { LocationHelper } from '../util/location-helper';
 
-import { FileNameDialogComponent } from './file-name-dialog/file-name-dialog.component';
+import { NameDialogComponent } from './name-dialog/name-dialog.component';
 
 describe('EditorService', () => {
 
@@ -312,7 +312,7 @@ describe('EditorService', () => {
       });
       editorService.openNameDialog(directory , file);
       expect(editorService.dialog.open)
-        .toHaveBeenCalledWith(FileNameDialogComponent, {
+        .toHaveBeenCalledWith(NameDialogComponent, {
           disableClose: false,
           data: {
             fileOrDirectory: file,
@@ -333,7 +333,7 @@ describe('EditorService', () => {
 
       editorService.openNameDialog(directory, fileToEdit);
       expect(editorService.dialog.open)
-        .toHaveBeenCalledWith(FileNameDialogComponent, {
+        .toHaveBeenCalledWith(NameDialogComponent, {
           disableClose: false,
           data: {
             fileOrDirectory: fileToEdit,

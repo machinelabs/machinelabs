@@ -7,7 +7,6 @@ import { LAB_STUB, EDITOR_SERVICE_STUB } from '../../../test-helper/stubs';
 import { FileListComponent } from './file-list.component';
 import { getMainFile } from '../util/file-tree-helper';
 import { EditorService } from '../editor.service';
-import { FileNameDialogComponent } from '../file-name-dialog/file-name-dialog.component';
 
 describe('FileListComponent', () => {
 

@@ -10,7 +10,6 @@ import { LAB_STUB, EDITOR_SERVICE_STUB } from '../../../test-helper/stubs';
 import { EditorService } from '../editor.service';
 import { FileTreeComponent } from './file-tree.component';
 import { FileListComponent } from '../file-list/file-list.component';
-import { FileNameDialogComponent } from '../file-name-dialog/file-name-dialog.component';
 
 describe('FileTreeComponent', () => {
 
