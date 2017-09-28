@@ -2,6 +2,7 @@ import { Component, Input, Optional, SkipSelf } from '@angular/core';
 import { File, LabDirectory, Directory, instanceOfFile, instanceOfDirectory } from '@machinelabs/core/models/directory';
 
 import { EditorService } from '../editor.service';
+import { FileTreeService } from '../file-tree/file-tree.service';
 import { getMainFile } from '../util/file-tree-helper';
 
 @Component({
@@ -22,7 +23,10 @@ export class FileListComponent {
 
   @Input() mandatoryFiles: Array<string> = [];
 
-  constructor(public editorService: EditorService, @Optional() @SkipSelf() public parent: FileListComponent) {}
+  constructor(
+    public editorService: EditorService,
+    @Optional() @SkipSelf() public parent: FileListComponent,
+    private fileTreeService: FileTreeService) {}
 
   isRemovable(file: File) {
     return !this.isMandatoryFile(file);
@@ -40,12 +44,8 @@ export class FileListComponent {
   }
 
   deleteFileOrDirectory(fileOrDirectory: File|Directory) {
-    this.editorService.deleteFromDirectory(fileOrDirectory, this.directory);
+    this.fileTreeService.deleteFromDirectory(fileOrDirectory, this.directory);
     this.editorService.openFile(getMainFile(this.editorService.lab.directory));
-  }
-
-  updateFile(file: File, newFile: File) {
-    this.editorService.updateFileInDirectory(file, newFile, this.directory);
   }
 
   openFolderNameDialog(parentDirectory: Directory, directory?: Directory) {
