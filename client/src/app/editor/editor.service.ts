@@ -5,13 +5,12 @@ import { UrlSerializer, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import {
-  instanceOfFile,
-  instanceOfDirectory,
   LabDirectory,
   File,
   Directory
 } from '@machinelabs/core/models/directory';
 import { LocationHelper } from '../util/location-helper';
+import { FileTreeService } from './file-tree/file-tree.service';
 import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.service';
 import { EditorSnackbarService } from './editor-snackbar.service';
 import { LabExecutionService } from 'app/lab-execution.service';
@@ -52,18 +51,6 @@ export interface ListenAndNotifyOptions {
   pauseModeExecutionFinishedAction?: () => void;
 }
 
-const findFile = (name: string) => {
-  return (fileOrDirectory: File | Directory) => {
-    return fileOrDirectory.name === name && instanceOfFile(fileOrDirectory);
-  };
-};
-
-const findDirectory = (name: string) => {
-  return (fileOrDirectory: File | Directory) => {
-    return fileOrDirectory.name === name && instanceOfDirectory(fileOrDirectory);
-  }
-};
-
 @Injectable()
 export class EditorService {
 
@@ -97,6 +84,7 @@ export class EditorService {
     private labStorageService: LabStorageService,
     private rleService: RemoteLabExecService,
     private labExecutionService: LabExecutionService,
+    private fileTreeService: FileTreeService,
     public dialog: MdDialog,
     private route: ActivatedRoute
   ) {
@@ -128,17 +116,6 @@ export class EditorService {
   initDirectory(directory: LabDirectory) {
     this.lab.directory = directory;
     this.initActiveFile();
-  }
-
-  deleteFromDirectory(fileOrDirectory: File|Directory, directory: Directory) {
-    directory.contents.splice(directory.contents.indexOf(fileOrDirectory), 1);
-  }
-
-  updateFileInDirectory(file: File, newFile: File, directory: Directory) {
-    const index = directory.contents.findIndex(f => f.name === file.name);
-    if (index !== -1) {
-      directory.contents[index] = newFile;
-    }
   }
 
   listen(executionId: string) {
@@ -295,7 +272,7 @@ export class EditorService {
     const newFile = { name: '', content: '' };
     this.openNameDialog(parentDirectory, file || newFile).subscribe(name => {
       if (file) {
-        this.updateFileInDirectory(file, { name, content: file.content }, parentDirectory);
+        this.fileTreeService.updateFileInDirectory(file, { name, content: file.content }, parentDirectory);
       } else {
         parentDirectory.contents.push({ name, content: '' });
       }
@@ -345,44 +322,8 @@ export class EditorService {
 
   private initActiveFile() {
     const path = this.urlSerializer.parse(this.location.path()).queryParams.file;
-    let file = path ? this.getFileFromPath(path) : null;
+    let file = path ? this.fileTreeService.getFileFromPath(path, this.lab.directory) : null;
     this.openFile(file || getMainFile(this.lab.directory), file ? path : null);
   }
 
-  private getFileFromPath(path: string): File | null {
-    let pathSegments = this.normalizePathSegments(path);
-    let currentDirectory = this.lab.directory;
-    let file = null;
-
-    for (let i = 0; i < pathSegments.length; i++) {
-      let name = pathSegments[i];
-      let lookingForDirectory = i !== pathSegments.length - 1;
-
-      let fileOrDirectory = currentDirectory
-          .find(lookingForDirectory ? findDirectory(name) : findFile(name));
-
-      if (!fileOrDirectory) {
-        break;
-      }
-
-      if (lookingForDirectory) {
-        if (instanceOfDirectory(fileOrDirectory)) {
-          currentDirectory = fileOrDirectory.contents;
-        }
-      } else {
-        if (instanceOfFile(fileOrDirectory)) {
-          file = fileOrDirectory;
-        }
-      }
-    }
-    return file;
-  }
-
-  private normalizePathSegments(path: string) {
-    let segments = path.split('/');
-    if (segments[0] === '') {
-      segments.splice(0, 1);
-    }
-    return segments;
-  }
 }

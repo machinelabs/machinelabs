@@ -6,6 +6,7 @@ import { MachineLabsMaterialModule } from '../../ml-material.module';
 import { EditorModule } from '../editor.module';
 
 import { EditorService } from '../editor.service';
+import { FileTreeService } from '../file-tree/file-tree.service';
 import { EditorSnackbarService } from '../editor-snackbar.service';
 import { RemoteLabExecService } from '../remote-code-execution/remote-lab-exec.service';
 import { DbRefBuilder } from '../../firebase/db-ref-builder';
@@ -37,6 +38,7 @@ import { AUTH_SERVICE_STUB } from '../../../test-helper/stubs/auth.service.stubs
     { provide: LabTemplateService, useClass: InMemoryLabTemplateService },
     WindowRef,
     EditorService,
+    FileTreeService,
     EditorSnackbarService,
     RemoteLabExecService,
     LabExecutionService,
