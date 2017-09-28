@@ -7,6 +7,7 @@ import { LAB_STUB, EDITOR_SERVICE_STUB } from '../../../test-helper/stubs';
 import { FileListComponent } from './file-list.component';
 import { getMainFile } from '../util/file-tree-helper';
 import { EditorService } from '../editor.service';
+import { FileTreeService } from '../file-tree/file-tree.service';
 
 describe('FileListComponent', () => {
 
@@ -21,7 +22,8 @@ describe('FileListComponent', () => {
         FileListComponent
       ],
       providers: [
-        { provide: EditorService, useValue: EDITOR_SERVICE_STUB }
+        { provide: EditorService, useValue: EDITOR_SERVICE_STUB },
+        FileTreeService
       ],
       schemas: [NO_ERRORS_SCHEMA]
     });
@@ -94,19 +96,6 @@ describe('FileListComponent', () => {
       component.directory = { name: '', contents: editorService.lab.directory };
       component.deleteFileOrDirectory(<File>editorService.lab.directory[1]);
       expect(editorService.openFile).toHaveBeenCalledWith(getMainFile(component.directory.contents));
-    });
-  });
-
-  describe('.updateFile()', () => {
-
-    it('should update file', () => {
-      let updateFile = {
-        name: 'update.py',
-        content: ''
-      }
-      component.directory = { name: '', contents: editorService.lab.directory };
-      component.updateFile(<File>editorService.lab.directory[0], updateFile);
-      expect(editorService.lab.directory[0]).toEqual(updateFile);
     });
   });
 
