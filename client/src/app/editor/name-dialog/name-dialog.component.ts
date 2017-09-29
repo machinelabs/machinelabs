@@ -11,20 +11,20 @@ export interface NameDialogData {
 const isNameAllowed = (fileOrDirectory: File|Directory, parentDirectory: Directory) => {
   return (c: FormControl) => {
 
-    const f = parentDirectory.contents.find(_f => _f.name === c.value);
+    const foundFileOrDirectory = parentDirectory.contents.find(f => f.name === c.value);
 
-    if (!f) {
+    if (!foundFileOrDirectory) {
       return null;
     }
 
     let error = null;
 
-    if (instanceOfFile(fileOrDirectory) && instanceOfFile(f)) {
+    if (instanceOfFile(fileOrDirectory) && instanceOfFile(foundFileOrDirectory)) {
       error = { alreadyExists: true };
-    } else if (instanceOfDirectory(fileOrDirectory) && instanceOfDirectory(f)) {
+    } else if (instanceOfDirectory(fileOrDirectory) && instanceOfDirectory(foundFileOrDirectory)) {
       error = { alreadyExists: true};
     }
-    return error ? error : null;
+    return error || null;
   };
 };
 
