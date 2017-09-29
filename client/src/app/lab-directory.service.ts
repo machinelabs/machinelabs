@@ -21,7 +21,7 @@ const findDirectory = (name: string) => {
 
 
 @Injectable()
-export class FileTreeService {
+export class LabDirectoryService {
 
   constructor() { }
 

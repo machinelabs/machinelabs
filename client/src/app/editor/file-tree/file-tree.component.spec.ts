@@ -8,7 +8,7 @@ import { File } from '@machinelabs/core/models/directory';
 import { LAB_STUB, EDITOR_SERVICE_STUB } from '../../../test-helper/stubs';
 
 import { EditorService } from '../editor.service';
-import { FileTreeService } from './file-tree.service';
+import { LabDirectoryService } from '../../lab-directory.service';
 import { FileTreeComponent } from './file-tree.component';
 import { FileListComponent } from '../file-list/file-list.component';
 
@@ -29,7 +29,7 @@ describe('FileTreeComponent', () => {
       imports: [MdDialogModule],
       providers: [
         { provide: EditorService, useValue: EDITOR_SERVICE_STUB },
-        FileTreeService
+        LabDirectoryService
       ],
       declarations: [FileTreeComponent, FileListComponent],
       schemas: [NO_ERRORS_SCHEMA]

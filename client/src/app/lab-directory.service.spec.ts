@@ -1,17 +1,17 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { File } from '@machinelabs/core/models/directory';
 
-import { FileTreeService } from './file-tree.service';
+import { LabDirectoryService } from './lab-directory.service';
 
-describe('FileTreeService', () => {
+describe('LabDirectoryService', () => {
 
-  let fileTreeService: FileTreeService;
+  let labDirectoryService: LabDirectoryService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [FileTreeService]
+      providers: [LabDirectoryService]
     });
-    fileTreeService = TestBed.get(FileTreeService);
+    labDirectoryService = TestBed.get(LabDirectoryService);
   });
 
   describe('.deleteFromDirectory()', () => {
@@ -44,7 +44,7 @@ describe('FileTreeService', () => {
 
       const fileToDelete = <File>directory.contents[0];
 
-      fileTreeService.deleteFromDirectory(fileToDelete, directory);
+      labDirectoryService.deleteFromDirectory(fileToDelete, directory);
       expect(directory.contents).toEqual(expectedDirectory.contents);
     });
   });
@@ -81,7 +81,7 @@ describe('FileTreeService', () => {
       const fileToUpdate = <File>directory.contents[0];
       const update = { name: 'jinx.py', content: '' }
 
-      fileTreeService.updateFileInDirectory(fileToUpdate, update, directory);
+      labDirectoryService.updateFileInDirectory(fileToUpdate, update, directory);
       expect(directory.contents).toEqual(expectedDirectory.contents);
     });
   });
