@@ -11,7 +11,7 @@ import { EditorService } from '../editor.service';
 })
 export class FileTreeComponent implements OnInit {
 
-  rootDirectory: Directory = { name: '', contents: null };
+  rootDirectory: Directory = { name: '', contents: [] };
 
   @Input() showActionButtons = true;
 
