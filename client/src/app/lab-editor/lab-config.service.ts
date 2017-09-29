@@ -28,7 +28,7 @@ export class LabConfigService {
     let file = lab.directory
                   .find(f => f.name.toLowerCase() === CONFIG_FILE_NAME);
 
-    return file && instanceOfFile(file) ? file : null;
+    return instanceOfFile(file) ? file : null;
   }
 
   private isValidConfig(config: PublicLabConfiguration) {
