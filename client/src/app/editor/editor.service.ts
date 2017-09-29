@@ -10,7 +10,7 @@ import {
   Directory
 } from '@machinelabs/core/models/directory';
 import { LocationHelper } from '../util/location-helper';
-import { FileTreeService } from './file-tree/file-tree.service';
+import { LabDirectoryService } from '../lab-directory.service';
 import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.service';
 import { EditorSnackbarService } from './editor-snackbar.service';
 import { LabExecutionService } from 'app/lab-execution.service';
@@ -84,7 +84,7 @@ export class EditorService {
     private labStorageService: LabStorageService,
     private rleService: RemoteLabExecService,
     private labExecutionService: LabExecutionService,
-    private fileTreeService: FileTreeService,
+    private labDirectoryService: LabDirectoryService,
     public dialog: MdDialog,
     private route: ActivatedRoute
   ) {
@@ -272,7 +272,7 @@ export class EditorService {
     const newFile = { name: '', content: '' };
     this.openNameDialog(parentDirectory, file || newFile).subscribe(name => {
       if (file) {
-        this.fileTreeService.updateFileInDirectory(file, { name, content: file.content }, parentDirectory);
+        this.labDirectoryService.updateFileInDirectory(file, { name, content: file.content }, parentDirectory);
       } else {
         parentDirectory.contents.push({ name, content: '' });
       }
@@ -322,7 +322,7 @@ export class EditorService {
 
   private initActiveFile() {
     const path = this.urlSerializer.parse(this.location.path()).queryParams.file;
-    let file = path ? this.fileTreeService.getFileFromPath(path, this.lab.directory) : null;
+    let file = path ? this.labDirectoryService.getFileFromPath(path, this.lab.directory) : null;
     this.openFile(file || getMainFile(this.lab.directory), file ? path : null);
   }
 
