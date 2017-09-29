@@ -12,7 +12,6 @@ import { EditorLayoutPanelCtaBarComponent } from './layout/editor-layout-panel-c
 import { EditorLayoutFooterComponent } from './layout/editor-layout-footer.component';
 
 import { FileTreeComponent } from './file-tree/file-tree.component';
-import { FileTreeService } from './file-tree/file-tree.service';
 import { FileListComponent } from './file-list/file-list.component';
 import { NameDialogComponent } from './name-dialog/name-dialog.component';
 import { AceEditorComponent } from './ace-editor/ace-editor.component';
@@ -53,7 +52,6 @@ import { FILE_PREVIEW_DIALOG_SCROLL_STRATEGY_PROVIDER } from './file-preview/fil
   ],
   providers: [
     EditorService,
-    FileTreeService,
     RemoteLabExecService,
     EditorSnackbarService,
     FilePreviewDialogService,

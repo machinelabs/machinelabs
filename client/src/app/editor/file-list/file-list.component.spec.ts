@@ -7,7 +7,7 @@ import { LAB_STUB, EDITOR_SERVICE_STUB } from '../../../test-helper/stubs';
 import { FileListComponent } from './file-list.component';
 import { getMainFile } from '../util/file-tree-helper';
 import { EditorService } from '../editor.service';
-import { FileTreeService } from '../file-tree/file-tree.service';
+import { LabDirectoryService } from '../../lab-directory.service';
 
 describe('FileListComponent', () => {
 
@@ -23,7 +23,7 @@ describe('FileListComponent', () => {
       ],
       providers: [
         { provide: EditorService, useValue: EDITOR_SERVICE_STUB },
-        FileTreeService
+        LabDirectoryService
       ],
       schemas: [NO_ERRORS_SCHEMA]
     });

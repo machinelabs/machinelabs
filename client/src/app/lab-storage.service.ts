@@ -57,6 +57,7 @@ export class LabStorageService {
                 // this can be removed once we know for sure that all lab directories
                 // are strings in the database
                 value.directory = typeof value.directory === 'string' ? JSON.parse(value.directory) : value.directory;
+                return value;
               });
   }
 
