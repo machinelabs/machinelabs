@@ -21,6 +21,13 @@ dockerImageId: keras_v2-0-x_python_3-1
 #
 # Note that each parameter is an object that must contain at least a 'pass-as' property.
 # The value can be anything and is not limited to the format above.
+#
+# You can define inputs (usually files containing datasets) which will be downloaded before the actual execution starts.
+# Each input file will be placed in the special "input" directory and saved using the configured name.
+#
+# inputs:
+# - name: mnist.npz
+#   url: https://s3.amazonaws.com/img-datasets/mnist.npz
 `;
 
 export const ML_YAML_FILE = {
