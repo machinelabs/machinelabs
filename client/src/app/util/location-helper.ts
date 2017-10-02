@@ -32,6 +32,16 @@ export class LocationHelper {
     this.location.go(this.urlSerializer.serialize(currentUrlTree))
   }
 
+  removeQueryParams(path: string, keys: Array<string> | string) {
+    const currentUrlTree = this.router.parseUrl(path);
+
+    for (let key of [].concat(keys)) {
+      delete currentUrlTree.queryParams[key];
+    }
+
+    this.location.go(this.urlSerializer.serialize(currentUrlTree));
+  }
+
   openInNewTab(urlSegments: string[]) {
     this.windowRef.nativeWindow.open(this.prepareExternalUrl(urlSegments));
   }
