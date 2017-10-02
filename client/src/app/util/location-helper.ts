@@ -20,6 +20,11 @@ export class LocationHelper {
     ));
   }
 
+  getQueryParams(path: string) {
+    const currentUrlTree = this.router.parseUrl(path);
+    return currentUrlTree.queryParams;
+  }
+
   updateQueryParams(path: string, params) {
     const currentUrlTree = this.router.parseUrl(path);
     currentUrlTree.queryParams = Object.assign({}, currentUrlTree.queryParams, params);

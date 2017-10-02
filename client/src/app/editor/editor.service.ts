@@ -71,8 +71,7 @@ export class EditorService {
     private editorSnackbar: EditorSnackbarService,
     private labStorageService: LabStorageService,
     private rleService: RemoteLabExecService,
-    private labExecutionService: LabExecutionService,
-    private route: ActivatedRoute
+    private labExecutionService: LabExecutionService
   ) {
     this.initialize();
   }
@@ -201,10 +200,12 @@ export class EditorService {
         if (this.activeExecutionId) {
           urlSegments.push(this.activeExecutionId);
         }
+
         this.locationHelper.updateUrl(urlSegments, {
-          queryParamsHandling: 'preserve',
-          queryParams: this.route.snapshot.queryParams
+          queryParamsHandling: 'merge',
+          queryParams: this.locationHelper.getQueryParams(this.location.path())
         });
+
         this.editorSnackbar.notify(msg);
       })
       .map(_ => lab);
