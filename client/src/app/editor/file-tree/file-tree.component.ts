@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { File, Directory, LabDirectory } from '@machinelabs/core/models/directory';
-import { getMainFile } from '../util/file-tree-helper';
 
 import { EditorService } from '../editor.service';
 
