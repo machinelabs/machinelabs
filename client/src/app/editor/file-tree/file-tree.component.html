@@ -1,5 +1,5 @@
 <ml-file-list
-  [directory]="rootDirectory"
+  [directory]="{ name: '', contents: editorService.lab.directory }"
   [mandatoryFiles]="['main.py']"
   [showActionButtons]="showActionButtons"
   ></ml-file-list>
