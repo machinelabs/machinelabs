@@ -5,7 +5,6 @@ import { MdDialogModule } from '@angular/material';
 import { File } from '@machinelabs/core/models/directory';
 import { LAB_STUB, EDITOR_SERVICE_STUB } from '../../../test-helper/stubs';
 import { FileListComponent } from './file-list.component';
-import { getMainFile } from '../util/file-tree-helper';
 import { EditorService } from '../editor.service';
 import { LabDirectoryService } from '../../lab-directory.service';
 
@@ -14,6 +13,7 @@ describe('FileListComponent', () => {
   let fixture: ComponentFixture<FileListComponent>;
   let component: FileListComponent;
   let editorService: EditorService;
+  let labDirectoryService: LabDirectoryService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -31,6 +31,7 @@ describe('FileListComponent', () => {
     fixture = TestBed.createComponent(FileListComponent);
     component = fixture.componentInstance;
     editorService = TestBed.get(EditorService);
+    labDirectoryService = TestBed.get(LabDirectoryService);
   });
 
   describe('.isRemovable()', () => {
@@ -95,7 +96,7 @@ describe('FileListComponent', () => {
       spyOn(editorService, 'openFile');
       component.directory = { name: '', contents: editorService.lab.directory };
       component.deleteFileOrDirectory(<File>editorService.lab.directory[1]);
-      expect(editorService.openFile).toHaveBeenCalledWith(getMainFile(component.directory.contents));
+      expect(editorService.openFile).toHaveBeenCalledWith(labDirectoryService.getMainFile(component.directory.contents));
     });
   });
 

@@ -19,11 +19,21 @@ const findDirectory = (name: string) => {
   }
 };
 
+const MAIN_PYTHON_FILENAME = 'main.py';
+
+export const isMainFile = (file: File): boolean => file.name === MAIN_PYTHON_FILENAME;
+
 
 @Injectable()
 export class LabDirectoryService {
 
   constructor() { }
+
+  getMainFile(directory: LabDirectory) {
+    return <File>directory.find(fileOrDirectory => {
+      return instanceOfFile(fileOrDirectory) && isMainFile(fileOrDirectory);
+    });
+  }
 
   deleteFromDirectory(fileOrDirectory: File|Directory, directory: Directory) {
     directory.contents.splice(directory.contents.indexOf(fileOrDirectory), 1);

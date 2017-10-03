@@ -20,7 +20,6 @@ import { createSkipTextHelper } from './util/skip-helper';
 import { NameDialogComponent } from './name-dialog/name-dialog.component';
 
 import { Lab } from '../models/lab';
-import { getMainFile } from './util/file-tree-helper';
 import {
   MessageKind,
   ExecutionRejectionInfo,
@@ -323,7 +322,7 @@ export class EditorService {
   private initActiveFile() {
     const path = this.urlSerializer.parse(this.location.path()).queryParams.file;
     let file = path ? this.labDirectoryService.getFileFromPath(path, this.lab.directory) : null;
-    this.openFile(file || getMainFile(this.lab.directory), file ? path : null);
+    this.openFile(file || this.labDirectoryService.getMainFile(this.lab.directory), file ? path : null);
   }
 
 }
