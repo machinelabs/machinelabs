@@ -9,18 +9,13 @@ import { EditorService } from '../editor.service';
   templateUrl: './file-tree.component.html',
   styleUrls: ['./file-tree.component.scss']
 })
-export class FileTreeComponent implements OnInit {
+export class FileTreeComponent {
 
-  rootDirectory: Directory = { name: '', contents: [] };
+  @Input() rootDirectory = null as Directory;
 
   @Input() showActionButtons = true;
 
   constructor(private editorService: EditorService) {}
-
-  ngOnInit() {
-    // this needs to run in ngOnInit to ensure `editorService.lab` exists
-    this.rootDirectory.contents = this.editorService.lab.directory;
-  }
 
   openFolderNameDialog() {
     this.editorService.openFolderNameDialog(this.rootDirectory);
