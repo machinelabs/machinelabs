@@ -54,7 +54,7 @@ export class MessagingService {
       return invocation;
     })
     .subscribe(invocation => {
-      
+
       this.getOutputAsObservable(invocation)
           .flatMap(data => this.handleOutput(data.message, data.invocation))
           .subscribe(null, (error) => {
