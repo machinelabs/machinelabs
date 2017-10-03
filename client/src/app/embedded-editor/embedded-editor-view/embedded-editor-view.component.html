@@ -20,7 +20,9 @@
         </ml-editor-layout-panel-cta-bar>
         <md-drawer-container>
           <md-drawer mode="overlay" #fileTreeSidebar>
-            <ml-file-tree [showActionButtons]="false"></ml-file-tree>
+            <ml-file-tree
+              [rootDirectory]="{ name: '', contents: editorService.lab.directory }"
+              [showActionButtons]="false"></ml-file-tree>
           </md-drawer>
           <ml-ace-editor [value]="activeFile.content" mode="python">
           </ml-ace-editor>
