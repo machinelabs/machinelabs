@@ -3,7 +3,6 @@ import { File, LabDirectory, Directory, instanceOfFile, instanceOfDirectory } fr
 
 import { EditorService } from '../editor.service';
 import { LabDirectoryService } from '../../lab-directory.service';
-import { getMainFile } from '../util/file-tree-helper';
 
 @Component({
   selector: 'ml-file-list',
@@ -45,7 +44,7 @@ export class FileListComponent {
 
   deleteFileOrDirectory(fileOrDirectory: File|Directory) {
     this.labDirectoryService.deleteFromDirectory(fileOrDirectory, this.directory);
-    this.editorService.openFile(getMainFile(this.editorService.lab.directory));
+    this.editorService.openFile(this.labDirectoryService.getMainFile(this.editorService.lab.directory));
   }
 
   openFolderNameDialog(parentDirectory: Directory, directory?: Directory) {
