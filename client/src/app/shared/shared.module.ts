@@ -11,6 +11,7 @@ import { TruncateWordsPipe } from './truncate-words.pipe';
 import { DistanceInWordsStrictPipe } from './distance-in-words-strict.pipe';
 import { DistanceInWordsToNowPipe } from './distance-in-words-to-now.pipe';
 import { DigitalFormatUnitPipe } from './digital-format-unit.pipe';
+import { ZippyComponent } from './zippy/zippy.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { DigitalFormatUnitPipe } from './digital-format-unit.pipe';
     TruncateWordsPipe,
     DistanceInWordsStrictPipe,
     DistanceInWordsToNowPipe,
-    DigitalFormatUnitPipe
+    DigitalFormatUnitPipe,
+    ZippyComponent
   ],
   imports: [MachineLabsMaterialModule, CommonModule],
   exports: [
@@ -35,7 +37,8 @@ import { DigitalFormatUnitPipe } from './digital-format-unit.pipe';
     TruncateWordsPipe,
     DistanceInWordsStrictPipe,
     DistanceInWordsToNowPipe,
-    DigitalFormatUnitPipe
+    DigitalFormatUnitPipe,
+    ZippyComponent
   ]
 })
 export class SharedModule {}
