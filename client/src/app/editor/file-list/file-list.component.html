@@ -25,7 +25,12 @@
     </ng-template>
 
     <ng-container *ngIf="fileOrDirectory.contents; else: fileListItemName;">
-      <md-icon>folder</md-icon> {{fileOrDirectory.name}}
+      <!-- <ml-zippy> -->
+      <!-- </ml-zippy> -->
+
+
+
+      <span><md-icon>folder</md-icon> {{fileOrDirectory.name}}</span>
       <button
         class="ml-file-list-item-button add"
         (click)="openFileNameDialog(fileOrDirectory)"

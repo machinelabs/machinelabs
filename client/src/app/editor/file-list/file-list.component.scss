@@ -3,16 +3,16 @@
   overflow: auto;
   list-style: none;
   margin: 0;
-  padding-left: 1em;
-  padding-right: 1em;
-  padding-top: 1.2em;
-  padding-bottom: 1.2em;
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .ml-file-list-item {
-  font-size: 0.9em;
+  font-size: 14px;
   font-weight: 400;
-  padding: 0.4em 0.4em;
+  padding: 0;
   line-height: 1.4;
   position: relative;
 
@@ -26,7 +26,7 @@
   &:hover {
     cursor: pointer;
 
-    .ml-file-list-item-button {
+    > .ml-file-list-item-button {
       display: block;
     }
   }
@@ -43,22 +43,22 @@
 
   &.add {
     right: 80px;
-    top: 5px;
+    top: 0px;
   }
 
   &.add-folder {
     right: 54px;
-    top: 5px;
+    top: 0px;
   }
 
   &.edit {
     right: 28px;
-    top: 5px;
+    top: 0px;
   }
 
   &.delete {
     right: 2px;
-    top: 6px;
+    top: 0px;
   }
 }
 
