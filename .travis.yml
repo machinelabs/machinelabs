@@ -1,16 +1,20 @@
 sudo: required
+language: node_js
 dist: trusty
+
+notifications:
+  email: false
+
 addons:
   apt:
     sources:
       - google-chrome
     packages:
       - google-chrome-stable
-language: node_js
 matrix:
   include:
-    - node_js: "7"
-      stage: "server"
+    - stage: "server"
+      node_js: "8"
       before_install:
         # Those ENVs are just needed for the build to compile. Not need for real values.
         - export MACHINELABS_FB_PRIVATE_KEY=KEEP_MY_PRIVACY
@@ -18,26 +22,26 @@ matrix:
         - cd ./server
         - npm install -g yarn typescript
       script: npm run ci
-    - node_js: "7"
-      stage: "firebase functions"
+    - stage: "firebase functions"
+      node_js: "8"
       before_install:
         - cd ./firebase/functions
         - npm install -g yarn typescript
       script: npm run test
-    - node_js: "7"
-      stage: "@machinelabs/metrics"
-      before_install:
-        - cd ./shared/metrics
-        - npm install -g yarn typescript
-      script: npm run ci
-    - node_js: "7"
-      stage: "@machinelabs/core"
+    - stage: "@machinelabs/core"
+      node_js: "8"
       before_install:
         - cd ./shared/core
         - npm install -g yarn typescript
       script: npm run ci
-    - node_js: "6"
-      stage: "client"
+    - stage: "@machinelabs/metrics"
+      node_js: "8"
+      before_install:
+        - cd ./shared/metrics
+        - npm install -g yarn typescript
+      script: npm run ci
+    - stage: "client"
+      node_js: "8"
       before_install:
         - cd ./client
         - export CHROME_BIN=chromium-browser
@@ -46,6 +50,19 @@ matrix:
         - npm install -g yarn typescript
       before_script:
         - npm install -g @angular/cli
+    - stage: "client"
+      node_js: "8"
+      before_install:
+        - cd ./client
+        - export CHROME_BIN=chromium-browser
+        - export DISPLAY=:99.0
+        - sh -e /etc/init.d/xvfb start
+        - npm install -g yarn typescript
+      before_script:
+        - npm install -g @angular/cli
+      script: npm run test:e2e:production
+      
+      
 
 
 

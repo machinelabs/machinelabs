@@ -7,6 +7,7 @@
     "start": "ng serve",
     "lint": "tslint \"src/**/*.ts\"",
     "test": "npm run lint && ng test --single-run && ng e2e --env=e2e",
+    "test:e2e:production": "ng e2e --target=production --env=e2e",
     "pree2e": "webdriver-manager update",
     "e2e": "ng e2e --serve false",
     "node_modules": "rm -rf ./node_modules && yarn install"
