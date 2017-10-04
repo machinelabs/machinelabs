@@ -4,11 +4,11 @@ export interface File {
 }
 
 export interface Directory {
-  name: string,
-  contents: Array<File|Directory>
+  name: string;
+  contents: Array<File|Directory>;
 }
 
-export type LabDirectory = Array<File|Directory>
+export type LabDirectory = Array<File|Directory>;
 
 export const instanceOfFile = (object: any): object is File => {
   return object && 'content' in object;
