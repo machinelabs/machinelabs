@@ -16,7 +16,7 @@ import { FilePreviewDialogToolbarComponent } from './file-preview-dialog-toolbar
 
 import { dispatchKeyboardEvent } from '../../../test-helper/dispatch-events';
 
-fdescribe('FilePreviewDialogService', () => {
+describe('FilePreviewDialogService', () => {
 
   let dialog: FilePreviewDialogService;
   let mockLocation: SpyLocation;
