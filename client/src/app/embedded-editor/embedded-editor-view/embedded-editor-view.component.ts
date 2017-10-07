@@ -59,10 +59,7 @@ export class EmbeddedEditorViewComponent implements OnInit {
     this.editorService.initialize();
     this.executionId = this.route.snapshot.paramMap.get('executionId');
     this.route.data.map(data => data['lab'])
-              .subscribe(lab => {
-                this.editorService.initLab(lab);
-                this.editorService.selectEditorTab();
-              });
+              .subscribe(lab => this.editorService.initLab(lab));
 
     if (!this.executionId) {
       setTimeout(_ => this.showDialog());
