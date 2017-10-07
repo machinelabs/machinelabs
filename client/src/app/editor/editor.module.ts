@@ -15,10 +15,16 @@ import { FileTreeComponent } from './file-tree/file-tree.component';
 import { FileNameDialogComponent } from './file-name-dialog/file-name-dialog.component';
 import { AceEditorComponent } from './ace-editor/ace-editor.component';
 import { XtermComponent } from './xterm/xterm.component';
+import { FileOutputsComponent } from './file-outputs/file-outputs.component';
+import { FilePreviewDialogToolbarComponent } from './file-preview/file-preview-dialog-toolbar/file-preview-dialog-toolbar.component';
+import { FilePreviewDialogComponent } from './file-preview/file-preview-dialog/file-preview-dialog.component';
 
 import { EditorService } from './editor.service';
 import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.service';
 import { EditorSnackbarService } from './editor-snackbar.service';
+import { FilePreviewDialogService } from './file-preview/file-preview-dialog.service';
+
+import { FILE_PREVIEW_DIALOG_SCROLL_STRATEGY_PROVIDER } from './file-preview/file-preview.tokens';
 
 @NgModule({
   imports: [
@@ -37,12 +43,17 @@ import { EditorSnackbarService } from './editor-snackbar.service';
     EditorLayoutPanelCtaBarComponent,
     EditorLayoutFooterComponent,
     FileTreeComponent,
-    FileNameDialogComponent
+    FileNameDialogComponent,
+    FileOutputsComponent,
+    FilePreviewDialogComponent,
+    FilePreviewDialogToolbarComponent
   ],
   providers: [
     EditorService,
     RemoteLabExecService,
-    EditorSnackbarService
+    EditorSnackbarService,
+    FilePreviewDialogService,
+    FILE_PREVIEW_DIALOG_SCROLL_STRATEGY_PROVIDER
   ],
   exports: [
     AceEditorComponent,
@@ -55,10 +66,14 @@ import { EditorSnackbarService } from './editor-snackbar.service';
     EditorLayoutPanelComponent,
     EditorLayoutPanelCtaBarComponent,
     EditorLayoutFooterComponent,
-    FileTreeComponent
+    FileTreeComponent,
+    FileOutputsComponent,
+    FilePreviewDialogComponent,
+    FilePreviewDialogToolbarComponent
   ],
   entryComponents: [
-    FileNameDialogComponent
+    FileNameDialogComponent,
+    FilePreviewDialogComponent
   ]
 })
 export class EditorModule {}

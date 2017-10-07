@@ -10,6 +10,7 @@
     <div md-tab-nav-bar>
       <a mdTabLink (click)="editorService.selectEditorTab()" [active]="editorService.editorTabActive()">Editor</a>
       <a mdTabLink (click)="editorService.selectConsoleTab()" [active]="editorService.consoleTabActive()">Console</a>
+      <a mdTabLink (click)="editorService.selectOutputsTab()" [active]="editorService.outputsTabActive()">Outputs</a>
     </div>
   </ml-editor-layout-nav-bar>
   <ml-editor-layout-main>
@@ -32,6 +33,9 @@
           [scrollback]="5000"
           [messages]="output">
         </ml-xterm>
+      </ml-editor-layout-panel>
+      <ml-editor-layout-panel [class.hidden]="!editorService.outputsTabActive()">
+        <ml-file-outputs [executionId]="executionId"></ml-file-outputs>
       </ml-editor-layout-panel>
     </ml-editor-layout-panels>
   </ml-editor-layout-main>
