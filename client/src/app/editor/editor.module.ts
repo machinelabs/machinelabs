@@ -12,7 +12,8 @@ import { EditorLayoutPanelCtaBarComponent } from './layout/editor-layout-panel-c
 import { EditorLayoutFooterComponent } from './layout/editor-layout-footer.component';
 
 import { FileTreeComponent } from './file-tree/file-tree.component';
-import { FileNameDialogComponent } from './file-name-dialog/file-name-dialog.component';
+import { FileListComponent } from './file-list/file-list.component';
+import { NameDialogComponent } from './name-dialog/name-dialog.component';
 import { AceEditorComponent } from './ace-editor/ace-editor.component';
 import { XtermComponent } from './xterm/xterm.component';
 
@@ -37,7 +38,8 @@ import { EditorSnackbarService } from './editor-snackbar.service';
     EditorLayoutPanelCtaBarComponent,
     EditorLayoutFooterComponent,
     FileTreeComponent,
-    FileNameDialogComponent
+    FileListComponent,
+    NameDialogComponent
   ],
   providers: [
     EditorService,
@@ -58,7 +60,7 @@ import { EditorSnackbarService } from './editor-snackbar.service';
     FileTreeComponent
   ],
   entryComponents: [
-    FileNameDialogComponent
+    NameDialogComponent
   ]
 })
 export class EditorModule {}

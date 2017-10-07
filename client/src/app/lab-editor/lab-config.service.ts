@@ -1,3 +1,4 @@
+import { instanceOfFile } from '@machinelabs/core/models/directory';
 import { Lab } from '../models/lab';
 import { PublicLabConfiguration } from '../models/lab-configuration';
 import { safeLoad } from 'js-yaml';
@@ -26,7 +27,8 @@ export class LabConfigService {
   private getMlYaml(lab: Lab) {
     let file = lab.directory
                   .find(f => f.name.toLowerCase() === CONFIG_FILE_NAME);
-    return file;
+
+    return instanceOfFile(file) ? file : null;
   }
 
   private isValidConfig(config: PublicLabConfiguration) {

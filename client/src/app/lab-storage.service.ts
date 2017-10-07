@@ -51,7 +51,14 @@ export class LabStorageService {
     return this.authService
               .requireAuthOnce()
               .switchMap(_ => this.db.labRef(id).onceValue())
-              .map((snapshot: any) => snapshot.val());
+              .map((snapshot: any) => snapshot.val())
+              .map(value => {
+                // existing lab directories might not be converted yet
+                // this can be removed once we know for sure that all lab directories
+                // are strings in the database
+                value.directory = typeof value.directory === 'string' ? JSON.parse(value.directory) : value.directory;
+                return value;
+              });
   }
 
   labExists(id: string) {
@@ -69,7 +76,7 @@ export class LabStorageService {
                   // `lab.tags` can be undefined when editing an existing lab that
                   // doesn't have any tags yet.
                   tags: lab.tags || [],
-                  directory: lab.directory,
+                  directory: JSON.stringify(lab.directory),
                   // We typecast `hidden` to boolean to ensure exsting labs that haven't
                   // migrated yet (and therefore don't have a `hidden` property) don't
                   // make this code break.

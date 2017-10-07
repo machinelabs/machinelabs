@@ -4,6 +4,8 @@ export * from './models/execution';
 export * from './models/server';
 export * from './models/months';
 export * from './models/lab';
+export * from './models/directory';
 export * from './util/date';
 export * from './util/string';
 export * from './io/reactive-process/index';
+export * from './io/lab-fs/index';

@@ -27,6 +27,7 @@
     "@angular/platform-browser-dynamic": "5.0.0-beta.6",
     "@angular/router": "5.0.0-beta.6",
     "@angular/service-worker": "1.0.0-beta.16",
+    "@machinelabs/core": "file:../shared/core",
     "@types/js-yaml": "^3.5.30",
     "@types/shortid": "0.0.28",
     "@types/socket.io-client": "1.4.29",

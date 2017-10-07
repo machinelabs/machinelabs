@@ -2,15 +2,21 @@ import { TestBed } from '@angular/core/testing';
 import { EditorTestingModule } from './testing/editor-testing.module';
 import { Location } from '@angular/common';
 import { UrlSerializer } from '@angular/router';
+import { File } from '@machinelabs/core/models/directory';
+import { Observable } from 'rxjs/Observable';
 
 import { LAB_STUB } from '../../test-helper/stubs/lab.stubs';
 
 import { EditorService, TabIndex } from './editor.service';
+import { LocationHelper } from '../util/location-helper';
+
+import { NameDialogComponent } from './name-dialog/name-dialog.component';
 
 describe('EditorService', () => {
 
   let editorService: EditorService;
   let location: Location;
+  let locationHelper: LocationHelper;
   let urlSerializer: UrlSerializer;
 
   beforeEach(() => {
@@ -21,6 +27,7 @@ describe('EditorService', () => {
     editorService = TestBed.get(EditorService);
     location = TestBed.get(Location);
     urlSerializer = TestBed.get(UrlSerializer);
+    locationHelper = TestBed.get(LocationHelper);
   });
 
   describe('.initialize()', () => {
@@ -81,6 +88,72 @@ describe('EditorService', () => {
       editorService.initLab(expectedLab);
       expect(editorService.activeFile).toEqual(expectedLab.directory[1]);
     });
+
+    it('should activate query param file when full path is given', () => {
+      let expectedFile = { name: 'util.py', content: '' };
+
+      expectedLab.directory = [
+        { name: 'main.py', content: '' },
+        { name: 'src', contents: [
+          { name: 'lib', contents: [ expectedFile ] }
+        ]}
+      ];
+
+      location.go(`/?file=/src/lib/util.py`);
+      editorService.initLab(expectedLab);
+      expect(editorService.activeFile).toEqual(expectedFile);
+    });
+
+    it('should activate main file if given path is broken', () => {
+      let expectedFile = { name: 'main.py', content: '' };
+
+      expectedLab.directory = [
+        { name: 'main.py', content: '' },
+        { name: 'src', contents: [
+          { name: 'lib', contents: [ expectedFile ] }
+        ]}
+      ];
+
+      location.go('/?file=foo/bar');
+
+      editorService.initLab(expectedLab);
+      expect(editorService.activeFile).toEqual(expectedFile);
+    });
+
+    it('should update query params to fallback if given path is broken', () => {
+      let expectedFile = { name: 'main.py', content: '' };
+
+      expectedLab.directory = [
+        { name: 'main.py', content: '' },
+        { name: 'src', contents: [
+          { name: 'lib', contents: [ expectedFile ] }
+        ]}
+      ];
+
+      location.go('/?file=foo/bar');
+
+      editorService.initLab(expectedLab);
+      expect(location.path()).toEqual('/?file=main.py');
+    });
+
+
+    it('should activate query param file, even if path segment is ambiguous', () => {
+
+      let expectedFile = { name: 'util.py', content: '' };
+
+      expectedLab.directory = [
+        { name: 'main.py', content: '' },
+        // notice that we have a file and a directory called `src`
+        { name: 'src', content: '' },
+        { name: 'src', contents: [
+          { name: 'lib', contents: [ expectedFile ] }
+        ]}
+      ];
+
+      location.go(`/?file=/src/lib/util.py`);
+      editorService.initLab(expectedLab);
+      expect(editorService.activeFile).toEqual(expectedFile);
+    });
   });
 
   describe('.initDirectory()', () => {
@@ -97,6 +170,31 @@ describe('EditorService', () => {
       editorService.initLab(expectedLab);
       editorService.initDirectory(expectedLab.directory);
       expect(editorService.activeFile).toEqual(expectedLab.directory[0]);
+    });
+  });
+
+
+  describe('.openFile()', () => {
+
+    it('should update query parameter with name of given file', () => {
+      let file = { name: 'main.py', content: '' };
+      spyOn(locationHelper, 'updateQueryParams');
+
+      editorService.openFile(file);
+      expect(locationHelper.updateQueryParams).toHaveBeenCalledWith(location.path(), {
+        file: file.name
+      });
+    });
+
+    it('should update query params with given file path', () => {
+      let file = { name: 'main.py', content: '' };
+      let filePath = 'foo/bar/' + file.name;
+      spyOn(locationHelper, 'updateQueryParams');
+
+      editorService.openFile(file, filePath);
+      expect(locationHelper.updateQueryParams).toHaveBeenCalledWith(location.path(), {
+        file: filePath
+      });
     });
   });
 
@@ -128,6 +226,49 @@ describe('EditorService', () => {
     it('should select TabIndex.Console', () => {
       editorService.selectConsoleTab();
       expect(editorService.selectedTab).toEqual(TabIndex.Console);
+    });
+  });
+
+  describe('openNameDialog', () => {
+
+    it('should open dialog to add files and folders with new file or folder', () => {
+      let directory = { name: 'foo', contents: [] };
+      let file = { name: '', content: '' };
+      spyOn(editorService.dialog, 'open').and.returnValue({
+        afterClosed: () => {
+          return Observable.of(null)
+        }
+      });
+      editorService.openNameDialog(directory , file);
+      expect(editorService.dialog.open)
+        .toHaveBeenCalledWith(NameDialogComponent, {
+          disableClose: false,
+          data: {
+            fileOrDirectory: file,
+            parentDirectory: directory
+          }
+        });
+    });
+
+    it('should open dialog to edit files and folder', () => {
+      spyOn(editorService.dialog, 'open').and.returnValue({
+        afterClosed: () => {
+          return Observable.of(null)
+        }
+      });
+
+      let directory = { name: '', contents: [] };
+      let fileToEdit = { name: 'main.py', content: '' };
+
+      editorService.openNameDialog(directory, fileToEdit);
+      expect(editorService.dialog.open)
+        .toHaveBeenCalledWith(NameDialogComponent, {
+          disableClose: false,
+          data: {
+            fileOrDirectory: fileToEdit,
+            parentDirectory: directory
+          }
+        });
     });
   });
 });

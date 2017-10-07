@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MdDialogModule } from '@angular/material';
 import { MachineLabsMaterialModule } from '../../ml-material.module';
 import { EditorModule } from '../editor.module';
 
 import { EditorService } from '../editor.service';
+import { LabDirectoryService } from '../../lab-directory.service';
 import { EditorSnackbarService } from '../editor-snackbar.service';
 import { RemoteLabExecService } from '../remote-code-execution/remote-lab-exec.service';
 import { DbRefBuilder } from '../../firebase/db-ref-builder';
@@ -22,7 +24,8 @@ import { AUTH_SERVICE_STUB } from '../../../test-helper/stubs/auth.service.stubs
 @NgModule({
   imports: [
     RouterTestingModule,
-    MachineLabsMaterialModule
+    MachineLabsMaterialModule,
+    MdDialogModule
   ],
   exports: [
     RouterModule,
@@ -35,6 +38,7 @@ import { AUTH_SERVICE_STUB } from '../../../test-helper/stubs/auth.service.stubs
     { provide: LabTemplateService, useClass: InMemoryLabTemplateService },
     WindowRef,
     EditorService,
+    LabDirectoryService,
     EditorSnackbarService,
     RemoteLabExecService,
     LabExecutionService,

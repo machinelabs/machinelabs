@@ -5,12 +5,12 @@ import { MdDialogModule, MdDialog } from '@angular/material';
 
 import { TestBed, ComponentFixture, inject } from '@angular/core/testing';
 
-import { FileNameDialogComponent } from './file-name-dialog.component';
+import { NameDialogComponent } from './name-dialog.component';
 
-describe('FileNameDialogComponent', () => {
+describe('NameDialogComponent', () => {
 
-  let fixture: ComponentFixture<FileNameDialogComponent>;
-  let component: FileNameDialogComponent;
+  let fixture: ComponentFixture<NameDialogComponent>;
+  let component: NameDialogComponent;
   let dialog: MdDialog;
   let testName = 'test';
 
@@ -26,9 +26,12 @@ describe('FileNameDialogComponent', () => {
   }));
 
   it('should have an invalid form if no file name is entered', () => {
-    let dialogRef = dialog.open(FileNameDialogComponent, {
+    let directory = { name: '', contents: [] };
+    let file = { name: '', content: '' };
+    let dialogRef = dialog.open(NameDialogComponent, {
       data: {
-        fileName: '',
+        fileOrDirectory: file,
+        parentDirectory: directory
       }
     });
 
@@ -41,9 +44,12 @@ describe('FileNameDialogComponent', () => {
   });
 
   it('should be pre-filled with a file name if data is given', () => {
-    let dialogRef = dialog.open(FileNameDialogComponent, {
+    let directory = { name: '', contents: [] };
+    let file = { name: 'test', content: '' };
+    let dialogRef = dialog.open(NameDialogComponent, {
       data: {
-        fileName: testName
+        fileOrDirectory: file,
+        parentDirectory: directory
       }
     });
 
@@ -53,9 +59,12 @@ describe('FileNameDialogComponent', () => {
   });
 
   it('should emit close event with entered file name', () => {
-    let dialogRef = dialog.open(FileNameDialogComponent, {
+    let directory = { name: '', contents: [] };
+    let file = { name: 'test', content: '' };
+    let dialogRef = dialog.open(NameDialogComponent, {
       data: {
-        fileName: '',
+        fileOrDirectory: file,
+        parentDirectory: directory
       }
     });
 
@@ -72,9 +81,9 @@ describe('FileNameDialogComponent', () => {
 
 @NgModule({
   imports: [MdDialogModule, ReactiveFormsModule, CommonModule],
-  declarations: [FileNameDialogComponent],
-  exports: [FileNameDialogComponent],
-  entryComponents: [FileNameDialogComponent],
+  declarations: [NameDialogComponent],
+  exports: [NameDialogComponent],
+  entryComponents: [NameDialogComponent],
   schemas: [NO_ERRORS_SCHEMA]
 })
 class DialogTestModule {}

@@ -181,6 +181,14 @@
   dependencies:
     tsickle "^0.23.5"
 
+"@machinelabs/core@file:../shared/core":
+  version "0.14.1"
+  dependencies:
+    "@reactivex/rxjs" "^5.4.2"
+    "@types/node" "^8.0.19"
+    firebase "^4.2.0"
+    moment "^2.18.1"
+
 "@ngtools/json-schema@1.1.0", "@ngtools/json-schema@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@ngtools/json-schema/-/json-schema-1.1.0.tgz#c3a0c544d62392acc2813a42c8a0dc6f58f86922"
@@ -193,6 +201,12 @@
     loader-utils "^1.0.2"
     magic-string "^0.22.3"
     source-map "^0.5.6"
+
+"@reactivex/rxjs@^5.4.2":
+  version "5.4.3"
+  resolved "https://registry.yarnpkg.com/@reactivex/rxjs/-/rxjs-5.4.3.tgz#d28f83ed19f10cf4bc9dc84db3c424788a1c541e"
+  dependencies:
+    symbol-observable "^1.0.1"
 
 "@schematics/angular@~0.0.30":
   version "0.0.31"
@@ -209,6 +223,10 @@
 "@types/node@6.0.60", "@types/node@^6.0.46":
   version "6.0.60"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.60.tgz#e7e134ebc674ae6ed93c36c767739b110d2c57fc"
+
+"@types/node@^8.0.19":
+  version "8.0.28"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.28.tgz#86206716f8d9251cf41692e384264cbd7058ad60"
 
 "@types/q@^0.0.32":
   version "0.0.32"
@@ -2091,6 +2109,16 @@ firebase@4.3.0:
     promise-polyfill "^6.0.2"
     xmlhttprequest "^1.8.0"
 
+firebase@^4.2.0:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/firebase/-/firebase-4.3.1.tgz#0e6132ee22af323b350d03b6eb1680bb1a6f9ee6"
+  dependencies:
+    dom-storage "^2.0.2"
+    faye-websocket "0.9.3"
+    jsonwebtoken "^7.3.0"
+    promise-polyfill "^6.0.2"
+    xmlhttprequest "^1.8.0"
+
 flatten@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
@@ -3648,7 +3676,7 @@ mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkd
   dependencies:
     minimist "0.0.8"
 
-moment@2.x.x:
+moment@2.x.x, moment@^2.18.1:
   version "2.18.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
 

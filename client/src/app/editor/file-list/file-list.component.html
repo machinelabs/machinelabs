@@ -1,0 +1,65 @@
+<ul class="ml-file-list">
+  <li
+    class="ml-file-list-item"
+    *ngFor="let fileOrDirectory of directory.contents"
+    (click)="selectFile($event, fileOrDirectory)"
+    [ngClass]="{ selected: selectedFile && selectedFile.name == fileOrDirectory.name }">
+
+    <ng-template #fileListItemName>
+      <md-icon>description</md-icon> {{fileOrDirectory.name}}
+
+      <ng-container *ngIf="showActionButtons">
+        <button class="ml-file-list-item-button edit"
+          mdTooltip="Change filename"
+          mdTooltipPosition="below"
+          *ngIf="isEditable(fileOrDirectory)"
+          (click)="openFileNameDialog(directory, fileOrDirectory)"
+          ><md-icon>create</md-icon></button>
+
+        <button class="ml-file-list-item-button delete"
+          *ngIf="isRemovable(fileOrDirectory)"
+          mdTooltip="Delete file"
+          mdTooltipPosition="below"
+          (click)="deleteFileOrDirectory(fileOrDirectory)"><md-icon>highlight_off</md-icon></button>
+      </ng-container>
+    </ng-template>
+
+    <ng-container *ngIf="fileOrDirectory.contents; else: fileListItemName;">
+      <!-- <ml-zippy> -->
+      <!-- </ml-zippy> -->
+
+
+
+      <span><md-icon>folder</md-icon> {{fileOrDirectory.name}}</span>
+      <button
+        class="ml-file-list-item-button add"
+        (click)="openFileNameDialog(fileOrDirectory)"
+        mdTooltip="Add file"
+        mdTooltipPosition="below"
+        ><md-icon>note_add</md-icon></button>
+      <button
+        class="ml-file-list-item-button add-folder"
+        (click)="openFolderNameDialog(fileOrDirectory)"
+        mdTooltip="Add folder"
+        mdTooltipPosition="below"
+        ><md-icon>add</md-icon></button>
+      <button
+        class="ml-file-list-item-button edit"
+        (click)="openFolderNameDialog(directory, fileOrDirectory)"
+        mdTooltip="Edit folder"
+        mdTooltipPosition="below"
+        ><md-icon>create</md-icon></button>
+      <button
+        class="ml-file-list-item-button delete"
+        (click)="deleteFileOrDirectory(fileOrDirectory)"
+        mdTooltip="Delete folder"
+        mdTooltipPosition="below"
+        ><md-icon>highlight_off</md-icon></button>
+      <ml-file-list
+        [directory]="fileOrDirectory"
+        *ngIf="fileOrDirectory.contents.length"
+        [showActionButtons]="showActionButtons"></ml-file-list>
+    </ng-container>
+  </li>
+</ul>
+

@@ -3,14 +3,23 @@ import { Observable } from 'rxjs/Observable';
 import { Injectable, EventEmitter } from '@angular/core';
 import { UrlSerializer, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { MdDialog, MdDialogRef } from '@angular/material';
+import {
+  LabDirectory,
+  File,
+  Directory
+} from '@machinelabs/core/models/directory';
 import { LocationHelper } from '../util/location-helper';
+import { LabDirectoryService } from '../lab-directory.service';
 import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.service';
 import { EditorSnackbarService } from './editor-snackbar.service';
 import { LabExecutionService } from 'app/lab-execution.service';
 import { LabStorageService } from '../lab-storage.service';
 import { createSkipTextHelper } from './util/skip-helper';
 
-import { File, Lab } from '../models/lab';
+import { NameDialogComponent } from './name-dialog/name-dialog.component';
+
+import { Lab } from '../models/lab';
 import {
   MessageKind,
   ExecutionRejectionInfo,
@@ -64,6 +73,8 @@ export class EditorService {
 
   outputMaxChars = 200000;
 
+  fileNameDialogRef: MdDialogRef<NameDialogComponent>;
+
   constructor(
     private urlSerializer: UrlSerializer,
     private location: Location,
@@ -71,7 +82,10 @@ export class EditorService {
     private editorSnackbar: EditorSnackbarService,
     private labStorageService: LabStorageService,
     private rleService: RemoteLabExecService,
-    private labExecutionService: LabExecutionService
+    private labExecutionService: LabExecutionService,
+    private labDirectoryService: LabDirectoryService,
+    public dialog: MdDialog,
+    private route: ActivatedRoute
   ) {
     this.initialize();
   }
@@ -98,7 +112,7 @@ export class EditorService {
     this.initActiveFile();
   }
 
-  initDirectory(directory: Array<File>) {
+  initDirectory(directory: LabDirectory) {
     this.lab.directory = directory;
     this.initActiveFile();
   }
@@ -235,11 +249,46 @@ export class EditorService {
     this.selectedTabChange.emit(tabIndex);
   }
 
-  openFile(file: File) {
+  openFile(file: File, path?: string) {
     this.activeFile = file;
     this.locationHelper.updateQueryParams(this.location.path(), {
-      file: file.name,
+      file: path ? path : file.name
     });
+  }
+
+  openFolderNameDialog(parentDirectory: Directory, directory?: Directory) {
+    const newDirectory = { name: '', contents: [] };
+    this.openNameDialog(parentDirectory, directory || newDirectory).subscribe(name => {
+      if (directory) {
+        directory.name = name;
+      } else {
+        parentDirectory.contents.push({ name, contents: [] });
+      }
+    });
+  }
+
+  openFileNameDialog(parentDirectory: Directory, file?: File) {
+    const newFile = { name: '', content: '' };
+    this.openNameDialog(parentDirectory, file || newFile).subscribe(name => {
+      if (file) {
+        this.labDirectoryService.updateFileInDirectory(file, { name, content: file.content }, parentDirectory);
+      } else {
+        parentDirectory.contents.push({ name, content: '' });
+      }
+    });
+  }
+
+  openNameDialog(parentDirectory: Directory, fileOrDirectory: File | Directory) {
+    this.fileNameDialogRef = this.dialog.open(NameDialogComponent, {
+      disableClose: false,
+      data: {
+        parentDirectory,
+        fileOrDirectory
+      }
+    });
+
+    return this.fileNameDialogRef.afterClosed()
+      .filter(name => name !== '' && name !== undefined);
   }
 
   tabActive(tabIndex: TabIndex) {
@@ -271,8 +320,9 @@ export class EditorService {
   }
 
   private initActiveFile() {
-    const file = this.lab.directory
-      .find(f => f.name === this.urlSerializer.parse(this.location.path()).queryParams.file);
-    this.openFile(file || this.lab.directory[0]);
+    const path = this.urlSerializer.parse(this.location.path()).queryParams.file;
+    let file = path ? this.labDirectoryService.getFileFromPath(path, this.lab.directory) : null;
+    this.openFile(file || this.labDirectoryService.getMainFile(this.lab.directory), file ? path : null);
   }
+
 }
