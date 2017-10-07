@@ -19,7 +19,6 @@ import { EditorViewComponent } from './editor-view/editor-view.component';
 import { PanelComponent } from './panel/panel.component';
 import { PanelTitleComponent } from './panel/panel-title.component';
 import { ExecutionStatusComponent } from './execution-status/execution-status.component';
-import { FileOutputsComponent } from './file-outputs/file-outputs.component';
 import { FooterComponent } from './editor-footer/editor-footer.component';
 
 import { NavigationConfirmDialogComponent } from './navigation-confirm-dialog/navigation-confirm-dialog.component';
@@ -30,13 +29,7 @@ import { EmbedDialogComponent } from './embed-dialog/embed-dialog.component';
 import { EditExecutionDialogComponent } from './edit-execution-dialog/edit-execution-dialog.component';
 
 import { ExecutionStatusPipe } from './execution-status.pipe';
-
 import { ExecutionListComponent } from './execution-list/execution-list.component';
-
-import { FilePreviewDialogService } from './file-preview/file-preview-dialog.service';
-import { FilePreviewDialogToolbarComponent } from './file-preview/file-preview-dialog-toolbar/file-preview-dialog-toolbar.component';
-import { FilePreviewDialogComponent } from './file-preview/file-preview-dialog/file-preview-dialog.component';
-import { FILE_PREVIEW_DIALOG_SCROLL_STRATEGY_PROVIDER } from './file-preview/file-preview.tokens';
 
 @NgModule({
   imports: [
@@ -63,17 +56,12 @@ import { FILE_PREVIEW_DIALOG_SCROLL_STRATEGY_PROVIDER } from './file-preview/fil
     FooterComponent,
     ExecutionListComponent,
     EditExecutionDialogComponent,
-    EmbedDialogComponent,
-    FileOutputsComponent,
-    FilePreviewDialogComponent,
-    FilePreviewDialogToolbarComponent
+    EmbedDialogComponent
   ],
   providers: [
     HasValidExecutionGuard,
     HasRunningExecutionGuard,
     LabConfigService,
-    FilePreviewDialogService,
-    FILE_PREVIEW_DIALOG_SCROLL_STRATEGY_PROVIDER
   ],
   entryComponents: [
     NavigationConfirmDialogComponent,
@@ -81,8 +69,7 @@ import { FILE_PREVIEW_DIALOG_SCROLL_STRATEGY_PROVIDER } from './file-preview/fil
     RejectionDialogComponent,
     ShareDialogComponent,
     EditExecutionDialogComponent,
-    EmbedDialogComponent,
-    FilePreviewDialogComponent
+    EmbedDialogComponent
   ]
 })
 export class LabEditorModule {}
