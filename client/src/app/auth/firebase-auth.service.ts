@@ -68,5 +68,10 @@ export class FirebaseAuthService extends AuthService {
                      .catch(error => this.signInWithGitHub());
 
   }
+
+  sendEmailVerification() {
+    let emailVerificationPromise = firebase.auth().currentUser.sendEmailVerification();
+    return Observable.fromPromise(<Promise<any>>emailVerificationPromise);
+  }
 }
 
