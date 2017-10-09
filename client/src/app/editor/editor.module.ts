@@ -26,6 +26,7 @@ import { EditorSnackbarService } from './editor-snackbar.service';
 import { FilePreviewDialogService } from './file-preview/file-preview-dialog.service';
 
 import { FILE_PREVIEW_DIALOG_SCROLL_STRATEGY_PROVIDER } from './file-preview/file-preview.tokens';
+import { FileListService } from './file-list/file-list.service';
 
 @NgModule({
   imports: [
@@ -51,6 +52,7 @@ import { FILE_PREVIEW_DIALOG_SCROLL_STRATEGY_PROVIDER } from './file-preview/fil
     NameDialogComponent
   ],
   providers: [
+    FileListService,
     EditorService,
     RemoteLabExecService,
     EditorSnackbarService,

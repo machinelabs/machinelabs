@@ -66,6 +66,8 @@ export class LabStorageService {
   }
 
   saveLab(lab: Lab): Observable<any> {
+    const removeClientState = (key, value) => key === 'clientState' ? undefined : value;
+
     return this.authService
               .requireAuthOnce()
               .switchMap((login: any) => this.db.labRef(lab.id).set({
@@ -76,7 +78,7 @@ export class LabStorageService {
                   // `lab.tags` can be undefined when editing an existing lab that
                   // doesn't have any tags yet.
                   tags: lab.tags || [],
-                  directory: JSON.stringify(lab.directory),
+                  directory: JSON.stringify(lab.directory, removeClientState),
                   // We typecast `hidden` to boolean to ensure exsting labs that haven't
                   // migrated yet (and therefore don't have a `hidden` property) don't
                   // make this code break.

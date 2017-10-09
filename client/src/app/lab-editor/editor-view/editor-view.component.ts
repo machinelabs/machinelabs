@@ -309,7 +309,7 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
   save(lab: Lab, msg = 'Lab saved', fetchExecutions = false) {
     this.editorService
         .saveLab(lab, msg)
-        .subscribe(_ => this.initLab(lab, fetchExecutions));
+        .subscribe(_ => this.initLab(lab, fetchExecutions, false));
   }
 
   delete(lab: Lab) {
@@ -377,8 +377,8 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
     });
   }
 
-  initLab(lab: Lab, fetchExecutions = true) {
-    this.editorService.initLab(lab);
+  initLab(lab: Lab, fetchExecutions = true, collapseDirectories = true) {
+    this.editorService.initLab(lab, collapseDirectories);
     if (fetchExecutions) {
       this.initExecutionList();
     }

@@ -1,8 +1,8 @@
 <ml-file-list
   [directory]="{ name: '', contents: editorService.lab.directory }"
   [mandatoryFiles]="['main.py']"
-  [showActionButtons]="showActionButtons"
-  ></ml-file-list>
+  [showActionButtons]="showActionButtons">
+</ml-file-list>
 
 <ng-container *ngIf="showActionButtons">
   <div class="ml-file-tree-cta-bar">
@@ -10,8 +10,7 @@
       <md-icon>note_add</md-icon> Add file
     </button>
     <button md-button (click)="openFolderNameDialog()" class="ml-file-tree-cta">
-      <md-icon>add</md-icon> Add folder
+      <md-icon>create_new_folder</md-icon> Add folder
     </button>
   </div>
 </ng-container>
-

@@ -1,6 +1,8 @@
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
   font-weight: 400;
+  height: 100%;
 }
 
 .ml-file-tree__cta-bar {
@@ -22,3 +24,6 @@
   }
 }
 
+ml-file-list {
+  position: relative;
+}

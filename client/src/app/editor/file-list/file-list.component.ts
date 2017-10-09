@@ -1,8 +1,16 @@
 import { Component, Input, Optional, SkipSelf } from '@angular/core';
-import { File, LabDirectory, Directory, instanceOfFile, instanceOfDirectory } from '@machinelabs/core/models/directory';
+
+import {
+  File,
+  LabDirectory,
+  Directory,
+  instanceOfFile,
+  instanceOfDirectory
+} from '@machinelabs/core/models/directory';
 
 import { EditorService } from '../editor.service';
 import { LabDirectoryService } from '../../lab-directory.service';
+import { FileListService } from './file-list.service';
 
 @Component({
   selector: 'ml-file-list',
@@ -11,11 +19,6 @@ import { LabDirectoryService } from '../../lab-directory.service';
 })
 export class FileListComponent {
 
-
-  get selectedFile(): File {
-    return this.editorService.activeFile;
-  }
-
   @Input() showActionButtons = true;
 
   @Input() directory = null as Directory;
@@ -23,9 +26,10 @@ export class FileListComponent {
   @Input() mandatoryFiles: Array<string> = [];
 
   constructor(
-    public editorService: EditorService,
+    private editorService: EditorService,
     @Optional() @SkipSelf() public parent: FileListComponent,
-    private labDirectoryService: LabDirectoryService) {}
+    private labDirectoryService: LabDirectoryService,
+    public fileListService: FileListService) {}
 
   isRemovable(file: File) {
     return !this.isMandatoryFile(file);
@@ -36,23 +40,35 @@ export class FileListComponent {
   }
 
   selectFile(event, file: File) {
-    if (instanceOfFile(file) && event.target.nodeName === 'LI') {
+    if (instanceOfFile(file)) {
       const path = `${this.getFileTreePath()}/${file.name}`
       this.editorService.openFile(file, path);
     }
   }
 
-  deleteFileOrDirectory(fileOrDirectory: File|Directory) {
+  deleteFileOrDirectory(event: Event, fileOrDirectory: File|Directory) {
+    this.stopEventPropagation(event);
     this.labDirectoryService.deleteFromDirectory(fileOrDirectory, this.directory);
     this.editorService.openFile(this.labDirectoryService.getMainFile(this.editorService.lab.directory));
   }
 
-  openFolderNameDialog(parentDirectory: Directory, directory?: Directory) {
+  openFolderNameDialog(event: Event, parentDirectory: Directory, directory?: Directory) {
+    this.stopEventPropagation(event);
+    this.fileListService.expandDirectory(parentDirectory);
     this.editorService.openFolderNameDialog(parentDirectory, directory);
   }
 
-  openFileNameDialog(parentDirectory: Directory, file?: File) {
-    this.editorService.openFileNameDialog(parentDirectory, file);
+  openFileNameDialog(event: Event, parentDirectory: Directory, file?: File) {
+    this.stopEventPropagation(event);
+    this.editorService.openFileNameDialog(parentDirectory, file).subscribe(f => {
+      this.selectFile(null, f);
+    });
+  }
+
+  private stopEventPropagation(event: Event) {
+    if (event) {
+      event.stopPropagation();
+    }
   }
 
   private isMandatoryFile(file: File) {
