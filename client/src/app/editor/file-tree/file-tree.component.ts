@@ -21,6 +21,8 @@ export class FileTreeComponent {
   }
 
   openFileNameDialog() {
-    this.editorService.openFileNameDialog(this.rootDirectory);
+    this.editorService.openFileNameDialog(this.rootDirectory).subscribe(file => {
+      this.editorService.openFile(file);
+    });
   }
 }

@@ -1,3 +1,8 @@
-<p>
-  zippy works!
-</p>
+<header (click)="toggle()">
+  <img *ngIf="collapsable" [src]="icon" alt="Arrow">
+  <div class="title-wrapper" [class.collapsable]="collapsable">
+    <ng-content select="[ml-zippy-title]"></ng-content>
+  </div>
+</header>
+
+<ng-content select="[ml-zippy-content]" *ngIf="!collapsed"></ng-content>

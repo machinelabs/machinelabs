@@ -11,6 +11,7 @@ import { EditorService } from '../editor.service';
 import { LabDirectoryService } from '../../lab-directory.service';
 import { FileTreeComponent } from './file-tree.component';
 import { FileListComponent } from '../file-list/file-list.component';
+import { FileListService } from '../file-list/file-list.service';
 
 describe('FileTreeComponent', () => {
 
@@ -29,7 +30,8 @@ describe('FileTreeComponent', () => {
       imports: [MdDialogModule],
       providers: [
         { provide: EditorService, useValue: EDITOR_SERVICE_STUB },
-        LabDirectoryService
+        LabDirectoryService,
+        FileListService
       ],
       declarations: [FileTreeComponent, FileListComponent],
       schemas: [NO_ERRORS_SCHEMA]

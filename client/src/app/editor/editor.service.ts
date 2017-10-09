@@ -4,11 +4,16 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { UrlSerializer, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { MdDialog, MdDialogRef } from '@angular/material';
+
 import {
   LabDirectory,
   File,
-  Directory
+  Directory,
+  instanceOfFile,
+  instanceOfDirectory,
+  DirectoryClientState
 } from '@machinelabs/core/models/directory';
+
 import { LocationHelper } from '../util/location-helper';
 import { LabDirectoryService } from '../lab-directory.service';
 import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.service';
@@ -16,10 +21,10 @@ import { EditorSnackbarService } from './editor-snackbar.service';
 import { LabExecutionService } from 'app/lab-execution.service';
 import { LabStorageService } from '../lab-storage.service';
 import { createSkipTextHelper } from './util/skip-helper';
-
 import { NameDialogComponent } from './name-dialog/name-dialog.component';
-
+import { FileListService } from './file-list/file-list.service';
 import { Lab } from '../models/lab';
+
 import {
   MessageKind,
   ExecutionRejectionInfo,
@@ -85,7 +90,8 @@ export class EditorService {
     private labExecutionService: LabExecutionService,
     private labDirectoryService: LabDirectoryService,
     public dialog: MdDialog,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private fileListService: FileListService
   ) {
     this.initialize();
   }
@@ -106,14 +112,20 @@ export class EditorService {
     this.localExecutions$ = new Subject<Map<string, Execution>>();
   }
 
-  initLab(lab: Lab) {
+  initLab(lab: Lab, collapseDirectories = true) {
     this.lab = lab;
+
+    if (collapseDirectories) {
+      this.fileListService.collapseAll(this.lab.directory);
+    }
+
     this.latestLab = Object.assign({}, this.lab);
     this.initActiveFile();
   }
 
   initDirectory(directory: LabDirectory) {
     this.lab.directory = directory;
+    this.fileListService.collapseAll(this.lab.directory);
     this.initActiveFile();
   }
 
@@ -250,31 +262,43 @@ export class EditorService {
   }
 
   openFile(file: File, path?: string) {
+    this.fileListService.unselectFile(this.activeFile);
     this.activeFile = file;
+    this.fileListService.selectFile(this.activeFile);
+
     this.locationHelper.updateQueryParams(this.location.path(), {
       file: path ? path : file.name
     });
   }
 
   openFolderNameDialog(parentDirectory: Directory, directory?: Directory) {
-    const newDirectory = { name: '', contents: [] };
+    const newDirectory = { name: '', contents: [], clientState: { collapsed: true } };
+
     this.openNameDialog(parentDirectory, directory || newDirectory).subscribe(name => {
       if (directory) {
         directory.name = name;
+        this.fileListService.collapseDirectory(directory);
       } else {
-        parentDirectory.contents.push({ name, contents: [] });
+        parentDirectory.contents.push({ ...newDirectory, name });
       }
     });
   }
 
   openFileNameDialog(parentDirectory: Directory, file?: File) {
-    const newFile = { name: '', content: '' };
-    this.openNameDialog(parentDirectory, file || newFile).subscribe(name => {
+    let newFile = { name: '', content: '', clientState: { collapsed: false } };
+
+    return this.openNameDialog(parentDirectory, file || newFile).map(name => {
+      parentDirectory.clientState = { ...parentDirectory.clientState, collapsed: false };
+
       if (file) {
-        this.labDirectoryService.updateFileInDirectory(file, { name, content: file.content }, parentDirectory);
+        newFile = { ...newFile, name, content: file.content };
+        this.labDirectoryService.updateFileInDirectory(file, newFile, parentDirectory);
       } else {
-        parentDirectory.contents.push({ name, content: '' });
+        newFile = { ...newFile, name };
+        parentDirectory.contents.push(newFile);
       }
+
+      return newFile;
     });
   }
 
@@ -324,5 +348,4 @@ export class EditorService {
     let file = path ? this.labDirectoryService.getFileFromPath(path, this.lab.directory) : null;
     this.openFile(file || this.labDirectoryService.getMainFile(this.lab.directory), file ? path : null);
   }
-
 }

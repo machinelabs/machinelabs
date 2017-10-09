@@ -105,12 +105,12 @@ describe('EditorService', () => {
     });
 
     it('should activate main file if given path is broken', () => {
-      let expectedFile = { name: 'main.py', content: '' };
+      let expectedFile = { name: 'main.py', content: '', clientState: { collapsed: true, selected: true } };
 
       expectedLab.directory = [
         { name: 'main.py', content: '' },
         { name: 'src', contents: [
-          { name: 'lib', contents: [ expectedFile ] }
+          { name: 'lib', contents: [ { name: 'utils.py', content: '' } ] }
         ]}
       ];
 
