@@ -7,6 +7,7 @@ import { LAB_STUB, EDITOR_SERVICE_STUB } from '../../../test-helper/stubs';
 import { FileListComponent } from './file-list.component';
 import { EditorService } from '../editor.service';
 import { LabDirectoryService } from '../../lab-directory.service';
+import { FileListService } from './file-list.service';
 
 describe('FileListComponent', () => {
 
@@ -23,7 +24,8 @@ describe('FileListComponent', () => {
       ],
       providers: [
         { provide: EditorService, useValue: EDITOR_SERVICE_STUB },
-        LabDirectoryService
+        LabDirectoryService,
+        FileListService
       ],
       schemas: [NO_ERRORS_SCHEMA]
     });
@@ -88,14 +90,14 @@ describe('FileListComponent', () => {
 
     it('should delete given file from its directory', () => {
       component.directory = { name: '', contents: editorService.lab.directory };
-      component.deleteFileOrDirectory(<File>editorService.lab.directory[1]);
+      component.deleteFileOrDirectory(null, <File>editorService.lab.directory[1]);
       expect(component.directory.contents).toEqual([editorService.lab.directory[0]]);
     });
 
     it('should activate main lab file after deletion', () => {
       spyOn(editorService, 'openFile');
       component.directory = { name: '', contents: editorService.lab.directory };
-      component.deleteFileOrDirectory(<File>editorService.lab.directory[1]);
+      component.deleteFileOrDirectory(null, <File>editorService.lab.directory[1]);
       expect(editorService.openFile).toHaveBeenCalledWith(labDirectoryService.getMainFile(component.directory.contents));
     });
   });

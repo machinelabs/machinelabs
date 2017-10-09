@@ -1,20 +1,19 @@
+:host {
+  flex: 1;
+  overflow-y: auto;
+}
+
 .ml-file-list {
-  max-height: 400px;
-  overflow: auto;
   list-style: none;
   margin: 0;
-  padding-left: 1em;
-  padding-right: 1em;
-  padding-top: 1.2em;
-  padding-bottom: 1.2em;
+  padding-left: 20px;
 }
 
 .ml-file-list-item {
-  font-size: 0.9em;
+  font-size: 14px;
   font-weight: 400;
-  padding: 0.4em 0.4em;
+  padding: 0;
   line-height: 1.4;
-  position: relative;
 
   md-icon {
     font-size: 1.2em;
@@ -22,43 +21,49 @@
     height: 18px;
     width: 18px;
   }
+}
+
+.ml-file-list-item-title {
+  padding: 5px 0;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    margin-top: -5px;
+    z-index: -1;
+  }
 
   &:hover {
-    cursor: pointer;
-
-    .ml-file-list-item-button {
-      display: block;
+    .ml-file-list-item__action-buttons {
+      opacity: 1;
     }
   }
 }
 
-.ml-file-list-item-button {
-  background: transparent;
-  border: none;
+.ml-file-list-item__action-buttons {
   position: absolute;
-  cursor: pointer;
-  display: none;
-
-  md-icon { font-size: 1.6em; }
-
-  &.add {
-    right: 80px;
-    top: 5px;
-  }
-
-  &.add-folder {
-    right: 54px;
-    top: 5px;
-  }
-
-  &.edit {
-    right: 28px;
-    top: 5px;
-  }
-
-  &.delete {
-    right: 2px;
-    top: 6px;
-  }
+  display: flex;
+  opacity: 0;
+  right: 0;
+  height: 30px;
+  margin-top: -25px;
+  padding-left: 15px;
 }
 
+.ml-file-list-item-button {
+  display: flex;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+
+  md-icon { font-size: 1.6em; }
+}

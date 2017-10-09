@@ -1,0 +1,19 @@
+header {
+  display: flex;
+  align-items: center;
+
+  img {
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    user-select: none;
+  }
+}
+
+.title-wrapper {
+  width: 100%;
+
+  &.collapsable {
+    padding-left: 22px;
+  }
+}
