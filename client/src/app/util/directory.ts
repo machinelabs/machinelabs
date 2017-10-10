@@ -5,11 +5,4 @@ export const MAIN_PYTHON_FILENAME = 'main.py';
 export const getMainFile = (dir: LabDirectory) =>
                            <File>dir.find(file => file.name === MAIN_PYTHON_FILENAME && instanceOfFile(file));
 
-export class Directory {
-
-  static isSameDirectory(a: File[], b: File[]) {
-    return JSON.stringify(a) !== JSON.stringify(b);
-  }
-}
-
 

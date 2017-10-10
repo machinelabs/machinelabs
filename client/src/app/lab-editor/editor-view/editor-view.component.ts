@@ -22,7 +22,6 @@ import { UserService } from '../../user/user.service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Lab } from '../../models/lab';
-import { Directory } from '../../util/directory';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { LocationHelper } from '../../util/location-helper';
 import { Execution, ExecutionRejectionReason } from '../../models/execution';
