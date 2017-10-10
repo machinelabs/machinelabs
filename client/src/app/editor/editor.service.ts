@@ -256,6 +256,10 @@ export class EditorService {
     this.selectedTabChange.emit(tabIndex);
   }
 
+  openMainFile() {
+    this.openFile(this.labDirectoryService.getMainFile(this.lab.directory));
+  }
+
   openFile(file: File, path?: string) {
     this.fileTreeService.unselectFile(this.activeFile);
     this.activeFile = file;
