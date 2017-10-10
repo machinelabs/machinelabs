@@ -34,6 +34,10 @@ export class FileListComponent {
     private labDirectoryService: LabDirectoryService,
     public fileListService: FileListService) {}
 
+  get level () {
+    return this.parent ? this.parent.level + 1 : 0;
+  }
+
   isRemovable(file: File) {
     return !this.isMandatoryFile(file);
   }
