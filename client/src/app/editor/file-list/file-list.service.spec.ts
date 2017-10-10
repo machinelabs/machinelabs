@@ -3,7 +3,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { FileListService } from './file-list.service';
 import { Directory, File, LabDirectory } from '@machinelabs/core/models/directory';
 
-fdescribe('FileListService', () => {
+describe('FileListService', () => {
   let fileListService: FileListService;
 
   beforeEach(() => {
