@@ -10,7 +10,7 @@ import {
 } from '@machinelabs/core/models/directory';
 
 @Injectable()
-export class FileListService {
+export class FileTreeService {
 
   collapseDirectory(fileOrDirectory: File | Directory) {
     this.setCollapsed(fileOrDirectory, true);

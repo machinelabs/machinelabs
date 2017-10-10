@@ -18,7 +18,7 @@ export class EditorViewPageObject {
   fileNameDialog: FileNameDialogPageObject = new FileNameDialogPageObject();
 
   tabs: ElementArrayFinder = element.all(by.css('.mat-tab-link'));
-  fileList: ElementArrayFinder = element.all(by.css('.ml-file-list-item'));
+  fileTree: ElementArrayFinder = element.all(by.css('.ml-file-tree-item'));
   addFileBtn: ElementFinder = element(by.css('.ml-file-tree-cta.mat-button'));
 
   /**
@@ -44,7 +44,7 @@ export class EditorViewPageObject {
   }
 
   getFileByIndex(index: number): ElementFinder {
-    return this.fileList.get(index);
+    return this.fileTree.get(index);
   }
 
   getFileName(index: number): promise.Promise<string> {
@@ -53,7 +53,7 @@ export class EditorViewPageObject {
 
   getFileEditBtn(index: number): ElementFinder {
     return this.getFileByIndex(index)
-                        .element(by.css('.ml-file-list-item-button.edit'));
+                        .element(by.css('.ml-file-tree-item-button.edit'));
   }
 
   addFile(name: string): void {

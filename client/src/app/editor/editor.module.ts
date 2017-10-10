@@ -11,7 +11,7 @@ import { EditorLayoutPanelComponent } from './layout/editor-layout-panel.compone
 import { EditorLayoutPanelCtaBarComponent } from './layout/editor-layout-panel-cta-bar.component';
 import { EditorLayoutFooterComponent } from './layout/editor-layout-footer.component';
 
-import { FileListComponent } from './file-list/file-list.component';
+import { FileTreeComponent } from './file-tree/file-tree.component';
 import { NameDialogComponent } from './name-dialog/name-dialog.component';
 import { AceEditorComponent } from './ace-editor/ace-editor.component';
 import { XtermComponent } from './xterm/xterm.component';
@@ -27,7 +27,7 @@ import { EditorSnackbarService } from './editor-snackbar.service';
 import { FilePreviewDialogService } from './file-preview/file-preview-dialog.service';
 
 import { FILE_PREVIEW_DIALOG_SCROLL_STRATEGY_PROVIDER } from './file-preview/file-preview.tokens';
-import { FileListService } from './file-list/file-list.service';
+import { FileTreeService } from './file-tree/file-tree.service';
 
 @NgModule({
   imports: [
@@ -45,14 +45,14 @@ import { FileListService } from './file-list/file-list.service';
     EditorLayoutPanelComponent,
     EditorLayoutPanelCtaBarComponent,
     EditorLayoutFooterComponent,
-    FileListComponent,
+    FileTreeComponent,
     FileOutputsComponent,
     FilePreviewDialogComponent,
     FilePreviewDialogToolbarComponent,
     NameDialogComponent
   ],
   providers: [
-    FileListService,
+    FileTreeService,
     EditorService,
     NameDialogService,
     RemoteLabExecService,
@@ -71,7 +71,7 @@ import { FileListService } from './file-list/file-list.service';
     EditorLayoutPanelComponent,
     EditorLayoutPanelCtaBarComponent,
     EditorLayoutFooterComponent,
-    FileListComponent,
+    FileTreeComponent,
     FileOutputsComponent,
     FilePreviewDialogComponent,
     FilePreviewDialogToolbarComponent

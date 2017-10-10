@@ -9,19 +9,19 @@
   </div>
 </ng-container>
 
-<ul class="ml-file-list">
+<ul class="ml-file-tree">
   <li
-    class="ml-file-list-item"
+    class="ml-file-tree-item"
     *ngFor="let fileOrDirectory of directory.contents"
     (click)="selectFile($event, fileOrDirectory)">
 
     <ml-zippy [collapsed]="fileOrDirectory.clientState.collapsed" [collapsable]="fileOrDirectory.contents">
-      <div class="ml-file-list-item-title" ml-zippy-title [ngClass]="{ selected: fileOrDirectory.clientState?.selected }">
-        <ng-template #fileListItemName>
+      <div class="ml-file-tree-item-title" ml-zippy-title [ngClass]="{ selected: fileOrDirectory.clientState?.selected }">
+        <ng-template #fileTreeItemName>
           <md-icon>description</md-icon> {{fileOrDirectory.name}}
 
-          <div class="ml-file-list-item__action-buttons" *ngIf="showActionButtons">
-            <button class="ml-file-list-item-button edit"
+          <div class="ml-file-tree-item__action-buttons" *ngIf="showActionButtons">
+            <button class="ml-file-tree-item-button edit"
               mdTooltip="Change filename"
               mdTooltipPosition="below"
               *ngIf="isEditable(fileOrDirectory)"
@@ -29,7 +29,7 @@
                 <md-icon>create</md-icon>
             </button>
 
-            <button class="ml-file-list-item-button delete"
+            <button class="ml-file-tree-item-button delete"
               *ngIf="isRemovable(fileOrDirectory)"
               mdTooltip="Delete file"
               mdTooltipPosition="below"
@@ -39,33 +39,33 @@
           </div>
         </ng-template>
 
-        <ng-container *ngIf="fileOrDirectory.contents; else: fileListItemName;">
+        <ng-container *ngIf="fileOrDirectory.contents; else: fileTreeItemName;">
           {{fileOrDirectory.name}}
 
-          <div class="ml-file-list-item__action-buttons">
+          <div class="ml-file-tree-item__action-buttons">
             <button
-              class="ml-file-list-item-button add"
+              class="ml-file-tree-item-button add"
               (click)="openAddFileNameDialog($event, fileOrDirectory)"
               mdTooltip="Add file"
               mdTooltipPosition="below">
                 <md-icon>note_add</md-icon>
             </button>
             <button
-              class="ml-file-list-item-button add-folder"
+              class="ml-file-tree-item-button add-folder"
               (click)="openAddFolderNameDialog($event, fileOrDirectory)"
               mdTooltip="Add folder"
               mdTooltipPosition="below">
                 <md-icon>create_new_folder</md-icon>
             </button>
             <button
-              class="ml-file-list-item-button edit"
+              class="ml-file-tree-item-button edit"
               (click)="openEditFolderNameDialog($event, directory, fileOrDirectory)"
               mdTooltip="Edit folder"
               mdTooltipPosition="below">
                 <md-icon>create</md-icon>
             </button>
             <button
-              class="ml-file-list-item-button delete"
+              class="ml-file-tree-item-button delete"
               (click)="deleteFileOrDirectory($event, fileOrDirectory)"
               mdTooltip="Delete folder"
               mdTooltipPosition="below">
@@ -75,11 +75,11 @@
         </ng-container>
       </div>
       <div ml-zippy-content>
-        <ml-file-list
+        <ml-file-tree
           [directory]="fileOrDirectory"
           *ngIf="fileOrDirectory.contents"
           [showActionButtons]="showActionButtons">
-        </ml-file-list>
+        </ml-file-tree>
       </div>
     </ml-zippy>
   </li>

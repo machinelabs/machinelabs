@@ -29,7 +29,7 @@ describe('Editor-View Component', function() {
 
   describe('in EDIT mode', () => {
     it('should display the current lab file structure', () => {
-      expect(editorView.fileList.count()).toEqual(2);
+      expect(editorView.fileTree.count()).toEqual(2);
       expect(editorView.getFileName(0)).toContain('main.py');
       expect(editorView.getFileName(1)).toContain('ml.yaml');
     });
@@ -43,7 +43,7 @@ describe('Editor-View Component', function() {
 
     it('should allow users to add new files', () => {
       editorView.addFile('ml-main-2.py');
-      expect(editorView.fileList.count()).toEqual(3);
+      expect(editorView.fileTree.count()).toEqual(3);
     });
   });
 });

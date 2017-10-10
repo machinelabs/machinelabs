@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MdDialogRef, MdDialog } from '@angular/material';
 import { NameDialogComponent, NameDialogType } from 'app/editor/name-dialog/name-dialog.component';
-import { FileListService } from 'app/editor/file-list/file-list.service';
+import { FileTreeService } from 'app/editor/file-tree/file-tree.service';
 import { LabDirectoryService } from 'app/lab-directory.service';
 import { File, Directory } from '@machinelabs/core/models/directory';
 
@@ -11,7 +11,7 @@ export class NameDialogService {
   fileNameDialogRef: MdDialogRef<NameDialogComponent>;
 
   constructor(public dialog: MdDialog,
-              private fileListService: FileListService,
+              private fileTreeService: FileTreeService,
               private labDirectoryService: LabDirectoryService) {}
 
   openEditFolderNameDialog(parentDirectory: Directory, directory?: Directory) {
@@ -28,7 +28,7 @@ export class NameDialogService {
     this.openNameDialog(type, parentDirectory, directory || newDirectory).subscribe(name => {
       if (directory) {
         directory.name = name;
-        this.fileListService.collapseDirectory(directory);
+        this.fileTreeService.collapseDirectory(directory);
       } else {
         parentDirectory.contents.push({ ...newDirectory, name });
       }
