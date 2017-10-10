@@ -3,6 +3,7 @@
     <div class="ml-editor-footer-cta-bar">
       <button md-button md-raised-button color="primary" class="elevated" (click)="openShareDialog()">Share</button>
       <button *ngIf="executionId" md-button md-raised-button color="primary" class="elevated" (click)="openEmbedDialog()">Embed</button>
+     <a href="https://docs.machinelabs.ai" title="MachineLabs Documentation" md-button class="elevated">Guides & Examples</a>
     </div>
     <div class="ml-editor-footer-content">
       <ml-execution-status [execution]="execution"></ml-execution-status>

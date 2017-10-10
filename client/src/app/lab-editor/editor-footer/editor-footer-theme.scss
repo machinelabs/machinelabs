@@ -4,9 +4,16 @@
 
   $background: map-get($theme, background);
   $foreground: map-get($theme, foreground);
+  $primary: map-get($theme, primary);
 
   .ml-editor-footer {
     background-color: mat-color($background, dialog);
+  }
+
+  .ml-editor-footer-cta-bar {
+    a {
+      color: mat-color($primary);
+    }
   }
 
   md-slide-toggle {
