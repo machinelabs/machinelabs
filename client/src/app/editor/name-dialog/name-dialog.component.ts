@@ -5,7 +5,15 @@ import { File, Directory, instanceOfFile, instanceOfDirectory } from '@machinela
 
 export interface NameDialogData {
   fileOrDirectory: File|Directory,
-  parentDirectory: Directory
+  parentDirectory: Directory,
+  type: NameDialogType
+}
+
+export enum NameDialogType {
+  AddFile,
+  AddDirectory,
+  EditFile,
+  EditDirectory
 }
 
 const isNameAllowed = (fileOrDirectory: File|Directory, parentDirectory: Directory) => {
@@ -49,10 +57,12 @@ export class NameDialogComponent implements OnInit {
 
   form: FormGroup;
 
+  NameDialogType = NameDialogType;
+
   constructor(
     public dialogRef: MdDialogRef<NameDialogComponent>,
     private formBuilder: FormBuilder,
-    @Inject(MD_DIALOG_DATA) private data: NameDialogData
+    @Inject(MD_DIALOG_DATA) public data: NameDialogData
   ) { }
 
   ngOnInit() {

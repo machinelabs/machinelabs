@@ -1,4 +1,5 @@
 import { Component, Input, Optional, SkipSelf } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 import {
   File,
@@ -52,17 +53,32 @@ export class FileListComponent {
     this.editorService.openFile(this.labDirectoryService.getMainFile(this.editorService.lab.directory));
   }
 
-  openFolderNameDialog(event: Event, parentDirectory: Directory, directory?: Directory) {
-    this.stopEventPropagation(event);
-    this.fileListService.expandDirectory(parentDirectory);
-    this.editorService.openFolderNameDialog(parentDirectory, directory);
+  openAddFolderNameDialog(event: Event, parentDirectory: Directory) {
+    this.stopPropagationAndExpandDirectory(event, parentDirectory);
+    this.editorService.openAddFolderNameDialog(parentDirectory);
   }
 
-  openFileNameDialog(event: Event, parentDirectory: Directory, file?: File) {
+  openEditFolderNameDialog(event: Event, parentDirectory: Directory, directory: Directory) {
+    this.stopPropagationAndExpandDirectory(event, parentDirectory);
+    this.editorService.openEditFolderNameDialog(parentDirectory, directory);
+  }
+
+  stopPropagationAndExpandDirectory(event: Event, parentDirectory: Directory) {
     this.stopEventPropagation(event);
-    this.editorService.openFileNameDialog(parentDirectory, file).subscribe(f => {
-      this.selectFile(null, f);
-    });
+    this.fileListService.expandDirectory(parentDirectory);
+  }
+
+  openEditFileNameDialog(event: Event, parentDirectory: Directory, file: File) {
+    this.handleFileDialog(event, editorService => editorService.openEditFileNameDialog(parentDirectory, file));
+  }
+
+  openAddFileNameDialog(event: Event, parentDirectory: Directory) {
+    this.handleFileDialog(event, editorService => editorService.openAddFileNameDialog(parentDirectory));
+  }
+
+  handleFileDialog(event: Event, dialogFn: (editorService: EditorService) => Observable<File>) {
+    this.stopEventPropagation(event);
+    dialogFn(this.editorService).subscribe(file => this.selectFile(null, file));
   }
 
   private stopEventPropagation(event: Event) {

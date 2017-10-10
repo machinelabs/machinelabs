@@ -14,7 +14,7 @@
               mdTooltip="Change filename"
               mdTooltipPosition="below"
               *ngIf="isEditable(fileOrDirectory)"
-              (click)="openFileNameDialog($event, directory, fileOrDirectory)">
+              (click)="openEditFileNameDialog($event, directory, fileOrDirectory)">
                 <md-icon>create</md-icon>
             </button>
 
@@ -34,21 +34,21 @@
           <div class="ml-file-list-item__action-buttons">
             <button
               class="ml-file-list-item-button add"
-              (click)="openFileNameDialog($event, fileOrDirectory)"
+              (click)="openAddFileNameDialog($event, fileOrDirectory)"
               mdTooltip="Add file"
               mdTooltipPosition="below">
                 <md-icon>note_add</md-icon>
             </button>
             <button
               class="ml-file-list-item-button add-folder"
-              (click)="openFolderNameDialog($event, fileOrDirectory)"
+              (click)="openAddFolderNameDialog($event, fileOrDirectory)"
               mdTooltip="Add folder"
               mdTooltipPosition="below">
                 <md-icon>create_new_folder</md-icon>
             </button>
             <button
               class="ml-file-list-item-button edit"
-              (click)="openFolderNameDialog($event, directory, fileOrDirectory)"
+              (click)="openEditFolderNameDialog($event, directory, fileOrDirectory)"
               mdTooltip="Edit folder"
               mdTooltipPosition="below">
                 <md-icon>create</md-icon>

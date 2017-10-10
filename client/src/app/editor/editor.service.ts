@@ -21,7 +21,7 @@ import { EditorSnackbarService } from './editor-snackbar.service';
 import { LabExecutionService } from 'app/lab-execution.service';
 import { LabStorageService } from '../lab-storage.service';
 import { createSkipTextHelper } from './util/skip-helper';
-import { NameDialogComponent } from './name-dialog/name-dialog.component';
+import { NameDialogComponent, NameDialogType } from './name-dialog/name-dialog.component';
 import { FileListService } from './file-list/file-list.service';
 import { Lab } from '../models/lab';
 
@@ -271,10 +271,18 @@ export class EditorService {
     });
   }
 
-  openFolderNameDialog(parentDirectory: Directory, directory?: Directory) {
+  openEditFolderNameDialog(parentDirectory: Directory, directory?: Directory) {
+    return this.openFolderNameDialog(NameDialogType.EditDirectory, parentDirectory, directory);
+  }
+
+  openAddFolderNameDialog(parentDirectory: Directory) {
+    return this.openFolderNameDialog(NameDialogType.AddDirectory, parentDirectory);
+  }
+
+  openFolderNameDialog(type: NameDialogType, parentDirectory: Directory, directory?: Directory) {
     const newDirectory = { name: '', contents: [], clientState: { collapsed: true } };
 
-    this.openNameDialog(parentDirectory, directory || newDirectory).subscribe(name => {
+    this.openNameDialog(type, parentDirectory, directory || newDirectory).subscribe(name => {
       if (directory) {
         directory.name = name;
         this.fileListService.collapseDirectory(directory);
@@ -284,10 +292,18 @@ export class EditorService {
     });
   }
 
-  openFileNameDialog(parentDirectory: Directory, file?: File) {
+  openEditFileNameDialog(parentDirectory: Directory, file: File) {
+    return this.openFileNameDialog(NameDialogType.EditFile, parentDirectory, file);
+  }
+
+  openAddFileNameDialog(parentDirectory: Directory) {
+    return this.openFileNameDialog(NameDialogType.AddFile, parentDirectory);
+  }
+
+  openFileNameDialog(type: NameDialogType, parentDirectory: Directory, file?: File) {
     let newFile = { name: '', content: '', clientState: { collapsed: false } };
 
-    return this.openNameDialog(parentDirectory, file || newFile).map(name => {
+    return this.openNameDialog(type, parentDirectory, file || newFile).map(name => {
       parentDirectory.clientState = { ...parentDirectory.clientState, collapsed: false };
 
       if (file) {
@@ -302,12 +318,13 @@ export class EditorService {
     });
   }
 
-  openNameDialog(parentDirectory: Directory, fileOrDirectory: File | Directory) {
+  openNameDialog(type: NameDialogType, parentDirectory: Directory, fileOrDirectory: File | Directory) {
     this.fileNameDialogRef = this.dialog.open(NameDialogComponent, {
       disableClose: false,
       data: {
         parentDirectory,
-        fileOrDirectory
+        fileOrDirectory,
+        type: type
       }
     });
 
