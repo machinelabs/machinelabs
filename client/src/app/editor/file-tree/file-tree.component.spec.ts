@@ -4,15 +4,16 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MdDialogModule } from '@angular/material';
 import { File } from '@machinelabs/core/models/directory';
 import { LAB_STUB, EDITOR_SERVICE_STUB } from '../../../test-helper/stubs';
-import { FileListComponent } from './file-list.component';
+import { FileTreeComponent } from './file-tree.component';
 import { EditorService } from '../editor.service';
 import { LabDirectoryService } from '../../lab-directory.service';
-import { FileListService } from './file-list.service';
+import { FileTreeService } from './file-tree.service';
+import { NameDialogService } from 'app/editor/name-dialog/name-dialog-service';
 
-describe('FileListComponent', () => {
+describe('FileTreeComponent', () => {
 
-  let fixture: ComponentFixture<FileListComponent>;
-  let component: FileListComponent;
+  let fixture: ComponentFixture<FileTreeComponent>;
+  let component: FileTreeComponent;
   let editorService: EditorService;
   let labDirectoryService: LabDirectoryService;
 
@@ -20,17 +21,18 @@ describe('FileListComponent', () => {
     TestBed.configureTestingModule({
       imports: [MdDialogModule],
       declarations: [
-        FileListComponent
+        FileTreeComponent
       ],
       providers: [
         { provide: EditorService, useValue: EDITOR_SERVICE_STUB },
         LabDirectoryService,
-        FileListService
+        NameDialogService,
+        FileTreeService
       ],
       schemas: [NO_ERRORS_SCHEMA]
     });
 
-    fixture = TestBed.createComponent(FileListComponent);
+    fixture = TestBed.createComponent(FileTreeComponent);
     component = fixture.componentInstance;
     editorService = TestBed.get(EditorService);
     labDirectoryService = TestBed.get(LabDirectoryService);
@@ -116,7 +118,7 @@ describe('FileListComponent', () => {
       ]};
 
       fixture.detectChanges();
-      let nestedList = fixture.debugElement.query(By.css('ml-file-list ml-file-list ml-file-list'));
+      let nestedList = fixture.debugElement.query(By.css('ml-file-tree ml-file-tree ml-file-tree'));
       expect(nestedList.componentInstance.getFileTreePath()).toEqual('/level1/level2/level3');
     });
 
@@ -151,10 +153,10 @@ describe('FileListComponent', () => {
 
     fixture.detectChanges();
 
-    let lists = fixture.debugElement.queryAll(By.css('ml-file-list'));
+    let lists = fixture.debugElement.queryAll(By.css('ml-file-tree'));
     expect(lists.length).toEqual(2);
 
-    let nestedList = lists[0].queryAll(By.css('ml-file-list'));
+    let nestedList = lists[0].queryAll(By.css('ml-file-tree'));
     expect(nestedList).not.toBe(null);
     expect(nestedList.length).toEqual(1);
   });
@@ -169,10 +171,10 @@ describe('FileListComponent', () => {
 
     fixture.detectChanges();
 
-    let lists = fixture.debugElement.queryAll(By.css('ml-file-list'));
+    let lists = fixture.debugElement.queryAll(By.css('ml-file-tree'));
     expect(lists.length).toEqual(1);
 
-    let nestedList = lists[0].queryAll(By.css('ml-file-list'));
+    let nestedList = lists[0].queryAll(By.css('ml-file-tree'));
     expect(nestedList).not.toBe(null);
     expect(nestedList.length).toEqual(0);
   });
@@ -182,7 +184,7 @@ describe('FileListComponent', () => {
     component.directory = { name: '', contents: editorService.lab.directory };
     fixture.detectChanges();
 
-    let items = fixture.debugElement.queryAll(By.css('.ml-file-list-item'));
+    let items = fixture.debugElement.queryAll(By.css('.ml-file-tree-item'));
 
     items[0].triggerEventHandler('click', { target: { nodeName: 'LI' }});
     expect(editorService.openFile)
@@ -207,7 +209,7 @@ describe('FileListComponent', () => {
 
     fixture.detectChanges();
 
-    let item = fixture.debugElement.query(By.css('ml-file-list ml-file-list .ml-file-list-item'));
+    let item = fixture.debugElement.query(By.css('ml-file-tree ml-file-tree .ml-file-tree-item'));
     expect(item).not.toBe(null);
 
     item.triggerEventHandler('click', { target: { nodeName: 'LI' }});
@@ -224,7 +226,7 @@ describe('FileListComponent', () => {
       ]
     }]};
     fixture.detectChanges();
-    let items = fixture.debugElement.queryAll(By.css('.ml-file-list-item'));
+    let items = fixture.debugElement.queryAll(By.css('.ml-file-tree-item'));
 
     items[0].triggerEventHandler('click', { target: { nodeName: 'LI' }});
     expect(editorService.openFile).not.toHaveBeenCalled();
@@ -239,8 +241,8 @@ describe('FileListComponent', () => {
       ]
     }]};
     fixture.detectChanges();
-    let editButton = fixture.debugElement.query(By.css('.ml-file-list-item-button.edit'));
-    let deleteButton = fixture.debugElement.query(By.css('.ml-file-list-item-button.delete'));
+    let editButton = fixture.debugElement.query(By.css('.ml-file-tree-item-button.edit'));
+    let deleteButton = fixture.debugElement.query(By.css('.ml-file-tree-item-button.delete'));
 
     spyOn(editorService, 'openFile');
 
@@ -252,8 +254,8 @@ describe('FileListComponent', () => {
     component.directory = { name: '', contents: [{ name: 'main.py', content: '' }] };
     component.mandatoryFiles = ['main.py'];
     fixture.detectChanges();
-    let items = fixture.debugElement.queryAll(By.css('.ml-file-list-item'));
-    let editButton = items[0].queryAll(By.css('.ml-file-list-item-button.edit'));
+    let items = fixture.debugElement.queryAll(By.css('.ml-file-tree-item'));
+    let editButton = items[0].queryAll(By.css('.ml-file-tree-item-button.edit'));
     expect(editButton.length).toBe(0);
   });
 
@@ -261,7 +263,7 @@ describe('FileListComponent', () => {
     component.directory = { name: '', contents: editorService.lab.directory };
     component.showActionButtons = false;
     fixture.detectChanges();
-    let buttons = fixture.debugElement.queryAll(By.css('.ml-file-list-item-button'));
+    let buttons = fixture.debugElement.queryAll(By.css('.ml-file-tree-item-button'));
     expect(buttons).toEqual([]);
   });
 
@@ -278,7 +280,7 @@ describe('FileListComponent', () => {
 
     fixture.detectChanges();
 
-    let nestedList = fixture.debugElement.query(By.css('ml-file-list'));
+    let nestedList = fixture.debugElement.query(By.css('ml-file-tree'));
     expect(nestedList.componentInstance.parent).toBeDefined();
   });
 

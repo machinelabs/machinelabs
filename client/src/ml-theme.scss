@@ -2,7 +2,7 @@
 
 @import 'app/shared/dialog/dialog-theme.scss';
 @import 'app/editor/layout/editor-layout-theme.scss';
-@import 'app/editor/file-list/file-list-theme.scss';
+@import 'app/editor/file-tree/file-tree-theme.scss';
 @import 'app/lab-editor/editor-view/editor-view-theme.scss';
 @import 'app/lab-editor/editor-footer/editor-footer-theme.scss';
 @import 'app/lab-editor/execution-status/execution-status-theme.scss';
@@ -28,7 +28,7 @@ $ml-app-theme: mat-light-theme($ml-app-primary, $ml-app-accent, $ml-app-warn);
   @include ml-execution-list-theme($theme);
   @include ml-dialog-theme($theme);
   @include ml-panel-theme($theme);
-  @include ml-file-list-theme($theme);
+  @include ml-file-tree-theme($theme);
   @include ml-user-profile-theme($theme);
   @include ml-edit-user-profile-dialog-theme($theme);
 }

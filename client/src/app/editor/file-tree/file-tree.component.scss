@@ -3,13 +3,13 @@
   overflow-y: auto;
 }
 
-.ml-file-list {
+.ml-file-tree {
   list-style: none;
   margin: 0;
   padding-left: 20px;
 }
 
-.ml-file-list-item {
+.ml-file-tree-item {
   font-size: 14px;
   font-weight: 400;
   padding: 0;
@@ -23,7 +23,7 @@
   }
 }
 
-.ml-file-list-item-title {
+.ml-file-tree-item-title {
   padding: 5px 0;
   width: 100%;
   white-space: nowrap;
@@ -42,13 +42,13 @@
   }
 
   &:hover {
-    .ml-file-list-item__action-buttons {
+    .ml-file-tree-item__action-buttons {
       opacity: 1;
     }
   }
 }
 
-.ml-file-list-item__action-buttons {
+.ml-file-tree-item__action-buttons {
   position: absolute;
   display: flex;
   opacity: 0;
@@ -58,7 +58,7 @@
   padding-left: 15px;
 }
 
-.ml-file-list-item-button {
+.ml-file-tree-item-button {
   display: flex;
   background: transparent;
   border: none;

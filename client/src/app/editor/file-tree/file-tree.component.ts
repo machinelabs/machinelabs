@@ -12,14 +12,14 @@ import {
 import { EditorService } from '../editor.service';
 import { NameDialogService } from '../name-dialog/name-dialog-service';
 import { LabDirectoryService } from '../../lab-directory.service';
-import { FileListService } from './file-list.service';
+import { FileTreeService } from './file-tree.service';
 
 @Component({
-  selector: 'ml-file-list',
-  templateUrl: './file-list.component.html',
-  styleUrls: ['./file-list.component.scss']
+  selector: 'ml-file-tree',
+  templateUrl: './file-tree.component.html',
+  styleUrls: ['./file-tree.component.scss']
 })
-export class FileListComponent {
+export class FileTreeComponent {
 
   @Input() showActionButtons = true;
 
@@ -30,9 +30,9 @@ export class FileListComponent {
   constructor(
     private editorService: EditorService,
     private nameDialogService: NameDialogService,
-    @Optional() @SkipSelf() public parent: FileListComponent,
+    @Optional() @SkipSelf() public parent: FileTreeComponent,
     private labDirectoryService: LabDirectoryService,
-    public fileListService: FileListService) {}
+    public fileTreeService: FileTreeService) {}
 
   get level () {
     return this.parent ? this.parent.level + 1 : 0;
@@ -71,7 +71,7 @@ export class FileListComponent {
 
   stopPropagationAndExpandDirectory(event: Event, parentDirectory: Directory) {
     this.stopEventPropagation(event);
-    this.fileListService.expandDirectory(parentDirectory);
+    this.fileTreeService.expandDirectory(parentDirectory);
   }
 
   openEditFileNameDialog(event: Event, parentDirectory: Directory, file: File) {

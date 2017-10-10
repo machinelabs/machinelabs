@@ -20,7 +20,7 @@ import { EditorSnackbarService } from './editor-snackbar.service';
 import { LabExecutionService } from 'app/lab-execution.service';
 import { LabStorageService } from '../lab-storage.service';
 import { createSkipTextHelper } from './util/skip-helper';
-import { FileListService } from './file-list/file-list.service';
+import { FileTreeService } from './file-tree/file-tree.service';
 import { Lab } from '../models/lab';
 
 import {
@@ -86,7 +86,7 @@ export class EditorService {
     private labExecutionService: LabExecutionService,
     private labDirectoryService: LabDirectoryService,
     private route: ActivatedRoute,
-    private fileListService: FileListService
+    private fileTreeService: FileTreeService
   ) {
     this.initialize();
   }
@@ -111,7 +111,7 @@ export class EditorService {
     this.lab = lab;
 
     if (collapseDirectories) {
-      this.fileListService.collapseAll(this.lab.directory);
+      this.fileTreeService.collapseAll(this.lab.directory);
     }
 
     this.latestLab = Object.assign({}, this.lab);
@@ -120,7 +120,7 @@ export class EditorService {
 
   initDirectory(directory: LabDirectory) {
     this.lab.directory = directory;
-    this.fileListService.collapseAll(this.lab.directory);
+    this.fileTreeService.collapseAll(this.lab.directory);
     this.initActiveFile();
   }
 
@@ -257,9 +257,9 @@ export class EditorService {
   }
 
   openFile(file: File, path?: string) {
-    this.fileListService.unselectFile(this.activeFile);
+    this.fileTreeService.unselectFile(this.activeFile);
     this.activeFile = file;
-    this.fileListService.selectFile(this.activeFile);
+    this.fileTreeService.selectFile(this.activeFile);
 
     this.locationHelper.updateQueryParams(this.location.path(), {
       file: path ? path : file.name

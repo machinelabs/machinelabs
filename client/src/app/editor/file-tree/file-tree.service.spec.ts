@@ -1,27 +1,27 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { FileListService } from './file-list.service';
+import { FileTreeService } from './file-tree.service';
 import { Directory, File, LabDirectory } from '@machinelabs/core/models/directory';
 
-describe('FileListService', () => {
-  let fileListService: FileListService;
+describe('FileTreeService', () => {
+  let fileTreeService: FileTreeService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [FileListService]
+      providers: [FileTreeService]
     });
 
-    fileListService = TestBed.get(FileListService);
+    fileTreeService = TestBed.get(FileTreeService);
   });
 
   it('should be created', () => {
-    expect(fileListService).toBeTruthy();
+    expect(fileTreeService).toBeTruthy();
   });
 
   it('should collapse directory', () => {
     const directory: Directory = { name: 'main.py', contents: [] };
 
-    fileListService.collapseDirectory(directory);
+    fileTreeService.collapseDirectory(directory);
 
     expect(directory.clientState.collapsed).toBeTruthy();
   });
@@ -29,14 +29,14 @@ describe('FileListService', () => {
   it('should expand directory', () => {
     const directory: Directory = { name: 'main.py', contents: [], clientState: { collapsed: true } };
 
-    fileListService.expandDirectory(directory);
+    fileTreeService.expandDirectory(directory);
 
     expect(directory.clientState.collapsed).toBeFalsy();
   });
 
   it('should not throw an error when collapsing an undefined directory', () => {
     expect(() => {
-      fileListService.collapseDirectory(null);
+      fileTreeService.collapseDirectory(null);
     }).not.toThrow('Cannot read property \'clientState\' of null');
   });
 
@@ -46,7 +46,7 @@ describe('FileListService', () => {
       { name: 'shared', contents: [] }
     ];
 
-    fileListService.collapseAll(labDirectory);
+    fileTreeService.collapseAll(labDirectory);
 
     labDirectory.map(directory => {
       expect(directory.clientState.collapsed).toBeTruthy();
@@ -59,7 +59,7 @@ describe('FileListService', () => {
 
     const directory: Directory = { name: 'src', contents: [libDirectory, sharedDirectory] };
 
-    fileListService.collapseAll(directory);
+    fileTreeService.collapseAll(directory);
 
     expect(directory.clientState.collapsed).toBeTruthy();
     expect(libDirectory.clientState.collapsed).toBeTruthy();
@@ -69,21 +69,21 @@ describe('FileListService', () => {
   it('should select file', () => {
     const file: File = { name: 'main.py', content: '' };
 
-    fileListService.selectFile(file);
+    fileTreeService.selectFile(file);
 
     expect(file.clientState.selected).toBeTruthy();
   });
 
   it('should not throw an expection when selecting an undefined file', () => {
     expect(() => {
-      fileListService.selectFile(null);
+      fileTreeService.selectFile(null);
     }).not.toThrow('Cannot read property \'clientState\' of null');
   });
 
   it('should unselect file', () => {
     const file: File = { name: 'main.py', content: '' };
 
-    fileListService.unselectFile(file);
+    fileTreeService.unselectFile(file);
 
     expect(file.clientState.selected).toBeFalsy();
   });
