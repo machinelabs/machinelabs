@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdDialog, MdDialogRef, MdSnackBar, MdTabGroup, MdDrawer } from '@angular/material';
 import { FormControl } from '@angular/forms';
+import { File } from '@machinelabs/core/models/directory';
 import { AceEditorComponent } from '../../editor/ace-editor/ace-editor.component';
 import { XtermComponent } from '../../editor/xterm/xterm.component';
 import {
@@ -20,7 +21,7 @@ import { LabStorageService } from '../../lab-storage.service';
 import { UserService } from '../../user/user.service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { Lab, File } from '../../models/lab';
+import { Lab } from '../../models/lab';
 import { Directory } from '../../util/directory';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { LocationHelper } from '../../util/location-helper';
@@ -295,7 +296,7 @@ export class EditorViewComponent implements OnInit {
   save(lab: Lab, msg = 'Lab saved', fetchExecutions = false) {
     this.editorService
         .saveLab(lab, msg)
-        .subscribe(_ => this.initLab(lab, fetchExecutions));
+        .subscribe(_ => this.initLab(lab, fetchExecutions, false));
   }
 
   delete(lab: Lab) {
@@ -363,8 +364,8 @@ export class EditorViewComponent implements OnInit {
     });
   }
 
-  initLab(lab: Lab, fetchExecutions = true) {
-    this.editorService.initLab(lab);
+  initLab(lab: Lab, fetchExecutions = true, collapseDirectories = true) {
+    this.editorService.initLab(lab, collapseDirectories);
     if (fetchExecutions) {
       this.initExecutionList();
     }

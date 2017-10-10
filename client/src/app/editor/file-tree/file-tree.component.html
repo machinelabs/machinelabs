@@ -1,34 +1,16 @@
-<ul class="ml-file-list">
-  <li
-    class="ml-file-list-item"
-    *ngFor="let file of files"
-    (click)="selectFile($event, file)"
-    [ngClass]="{ selected: selectedFile && selectedFile.name == file.name }">
-
-    <md-icon>description</md-icon> {{file.name}}
-
-    <ng-container *ngIf="showActionButtons">
-      <button class="ml-file-list-item-button edit"
-        mdTooltip="Change filename"
-        mdTooltipPosition="below"
-        *ngIf="isEditable(file)"
-        (click)="openFileNameDialog(file)"
-        ><md-icon>create</md-icon></button>
-
-      <button class="ml-file-list-item-button delete"
-        *ngIf="isRemovable(file)"
-        mdTooltip="Delete file"
-        mdTooltipPosition="below"
-        (click)="deleteFile(file)"><md-icon>highlight_off</md-icon></button>
-    </ng-container>
-  </li>
-</ul>
+<ml-file-list
+  [directory]="{ name: '', contents: editorService.lab.directory }"
+  [mandatoryFiles]="['main.py']"
+  [showActionButtons]="showActionButtons">
+</ml-file-list>
 
 <ng-container *ngIf="showActionButtons">
   <div class="ml-file-tree-cta-bar">
     <button md-button (click)="openFileNameDialog()" class="ml-file-tree-cta">
       <md-icon>note_add</md-icon> Add file
     </button>
+    <button md-button (click)="openFolderNameDialog()" class="ml-file-tree-cta">
+      <md-icon>create_new_folder</md-icon> Add folder
+    </button>
   </div>
 </ng-container>
-

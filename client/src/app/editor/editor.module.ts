@@ -12,7 +12,8 @@ import { EditorLayoutPanelCtaBarComponent } from './layout/editor-layout-panel-c
 import { EditorLayoutFooterComponent } from './layout/editor-layout-footer.component';
 
 import { FileTreeComponent } from './file-tree/file-tree.component';
-import { FileNameDialogComponent } from './file-name-dialog/file-name-dialog.component';
+import { FileListComponent } from './file-list/file-list.component';
+import { NameDialogComponent } from './name-dialog/name-dialog.component';
 import { AceEditorComponent } from './ace-editor/ace-editor.component';
 import { XtermComponent } from './xterm/xterm.component';
 import { FileOutputsComponent } from './file-outputs/file-outputs.component';
@@ -25,6 +26,7 @@ import { EditorSnackbarService } from './editor-snackbar.service';
 import { FilePreviewDialogService } from './file-preview/file-preview-dialog.service';
 
 import { FILE_PREVIEW_DIALOG_SCROLL_STRATEGY_PROVIDER } from './file-preview/file-preview.tokens';
+import { FileListService } from './file-list/file-list.service';
 
 @NgModule({
   imports: [
@@ -43,12 +45,14 @@ import { FILE_PREVIEW_DIALOG_SCROLL_STRATEGY_PROVIDER } from './file-preview/fil
     EditorLayoutPanelCtaBarComponent,
     EditorLayoutFooterComponent,
     FileTreeComponent,
-    FileNameDialogComponent,
+    FileListComponent,
     FileOutputsComponent,
     FilePreviewDialogComponent,
-    FilePreviewDialogToolbarComponent
+    FilePreviewDialogToolbarComponent,
+    NameDialogComponent
   ],
   providers: [
+    FileListService,
     EditorService,
     RemoteLabExecService,
     EditorSnackbarService,
@@ -72,8 +76,8 @@ import { FILE_PREVIEW_DIALOG_SCROLL_STRATEGY_PROVIDER } from './file-preview/fil
     FilePreviewDialogToolbarComponent
   ],
   entryComponents: [
-    FileNameDialogComponent,
-    FilePreviewDialogComponent
+    FilePreviewDialogComponent,
+    NameDialogComponent
   ]
 })
 export class EditorModule {}

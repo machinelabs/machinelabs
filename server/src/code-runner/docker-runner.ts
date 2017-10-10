@@ -1,7 +1,7 @@
 import { exec } from 'child_process';
 import { Observable } from '@reactivex/rxjs';
 import { CodeRunner } from './code-runner';
-import { File } from '@machinelabs/core';
+import { File, createWriteLabDirectoryCmd } from '@machinelabs/core';
 import { Invocation } from '../models/invocation';
 import { InternalLabConfiguration } from '../models/lab-configuration';
 import { trimNewLines, ProcessStreamData, stdoutMsg, SpawnShellFn, SpawnFn } from '@machinelabs/core';
@@ -32,18 +32,10 @@ export class DockerRunner implements CodeRunner {
   run(invocation: Invocation, configuration: InternalLabConfiguration): Observable<ProcessStreamData> {
 
     // construct a shell command to create all files.
-    // The `&` makes sure that file creation happens asynchronously rather than sequentially.
     // File creation happens inside the docker container. That means we don't have to map
     // any directory from the host into container. And if anything bad happens to the container there
     // is no way we could leave cruft behind on the host system.
-
-    // ATTENTION: The formatting is important here. We have to use a Here Doc because of multi line strings
-    // http://stackoverflow.com/questions/2953081/how-can-i-write-a-here-doc-to-a-file-in-bash-script/2954835#2954835
-    let writeCommand = invocation.data.directory.map((file: File) => `{ cat <<'EOL' > ${file.name}
-${file.content}
-EOL
-}`)
-                                .join(` & `);
+    let writeCommand = createWriteLabDirectoryCmd(invocation.data.directory);
 
     this.processCount++;
 
