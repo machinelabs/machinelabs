@@ -6,7 +6,6 @@ import { File } from '@machinelabs/core/models/directory';
 import { LAB_STUB, EDITOR_SERVICE_STUB } from '../../../test-helper/stubs';
 import { FileTreeComponent } from './file-tree.component';
 import { EditorService } from '../editor.service';
-import { LabDirectoryService } from '../../lab-directory.service';
 import { FileTreeService } from './file-tree.service';
 import { NameDialogService } from 'app/editor/name-dialog/name-dialog-service';
 
@@ -15,7 +14,6 @@ describe('FileTreeComponent', () => {
   let fixture: ComponentFixture<FileTreeComponent>;
   let component: FileTreeComponent;
   let editorService: EditorService;
-  let labDirectoryService: LabDirectoryService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -25,7 +23,6 @@ describe('FileTreeComponent', () => {
       ],
       providers: [
         { provide: EditorService, useValue: EDITOR_SERVICE_STUB },
-        LabDirectoryService,
         NameDialogService,
         FileTreeService
       ],
@@ -35,7 +32,6 @@ describe('FileTreeComponent', () => {
     fixture = TestBed.createComponent(FileTreeComponent);
     component = fixture.componentInstance;
     editorService = TestBed.get(EditorService);
-    labDirectoryService = TestBed.get(LabDirectoryService);
   });
 
   describe('.isRemovable()', () => {

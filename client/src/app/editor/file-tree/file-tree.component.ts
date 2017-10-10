@@ -9,8 +9,9 @@ import {
   instanceOfDirectory
 } from '@machinelabs/core/models/directory';
 
+import { deleteFromDirectory } from '@machinelabs/core/io/lab-fs/manipulation';
+
 import { NameDialogService } from '../name-dialog/name-dialog-service';
-import { LabDirectoryService } from '../../lab-directory.service';
 import { FileTreeService } from './file-tree.service';
 
 export interface FileTreeEventArgs {
@@ -89,7 +90,6 @@ export class FileTreeComponent {
   constructor(
     private nameDialogService: NameDialogService,
     @Optional() @SkipSelf() public parent: FileTreeComponent,
-    private labDirectoryService: LabDirectoryService,
     public fileTreeService: FileTreeService) {}
 
   get level () {
@@ -127,7 +127,7 @@ export class FileTreeComponent {
 
   deleteFileOrDirectory(event: Event, fileOrDirectory: File|Directory) {
     this.stopEventPropagation(event);
-    this.labDirectoryService.deleteFromDirectory(fileOrDirectory, this.directory);
+    deleteFromDirectory(fileOrDirectory, this.directory);
     this.remove.emit(this.createEventArgs(fileOrDirectory));
   }
 
