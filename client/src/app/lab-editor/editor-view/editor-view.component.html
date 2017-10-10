@@ -42,7 +42,7 @@
                 (addFile)="editorService.openFile($event.target, $event.path)"
                 (selectFile)="editorService.openFile($event.target, $event.path)"
                 [directory]="{ name: '', contents: editorService.lab.directory }"
-                [mandatoryFiles]="['main.py']">
+                [mandatoryFiles]="['main.py', 'ml.yaml']">
               </ml-file-tree>
             </md-drawer>
             <ml-ace-editor
