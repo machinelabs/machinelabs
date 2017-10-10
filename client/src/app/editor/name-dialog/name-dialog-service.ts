@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { MdDialogRef, MdDialog } from '@angular/material';
 import { NameDialogComponent, NameDialogType } from 'app/editor/name-dialog/name-dialog.component';
 import { FileTreeService } from 'app/editor/file-tree/file-tree.service';
-import { LabDirectoryService } from 'app/lab-directory.service';
 import { File, Directory } from '@machinelabs/core/models/directory';
+import { updateFileInDirectory } from '@machinelabs/core/io/lab-fs/manipulation';
 
 @Injectable()
 export class NameDialogService {
@@ -11,8 +11,7 @@ export class NameDialogService {
   fileNameDialogRef: MdDialogRef<NameDialogComponent>;
 
   constructor(public dialog: MdDialog,
-              private fileTreeService: FileTreeService,
-              private labDirectoryService: LabDirectoryService) {}
+              private fileTreeService: FileTreeService) {}
 
   openEditFolderNameDialog(parentDirectory: Directory, directory?: Directory) {
     return this.openFolderNameDialog(NameDialogType.EditDirectory, parentDirectory, directory);
@@ -51,7 +50,7 @@ export class NameDialogService {
 
       if (file) {
         newFile = { ...newFile, name, content: file.content };
-        this.labDirectoryService.updateFileInDirectory(file, newFile, parentDirectory);
+        updateFileInDirectory(file, newFile, parentDirectory);
       } else {
         newFile = { ...newFile, name };
         parentDirectory.contents.push(newFile);

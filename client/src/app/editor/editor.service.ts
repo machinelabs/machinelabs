@@ -13,8 +13,9 @@ import {
   DirectoryClientState
 } from '@machinelabs/core/models/directory';
 
+import { getFileFromPath } from '@machinelabs/core/io/lab-fs/navigation';
+
 import { LocationHelper } from '../util/location-helper';
-import { LabDirectoryService } from '../lab-directory.service';
 import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.service';
 import { EditorSnackbarService } from './editor-snackbar.service';
 import { LabExecutionService } from 'app/lab-execution.service';
@@ -46,6 +47,7 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/skip';
+import { getMainFile } from 'app/util/directory';
 
 export interface ListenAndNotifyOptions {
   inPauseMode: () => boolean;
@@ -84,7 +86,6 @@ export class EditorService {
     private labStorageService: LabStorageService,
     private rleService: RemoteLabExecService,
     private labExecutionService: LabExecutionService,
-    private labDirectoryService: LabDirectoryService,
     private route: ActivatedRoute,
     private fileTreeService: FileTreeService
   ) {
@@ -257,7 +258,7 @@ export class EditorService {
   }
 
   openMainFile() {
-    this.openFile(this.labDirectoryService.getMainFile(this.lab.directory));
+    this.openFile(getMainFile(this.lab.directory));
   }
 
   openFile(file: File, path?: string) {
@@ -300,7 +301,7 @@ export class EditorService {
 
   private initActiveFile() {
     const path = this.urlSerializer.parse(this.location.path()).queryParams.file;
-    let file = path ? this.labDirectoryService.getFileFromPath(path, this.lab.directory) : null;
-    this.openFile(file || this.labDirectoryService.getMainFile(this.lab.directory), file ? path : null);
+    let file = path ? getFileFromPath(path, this.lab.directory) : null;
+    this.openFile(file || getMainFile(this.lab.directory), file ? path : null);
   }
 }
