@@ -38,6 +38,9 @@
           <md-drawer-container>
             <md-drawer mode="side" #fileTreeSidebar>
               <ml-file-tree
+                (remove)="editorService.openMainFile()"
+                (addFile)="editorService.openFile($event.target, $event.path)"
+                (selectFile)="editorService.openFile($event.target, $event.path)"
                 [directory]="{ name: '', contents: editorService.lab.directory }"
                 [mandatoryFiles]="['main.py']">
               </ml-file-tree>

@@ -22,8 +22,9 @@
         <md-drawer-container>
           <md-drawer mode="overlay" #fileTreeSidebar>
             <ml-file-tree
+              (selectFile)="editorService.openFile($event.target, $event.path)"
               [directory]="{ name: '', contents: editorService.lab.directory }"
-              [mandatoryFiles]="['main.py']"
+              [mandatoryFiles]="['main.py', 'ml.yaml']"
               [showActionButtons]="false"></ml-file-tree>
           </md-drawer>
           <ml-ace-editor [value]="activeFile.content" mode="python">

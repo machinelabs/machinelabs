@@ -95,13 +95,6 @@ describe('FileTreeComponent', () => {
       component.deleteFileOrDirectory(null, <File>editorService.lab.directory[1]);
       expect(component.directory.contents).toEqual([editorService.lab.directory[0]]);
     });
-
-    it('should activate main lab file after deletion', () => {
-      spyOn(editorService, 'openFile');
-      component.directory = { name: '', contents: editorService.lab.directory };
-      component.deleteFileOrDirectory(null, <File>editorService.lab.directory[1]);
-      expect(editorService.openFile).toHaveBeenCalledWith(labDirectoryService.getMainFile(component.directory.contents));
-    });
   });
 
   describe('.getFileTreePath()', () => {
@@ -177,22 +170,6 @@ describe('FileTreeComponent', () => {
     let nestedList = lists[0].queryAll(By.css('ml-file-tree'));
     expect(nestedList).not.toBe(null);
     expect(nestedList.length).toEqual(0);
-  });
-
-  it('should select file when list item is clicked', () => {
-    spyOn(editorService, 'openFile');
-    component.directory = { name: '', contents: editorService.lab.directory };
-    fixture.detectChanges();
-
-    let items = fixture.debugElement.queryAll(By.css('.ml-file-tree-item'));
-
-    items[0].triggerEventHandler('click', { target: { nodeName: 'LI' }});
-    expect(editorService.openFile)
-      .toHaveBeenCalledWith(component.directory.contents[0], `/${component.directory.contents[0].name}`)
-
-    items[1].triggerEventHandler('click', { target: { nodeName: 'LI' }});
-    expect(editorService.openFile)
-      .toHaveBeenCalledWith(component.directory.contents[1], `/${component.directory.contents[1].name}`);
   });
 
   it('should select file including its path if item is nested', () => {

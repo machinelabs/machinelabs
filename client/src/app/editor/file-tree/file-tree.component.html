@@ -13,7 +13,7 @@
   <li
     class="ml-file-tree-item"
     *ngFor="let fileOrDirectory of directory.contents"
-    (click)="selectFile($event, fileOrDirectory)">
+    (click)="select($event, fileOrDirectory)">
 
     <ml-zippy [collapsed]="fileOrDirectory.clientState.collapsed" [collapsable]="fileOrDirectory.contents">
       <div class="ml-file-tree-item-title" ml-zippy-title [ngClass]="{ selected: fileOrDirectory.clientState?.selected }">
