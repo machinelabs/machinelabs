@@ -37,7 +37,10 @@
         </ml-editor-layout-panel-cta-bar>
           <md-drawer-container>
             <md-drawer mode="side" #fileTreeSidebar>
-              <ml-file-tree [rootDirectory]="{ name: '', contents: editorService.lab.directory }"></ml-file-tree>
+              <ml-file-list
+                [directory]="{ name: '', contents: editorService.lab.directory }"
+                [mandatoryFiles]="['main.py']">
+              </ml-file-list>
             </md-drawer>
             <ml-ace-editor
               #editor

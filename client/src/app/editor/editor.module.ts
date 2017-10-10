@@ -11,7 +11,6 @@ import { EditorLayoutPanelComponent } from './layout/editor-layout-panel.compone
 import { EditorLayoutPanelCtaBarComponent } from './layout/editor-layout-panel-cta-bar.component';
 import { EditorLayoutFooterComponent } from './layout/editor-layout-footer.component';
 
-import { FileTreeComponent } from './file-tree/file-tree.component';
 import { FileListComponent } from './file-list/file-list.component';
 import { NameDialogComponent } from './name-dialog/name-dialog.component';
 import { AceEditorComponent } from './ace-editor/ace-editor.component';
@@ -46,7 +45,6 @@ import { FileListService } from './file-list/file-list.service';
     EditorLayoutPanelComponent,
     EditorLayoutPanelCtaBarComponent,
     EditorLayoutFooterComponent,
-    FileTreeComponent,
     FileListComponent,
     FileOutputsComponent,
     FilePreviewDialogComponent,
@@ -73,7 +71,7 @@ import { FileListService } from './file-list/file-list.service';
     EditorLayoutPanelComponent,
     EditorLayoutPanelCtaBarComponent,
     EditorLayoutFooterComponent,
-    FileTreeComponent,
+    FileListComponent,
     FileOutputsComponent,
     FilePreviewDialogComponent,
     FilePreviewDialogToolbarComponent
