@@ -228,47 +228,4 @@ describe('EditorService', () => {
       expect(editorService.selectedTab).toEqual(TabIndex.Console);
     });
   });
-
-  describe('openNameDialog', () => {
-
-    it('should open dialog to add files and folders with new file or folder', () => {
-      let directory = { name: 'foo', contents: [] };
-      let file = { name: '', content: '' };
-      spyOn(editorService.dialog, 'open').and.returnValue({
-        afterClosed: () => {
-          return Observable.of(null)
-        }
-      });
-      editorService.openAddFileNameDialog(directory);
-      expect(editorService.dialog.open)
-        .toHaveBeenCalledWith(NameDialogComponent, {
-          disableClose: false,
-          data: {
-            fileOrDirectory: file,
-            parentDirectory: directory
-          }
-        });
-    });
-
-    it('should open dialog to edit files and folder', () => {
-      spyOn(editorService.dialog, 'open').and.returnValue({
-        afterClosed: () => {
-          return Observable.of(null)
-        }
-      });
-
-      let directory = { name: '', contents: [] };
-      let fileToEdit = { name: 'main.py', content: '' };
-
-      editorService.openEditFileNameDialog(directory, fileToEdit);
-      expect(editorService.dialog.open)
-        .toHaveBeenCalledWith(NameDialogComponent, {
-          disableClose: false,
-          data: {
-            fileOrDirectory: fileToEdit,
-            parentDirectory: directory
-          }
-        });
-    });
-  });
 });

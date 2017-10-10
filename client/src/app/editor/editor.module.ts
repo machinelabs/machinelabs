@@ -21,6 +21,8 @@ import { FilePreviewDialogToolbarComponent } from './file-preview/file-preview-d
 import { FilePreviewDialogComponent } from './file-preview/file-preview-dialog/file-preview-dialog.component';
 
 import { EditorService } from './editor.service';
+import { NameDialogService } from './name-dialog/name-dialog-service';
+
 import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.service';
 import { EditorSnackbarService } from './editor-snackbar.service';
 import { FilePreviewDialogService } from './file-preview/file-preview-dialog.service';
@@ -54,6 +56,7 @@ import { FileListService } from './file-list/file-list.service';
   providers: [
     FileListService,
     EditorService,
+    NameDialogService,
     RemoteLabExecService,
     EditorSnackbarService,
     FilePreviewDialogService,

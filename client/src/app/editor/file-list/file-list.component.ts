@@ -10,6 +10,7 @@ import {
 } from '@machinelabs/core/models/directory';
 
 import { EditorService } from '../editor.service';
+import { NameDialogService } from '../name-dialog/name-dialog-service';
 import { LabDirectoryService } from '../../lab-directory.service';
 import { FileListService } from './file-list.service';
 
@@ -28,6 +29,7 @@ export class FileListComponent {
 
   constructor(
     private editorService: EditorService,
+    private nameDialogService: NameDialogService,
     @Optional() @SkipSelf() public parent: FileListComponent,
     private labDirectoryService: LabDirectoryService,
     public fileListService: FileListService) {}
@@ -55,12 +57,12 @@ export class FileListComponent {
 
   openAddFolderNameDialog(event: Event, parentDirectory: Directory) {
     this.stopPropagationAndExpandDirectory(event, parentDirectory);
-    this.editorService.openAddFolderNameDialog(parentDirectory);
+    this.nameDialogService.openAddFolderNameDialog(parentDirectory);
   }
 
   openEditFolderNameDialog(event: Event, parentDirectory: Directory, directory: Directory) {
     this.stopPropagationAndExpandDirectory(event, parentDirectory);
-    this.editorService.openEditFolderNameDialog(parentDirectory, directory);
+    this.nameDialogService.openEditFolderNameDialog(parentDirectory, directory);
   }
 
   stopPropagationAndExpandDirectory(event: Event, parentDirectory: Directory) {
@@ -69,16 +71,16 @@ export class FileListComponent {
   }
 
   openEditFileNameDialog(event: Event, parentDirectory: Directory, file: File) {
-    this.handleFileDialog(event, editorService => editorService.openEditFileNameDialog(parentDirectory, file));
+    this.handleFileDialog(event, nameDialogService => nameDialogService.openEditFileNameDialog(parentDirectory, file));
   }
 
   openAddFileNameDialog(event: Event, parentDirectory: Directory) {
-    this.handleFileDialog(event, editorService => editorService.openAddFileNameDialog(parentDirectory));
+    this.handleFileDialog(event, nameDialogService => nameDialogService.openAddFileNameDialog(parentDirectory));
   }
 
-  handleFileDialog(event: Event, dialogFn: (editorService: EditorService) => Observable<File>) {
+  handleFileDialog(event: Event, dialogFn: (editorService: NameDialogService) => Observable<File>) {
     this.stopEventPropagation(event);
-    dialogFn(this.editorService).subscribe(file => this.selectFile(null, file));
+    dialogFn(this.nameDialogService).subscribe(file => this.selectFile(null, file));
   }
 
   private stopEventPropagation(event: Event) {
