@@ -21,18 +21,7 @@ const isNameAllowed = (fileOrDirectory: File|Directory, parentDirectory: Directo
 
     const foundFileOrDirectory = parentDirectory.contents.find(f => f.name === c.value);
 
-    if (!foundFileOrDirectory) {
-      return null;
-    }
-
-    let error = null;
-
-    if (instanceOfFile(fileOrDirectory) && instanceOfFile(foundFileOrDirectory)) {
-      error = { alreadyExists: true };
-    } else if (instanceOfDirectory(fileOrDirectory) && instanceOfDirectory(foundFileOrDirectory)) {
-      error = { alreadyExists: true};
-    }
-    return error || null;
+    return !foundFileOrDirectory ? null : { alreadyExists: true };
   };
 };
 
