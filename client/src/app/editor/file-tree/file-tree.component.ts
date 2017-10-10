@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { File, Directory, LabDirectory } from '@machinelabs/core/models/directory';
 
 import { EditorService } from '../editor.service';
+import { NameDialogService } from 'app/editor/name-dialog/name-dialog-service';
 
 @Component({
   selector: 'ml-file-tree',
@@ -14,14 +15,15 @@ export class FileTreeComponent {
 
   @Input() showActionButtons = true;
 
-  constructor(private editorService: EditorService) {}
+  constructor(private editorService: EditorService,
+              private nameDialogService: NameDialogService) {}
 
   openFolderNameDialog() {
-    this.editorService.openAddFolderNameDialog(this.rootDirectory);
+    this.nameDialogService.openAddFolderNameDialog(this.rootDirectory);
   }
 
   openFileNameDialog() {
-    this.editorService.openAddFileNameDialog(this.rootDirectory).subscribe(file => {
+    this.nameDialogService.openAddFileNameDialog(this.rootDirectory).subscribe(file => {
       this.editorService.openFile(file);
     });
   }

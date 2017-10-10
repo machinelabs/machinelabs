@@ -3,7 +3,6 @@ import { Observable } from 'rxjs/Observable';
 import { Injectable, EventEmitter } from '@angular/core';
 import { UrlSerializer, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { MdDialog, MdDialogRef } from '@angular/material';
 
 import {
   LabDirectory,
@@ -21,7 +20,6 @@ import { EditorSnackbarService } from './editor-snackbar.service';
 import { LabExecutionService } from 'app/lab-execution.service';
 import { LabStorageService } from '../lab-storage.service';
 import { createSkipTextHelper } from './util/skip-helper';
-import { NameDialogComponent, NameDialogType } from './name-dialog/name-dialog.component';
 import { FileListService } from './file-list/file-list.service';
 import { Lab } from '../models/lab';
 
@@ -78,8 +76,6 @@ export class EditorService {
 
   outputMaxChars = 200000;
 
-  fileNameDialogRef: MdDialogRef<NameDialogComponent>;
-
   constructor(
     private urlSerializer: UrlSerializer,
     private location: Location,
@@ -89,7 +85,6 @@ export class EditorService {
     private rleService: RemoteLabExecService,
     private labExecutionService: LabExecutionService,
     private labDirectoryService: LabDirectoryService,
-    public dialog: MdDialog,
     private route: ActivatedRoute,
     private fileListService: FileListService
   ) {
@@ -269,67 +264,6 @@ export class EditorService {
     this.locationHelper.updateQueryParams(this.location.path(), {
       file: path ? path : file.name
     });
-  }
-
-  openEditFolderNameDialog(parentDirectory: Directory, directory?: Directory) {
-    return this.openFolderNameDialog(NameDialogType.EditDirectory, parentDirectory, directory);
-  }
-
-  openAddFolderNameDialog(parentDirectory: Directory) {
-    return this.openFolderNameDialog(NameDialogType.AddDirectory, parentDirectory);
-  }
-
-  openFolderNameDialog(type: NameDialogType, parentDirectory: Directory, directory?: Directory) {
-    const newDirectory = { name: '', contents: [], clientState: { collapsed: true } };
-
-    this.openNameDialog(type, parentDirectory, directory || newDirectory).subscribe(name => {
-      if (directory) {
-        directory.name = name;
-        this.fileListService.collapseDirectory(directory);
-      } else {
-        parentDirectory.contents.push({ ...newDirectory, name });
-      }
-    });
-  }
-
-  openEditFileNameDialog(parentDirectory: Directory, file: File) {
-    return this.openFileNameDialog(NameDialogType.EditFile, parentDirectory, file);
-  }
-
-  openAddFileNameDialog(parentDirectory: Directory) {
-    return this.openFileNameDialog(NameDialogType.AddFile, parentDirectory);
-  }
-
-  openFileNameDialog(type: NameDialogType, parentDirectory: Directory, file?: File) {
-    let newFile = { name: '', content: '', clientState: { collapsed: false } };
-
-    return this.openNameDialog(type, parentDirectory, file || newFile).map(name => {
-      parentDirectory.clientState = { ...parentDirectory.clientState, collapsed: false };
-
-      if (file) {
-        newFile = { ...newFile, name, content: file.content };
-        this.labDirectoryService.updateFileInDirectory(file, newFile, parentDirectory);
-      } else {
-        newFile = { ...newFile, name };
-        parentDirectory.contents.push(newFile);
-      }
-
-      return newFile;
-    });
-  }
-
-  openNameDialog(type: NameDialogType, parentDirectory: Directory, fileOrDirectory: File | Directory) {
-    this.fileNameDialogRef = this.dialog.open(NameDialogComponent, {
-      disableClose: false,
-      data: {
-        parentDirectory,
-        fileOrDirectory,
-        type: type
-      }
-    });
-
-    return this.fileNameDialogRef.afterClosed()
-      .filter(name => name !== '' && name !== undefined);
   }
 
   tabActive(tabIndex: TabIndex) {
