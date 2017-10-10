@@ -1,8 +1,14 @@
-<ml-dialog-header>Add new file</ml-dialog-header>
+<ng-container [ngSwitch]="data.type">
+  <ml-dialog-header *ngSwitchCase="NameDialogType.AddFile">Add new file</ml-dialog-header>
+  <ml-dialog-header *ngSwitchCase="NameDialogType.AddDirectory">Add new directory</ml-dialog-header>
+  <ml-dialog-header *ngSwitchCase="NameDialogType.EditFile">Edit file name</ml-dialog-header>
+  <ml-dialog-header *ngSwitchCase="NameDialogType.EditDirectory">Edit directory name</ml-dialog-header>
+</ng-container>
+
 <form [formGroup]="form" (ngSubmit)="submit(form)">
   <ml-dialog-content>
     <md-form-field>
-      <input mdInput placeholder="File name" formControlName="filename">
+      <input mdInput placeholder="Enter name" formControlName="filename">
       <md-hint *ngIf="!form.valid && !form.pristine">
         <ng-container *ngIf="form.get('filename').hasError('required')">
           This field is required.

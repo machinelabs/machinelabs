@@ -17,11 +17,11 @@ export class FileTreeComponent {
   constructor(private editorService: EditorService) {}
 
   openFolderNameDialog() {
-    this.editorService.openFolderNameDialog(this.rootDirectory);
+    this.editorService.openAddFolderNameDialog(this.rootDirectory);
   }
 
   openFileNameDialog() {
-    this.editorService.openFileNameDialog(this.rootDirectory).subscribe(file => {
+    this.editorService.openAddFileNameDialog(this.rootDirectory).subscribe(file => {
       this.editorService.openFile(file);
     });
   }

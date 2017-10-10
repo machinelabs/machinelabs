@@ -239,7 +239,7 @@ describe('EditorService', () => {
           return Observable.of(null)
         }
       });
-      editorService.openNameDialog(directory , file);
+      editorService.openAddFileNameDialog(directory);
       expect(editorService.dialog.open)
         .toHaveBeenCalledWith(NameDialogComponent, {
           disableClose: false,
@@ -260,7 +260,7 @@ describe('EditorService', () => {
       let directory = { name: '', contents: [] };
       let fileToEdit = { name: 'main.py', content: '' };
 
-      editorService.openNameDialog(directory, fileToEdit);
+      editorService.openEditFileNameDialog(directory, fileToEdit);
       expect(editorService.dialog.open)
         .toHaveBeenCalledWith(NameDialogComponent, {
           disableClose: false,
