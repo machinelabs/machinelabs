@@ -3,7 +3,7 @@
 
 
 "@machinelabs/core@file:../shared/core":
-  version "0.16.0"
+  version "0.17.0"
   dependencies:
     "@reactivex/rxjs" "^5.4.2"
     "@types/node" "^8.0.19"
