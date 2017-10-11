@@ -36,7 +36,7 @@
           <button md-icon-button mdTooltip="Toogle file tree" mdTooltipPosition="right" (click)="fileTreeSidebar.toggle()"><md-icon>description</md-icon></button>
         </ml-editor-layout-panel-cta-bar>
           <md-drawer-container>
-            <md-drawer mode="side" #fileTreeSidebar [opened]="true">
+            <md-drawer mode="side" #fileTreeSidebar>
               <ml-file-tree></ml-file-tree>
             </md-drawer>
             <ml-ace-editor
@@ -62,8 +62,8 @@
         </ml-editor-layout-panel>
       </ml-editor-layout-panels>
       <md-drawer
-          (open)="sidebarToggled = true"
-          (close)="sidebarToggled = false"
+          (open)="executionMetadataSidebarToggled = true"
+          (close)="executionMetadataSidebarToggled = false"
           mode="side"
           align="end"
           #executionMetadataSidebar
@@ -93,7 +93,7 @@
       [execution]="execution"
       [executionId]="activeExecutionId"
       [lab]="lab"
-      [slideToggleChecked]="sidebarToggled"
+      [slideToggleChecked]="executionMetadataSidebarToggled"
       (slideToggleClick)="executionMetadataSidebar.toggle()"
       ></ml-footer>
   </ml-editor-layout-footer>
