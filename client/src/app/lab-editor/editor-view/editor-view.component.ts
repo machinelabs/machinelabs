@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdDialog, MdDialogRef, MdSnackBar, MdTabGroup, MdDrawer } from '@angular/material';
 import { FormControl } from '@angular/forms';
@@ -45,7 +45,7 @@ const INITIAL_LOADING_INDICATOR_PROGRESS = 10;
   templateUrl: './editor-view.component.html',
   styleUrls: ['./editor-view.component.scss']
 })
-export class EditorViewComponent implements OnInit {
+export class EditorViewComponent implements OnInit, AfterViewInit {
 
   output: Observable<string>;
 
@@ -93,9 +93,13 @@ export class EditorViewComponent implements OnInit {
 
   navigationConfirmDialogRef: MdDialogRef<NavigationConfirmDialogComponent>;
 
-  sidebarToggled = false;
+  executionMetadataSidebarToggled = false;
 
   @ViewChild('executionMetadataSidebar') executionMetadataSidebar: MdDrawer;
+
+  fileTreeSidebarOpened = false;
+
+  @ViewChild('fileTreeSidebar') fileTreeSidebar: MdDrawer;
 
   @ViewChild('outputPanel') outputPanel: XtermComponent;
 
@@ -137,6 +141,12 @@ export class EditorViewComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit() {
+    if (!this.fileTreeSidebar.opened && this.editorService.editorTabActive()) {
+      this.openFileTreeSidebar();
+    }
+  }
+
   toolbarAction(action: EditorToolbarAction) {
     switch (action.type) {
       case EditorToolbarActionTypes.Run: this.run(action.data); break;
@@ -154,6 +164,9 @@ export class EditorViewComponent implements OnInit {
       // This has to run in the next tick after the editor has become visible
       // https://github.com/ajaxorg/ace/issues/3070
       setTimeout(_ => this.editor.resize(), 0);
+      if (!this.fileTreeSidebarOpened) {
+        this.openFileTreeSidebar();
+      }
     } else if (this.editorService.consoleTabActive() && this.outputPanel) {
       setTimeout(_ => this.outputPanel.resize(), 0);
     }
@@ -409,5 +422,19 @@ export class EditorViewComponent implements OnInit {
     setTimeout(() => {
       this.executionMetadataSidebar.open();
     }, METADATA_SIDEBAR_OPEN_TIMEOUT);
+  }
+
+  private openFileTreeSidebar() {
+    // The file tree sidebar is closed by default. We want to open it
+    // manually at runtime so the sidebar container can calculate its margins
+    // properly. This is because when entering a lab with any other tab than
+    // the editor, the sidebar container content will be display none,
+    // making it impossible to calculate the margins.
+    //
+    // https://github.com/machinelabs/machinelabs/issues/525
+    setTimeout(_ => {
+      this.fileTreeSidebar.open();
+      this.fileTreeSidebarOpened = true;
+    });
   }
 }
