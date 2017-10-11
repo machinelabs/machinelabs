@@ -5,7 +5,7 @@ import { MdDialogPageObject } from './../md-dialog/md-dialog.page-object';
 
 export class FileNameDialogPageObject {
   mdDialog = new MdDialogPageObject();
-  dialog: ElementFinder = this.mdDialog.getDialogComponent('ml-file-name-dialog');
+  dialog: ElementFinder = this.mdDialog.getDialogComponent('ml-name-dialog');
   header: ElementFinder = this.dialog.element(by.tagName('ml-dialog-header'));
   fileNameInput: ElementFinder = this.dialog.element(by.css('input'));
 
