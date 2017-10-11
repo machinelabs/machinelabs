@@ -56,7 +56,9 @@ export class LabStorageService {
                 // existing lab directories might not be converted yet
                 // this can be removed once we know for sure that all lab directories
                 // are strings in the database
-                value.directory = typeof value.directory === 'string' ? JSON.parse(value.directory) : value.directory;
+                if (value) {
+                  value.directory = typeof value.directory === 'string' ? JSON.parse(value.directory) : value.directory;
+                }
                 return value;
               });
   }
