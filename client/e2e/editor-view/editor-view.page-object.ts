@@ -64,8 +64,11 @@ export class EditorViewPageObject {
 
   changeFileName(index: number, newName: string): void {
     browser.actions().mouseMove(this.getFileByIndex(index)).perform();
-    this.getFileEditBtn(index).click();
-    this.fileNameDialog.enterFileName(newName);
-    this.fileNameDialog.okBtn.click();
+    const editButton = this.getFileEditBtn(index);
+    if (editButton) {
+      editButton.click();
+      this.fileNameDialog.enterFileName(newName);
+      this.fileNameDialog.okBtn.click();
+    }
   }
 }

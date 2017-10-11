@@ -34,16 +34,24 @@ describe('Editor-View Component', function() {
       expect(editorView.getFileName(1)).toContain('ml.yaml');
     });
 
-    it('should allow users to edit file names', () => {
+    it('should not allow users to edit mandatory file names', () => {
+      // index 1 == ml.yaml (this file is mandatory)
       let fileIndex = 1;
-
-      editorView.changeFileName(fileIndex, 'ml.yaml');
-      expect(editorView.getFileName(fileIndex)).toContain('ml.yaml');
+      expect(editorView.getFileEditBtn(fileIndex).isPresent()).toEqual(false);
     });
 
     it('should allow users to add new files', () => {
       editorView.addFile('ml-main-2.py');
       expect(editorView.fileTree.count()).toEqual(3);
     });
+
+    it('should allow users to edit file names', () => {
+      let fileIndex = 2;
+
+      editorView.addFile('ml-main-2.py');
+      editorView.changeFileName(fileIndex, 'changed.py');
+      expect(editorView.getFileName(fileIndex)).toContain('changed.py');
+    });
+
   });
 });
