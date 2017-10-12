@@ -30,6 +30,10 @@ app.get('/version', (req: Request, res: Response) => {
   res.status(200).send(`MachineLabs REST API v${version}`).end();
 });
 
+app.get('/404', (req: Request, res: Response) => {
+  res.status(404).send(`The requested file does not exist`).end();
+});
+
 app.get('/executions/:eid/outputs/:oid', (req, res) => {
 
   const eid = req.params.eid;
@@ -37,9 +41,20 @@ app.get('/executions/:eid/outputs/:oid', (req, res) => {
 
   res.setHeader('Content-Disposition', `attachment; filename=${oid}`);
 
-  let fileStream =  getFileStream(`/executions/${eid}/outputs/${oid}`)
-                      .pipe(res);
+  let fileStream =  getFileStream(`/executions/${eid}/outputs/${oid}`);
+
+  // Theoretically we could return 404 directly instead of redirecting to 404.
+  // However, it turns out that Chrome doesn't like it if we start responding
+  // as if we return a file and then change our mind to return a 404.
+  // That isn't a problem with Firefox or curl though.
+  // By redirecting before we send the 404, we make sure that Chrome not only recognizes the
+  // status code correctly as 404 but also shows the 404 page that we return.
+  fileStream.on('error', (err: any) => res.redirect('/404'));
+
+  fileStream.pipe(res);
 });
+
+app.get('*', (req: Request, res: Response) => res.redirect('/404'));
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
