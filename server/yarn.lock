@@ -3,7 +3,7 @@
 
 
 "@machinelabs/core@file:../shared/core":
-  version "0.17.0"
+  version "0.17.1"
   dependencies:
     "@reactivex/rxjs" "^5.4.2"
     "@types/node" "^8.0.19"
@@ -13,7 +13,7 @@
 "@machinelabs/metrics@file:../shared/metrics":
   version "0.6.1"
   dependencies:
-    "@machinelabs/core" "file:../core"
+    "@machinelabs/core" "file:../../../../.cache/yarn/v1/npm-@machinelabs/core"
     "@reactivex/rxjs" "^5.4.2"
     "@types/node" "^8.0.19"
     firebase "^4.2.0"
