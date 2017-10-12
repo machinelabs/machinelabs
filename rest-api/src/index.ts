@@ -1,14 +1,30 @@
 import { Request, Response } from 'express';
 import * as express from 'express';
+import * as fs from 'fs';
+
 import { environment } from './environments/environment';
 
 const Storage = require('@google-cloud/storage');
 const version = require('../package.json').version;
 const app = express();
 
-const storage = Storage();
+let storage: any, bucket: any;
 
-let bucket = storage.bucket(environment.firebaseConfig.storageBucket);
+const isDebug = !!environment['debug'];
+
+if (isDebug) {
+  console.log('REST API running in Debug mode. Serving files from ./mock-bucket');
+} else {
+  storage = Storage();
+  bucket = storage.bucket(environment.firebaseConfig.storageBucket);
+}
+
+const getFileFromBucket = (path: string) => bucket.file(path).createReadStream();
+
+const getFileFromFs = (path: string) => fs.createReadStream(`./mock-bucket/${path}`);
+
+const getFileStream = isDebug ? getFileFromFs : getFileFromBucket;
+
 
 app.get('/version', (req: Request, res: Response) => {
   res.status(200).send(`MachineLabs REST API v${version}`).end();
@@ -21,10 +37,8 @@ app.get('/executions/:eid/outputs/:oid', (req, res) => {
 
   res.setHeader('Content-Disposition', `attachment; filename=${oid}`);
 
-  let fileStream =  bucket
-          .file(`/executions/${eid}/outputs/${oid}`)
-          .createReadStream()
-          .pipe(res);
+  let fileStream =  getFileStream(`/executions/${eid}/outputs/${oid}`)
+                      .pipe(res);
 });
 
 const PORT = process.env.PORT || 8080;
