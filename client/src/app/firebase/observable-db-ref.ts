@@ -6,7 +6,7 @@ import 'rxjs/add/observable/fromPromise';
 
 export class ObservableDbRef {
 
-  ref: any;
+  ref: firebase.database.Reference;
 
   constructor (ref: any) {
     this.ref = ref;
@@ -48,6 +48,10 @@ export class ObservableDbRef {
     return Observable.fromPromise(this.ref.update(data));
   }
 
+  child(path: string) {
+    return new ObservableDbRef(this.ref.child(path));
+  }
+
   childAdded(): Observable<firebase.database.DataSnapshot> {
     return this.on('child_added');
   }
@@ -57,8 +61,8 @@ export class ObservableDbRef {
   }
 
   on(eventName: string): Observable<firebase.database.DataSnapshot> {
-    return Observable.fromEventPattern(handler => this.ref.on(eventName, handler),
-                                       handler => this.ref.off(eventName, handler));
+    return Observable.fromEventPattern((handler: any) => this.ref.on(eventName, handler),
+                                       (handler: any) => this.ref.off(eventName, handler));
   }
 }
 

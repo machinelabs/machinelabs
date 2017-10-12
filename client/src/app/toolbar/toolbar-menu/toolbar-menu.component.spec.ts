@@ -17,7 +17,7 @@ import { LoginService } from '../../../app/login.service';
 let authServiceStub = {
   requireAuth: () => {},
   requireAuthOnce: () => {},
-  linkOrSignInWithGitHub: () => {},
+  linkOrSignIn: () => {},
   signOut: () => {}
 };
 
@@ -55,7 +55,7 @@ describe('ToolbarMenuComponent', () => {
     authService = TestBed.get(AuthService);
     userService = TestBed.get(UserService);
 
-    spyOn(authService, 'linkOrSignInWithGitHub').and.returnValue(Observable.of(dummyUser));
+    spyOn(authService, 'linkOrSignIn').and.returnValue(Observable.of(dummyUser));
     spyOn(authService, 'signOut').and.returnValue(Observable.of(null));
     spyOn(userService, 'createUserIfMissing').and.returnValue(Observable.of(dummyUser));
   });
@@ -71,7 +71,7 @@ describe('ToolbarMenuComponent', () => {
     const loginButton = fixture.debugElement.query(By.css('.mat-menu-panel button'));
 
     loginButton.triggerEventHandler('click', null);
-    expect(authService.linkOrSignInWithGitHub).toHaveBeenCalled();
+    expect(authService.linkOrSignIn).toHaveBeenCalled();
   });
 
   it('should logout', () => {

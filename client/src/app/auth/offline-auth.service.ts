@@ -24,7 +24,6 @@ export interface OfflineAuth extends AuthService {
 
 @Injectable()
 export class OfflineAuthService implements OfflineAuth {
-
   user: LoginUser = dummyUser;
 
   requireAuth(): Observable<LoginUser> {
@@ -35,13 +34,26 @@ export class OfflineAuthService implements OfflineAuth {
     return this.requireAuth().take(1);
   }
 
-  signInWithGitHub(): Observable<LoginUser> {
+  signIn(): Observable<LoginUser> {
     this.user.isAnonymous = false;
     return Observable.of(this.user);
   }
 
-  linkOrSignInWithGitHub(): Observable<LoginUser> {
-    return this.signInWithGitHub();
+  linkOrSignIn(): Observable<LoginUser> {
+    return this.signIn();
+  }
+
+  linkWithPopup(provider: firebase.auth.AuthProvider): Observable<LoginUser> {
+    this.user.isAnonymous = false;
+    return Observable.of(this.user);
+  }
+
+  link(): Observable<LoginUser> {
+    return Observable.of(this.user);
+  }
+
+  unlink() {
+    return Observable.of(this.user);
   }
 
   signOut(): Observable<any> {

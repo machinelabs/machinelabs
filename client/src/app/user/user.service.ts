@@ -47,15 +47,38 @@ export class UserService {
     return this.userHasProviderData(loginUser) ? loginUser.providerData[0].photoURL : loginUser.photoURL;
   }
 
+  getProviders(fromUser: LoginUser) {
+    let providers = [];
+
+    fromUser.providerData.forEach(provider => {
+      providers.push(provider.providerId);
+    });
+
+    return providers;
+  }
+
+  getEmail(loginUser: LoginUser) {
+    return this.userHasProviderData(loginUser) ? loginUser.providerData[0].email : loginUser.email;
+  }
+
   mapLoginUserToUser(fromUser: LoginUser): User {
     return {
       id: fromUser.uid,
       displayName: this.getDisplayName(fromUser) || PLACEHOLDER_USERNAME,
-      email: fromUser.email,
+      email: this.getEmail(fromUser),
       bio: '',
       isAnonymous: fromUser.isAnonymous,
-      photoUrl: this.getPhotoUrl(fromUser)
+      photoUrl: this.getPhotoUrl(fromUser),
+      providers: this.getProviders(fromUser)
     };
+  }
+
+  isLinked(user: User, providerId: string) {
+    return user.providers ? user.providers.indexOf(providerId) > -1 : false;
+  }
+
+  hasMultipleProviders(user: User) {
+    return user.providers ? user.providers.length > 1 : false;
   }
 
   saveUser(user: User): Observable<User> {
@@ -70,11 +93,19 @@ export class UserService {
                            .map(_ => user);
   }
 
+  updateProviders(user: LoginUser): Observable<User> {
+    let batch = {
+      [`/users/${user.uid}/common/providers`]: this.getProviders(user)
+    };
+
+    return this.db.rootRef().update(batch)
+                            .switchMap(_ => this.getUser(user.uid));
+  }
+
   getUser(id: string): Observable<User> {
     return this.authService.requireAuthOnce()
                            .switchMap(_ => this.db.userRef(id).onceValue())
                            .map(snapshot => snapshot.val());
-
   }
 
   observeUserChanges(): Observable<User> {

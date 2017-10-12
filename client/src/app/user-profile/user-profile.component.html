@@ -15,6 +15,14 @@
     <p>{{user.bio}}</p>
   </div>
   <div class="ml-user-profile-content">
+    <ng-container *ngIf="isAuthUser">
+      <div *ngFor="let provider of providers | mapToIterable">
+        {{provider.value.name}}
+        <button type="button" [disabled]="isLinked(provider.key)" (click)="link(provider.key)">Link</button>
+        <button type="button" [disabled]="!hasMultipleProviders" (click)="unlink(provider.key)">Unlink</button>
+      </div>
+    </ng-container>
+
     <ng-container *ngIf="labs.length; else noLabsMessage">
       <md-tab-group [dynamicHeight]="true">
         <md-tab label="Labs">

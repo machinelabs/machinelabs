@@ -73,6 +73,10 @@ type ServerWritableNumber extends Number {
   validate() { isExecutionServer() }
 }
 
+type ServerWritableMap extends Map<String, Boolean> {
+  validate() { isExecutionServer() }
+}
+
 type Execution {
   id: ServerWritableString,
   cache_hash: ServerWritableString,
@@ -124,6 +128,8 @@ type User {
   bio: String,
   photoUrl: String,
   email: UserEmail,
+  providers: String[],
+  merged_accounts: ServerWritableMap | Null
 }
 
 type Server {
@@ -142,6 +148,16 @@ type ThrottledTimeStamp extends Number {
   validate() {
     newData.isNumber() && newData.val() === now && (data.val() == null || newData.val() > data.val() + 1000)
   }
+}
+
+type UserMergeRequestType extends String {
+  validate() { this === 'passive' || this === 'active' }
+}
+
+type UserMergeRequest {
+  user_id: String,
+  handshake_id: String,
+  type: UserMergeRequestType
 }
 
 path /idx/invocation_rate_proof/{userId} is RateProof {
@@ -208,6 +224,12 @@ path /users/{id}/common is User {
 
 path /users/{id}/plan {
   read() { true }
+}
+
+path /user_merge_requests/{id} is UserMergeRequest {
+  read() { true }
+  write() { isOwningUser(this, 'user_id') && isCurrentUser(id) }
+  index() { ['handshake_id'] }
 }
 
 path /servers {

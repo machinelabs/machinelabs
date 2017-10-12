@@ -7,6 +7,10 @@ import { ObservableDbRef } from './observable-db-ref';
 export class DbRefBuilder {
   constructor(@Inject(DATABASE) private db) {}
 
+  rootRef() {
+    return new ObservableDbRef(this.db.ref());
+  }
+
   userRef(id: string) {
     return new ObservableDbRef(this.db.ref(`users/${id}/common`));
   }
@@ -57,6 +61,10 @@ export class DbRefBuilder {
 
   userVisibleLabsRef(id: string) {
     return new ObservableDbRef(this.db.ref(`idx/user_visible_labs/${id}`));
+  }
+
+  mergeRequests(userId: string) {
+    return new ObservableDbRef(this.db.ref(`user_merge_requests/${userId}`));
   }
 }
 

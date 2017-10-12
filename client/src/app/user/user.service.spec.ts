@@ -19,7 +19,14 @@ describe('UserService', () => {
     displayName: 'foo',
     email: 'foo@bar.de',
     isAnonymous: true,
-    photoURL: '/some/address'
+    photoURL: '/some/address',
+    providerData: [{
+      uid: '12345',
+      providerId: 'github.com',
+      email: 'foo@bar.de',
+      displayName: 'foo',
+      photoURL: 'foo.com'
+    }]
   };
 
   let expectedUser = {
@@ -28,7 +35,10 @@ describe('UserService', () => {
     email: 'foo@bar.de',
     bio: '',
     isAnonymous: true,
-    photoUrl: '/some/address'
+    photoUrl: '/some/address',
+    providers: [
+      'github.com'
+    ]
   };
 
 
