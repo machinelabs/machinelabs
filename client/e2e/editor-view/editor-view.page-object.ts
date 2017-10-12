@@ -19,7 +19,7 @@ export class EditorViewPageObject {
 
   tabs: ElementArrayFinder = element.all(by.css('.mat-tab-link'));
   fileTree: ElementArrayFinder = element.all(by.css('.ml-file-tree-item'));
-  addFileBtn: ElementFinder = element(by.css('.ml-file-tree-cta.mat-button'));
+  addFileBtn: ElementFinder = element(by.css('.ml-file-tree-cta-bar .ml-file-tree-item-button'));
 
   /**
    * TABS

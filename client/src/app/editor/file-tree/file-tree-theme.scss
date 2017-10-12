@@ -7,11 +7,15 @@
   $background: map-get($theme, background);
   $foreground: map-get($theme, foreground);
 
+  .ml-file-tree-title {
+    border-bottom: 1px solid mat-color($foreground, divider);
+  }
+
+  .ml-file-tree-cta-bar,
   .ml-file-tree-item {
     md-icon {
       color: #607d8b;
     }
-
   }
 
   .ml-file-tree-item-title {

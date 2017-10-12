@@ -9,6 +9,23 @@
   padding-left: 20px;
 }
 
+.ml-file-tree-title {
+  position: relative;
+  height: 30px;
+  padding-left: 20px;
+  font-size: 0.9em;
+  padding-top: 6px;
+}
+
+.ml-file-tree-cta-bar {
+  display: flex;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 30px;
+  padding-left: 15px;
+}
+
 .ml-file-tree-item {
   font-size: 14px;
   font-weight: 400;
@@ -65,5 +82,8 @@
   cursor: pointer;
   outline: none;
 
-  md-icon { font-size: 1.6em; }
+  md-icon {
+    font-size: 1.6em;
+    height: initial;
+  }
 }

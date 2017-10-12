@@ -1,11 +1,23 @@
 <ng-container *ngIf="showActionButtons && level === 0">
-  <div class="ml-file-tree-cta-bar">
-    <button md-button (click)="openAddFileNameDialog($event, directory)" class="ml-file-tree-cta">
-      <md-icon>note_add</md-icon> Add file
-    </button>
-    <button md-button (click)="openAddFolderNameDialog($event, directory)" class="ml-file-tree-cta">
-      <md-icon>create_new_folder</md-icon> Add folder
-    </button>
+  <div class="ml-file-tree-title">
+    Files
+    <div class="ml-file-tree-cta-bar">
+      <button
+        class="ml-file-tree-item-button add"
+        (click)="openAddFileNameDialog($event, directory)"
+        mdTooltip="Add file"
+        mdTooltipPosition="below">
+          <md-icon>note_add</md-icon>
+      </button>
+      <button
+        md-u
+        class="ml-file-tree-item-button add-folder"
+        (click)="openAddFolderNameDialog($event, directory)"
+        mdTooltip="Add folder"
+        mdTooltipPosition="below">
+          <md-icon>create_new_folder</md-icon>
+      </button>
+    </div>
   </div>
 </ng-container>
 
