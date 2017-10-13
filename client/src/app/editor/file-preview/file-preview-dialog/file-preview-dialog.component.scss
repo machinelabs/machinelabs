@@ -39,3 +39,11 @@ ml-dialog-error {
     margin-right: 5px;
   }
 }
+
+md-spinner {
+  position: absolute;
+  top: 50;
+  left: 50;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
