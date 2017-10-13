@@ -7,6 +7,9 @@ const stagingTemplate = {
   client: {
     env: 'staging'
   },
+  rest: {
+    env: 'staging'
+  },
   firebase: {
     databaseUrl: 'https://machinelabs-a73cd.firebaseio.com',
     privateKeyEnv: 'MACHINELABS_STAGING_FB_PRIVATE_KEY',
@@ -22,6 +25,9 @@ const productionTemplate = {
     env: 'production'
   },
   client: {
+    env: 'production'
+  },
+  rest: {
     env: 'production'
   },
   firebase: {
