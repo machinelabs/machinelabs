@@ -6,6 +6,7 @@ import { factory } from '../lib/execute';
 import { deployServer } from '../lib/deploy-server';
 import { deployFirebase } from '../lib/deploy-firebase';
 import { deployClient } from '../lib/deploy-client';
+import { deployRestApi } from '../lib/deploy-rest-api';
 import { isTag } from '../lib/is-tag';
 import { isCleanWorkingDir } from '../lib/is-clean-working-dir';
 import { OutputType, ProcessStreamData } from '@machinelabs/core';
@@ -16,6 +17,7 @@ let execute = factory({displayErrors: true});
 
 const hasArgsForServerDeploy = argv => argv.cfg && argv.cfg.server.name && argv.cfg.server.zone && argv.cfg.server.env && argv.cfg.googleProjectId;
 const hasArgsForFirebaseDeploy = argv => argv.cfg && argv.cfg.googleProjectId;
+const hasArgsForRestApiDeploy = argv => argv.cfg && argv.cfg.googleProjectId && argv.cfg.rest.env;
 const hasArgsForClientDeploy = argv => argv.cfg && argv.cfg.googleProjectId && argv.cfg.client.env;
 
 const deploy = (argv) => {
@@ -43,6 +45,10 @@ const deploy = (argv) => {
 
   if (hasArgsForClientDeploy(argv) && !argv.noClient) {
     tasks.push(deployClient(argv.cfg.googleProjectId, argv.cfg.client.env));
+  }
+
+  if (hasArgsForRestApiDeploy(argv) && !argv.noRest) {
+    tasks.push(deployRestApi(argv.cfg.googleProjectId, argv.cfg.rest.env));
   }
 
   Observable.concat(...tasks)
@@ -74,10 +80,14 @@ const check = argv => {
     if (!argv._.includes('noClient') && !hasArgsForClientDeploy(argv)) {
       throw new Error('Command needs `cfg.googleProjectId` and `cfg.client.env`');
     }
+
+    if (!argv._.includes('noRest') && !hasArgsForRestApiDeploy(argv)) {
+      throw new Error('Command needs `cfg.googleProjectId` and `cfg.rest.env`');
+    }
   }
 
-  if (countTrue([argv.noFb, argv.noServer, argv.noClient]) === 3) {
-    throw new Error('`noFb`, `noServer` and `noClient` can not be used in full combination');
+  if (countTrue([argv.noFb, argv.noServer, argv.noClient, argv.noRest]) === 3) {
+    throw new Error('`noFb`, `noServer`, `noClient` and `noRest` can not be used in full combination');
   }
 };
 
