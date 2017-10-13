@@ -52,7 +52,7 @@ export function cut (versionOrType, dryRun) {
            (cd ./server && yarn upgrade @machinelabs/core) &&
            (cd ./client && ${yarnVersionCmd}) &&
            (cd ./firebase/functions && ${yarnVersionCmd}) &&
-           
+           (cd ./rest-api && ${yarnVersionCmd}) &&
            (cd ./admin-cli && ${yarnVersionCmd})`);
 
 

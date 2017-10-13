@@ -44,5 +44,5 @@
     "tslint": "^5.5.0",
     "typescript": "2.4.2"
   },
-  "version": "0.17.1+utc.2017.Oct.12-9.27.51"
+  "version": "0.17.1-dev+utc.2017.Oct.13-14.28.19"
 }
