@@ -7,6 +7,7 @@ import { deployCommand } from './commands/deploy';
 import { loginCommand } from './commands/login';
 import { cutCommand } from './commands/cut';
 import { onboardCommand } from './commands/onboard';
+import { exportUsersCommand } from './commands/export-users';
 import { migrateCommand } from './commands/migrate';
 
 import { tryLoadTemplate } from './lib/load-template';
@@ -101,6 +102,8 @@ let argv = yargs(process.argv.slice(2))
         boolean: true
       }
     }, onboardCommand.run)
+    .command('export-users [<options>]', 'Export csv of all users', {
+    }, exportUsersCommand.run)
     .command(
       'migrate [<options>]',
       `Migrates database with a migration file that contains a function
