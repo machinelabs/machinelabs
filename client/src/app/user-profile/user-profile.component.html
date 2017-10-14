@@ -62,10 +62,10 @@
         <ng-template #noExecutionsMessage>
           <md-card class="ml-user-profile-no-data-message">
             <md-card-title>
-              You haven't executed any labs yet
+              {{ isAuthUser ? 'You haven\'t' : user.displayName + ' hasn\'t'}} executed any labs yet
             </md-card-title>
             <md-card-content>
-              <p>Run your labs and all of your executions will show up here!</p>
+              <p>All executions will show up here!</p>
             </md-card-content>
           </md-card>
         </ng-template>
@@ -74,9 +74,9 @@
     <ng-template #noLabsMessage>
       <md-card class="ml-user-profile-no-data-message">
         <md-card-title>
-          You haven't built any Labs yet.
+          {{ isAuthUser ? 'You haven\'t' : user.displayName + ' hasn\'t'}} built any Labs yet.
         </md-card-title>
-        <md-card-content>
+        <md-card-content *ngIf="isAuthUser">
           <p>Hmmm...No sparks of genious here just yet, but no worries. We know you can do it, so go ahead.</p>
           <a md-raised-button color="primary" routerLink="/editor" [queryParams]="{tpl: 'blank'}" title="Create a new lab">Get started!</a>
         </md-card-content>
