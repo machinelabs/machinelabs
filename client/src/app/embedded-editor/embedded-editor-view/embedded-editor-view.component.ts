@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MdDialog, MdDialogRef } from '@angular/material';
-import { File } from '@machinelabs/core/models/directory';
+import { File } from '@machinelabs/models';
 import { Observable } from 'rxjs/Observable';
 
 import { LabExecutionService } from '../../lab-execution.service';

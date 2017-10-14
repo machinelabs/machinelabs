@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MdDialogRef, MdDialog } from '@angular/material';
 import { NameDialogComponent, NameDialogType } from 'app/editor/name-dialog/name-dialog.component';
 import { FileTreeService } from 'app/editor/file-tree/file-tree.service';
-import { File, Directory } from '@machinelabs/core/models/directory';
+import { File, Directory } from '@machinelabs/models';
 import { updateFileInDirectory } from '@machinelabs/core/io/lab-fs/manipulation';
 
 @Injectable()

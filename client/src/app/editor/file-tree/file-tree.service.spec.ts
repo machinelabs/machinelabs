@@ -1,7 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { FileTreeService } from './file-tree.service';
-import { Directory, File, LabDirectory } from '@machinelabs/core/models/directory';
+import { Directory, File, LabDirectory } from '@machinelabs/models';
 
 describe('FileTreeService', () => {
   let fileTreeService: FileTreeService;

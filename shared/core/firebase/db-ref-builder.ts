@@ -1,5 +1,5 @@
 import { ObservableDbRef } from './observable-db-ref';
-import { ShortMonth } from '../models/months';
+import { ShortMonth } from '@machinelabs/models';
 
 export class DbRefBuilder {
   constructor(private db: any) {}

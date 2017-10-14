@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MdDialogModule } from '@angular/material';
-import { File } from '@machinelabs/core/models/directory';
+import { File } from '@machinelabs/models';
 import { LAB_STUB, EDITOR_SERVICE_STUB } from '../../../test-helper/stubs';
 import { FileTreeComponent } from './file-tree.component';
 import { EditorService } from '../editor.service';

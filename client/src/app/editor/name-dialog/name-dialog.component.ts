@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
-import { File, Directory, instanceOfFile, instanceOfDirectory } from '@machinelabs/core/models/directory';
+import { File, Directory, instanceOfFile, instanceOfDirectory } from '@machinelabs/models';
 
 export interface NameDialogData {
   fileOrDirectory: File|Directory,

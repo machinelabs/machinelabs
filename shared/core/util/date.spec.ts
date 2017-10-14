@@ -1,7 +1,7 @@
 import 'jest';
 
 import { DateUtil } from './date';
-import { Month } from '../models/months';
+import { Month } from '@machinelabs/models';
 
 describe('.getUTCBeginOfMonth()', () => {
   it('should return correct instant in time', () => {

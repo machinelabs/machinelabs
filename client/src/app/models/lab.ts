@@ -1,4 +1,4 @@
-import { LabDirectory } from '@machinelabs/core/models/directory';
+import { LabDirectory } from '@machinelabs/models';
 
 export interface LabTemplate {
   name: string;

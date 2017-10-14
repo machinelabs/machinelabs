@@ -1,4 +1,4 @@
-import { HardwareType } from '@machinelabs/core';
+import { HardwareType } from '@machinelabs/models';
 
 export const COST_PER_SECOND_PER_TYPE = new Map<HardwareType, number>();
 COST_PER_SECOND_PER_TYPE.set(HardwareType.Economy, 0.000012);

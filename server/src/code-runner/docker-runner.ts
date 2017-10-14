@@ -1,7 +1,8 @@
 import { exec } from 'child_process';
 import { Observable } from '@reactivex/rxjs';
 import { CodeRunner } from './code-runner';
-import { File, createWriteLabDirectoryCmd } from '@machinelabs/core';
+import { File } from '@machinelabs/models';
+import { createWriteLabDirectoryCmd } from '@machinelabs/core';
 import { Invocation } from '../models/invocation';
 import { InternalLabConfiguration } from '../models/lab-configuration';
 import { trimNewLines, ProcessStreamData, stdoutMsg, SpawnShellFn, SpawnFn } from '@machinelabs/core';

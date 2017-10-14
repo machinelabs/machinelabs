@@ -1,4 +1,4 @@
-import { File, LabDirectory, instanceOfFile } from '@machinelabs/core/models/directory';
+import { File, LabDirectory, instanceOfFile } from '@machinelabs/models';
 
 export const MAIN_PYTHON_FILENAME = 'main.py';
 
