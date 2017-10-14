@@ -1,7 +1,8 @@
 import 'jest';
 import { Observable } from '@reactivex/rxjs';
 import { DockerRunner } from './docker-runner';
-import { Lab, stdout, ProcessStreamData, stdoutMsg } from '@machinelabs/core';
+import { stdout, ProcessStreamData, stdoutMsg } from '@machinelabs/core';
+import { Lab } from '@machinelabs/models';
 import { PublicLabConfiguration, InternalLabConfiguration } from '../models/lab-configuration';
 import { Invocation, InvocationType } from '../models/invocation';
 

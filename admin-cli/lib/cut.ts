@@ -49,6 +49,8 @@ export function cut (versionOrType, dryRun) {
 
   execute(`(cd ./server && ${yarnVersionCmd}) &&
            (cd ./shared/core && ${yarnVersionCmd}) &&
+           (cd ./shared/metrics && ${yarnVersionCmd}) &&
+           (cd ./shared/models && ${yarnVersionCmd}) &&
            (cd ./server && yarn upgrade @machinelabs/core) &&
            (cd ./client && ${yarnVersionCmd}) &&
            (cd ./firebase/functions && ${yarnVersionCmd}) &&

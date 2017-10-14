@@ -1,5 +1,5 @@
 import { createHash } from 'crypto';
-import { Lab } from '@machinelabs/core';
+import { Lab } from '@machinelabs/models';
 
 export class Crypto {
   static getCacheHash(lab: Lab) {

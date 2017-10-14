@@ -14,6 +14,6 @@ execute('rm -rf ./dist');
 copyConfig();
 // This makes sure that the latest @machinelabs/core code is 
 // copied over to node_modules
-execute('yarn upgrade @machinelabs/core @machinelabs/metrics');
+execute('yarn upgrade @machinelabs/core @machinelabs/metrics @machinelabs/models');
 execute('tsc');
 

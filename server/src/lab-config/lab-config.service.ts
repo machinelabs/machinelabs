@@ -1,4 +1,4 @@
-import { Lab, File, instanceOfFile  } from '@machinelabs/core';
+import { Lab, File, instanceOfFile  } from '@machinelabs/models';
 import { PublicLabConfiguration, InternalLabConfiguration, ScriptParameter } from '../models/lab-configuration';
 import { safeLoad} from 'js-yaml';
 import isString = require('lodash.isstring');

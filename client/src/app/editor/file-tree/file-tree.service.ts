@@ -7,7 +7,7 @@ import {
   DirectoryClientState,
   LabDirectory,
   isLabDirectory
-} from '@machinelabs/core/models/directory';
+} from '@machinelabs/models';
 
 @Injectable()
 export class FileTreeService {

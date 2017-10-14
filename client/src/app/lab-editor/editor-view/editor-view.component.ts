@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdDialog, MdDialogRef, MdSnackBar, MdTabGroup, MdDrawer } from '@angular/material';
 import { FormControl } from '@angular/forms';
-import { File } from '@machinelabs/core/models/directory';
+import { File } from '@machinelabs/models';
 import { AceEditorComponent } from '../../editor/ace-editor/ace-editor.component';
 import { XtermComponent } from '../../editor/xterm/xterm.component';
 import {

@@ -1,4 +1,4 @@
-import { instanceOfFile } from '@machinelabs/core/models/directory';
+import { instanceOfFile } from '@machinelabs/models';
 import { Lab } from '../models/lab';
 import { PublicLabConfiguration } from '../models/lab-configuration';
 import { safeLoad } from 'js-yaml';

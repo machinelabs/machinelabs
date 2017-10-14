@@ -1,4 +1,4 @@
-import { Directory, LabDirectory, File, instanceOfFile, instanceOfDirectory } from '../../models/directory';
+import { Directory, LabDirectory, File, instanceOfFile, instanceOfDirectory } from '@machinelabs/models';
 
 const findFile = (name: string) => {
   return (fileOrDirectory: File | Directory) => {

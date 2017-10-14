@@ -1,5 +1,4 @@
 import { AbstractValidationError } from '../validation/validation-result';
-import { HardwareType } from './server';
 
 export enum MessageKind {
   Stdout = 'stdout',

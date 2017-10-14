@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { Inject } from '@angular/core';
-import { File } from '@machinelabs/core/models/directory';
+import { File } from '@machinelabs/models';
 import { Observable } from 'rxjs/Observable';
 
 import { LabStorageService } from './lab-storage.service';

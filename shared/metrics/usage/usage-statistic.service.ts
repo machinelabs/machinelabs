@@ -1,5 +1,6 @@
 import { Observable } from '@reactivex/rxjs';
-import { ObservableDbRef, ShortMonth, toShortMonth, DbRefBuilder, DateUtil } from '@machinelabs/core';
+import { ObservableDbRef, DbRefBuilder, DateUtil } from '@machinelabs/core';
+import { ShortMonth, toShortMonth } from '@machinelabs/models';
 import { CostCalculator } from '../costs/cost-calculator';
 import { UsageStatistic } from './usage-statistic';
 

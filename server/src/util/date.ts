@@ -1,5 +1,5 @@
 import * as moment from 'moment';
-import { Month, ShortMonth, toShortMonth } from '../models/months';
+import { Month, ShortMonth, toShortMonth } from '@machinelabs/models';
 
 export class DateUtil {
 

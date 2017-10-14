@@ -182,12 +182,19 @@
   resolved "https://registry.yarnpkg.com/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.2.1.tgz#2c4dbc15edd1de4f656d543a6f512ded7978ef72"
 
 "@machinelabs/core@file:../shared/core":
-  version "0.16.0"
+  version "0.17.1"
   dependencies:
+    "@machinelabs/models" "file:../../../../Library/Caches/Yarn/v1/npm-@machinelabs/models"
     "@reactivex/rxjs" "^5.4.2"
     "@types/node" "^8.0.19"
     firebase "^4.2.0"
     moment "^2.18.1"
+
+"@machinelabs/models@file:../shared/models":
+  version "0.17.1"
+  dependencies:
+    "@reactivex/rxjs" "^5.4.2"
+    "@types/node" "^8.0.19"
 
 "@ngtools/json-schema@1.1.0", "@ngtools/json-schema@^1.1.0":
   version "1.1.0"

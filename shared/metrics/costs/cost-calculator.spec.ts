@@ -1,7 +1,7 @@
 import 'jest';
 
 import { CostCalculator } from './cost-calculator';
-import { Execution, HardwareType } from '@machinelabs/core';
+import { Execution, HardwareType } from '@machinelabs/models';
 import { Observable } from '@reactivex/rxjs';
 import { CostReport } from './cost-report';
 import { COST_PER_SECOND_PER_TYPE } from './costs';

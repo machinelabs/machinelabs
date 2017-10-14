@@ -1,4 +1,4 @@
-import { HardwareType } from '@machinelabs/core';
+import { HardwareType } from '@machinelabs/models';
 
 export class CostReport {
   secondsPerHardware = new Map<HardwareType, number>();

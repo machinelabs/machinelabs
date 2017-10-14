@@ -8,6 +8,7 @@
   "dependencies": {
     "@machinelabs/core": "file:../shared/core",
     "@machinelabs/metrics": "file:../shared/metrics",
+    "@machinelabs/models": "file:../shared/models",
     "@reactivex/rxjs": "^5.4.2",
     "@types/js-yaml": "^3.5.30",
     "@types/lodash.isnumber": "^3.0.3",

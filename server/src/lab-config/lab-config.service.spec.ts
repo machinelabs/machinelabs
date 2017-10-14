@@ -1,7 +1,7 @@
 import 'jest';
 
 import { LabConfigService } from './lab-config.service';
-import { Lab } from '@machinelabs/core';
+import { Lab } from '@machinelabs/models';
 import { PublicLabConfiguration } from '../models/lab-configuration';
 
 let dockerImageId = 'keras_v2-4-x_python_2';

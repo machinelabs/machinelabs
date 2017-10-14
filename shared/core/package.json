@@ -30,6 +30,7 @@
     "ci": "npm run tslint && npm run test"
   },
   "dependencies": {
+    "@machinelabs/models": "file:../models",
     "@reactivex/rxjs": "^5.4.2",
     "@types/node": "^8.0.19",
     "firebase": "^4.2.0",

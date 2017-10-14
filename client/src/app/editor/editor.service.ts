@@ -11,7 +11,7 @@ import {
   instanceOfFile,
   instanceOfDirectory,
   DirectoryClientState
-} from '@machinelabs/core/models/directory';
+} from '@machinelabs/models';
 
 import { getFileFromPath } from '@machinelabs/core/io/lab-fs/navigation';
 

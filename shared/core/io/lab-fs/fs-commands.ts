@@ -1,4 +1,4 @@
-import { Directory, File, instanceOfFile, instanceOfDirectory, LabDirectory } from '../../models/directory';
+import { Directory, File, instanceOfFile, instanceOfDirectory, LabDirectory } from '@machinelabs/models';
 
 const concatIfNotEmpty = (cmd: string) => cmd.length > 0 ? ` && ${cmd}` : '';
 

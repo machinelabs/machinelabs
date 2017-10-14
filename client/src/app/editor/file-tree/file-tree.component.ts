@@ -7,7 +7,7 @@ import {
   Directory,
   instanceOfFile,
   instanceOfDirectory
-} from '@machinelabs/core/models/directory';
+} from '@machinelabs/models';
 
 import { deleteFromDirectory } from '@machinelabs/core/io/lab-fs/manipulation';
 
