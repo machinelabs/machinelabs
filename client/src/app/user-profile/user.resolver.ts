@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 
 import { LabStorageService } from '../lab-storage.service';
@@ -15,7 +15,7 @@ export class UserResolver implements Resolve<User> {
   constructor(
       private userService: UserService,
       private router: Router,
-      private snackBar: MdSnackBar) {}
+      private snackBar: MatSnackBar) {}
 
   resolve(route: ActivatedRouteSnapshot) {
     return this.userService

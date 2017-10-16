@@ -2,12 +2,12 @@
   <ml-toolbar-logo></ml-toolbar-logo>
   <ml-toolbar-content>
     <div class="ml-toolbar-lab-info">
-      <span [mdTooltip]="lab?.name" class="ml-toolbar-lab-name">{{lab?.name | words: 10}}</span>
+      <span [matTooltip]="lab?.name" class="ml-toolbar-lab-name">{{lab?.name | words: 10}}</span>
     </div>
   </ml-toolbar-content>
 
   <ml-toolbar-cta-bar>
-    <button md-icon-button (click)="replay.emit(lab)" mdTooltip="Replay"><md-icon>cached</md-icon></button>
-    <button md-icon-button (click)="open.emit()" mdTooltip="Open in app"><md-icon>open_in_new</md-icon></button>
+    <button mat-icon-button (click)="replay.emit(lab)" matTooltip="Replay"><mat-icon>cached</mat-icon></button>
+    <button mat-icon-button (click)="open.emit()" matTooltip="Open in app"><mat-icon>open_in_new</mat-icon></button>
   </ml-toolbar-cta-bar>
 </ml-toolbar>

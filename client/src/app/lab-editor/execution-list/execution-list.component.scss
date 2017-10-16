@@ -1,24 +1,24 @@
-md-toolbar {
+mat-toolbar {
   font-size: 1.15em;
   padding: 0 28px;
   background: #607D8B;
   color: #fff;
 
-  md-icon {
+  mat-icon {
     margin-right: 0.2em;
   }
 }
 
 .ml-execution-panel-header {
   font-weight: 400;
-  md-icon {
+  mat-icon {
     vertical-align: -25%;
     font-size: 22px;
     width: initial;
     height: initial;
   }
 
-  md-progress-spinner {
+  mat-progress-spinner {
     width: 24px;
     height: 27px;
     display: inline-block;
@@ -39,7 +39,7 @@ md-toolbar {
 .ml-execution-panel-content {
   padding: .2em;
 
-  md-icon {
+  mat-icon {
     font-size: 1.2em;
     width: initial;
     height: initial;
@@ -58,7 +58,7 @@ md-toolbar {
 .ml-execution-panel-cta-bar {
   position: relative;
 
-  [md-icon-button] {
+  [mat-icon-button] {
     position: absolute;
     right: -1em;
     top: -0.1em;

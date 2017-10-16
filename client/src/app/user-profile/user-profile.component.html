@@ -1,7 +1,7 @@
 <ml-toolbar>
   <ml-toolbar-logo></ml-toolbar-logo>
   <ml-toolbar-cta-bar>
-    <a routerLink="/editor" title="Launch Editor" md-button><md-icon>exit_to_app</md-icon> Launch Editor</a>
+    <a routerLink="/editor" title="Launch Editor" mat-button><mat-icon>exit_to_app</mat-icon> Launch Editor</a>
   </ml-toolbar-cta-bar>
   <ml-toolbar-menu></ml-toolbar-menu>
 </ml-toolbar>
@@ -11,31 +11,31 @@
   </div>
   <div class="ml-user-profile-info-bar">
     <img class="ml-user-profile-avatar" alt="Avatar of {{user.displayName}}" [src]="user.photoUrl">
-    <button *ngIf="isAuthUser" md-mini-fab color="accent" (click)="edit()"><md-icon>edit</md-icon></button>
+    <button *ngIf="isAuthUser" mat-mini-fab color="accent" (click)="edit()"><mat-icon>edit</mat-icon></button>
     <p>{{user.bio}}</p>
   </div>
   <div class="ml-user-profile-content">
     <ng-container *ngIf="labs.length; else noLabsMessage">
-      <md-tab-group [dynamicHeight]="true">
-        <md-tab label="Labs">
+      <mat-tab-group [dynamicHeight]="true">
+        <mat-tab label="Labs">
 
           <div fxLayout class="ml-user-profile-lab-list">
-            <md-card *ngFor="let lab of labs" class="ml-user-profile-lab-card">
-              <md-card-title>{{lab.name | words: 10}}</md-card-title>
-              <md-card-content>{{lab.description || 'This lab has no description.' | words:30}}</md-card-content>
+            <mat-card *ngFor="let lab of labs" class="ml-user-profile-lab-card">
+              <mat-card-title>{{lab.name | words: 10}}</mat-card-title>
+              <mat-card-content>{{lab.description || 'This lab has no description.' | words:30}}</mat-card-content>
               <ml-tag-list [tags]="lab.tags"></ml-tag-list>
-              <md-card-actions class="ml-user-profile-lab-actions">
-                <a md-button title="Open this lab in editor" [routerLink]="['/editor', lab.id]">OPEN IN EDITOR</a>
-              </md-card-actions>
-            </md-card>
+              <mat-card-actions class="ml-user-profile-lab-actions">
+                <a mat-button title="Open this lab in editor" [routerLink]="['/editor', lab.id]">OPEN IN EDITOR</a>
+              </mat-card-actions>
+            </mat-card>
           </div>
-        </md-tab>
-        <md-tab label="Executions">
+        </mat-tab>
+        <mat-tab label="Executions">
           <div class="ml-user-profile-execution-list">
             <ng-container *ngIf="executions | async as executions; else noExecutionsMessage">
               <ng-container *ngFor="let execution of executions">
                 <a [routerLink]="['/editor', execution.lab.id, execution.id]" *ngIf="execution | async as execution">
-                  <md-card
+                  <mat-card
                     [ngClass]="{
                       finished: execution.status == ExecutionStatus.Finished,
                       executing: execution.status == ExecutionStatus.Executing,
@@ -43,44 +43,44 @@
                       failed: execution.status == ExecutionStatus.Failed
                     }">
                     <ng-container [ngSwitch]="execution.status">
-                      <md-icon *ngSwitchCase="ExecutionStatus.Finished">done</md-icon>
-                      <md-progress-spinner
+                      <mat-icon *ngSwitchCase="ExecutionStatus.Finished">done</mat-icon>
+                      <mat-progress-spinner
                         color="accent"
                         *ngSwitchCase="ExecutionStatus.Executing"
-                        mode="indeterminate"></md-progress-spinner>
-                      <md-icon *ngSwitchCase="ExecutionStatus.Stopped">info</md-icon>
-                      <md-icon *ngSwitchCase="ExecutionStatus.Failed">block</md-icon>
+                        mode="indeterminate"></mat-progress-spinner>
+                      <mat-icon *ngSwitchCase="ExecutionStatus.Stopped">info</mat-icon>
+                      <mat-icon *ngSwitchCase="ExecutionStatus.Failed">block</mat-icon>
                     </ng-container>
                     {{ execution.name || '#' + execution.id }}
-                    <span *ngIf="execution.status != ExecutionStatus.Executing"><md-icon>schedule</md-icon> Ran for {{execution.started_at | distanceInWordsStrict: execution.finished_at}} about {{execution.started_at | distanceInWordsToNow}} ago</span>
-                  </md-card>
+                    <span *ngIf="execution.status != ExecutionStatus.Executing"><mat-icon>schedule</mat-icon> Ran for {{execution.started_at | distanceInWordsStrict: execution.finished_at}} about {{execution.started_at | distanceInWordsToNow}} ago</span>
+                  </mat-card>
                 </a>
               </ng-container>
             </ng-container>
           </div>
-        </md-tab>
+        </mat-tab>
         <ng-template #noExecutionsMessage>
-          <md-card class="ml-user-profile-no-data-message">
-            <md-card-title>
+          <mat-card class="ml-user-profile-no-data-message">
+            <mat-card-title>
               {{ isAuthUser ? 'You haven\'t' : user.displayName + ' hasn\'t'}} executed any labs yet
-            </md-card-title>
-            <md-card-content>
+            </mat-card-title>
+            <mat-card-content>
               <p>All executions will show up here!</p>
-            </md-card-content>
-          </md-card>
+            </mat-card-content>
+          </mat-card>
         </ng-template>
-      </md-tab-group>
+      </mat-tab-group>
     </ng-container>
     <ng-template #noLabsMessage>
-      <md-card class="ml-user-profile-no-data-message">
-        <md-card-title>
+      <mat-card class="ml-user-profile-no-data-message">
+        <mat-card-title>
           {{ isAuthUser ? 'You haven\'t' : user.displayName + ' hasn\'t'}} built any Labs yet.
-        </md-card-title>
-        <md-card-content *ngIf="isAuthUser">
+        </mat-card-title>
+        <mat-card-content *ngIf="isAuthUser">
           <p>Hmmm...No sparks of genious here just yet, but no worries. We know you can do it, so go ahead.</p>
-          <a md-raised-button color="primary" routerLink="/editor" [queryParams]="{tpl: 'blank'}" title="Create a new lab">Get started!</a>
-        </md-card-content>
-      </md-card>
+          <a mat-raised-button color="primary" routerLink="/editor" [queryParams]="{tpl: 'blank'}" title="Create a new lab">Get started!</a>
+        </mat-card-content>
+      </mat-card>
     </ng-template>
   </div>
 </div>

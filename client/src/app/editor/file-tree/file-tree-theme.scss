@@ -13,7 +13,7 @@
 
   .ml-file-tree-cta-bar,
   .ml-file-tree-item {
-    md-icon {
+    mat-icon {
       color: #607d8b;
     }
   }
@@ -44,11 +44,11 @@
 
   .ml-file-tree-item-button {
 
-    &.edit md-icon {
+    &.edit mat-icon {
       color: mat-color($foreground, text);
     }
 
-    &.delete md-icon {
+    &.delete mat-icon {
       color: mat-color($warn);
     }
   }

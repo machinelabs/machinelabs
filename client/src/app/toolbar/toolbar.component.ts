@@ -1,5 +1,5 @@
 import { Directive, Component, OnInit } from '@angular/core';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { AuthService } from '../auth/auth.service';
 import { UserService } from '../user/user.service';
 import { User } from '../models/user';
@@ -15,7 +15,7 @@ export class ToolbarComponent implements OnInit {
 
   constructor(private authService: AuthService,
               private userService: UserService,
-              private snackBar: MdSnackBar) {}
+              private snackBar: MatSnackBar) {}
 
   ngOnInit() {
     this.userService.observeUserChanges()

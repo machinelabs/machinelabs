@@ -19,7 +19,7 @@ ml-dialog-content {
   line-height: $back-button-size;
 }
 
-md-icon + span {
+mat-icon + span {
   margin-left: 10px;
 }
 
@@ -35,12 +35,12 @@ md-icon + span {
 ml-dialog-error {
   color: white;
 
-  md-icon {
+  mat-icon {
     margin-right: 5px;
   }
 }
 
-md-spinner {
+mat-spinner {
   position: absolute;
   top: 50;
   left: 50;

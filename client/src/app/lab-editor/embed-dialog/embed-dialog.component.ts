@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MD_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material';
 import { LocationHelper } from '../../util/location-helper';
 
 @Component({
@@ -24,7 +24,7 @@ export class EmbedDialogComponent implements OnInit {
   editorUrl: string;
 
   constructor(
-    @Inject(MD_DIALOG_DATA) public data,
+    @Inject(MAT_DIALOG_DATA) public data,
     private locationHelper: LocationHelper
   ) {}
 

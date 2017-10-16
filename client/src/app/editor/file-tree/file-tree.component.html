@@ -5,17 +5,16 @@
       <button
         class="ml-file-tree-item-button add"
         (click)="openAddFileNameDialog($event, directory)"
-        mdTooltip="Add file"
-        mdTooltipPosition="below">
-          <md-icon>note_add</md-icon>
+        matTooltip="Add file"
+        matTooltipPosition="below">
+          <mat-icon>note_add</mat-icon>
       </button>
       <button
-        md-u
         class="ml-file-tree-item-button add-folder"
         (click)="openAddFolderNameDialog($event, directory)"
-        mdTooltip="Add folder"
-        mdTooltipPosition="below">
-          <md-icon>create_new_folder</md-icon>
+        matTooltip="Add folder"
+        matTooltipPosition="below">
+          <mat-icon>create_new_folder</mat-icon>
       </button>
     </div>
   </div>
@@ -30,23 +29,23 @@
     <ml-zippy [collapsed]="fileOrDirectory.clientState.collapsed" [collapsable]="fileOrDirectory.contents">
       <div class="ml-file-tree-item-title" ml-zippy-title [ngClass]="{ selected: fileOrDirectory.clientState?.selected }">
         <ng-template #fileTreeItemName>
-          <md-icon>description</md-icon> {{fileOrDirectory.name}}
+          <mat-icon>description</mat-icon> {{fileOrDirectory.name}}
 
           <div class="ml-file-tree-item__action-buttons" *ngIf="showActionButtons">
             <button class="ml-file-tree-item-button edit"
-              mdTooltip="Change filename"
-              mdTooltipPosition="below"
+              matTooltip="Change filename"
+              matTooltipPosition="below"
               *ngIf="isEditable(fileOrDirectory)"
               (click)="openEditFileNameDialog($event, directory, fileOrDirectory)">
-                <md-icon>create</md-icon>
+                <mat-icon>create</mat-icon>
             </button>
 
             <button class="ml-file-tree-item-button delete"
               *ngIf="isRemovable(fileOrDirectory)"
-              mdTooltip="Delete file"
-              mdTooltipPosition="below"
+              matTooltip="Delete file"
+              matTooltipPosition="below"
               (click)="deleteFileOrDirectory($event, fileOrDirectory)">
-                <md-icon>highlight_off</md-icon>
+                <mat-icon>highlight_off</mat-icon>
             </button>
           </div>
         </ng-template>
@@ -58,30 +57,30 @@
             <button
               class="ml-file-tree-item-button add"
               (click)="openAddFileNameDialog($event, fileOrDirectory)"
-              mdTooltip="Add file"
-              mdTooltipPosition="below">
-                <md-icon>note_add</md-icon>
+              matTooltip="Add file"
+              matTooltipPosition="below">
+                <mat-icon>note_add</mat-icon>
             </button>
             <button
               class="ml-file-tree-item-button add-folder"
               (click)="openAddFolderNameDialog($event, fileOrDirectory)"
-              mdTooltip="Add folder"
-              mdTooltipPosition="below">
-                <md-icon>create_new_folder</md-icon>
+              matTooltip="Add folder"
+              matTooltipPosition="below">
+                <mat-icon>create_new_folder</mat-icon>
             </button>
             <button
               class="ml-file-tree-item-button edit"
               (click)="openEditFolderNameDialog($event, directory, fileOrDirectory)"
-              mdTooltip="Edit folder"
-              mdTooltipPosition="below">
-                <md-icon>create</md-icon>
+              matTooltip="Edit folder"
+              matTooltipPosition="below">
+                <mat-icon>create</mat-icon>
             </button>
             <button
               class="ml-file-tree-item-button delete"
               (click)="deleteFileOrDirectory($event, fileOrDirectory)"
-              mdTooltip="Delete folder"
-              mdTooltipPosition="below">
-                <md-icon>highlight_off</md-icon>
+              matTooltip="Delete folder"
+              matTooltipPosition="below">
+                <mat-icon>highlight_off</mat-icon>
             </button>
           </div>
         </ng-container>

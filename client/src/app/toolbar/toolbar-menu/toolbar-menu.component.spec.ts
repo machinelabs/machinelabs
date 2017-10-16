@@ -63,7 +63,7 @@ describe('ToolbarMenuComponent', () => {
   it('should login via GitHub', () => {
     spyOn(userService, 'observeUserChanges').and.returnValue(Observable.of(dummyUser));
     fixture.detectChanges();
-    const menuButton = fixture.debugElement.query(By.css('[md-icon-button]'));
+    const menuButton = fixture.debugElement.query(By.css('[mat-icon-button]'));
 
     // open menu
     menuButton.triggerEventHandler('click', null);
@@ -81,7 +81,7 @@ describe('ToolbarMenuComponent', () => {
     spyOn(userService, 'observeUserChanges').and.returnValue(Observable.of(user));
     fixture.detectChanges();
 
-    const menuButton = fixture.debugElement.query(By.css('[md-icon-button]'));
+    const menuButton = fixture.debugElement.query(By.css('[mat-icon-button]'));
 
     // open menu
     menuButton.triggerEventHandler('click', null);

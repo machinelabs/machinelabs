@@ -1,16 +1,16 @@
 <div class="ml-editor-footer">
   <div fxLayout fxLayoutAlign="space-between center" class="ml-editor-footer-layout">
     <div class="ml-editor-footer-cta-bar">
-      <button md-button md-raised-button color="primary" class="elevated" (click)="openShareDialog()">Share</button>
-      <button *ngIf="executionId" md-button md-raised-button color="primary" class="elevated" (click)="openEmbedDialog()">Embed</button>
-     <a href="https://docs.machinelabs.ai" title="MachineLabs Documentation" md-button class="elevated">Guides & Examples</a>
+      <button mat-button mat-raised-button color="primary" class="elevated" (click)="openShareDialog()">Share</button>
+      <button *ngIf="executionId" mat-button mat-raised-button color="primary" class="elevated" (click)="openEmbedDialog()">Embed</button>
+     <a href="https://docs.machinelabs.ai" title="MachineLabs Documentation" mat-button class="elevated">Guides & Examples</a>
     </div>
     <div class="ml-editor-footer-content">
       <ml-execution-status [execution]="execution"></ml-execution-status>
     </div>
-    <md-slide-toggle
+    <mat-slide-toggle
       color="accent"
       [checked]="slideToggleChecked"
-      (click)="slideToggleClick.emit()">Show executions</md-slide-toggle>
+      (click)="slideToggleClick.emit()">Show executions</mat-slide-toggle>
   </div>
 </div>

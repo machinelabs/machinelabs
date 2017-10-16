@@ -1,4 +1,4 @@
-import { MdSnackBarModule } from '@angular/material';
+import { MatSnackBarModule } from '@angular/material';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -27,7 +27,7 @@ describe('UserResolver', () => {
         { provide: UserService, useValue: userServiceStub },
         { provide: Router, useValue: routerStub }
       ],
-      imports: [MdSnackBarModule]
+      imports: [MatSnackBarModule]
     });
     userResolver = TestBed.get(UserResolver);
     userService = TestBed.get(UserService);

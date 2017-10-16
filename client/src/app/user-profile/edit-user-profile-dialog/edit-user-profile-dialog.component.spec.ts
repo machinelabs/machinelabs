@@ -1,7 +1,7 @@
 import { NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
-import { MdDialogModule, MdDialog } from '@angular/material';
+import { MatDialogModule, MatDialog, MATERIAL_COMPATIBILITY_MODE } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 
@@ -30,7 +30,7 @@ let authServiceStub = {
 describe('EditUserProfileDialogComponent', () => {
   let component: EditUserProfileDialogComponent;
   let fixture: ComponentFixture<EditUserProfileDialogComponent>;
-  let dialog: MdDialog;
+  let dialog: MatDialog;
   let fbMock: FirebaseMock;
 
   beforeEach(() => {
@@ -38,7 +38,7 @@ describe('EditUserProfileDialogComponent', () => {
     fbMock = new FirebaseMock();
 
     TestBed.configureTestingModule({
-      imports: [MdDialogModule, DialogTestModule],
+      imports: [MatDialogModule, DialogTestModule],
       providers: [
         { provide: AuthService, useValue: authServiceStub },
         { provide: DATABASE, useValue: fbMock.mockDb() },
@@ -48,7 +48,7 @@ describe('EditUserProfileDialogComponent', () => {
     });
   });
 
-  beforeEach(inject([MdDialog], (d: MdDialog) => {
+  beforeEach(inject([MatDialog], (d: MatDialog) => {
     dialog = d;
   }));
 
@@ -88,9 +88,12 @@ describe('EditUserProfileDialogComponent', () => {
 });
 
 @NgModule({
-  imports: [MdDialogModule, ReactiveFormsModule, CommonModule],
+  imports: [MatDialogModule, ReactiveFormsModule, CommonModule],
   declarations: [EditUserProfileDialogComponent],
-  providers: [UserService],
+  providers: [
+    UserService,
+    { provide: MATERIAL_COMPATIBILITY_MODE, useValue: true }
+  ],
   exports: [EditUserProfileDialogComponent],
   entryComponents: [EditUserProfileDialogComponent],
   schemas: [NO_ERRORS_SCHEMA]

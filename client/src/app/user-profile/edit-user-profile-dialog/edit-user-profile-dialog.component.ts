@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { MD_DIALOG_DATA, MdDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { User } from '../../models/user';
 import { PLACEHOLDER_USERNAME } from '../../user/user.service';
@@ -23,9 +23,9 @@ export class EditUserProfileDialogComponent implements OnInit {
   form: FormGroup;
 
   constructor(
-    private dialogRef: MdDialogRef<EditUserProfileDialogComponent>,
+    private dialogRef: MatDialogRef<EditUserProfileDialogComponent>,
     private formBuilder: FormBuilder,
-    @Inject(MD_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
   ngOnInit() {

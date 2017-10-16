@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MD_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material';
 import { ExecutionRejectionReason } from '../../models/execution';
 import { LoginService } from '../../login.service';
 
@@ -10,7 +10,7 @@ import { LoginService } from '../../login.service';
 })
 export class RejectionDialogComponent {
   ExecutionRejectionReason = ExecutionRejectionReason
-  constructor(@Inject(MD_DIALOG_DATA) public data: any,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public loginService: LoginService) {}
 
   loginWithGithub() {

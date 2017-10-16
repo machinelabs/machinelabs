@@ -1,9 +1,9 @@
 <ml-dialog-header>Share this lab</ml-dialog-header>
 <ml-dialog-content>
-  <md-form-field>
-    <input mdInput [readonly]="true" [value]="href">
-    <md-hint>Copy this url to your clipboard, or click one of the buttons below</md-hint>
-  </md-form-field>
+  <mat-form-field>
+    <input matInput [readonly]="true" [value]="href">
+    <mat-hint>Copy this url to your clipboard, or click one of the buttons below</mat-hint>
+  </mat-form-field>
 </ml-dialog-content>
 <ml-dialog-cta-bar>
   <a title="Share on Facebook" class="resp-sharing-button__link" [href]="'https://facebook.com/sharer/sharer.php?u=' + href" target="_blank" aria-label="Share on Facebook">

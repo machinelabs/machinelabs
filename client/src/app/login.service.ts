@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from './auth';
 import { Router } from '@angular/router';
 import { UserService, PLACEHOLDER_USERNAME } from './user/user.service';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
 import 'rxjs/add/operator/switchMap';
 
@@ -13,7 +13,7 @@ export class LoginService {
     private authService: AuthService,
     private userService: UserService,
     private router: Router,
-    private snackBar: MdSnackBar) {}
+    private snackBar: MatSnackBar) {}
 
   loginWithGitHub() {
     this.authService.linkOrSignInWithGitHub()

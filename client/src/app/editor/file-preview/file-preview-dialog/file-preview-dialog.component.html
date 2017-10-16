@@ -1,15 +1,15 @@
 <ml-file-preview-dialog-toolbar *ngIf="!loading">
   <ng-container left>
-    <button md-icon-button (click)="dialogRef.close()">
-      <md-icon class="back">keyboard_arrow_left</md-icon>
+    <button mat-icon-button (click)="dialogRef.close()">
+      <mat-icon class="back">keyboard_arrow_left</mat-icon>
     </button>
-    <md-icon>description</md-icon>
+    <mat-icon>description</mat-icon>
     <span>{{ outputFile.name }}</span>
   </ng-container>
   <ng-container right>
-    <a md-icon-button [attr.download]="outputFile.name" target="_blank" [href]="outputFile.download_url"
+    <a mat-icon-button [attr.download]="outputFile.name" target="_blank" [href]="outputFile.download_url"
       title="Download file">
-      <md-icon>file_download</md-icon>
+      <mat-icon>file_download</mat-icon>
     </a>
   </ng-container>
 </ml-file-preview-dialog-toolbar>
@@ -19,12 +19,12 @@
   (@slideContent.start)="onAnimationStart($event)"
   (@slideContent.done)="onAnimationDone($event)">
 
-  <md-spinner mode="indeterminate" *ngIf="loading && !error"></md-spinner>
+  <mat-spinner mode="indeterminate" *ngIf="loading && !error"></mat-spinner>
   <img [@fade]="loading ? 'fadeOut' : 'fadeIn'" #image [src]="outputFile.download_url"
     (load)="onLoad($event)" (error)="onError($event)" alt="Output file">
 
   <ml-dialog-error *ngIf="error">
-    <md-icon>error_outline</md-icon>
+    <mat-icon>error_outline</mat-icon>
     Bummer! An error occured while loading the image.
   </ml-dialog-error>
 </ml-dialog-content>

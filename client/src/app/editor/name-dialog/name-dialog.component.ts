@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { File, Directory, instanceOfFile, instanceOfDirectory } from '@machinelabs/models';
 
 export interface NameDialogData {
@@ -33,10 +33,10 @@ const isNameAllowed = (fileOrDirectory: File|Directory, parentDirectory: Directo
       display: block;
       width: 500px;
     }
-    md-form-field {
+    mat-form-field {
       width: 100%;
     }
-    md-hint {
+    mat-hint {
       width: 100%;
       text-align: right;
     }
@@ -49,9 +49,9 @@ export class NameDialogComponent implements OnInit {
   NameDialogType = NameDialogType;
 
   constructor(
-    public dialogRef: MdDialogRef<NameDialogComponent>,
+    public dialogRef: MatDialogRef<NameDialogComponent>,
     private formBuilder: FormBuilder,
-    @Inject(MD_DIALOG_DATA) public data: NameDialogData
+    @Inject(MAT_DIALOG_DATA) public data: NameDialogData
   ) { }
 
   ngOnInit() {

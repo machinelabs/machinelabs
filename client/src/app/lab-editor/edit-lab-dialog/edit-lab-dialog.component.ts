@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 
@@ -30,10 +30,10 @@ export class EditLabDialogComponent implements OnInit {
   labExists: Observable<boolean>;
 
   constructor(
-    private dialogRef: MdDialogRef<EditLabDialogComponent>,
+    private dialogRef: MatDialogRef<EditLabDialogComponent>,
     private formBuilder: FormBuilder,
     private labStorageService: LabStorageService,
-    @Inject(MD_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
   ngOnInit() {

@@ -3,12 +3,12 @@
   box-shadow: 0 -1px 5px rgba(0,0,0,.24);
 }
 
-md-drawer {
+mat-drawer {
   width: 350px;
   box-shadow: 0 0 8px rgba(0,0,0,.24);
 }
 
-md-drawer-container {
+mat-drawer-container {
   display: flex;
   flex: 1;
 }
@@ -24,7 +24,7 @@ md-drawer-container {
     margin-left: 0.2em;
   }
 
-  md-icon {
+  mat-icon {
     vertical-align: -30%;
   }
 }

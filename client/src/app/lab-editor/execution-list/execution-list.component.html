@@ -1,10 +1,10 @@
-<md-toolbar>
-  <md-icon>history</md-icon> <span>Executions</span>
-</md-toolbar>
-<md-accordion>
+<mat-toolbar>
+  <mat-icon>history</mat-icon> <span>Executions</span>
+</mat-toolbar>
+<mat-accordion>
   <ng-container *ngFor="let execution of executions">
     <ng-container *ngIf="execution | async as execution">
-      <md-expansion-panel
+      <mat-expansion-panel
         class="ml-execution-panel"
         *ngIf="!execution.hidden"
         [expanded]="execution.id == activeId"
@@ -15,50 +15,50 @@
           failed: execution.status == ExecutionStatus.Failed,
           selected: execution.id == activeId
         }">
-        <md-expansion-panel-header class="ml-execution-panel-header">
+        <mat-expansion-panel-header class="ml-execution-panel-header">
           <span>
           <ng-container [ngSwitch]="execution.status">
-            <md-icon *ngSwitchCase="ExecutionStatus.Finished">done</md-icon>
-            <md-progress-spinner
+            <mat-icon *ngSwitchCase="ExecutionStatus.Finished">done</mat-icon>
+            <mat-progress-spinner
               color="accent"
               *ngSwitchCase="ExecutionStatus.Executing"
-              mode="indeterminate"></md-progress-spinner>
-            <md-icon *ngSwitchCase="ExecutionStatus.Stopped">info</md-icon>
-            <md-icon *ngSwitchCase="ExecutionStatus.Failed">block</md-icon>
+              mode="indeterminate"></mat-progress-spinner>
+            <mat-icon *ngSwitchCase="ExecutionStatus.Stopped">info</mat-icon>
+            <mat-icon *ngSwitchCase="ExecutionStatus.Failed">block</mat-icon>
           </ng-container>
           {{ execution.name || '#' + execution.id }}
           </span>
-        </md-expansion-panel-header>
+        </mat-expansion-panel-header>
         <div class="ml-execution-panel-content">
           <div *ngIf="execution.finished_at" class="ml-execution-panel-info">
-            <md-icon>schedule</md-icon>
+            <mat-icon>schedule</mat-icon>
             <time [attr.datetime]="execution.finished_at">
               Ran for {{execution.started_at | distanceInWordsStrict: execution.finished_at}}
             </time>
           </div>
           <div class="ml-execution-metadata-info">
-            <md-icon>update</md-icon>
+            <mat-icon>update</mat-icon>
             <time [attr.datetime]="execution.started_at">
               about {{execution.started_at | distanceInWordsToNow}} ago
             </time>
           </div>
         </div>
         <div class="ml-execution-panel-cta-bar">
-          <button md-button (click)="view.emit(execution)" *ngIf="execution.id !== activeId">View</button>
-          <button md-button (click)="stop(execution)" *ngIf="execution.status === ExecutionStatus.Executing && userService.userOwnsExecution(user, execution)">Stop</button>
-          <button md-button (click)="restart.emit(execution)" *ngIf="execution.status != ExecutionStatus.Executing && execution.status != ExecutionStatus.Pristine && userService.userOwnsExecution(user, execution)">Restart</button>
+          <button mat-button (click)="view.emit(execution)" *ngIf="execution.id !== activeId">View</button>
+          <button mat-button (click)="stop(execution)" *ngIf="execution.status === ExecutionStatus.Executing && userService.userOwnsExecution(user, execution)">Stop</button>
+          <button mat-button (click)="restart.emit(execution)" *ngIf="execution.status != ExecutionStatus.Executing && execution.status != ExecutionStatus.Pristine && userService.userOwnsExecution(user, execution)">Restart</button>
 
-          <button md-icon-button [mdMenuTriggerFor]="menu" *ngIf="userService.userOwnsExecution(user, execution)">
-            <md-icon>more_vert</md-icon>
+          <button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="userService.userOwnsExecution(user, execution)">
+            <mat-icon>more_vert</mat-icon>
           </button>
 
-          <md-menu #menu="mdMenu" yPosition="above">
-            <button md-menu-item (click)="remove(execution)" *ngIf="execution.status != ExecutionStatus.Executing && execution.id != activeId && userService.userOwnsExecution(user, execution)">Remove</button>
-            <button md-menu-item (click)="showEditExecutionModal(execution)" *ngIf="userService.userOwnsExecution(user, execution)">Edit</button>
-  </md-menu>
+          <mat-menu #menu="matMenu" yPosition="above">
+            <button mat-menu-item (click)="remove(execution)" *ngIf="execution.status != ExecutionStatus.Executing && execution.id != activeId && userService.userOwnsExecution(user, execution)">Remove</button>
+            <button mat-menu-item (click)="showEditExecutionModal(execution)" *ngIf="userService.userOwnsExecution(user, execution)">Edit</button>
+  </mat-menu>
         </div>
-      </md-expansion-panel>
+      </mat-expansion-panel>
     </ng-container>
   </ng-container>
-</md-accordion>
+</mat-accordion>
 

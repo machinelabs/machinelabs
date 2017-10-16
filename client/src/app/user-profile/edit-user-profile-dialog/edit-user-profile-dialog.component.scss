@@ -1,4 +1,4 @@
-md-form-field {
+mat-form-field {
   width: 500px;
 }
 
@@ -7,7 +7,7 @@ textarea {
   line-height: 1.4;
 }
 
-md-hint {
+mat-hint {
   width: 100%;
   text-align: right;
 }
@@ -16,7 +16,7 @@ md-hint {
   border-radius: 0.2em;
   padding: 1em;
 
-  md-icon {
+  mat-icon {
     vertical-align: -25%;
   }
 }

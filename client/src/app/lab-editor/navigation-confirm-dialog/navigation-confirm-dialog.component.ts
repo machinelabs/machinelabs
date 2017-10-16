@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 export enum NavigationConfirmReason {
   UnsavedChanges,
@@ -21,8 +21,8 @@ export enum NavigationConfirmReason {
       </ng-container>
     </ml-dialog-content>
     <ml-dialog-cta-bar>
-      <button md-button (click)="dialogRef.close(true)">Yes</button>
-      <button md-button type="button" (click)="dialogRef.close()">Close</button>
+      <button mat-button (click)="dialogRef.close(true)">Yes</button>
+      <button mat-button type="button" (click)="dialogRef.close()">Close</button>
     </ml-dialog-cta-bar>
   `,
   styles: [`
@@ -39,7 +39,7 @@ export class NavigationConfirmDialogComponent {
   NavigationConfirmReason = NavigationConfirmReason;
 
   constructor(
-    public dialogRef: MdDialogRef<NavigationConfirmDialogComponent>,
-    @Inject(MD_DIALOG_DATA) public data: any
+    public dialogRef: MatDialogRef<NavigationConfirmDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 }

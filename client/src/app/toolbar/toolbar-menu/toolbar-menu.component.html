@@ -1,15 +1,15 @@
 <ng-container *ngIf="user | async as user">
-  <button md-icon-button [mdMenuTriggerFor]="menu">
-    <md-icon *ngIf="user?.isAnonymous">more_vert</md-icon>
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon *ngIf="user?.isAnonymous">more_vert</mat-icon>
     <img *ngIf="user && user.photoUrl" [src]="user.photoUrl" alt="{{user.displayName}} profile picture" class="ml-login-avatar">
   </button>
 
-  <md-menu #menu="mdMenu">
-    <button md-menu-item *ngIf="user?.isAnonymous" (click)="loginWithGitHub()"><md-icon>perm_identity</md-icon>Login with GitHub</button>
-    <a md-menu-item title="Your MachineLabs profile" *ngIf="user && !user.isAnonymous"
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item *ngIf="user?.isAnonymous" (click)="loginWithGitHub()"><mat-icon>perm_identity</mat-icon>Login with GitHub</button>
+    <a mat-menu-item title="Your MachineLabs profile" *ngIf="user && !user.isAnonymous"
       [routerLink]="['/user', user.id]">
-      <md-icon>perm_identity</md-icon> My Profile
+      <mat-icon>perm_identity</mat-icon> My Profile
     </a>
-    <button *ngIf="!user?.isAnonymous" (click)="logout()" md-menu-item><md-icon>exit_to_app</md-icon>Sign Out</button>
-  </md-menu>
+    <button *ngIf="!user?.isAnonymous" (click)="logout()" mat-menu-item><mat-icon>exit_to_app</mat-icon>Sign Out</button>
+  </mat-menu>
 </ng-container>

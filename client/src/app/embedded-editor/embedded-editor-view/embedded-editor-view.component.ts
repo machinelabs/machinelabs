@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { File } from '@machinelabs/models';
 import { Observable } from 'rxjs/Observable';
 
@@ -37,7 +37,7 @@ export class EmbeddedEditorViewComponent implements OnInit {
 
   @ViewChild('console') console: XtermComponent;
 
-  noExecutionDialogRef: MdDialogRef<NoExecutionDialogComponent>;
+  noExecutionDialogRef: MatDialogRef<NoExecutionDialogComponent>;
 
   constructor(
     private route: ActivatedRoute,
@@ -45,7 +45,7 @@ export class EmbeddedEditorViewComponent implements OnInit {
     public editorService: EditorService,
     private labExecutionService: LabExecutionService,
     private locationHelper: LocationHelper,
-    private dialog: MdDialog
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {

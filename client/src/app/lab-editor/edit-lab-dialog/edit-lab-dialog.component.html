@@ -1,46 +1,46 @@
 <ml-dialog-header>Edit lab</ml-dialog-header>
 <ng-container *ngIf="labExists | async; else infoForm">
-  <md-tab-group>
-    <md-tab label="Information">
+  <mat-tab-group>
+    <mat-tab label="Information">
       <ng-container *ngTemplateOutlet="infoForm"></ng-container>
-    </md-tab>
-    <md-tab label="Advanced">
+    </mat-tab>
+    <mat-tab label="Advanced">
       <ml-dialog-content>
         <p>Once you delete a lab, there is no going back.</p>
         <div fxLayout="column">
-          <md-form-field fxFlex>
-            <input mdInput #deleteInput>
-            <md-hint>Enter the name of the lab</md-hint>
-          </md-form-field>
+          <mat-form-field fxFlex>
+            <input matInput #deleteInput>
+            <mat-hint>Enter the name of the lab</mat-hint>
+          </mat-form-field>
         </div>
       </ml-dialog-content>
       <ml-dialog-cta-bar>
-        <button md-raised-button color="warn" [disabled]="deleteInput.value != lab.name" type="button" (click)="close(lab, EditLabDialogActions.Delete)">I understand the consequences, delete this lab</button>
+        <button mat-raised-button color="warn" [disabled]="deleteInput.value != lab.name" type="button" (click)="close(lab, EditLabDialogActions.Delete)">I understand the consequences, delete this lab</button>
       </ml-dialog-cta-bar>
-    </md-tab>
-  </md-tab-group>
+    </mat-tab>
+  </mat-tab-group>
 </ng-container>
 
 <ng-template #infoForm>
   <form [formGroup]="form" (ngSubmit)="submit(form.value)">
     <ml-dialog-content>
       <div fxLayout="column">
-        <md-form-field fxFlex>
-          <input mdInput placeholder="Name" formControlName="name">
-          <md-hint *ngIf="!form.valid && !form.pristine && !!form.get('name').errors">This field is required.</md-hint>
-        </md-form-field>
-        <md-form-field fxFlex>
-            <textarea mdInput placeholder="Description" formControlName="description">
+        <mat-form-field fxFlex>
+          <input matInput placeholder="Name" formControlName="name">
+          <mat-hint *ngIf="!form.valid && !form.pristine && !!form.get('name').errors">This field is required.</mat-hint>
+        </mat-form-field>
+        <mat-form-field fxFlex>
+            <textarea matInput placeholder="Description" formControlName="description">
             </textarea>
-        </md-form-field>
-        <md-form-field fxFlex>
-          <input mdInput placeholder="Tags" formControlName="tags">
-        </md-form-field>
+        </mat-form-field>
+        <mat-form-field fxFlex>
+          <input matInput placeholder="Tags" formControlName="tags">
+        </mat-form-field>
       </div>
     </ml-dialog-content>
     <ml-dialog-cta-bar>
-      <button md-button [disabled]="!form.valid" type="submit">Save</button>
-      <button md-button *ngIf="!data.options.hideCancelButton" type="button" (click)="close(form.value, EditLabDialogActions.Cancel)">Cancel</button>
+      <button mat-button [disabled]="!form.valid" type="submit">Save</button>
+      <button mat-button *ngIf="!data.options.hideCancelButton" type="button" (click)="close(form.value, EditLabDialogActions.Cancel)">Cancel</button>
     </ml-dialog-cta-bar>
   </form>
 </ng-template>

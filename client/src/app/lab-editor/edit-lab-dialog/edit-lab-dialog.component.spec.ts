@@ -1,7 +1,7 @@
 import { NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
-import { MdDialogModule, MdDialog } from '@angular/material';
+import { MatDialogModule, MatDialog } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 
@@ -38,7 +38,7 @@ describe('EditLabDialogComponent', () => {
 
   let component: EditLabDialogComponent;
   let fixture: ComponentFixture<EditLabDialogComponent>;
-  let dialog: MdDialog;
+  let dialog: MatDialog;
   let fbMock: FirebaseMock;
 
   beforeEach(() => {
@@ -46,7 +46,7 @@ describe('EditLabDialogComponent', () => {
     fbMock = new FirebaseMock();
 
     TestBed.configureTestingModule({
-      imports: [MdDialogModule, DialogTestModule],
+      imports: [MatDialogModule, DialogTestModule],
       providers: [
         LabStorageService,
         { provide: LabTemplateService, useClass: InMemoryLabTemplateService },
@@ -58,7 +58,7 @@ describe('EditLabDialogComponent', () => {
     });
   });
 
-  beforeEach(inject([MdDialog], (d: MdDialog) => {
+  beforeEach(inject([MatDialog], (d: MatDialog) => {
     dialog = d;
   }));
 
@@ -99,7 +99,7 @@ describe('EditLabDialogComponent', () => {
 });
 
 @NgModule({
-  imports: [MdDialogModule, ReactiveFormsModule, CommonModule],
+  imports: [MatDialogModule, ReactiveFormsModule, CommonModule],
   declarations: [EditLabDialogComponent],
   providers: [LabStorageService],
   exports: [EditLabDialogComponent],
