@@ -1,6 +1,6 @@
 {
   "name": "@machinelabs/models",
-  "version": "0.17.1+utc.2017.Oct.12-9.27.51",
+  "version": "0.18.0+utc.2017.Oct.16-11.47.04",
   "description": "Models and data structures that can be shared across various projects.",
   "main": "index.js",
   "jest": {
@@ -38,4 +38,3 @@
     "typescript": "^2.4.2"
   }
 }
-

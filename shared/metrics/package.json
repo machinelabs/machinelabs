@@ -1,6 +1,6 @@
 {
   "name": "@machinelabs/metrics",
-  "version": "0.6.1+utc.2017.Aug.09-14.25.16",
+  "version": "0.18.0+utc.2017.Oct.16-11.47.04",
   "description": "Metrics such as usage statistics",
   "main": "index.js",
   "jest": {
