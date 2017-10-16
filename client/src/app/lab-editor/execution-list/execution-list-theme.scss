@@ -33,7 +33,7 @@
   .mat-expansion-panel-content {
     border-left: 5px solid mat-color($foreground, divider);
 
-    md-icon {
+    mat-icon {
       color: #888;
     }
 
@@ -44,7 +44,7 @@
       background: rgb(100, 109, 141);
       color: mat-color($primary, default-contrast)!important;
 
-      md-icon { color: mat-color($primary, default-contrast); }
+      mat-icon { color: mat-color($primary, default-contrast); }
     }
   }
 }

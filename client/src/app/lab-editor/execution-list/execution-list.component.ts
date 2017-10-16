@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 
 import { UserService } from 'app/user/user.service';
 import { RemoteLabExecService } from '../../editor/remote-code-execution/remote-lab-exec.service';
@@ -33,12 +33,12 @@ export class ExecutionListComponent implements OnInit, OnDestroy {
 
   private userSubscription;
 
-  editExecutionDialogRef: MdDialogRef<EditExecutionDialogComponent>;
+  editExecutionDialogRef: MatDialogRef<EditExecutionDialogComponent>;
 
   constructor(public userService: UserService,
               private labExecutionService: LabExecutionService,
               private editorSnackbar: EditorSnackbarService,
-              private dialog: MdDialog,
+              private dialog: MatDialog,
               private rleService: RemoteLabExecService) {
   }
 

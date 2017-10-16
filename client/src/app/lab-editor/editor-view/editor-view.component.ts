@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MdDialog, MdDialogRef, MdSnackBar, MdTabGroup, MdDrawer } from '@angular/material';
+import { MatDialog, MatDialogRef, MatSnackBar, MatTabGroup, MatDrawer } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { File } from '@machinelabs/models';
 import { AceEditorComponent } from '../../editor/ace-editor/ace-editor.component';
@@ -87,19 +87,19 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
 
   executions: Observable<Array<Observable<Execution>>>;
 
-  editLabDialogRef: MdDialogRef<EditLabDialogComponent>;
+  editLabDialogRef: MatDialogRef<EditLabDialogComponent>;
 
-  rejectionDialogRef: MdDialogRef<RejectionDialogComponent>;
+  rejectionDialogRef: MatDialogRef<RejectionDialogComponent>;
 
-  navigationConfirmDialogRef: MdDialogRef<NavigationConfirmDialogComponent>;
+  navigationConfirmDialogRef: MatDialogRef<NavigationConfirmDialogComponent>;
 
   executionMetadataSidebarToggled = false;
 
-  @ViewChild('executionMetadataSidebar') executionMetadataSidebar: MdDrawer;
+  @ViewChild('executionMetadataSidebar') executionMetadataSidebar: MatDrawer;
 
   fileTreeSidebarOpened = false;
 
-  @ViewChild('fileTreeSidebar') fileTreeSidebar: MdDrawer;
+  @ViewChild('fileTreeSidebar') fileTreeSidebar: MatDrawer;
 
   @ViewChild('outputPanel') outputPanel: XtermComponent;
 
@@ -111,7 +111,7 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
 
   constructor (private labStorageService: LabStorageService,
                private route: ActivatedRoute,
-               private dialog: MdDialog,
+               private dialog: MatDialog,
                private locationHelper: LocationHelper,
                private router: Router,
                public editorService: EditorService,

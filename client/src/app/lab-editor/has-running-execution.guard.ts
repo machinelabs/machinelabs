@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanDeactivate, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
-import { MdDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 
 import { UserService } from '../user/user.service';
@@ -22,7 +22,7 @@ export class HasRunningExecutionGuard implements CanDeactivate<EditorViewCompone
 
   constructor (
     private labExecutionService: LabExecutionService,
-    private dialog: MdDialog,
+    private dialog: MatDialog,
     private userService: UserService,
     private labStorageService: LabStorageService
   ) {}

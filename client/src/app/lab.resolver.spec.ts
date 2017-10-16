@@ -7,7 +7,7 @@ import { BLANK_LAB_TPL_ID, DEFAULT_LAB_TPL_ID } from './lab-template.service';
 
 import { Lab } from './models/lab';
 import { ActivatedRouteSnapshot, UrlSegment, Router } from '@angular/router';
-import { MdSnackBarModule } from '@angular/material';
+import { MatSnackBarModule } from '@angular/material';
 import { ROUTER_STUB } from '../test-helper/stubs/router.stubs';
 
 describe('LabResolver', () => {
@@ -37,7 +37,7 @@ describe('LabResolver', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [MdSnackBarModule],
+      imports: [MatSnackBarModule],
       providers: [
         LabResolver,
         { provide: LabStorageService, useValue: labStorageServiceStub },

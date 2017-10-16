@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/add/observable/timer';
@@ -8,7 +8,7 @@ import 'rxjs/add/operator/takeUntil';
 @Injectable()
 export class EditorSnackbarService {
 
-  constructor(private snackBar: MdSnackBar) {}
+  constructor(private snackBar: MatSnackBar) {}
 
   notify(text: string, config = { actionLabel: 'Dismiss', duration: 3000 }) {
     return this.snackBar.open(text, config.actionLabel, { duration: config.duration });

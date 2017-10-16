@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
 import { EmbedDialogComponent } from '../embed-dialog/embed-dialog.component';
 import { Execution } from '../../models/execution';
@@ -23,11 +23,11 @@ export class FooterComponent {
 
   @Output() slideToggleClick = new EventEmitter<void>();
 
-  shareDialogRef: MdDialogRef<ShareDialogComponent>;
+  shareDialogRef: MatDialogRef<ShareDialogComponent>;
 
-  embedDialogRef: MdDialogRef<EmbedDialogComponent>;
+  embedDialogRef: MatDialogRef<EmbedDialogComponent>;
 
-  constructor(private dialog: MdDialog) { }
+  constructor(private dialog: MatDialog) { }
 
   openShareDialog() {
     this.shareDialogRef = this.dialog.open(ShareDialogComponent);

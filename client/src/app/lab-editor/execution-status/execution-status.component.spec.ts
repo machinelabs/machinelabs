@@ -57,7 +57,7 @@ describe('ExecutionStatusComponent', () => {
     execution.next({status: ExecutionStatus.Executing});
     fixture.detectChanges();
 
-    let progressBar = fixture.debugElement.query(By.css('md-progress-bar'));
+    let progressBar = fixture.debugElement.query(By.css('mat-progress-bar'));
     expect(progressBar).toBeDefined();
   });
 });

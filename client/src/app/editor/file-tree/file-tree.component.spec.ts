@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MdDialogModule } from '@angular/material';
+import { MatDialogModule, MATERIAL_COMPATIBILITY_MODE } from '@angular/material';
 import { File } from '@machinelabs/models';
 import { LAB_STUB, EDITOR_SERVICE_STUB } from '../../../test-helper/stubs';
 import { FileTreeComponent } from './file-tree.component';
@@ -17,14 +17,15 @@ describe('FileTreeComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [MdDialogModule],
+      imports: [MatDialogModule],
       declarations: [
         FileTreeComponent
       ],
       providers: [
         { provide: EditorService, useValue: EDITOR_SERVICE_STUB },
         NameDialogService,
-        FileTreeService
+        FileTreeService,
+        { provide: MATERIAL_COMPATIBILITY_MODE, useValue: true }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     });

@@ -54,13 +54,13 @@
   margin: 2% 25px;
   border: none;
 
-  md-card-title {
+  mat-card-title {
     font-size: 1.5em;
     font-weight: 600;
     padding: 0.5em;
   }
 
-  a[md-raised-button] {
+  a[mat-raised-button] {
     display: inline-block;
     font-size: 1.8em;
     padding: 0.3em 0.8em;
@@ -91,8 +91,8 @@
     text-decoration: none;
   }
 
-  md-card {
-    md-icon {
+  mat-card {
+    mat-icon {
       vertical-align: -20%;
       font-size: 22px;
       width: initial;
@@ -101,7 +101,7 @@
 
     span {
       font-size: 0.95em;
-      md-icon {
+      mat-icon {
         font-size: 20px;
         color: #888;
       }
@@ -113,7 +113,7 @@
     }
   }
 
-  md-progress-spinner {
+  mat-progress-spinner {
     width: 24px;
     height: 27px;
     display: inline-block;

@@ -1,50 +1,50 @@
-<md-card>
-  <md-card-content>
+<mat-card>
+  <mat-card-content>
     <ng-container *ngIf="executionId; else noOutputMessage">
       <ng-container *ngIf="hasOutput | async; else noOutputMessage">
-        <h3 md-subheader>Output Files</h3>
-        <md-table #table [dataSource]="dataSource">
-          <ng-container mdColumnDef="name">
-            <md-header-cell *mdHeaderCellDef>Name</md-header-cell>
-            <md-cell *mdCellDef="let row"><md-icon>description</md-icon> {{row.name}} </md-cell>
+        <h3 mat-subheader>Output Files</h3>
+        <mat-table #table [dataSource]="dataSource">
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+            <mat-cell *matCellDef="let row"><mat-icon>description</mat-icon> {{row.name}} </mat-cell>
           </ng-container>
 
-          <ng-container mdColumnDef="created">
-            <md-header-cell *mdHeaderCellDef>Created</md-header-cell>
-            <md-cell *mdCellDef="let row"> {{row.created_at | date}} </md-cell>
+          <ng-container matColumnDef="created">
+            <mat-header-cell *matHeaderCellDef>Created</mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.created_at | date}} </mat-cell>
           </ng-container>
 
-          <ng-container mdColumnDef="size">
-            <md-header-cell *mdHeaderCellDef>Size</md-header-cell>
-            <md-cell *mdCellDef="let row">{{row.size_bytes | digitalFormatUnit}}</md-cell>
+          <ng-container matColumnDef="size">
+            <mat-header-cell *matHeaderCellDef>Size</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.size_bytes | digitalFormatUnit}}</mat-cell>
           </ng-container>
 
-          <ng-container mdColumnDef="contentType">
-            <md-header-cell *mdHeaderCellDef>Content Type</md-header-cell>
-            <md-cell *mdCellDef="let row">{{row.content_type || '-'}}</md-cell>
+          <ng-container matColumnDef="contentType">
+            <mat-header-cell *matHeaderCellDef>Content Type</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.content_type || '-'}}</mat-cell>
           </ng-container>
 
-          <ng-container mdColumnDef="actions">
-            <md-header-cell *mdHeaderCellDef></md-header-cell>
-            <md-cell *mdCellDef="let row">
-              <button md-icon-button color="primary" mdTooltip="Preview" (click)="openPreview(row)"
-                [disabled]="!isImage(row.name)" title="Preview file"><md-icon>visibility</md-icon>
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <button mat-icon-button color="primary" matTooltip="Preview" (click)="openPreview(row)"
+                [disabled]="!isImage(row.name)" title="Preview file"><mat-icon>visibility</mat-icon>
               </button>
-              <a md-button color="primary" [attr.download]="row.name" target="_blank" [href]="row.download_url" title="Download file"><md-icon>file_download</md-icon> Download</a>
-            </md-cell>
+              <a mat-button color="primary" [attr.download]="row.name" target="_blank" [href]="row.download_url" title="Download file"><mat-icon>file_download</mat-icon> Download</a>
+            </mat-cell>
           </ng-container>
 
-          <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
-          <md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>
-        </md-table>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
       </ng-container>
     </ng-container>
     <ng-template #noOutputMessage>
       <div class="ml-no-information-message">
-        <md-icon class="ml-no-information-message-icon">info_outline</md-icon>
+        <mat-icon class="ml-no-information-message-icon">info_outline</mat-icon>
         <h4 class="ml-no-information-message-headline">No outputs available</h4>
         <p class="ml-no-information-message-text">Select an execution that has generated output files.</p>
       </div>
     </ng-template>
-  </md-card-content>
-</md-card>
+  </mat-card-content>
+</mat-card>

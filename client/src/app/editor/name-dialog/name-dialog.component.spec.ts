@@ -1,7 +1,7 @@
 import { NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MdDialogModule, MdDialog } from '@angular/material';
+import { MatDialogModule, MatDialog, MATERIAL_COMPATIBILITY_MODE } from '@angular/material';
 
 import { TestBed, ComponentFixture, inject } from '@angular/core/testing';
 
@@ -11,17 +11,20 @@ describe('NameDialogComponent', () => {
 
   let fixture: ComponentFixture<NameDialogComponent>;
   let component: NameDialogComponent;
-  let dialog: MdDialog;
+  let dialog: MatDialog;
   let testName = 'test';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [MdDialogModule, DialogTestModule],
+      imports: [MatDialogModule, DialogTestModule],
+      providers: [
+        { provide: MATERIAL_COMPATIBILITY_MODE, useValue: true }
+      ],
       schemas: [NO_ERRORS_SCHEMA]
     });
   });
 
-  beforeEach(inject([MdDialog], (d: MdDialog) => {
+  beforeEach(inject([MatDialog], (d: MatDialog) => {
     dialog = d;
   }));
 
@@ -80,7 +83,7 @@ describe('NameDialogComponent', () => {
 });
 
 @NgModule({
-  imports: [MdDialogModule, ReactiveFormsModule, CommonModule],
+  imports: [MatDialogModule, ReactiveFormsModule, CommonModule],
   declarations: [NameDialogComponent],
   exports: [NameDialogComponent],
   entryComponents: [NameDialogComponent],

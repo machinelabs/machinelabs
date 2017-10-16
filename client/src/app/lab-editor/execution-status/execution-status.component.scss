@@ -3,7 +3,7 @@
   line-height: 1.5em;
   font-weight: 600;
 
-  md-icon {
+  mat-icon {
     font-size: 1.3em;
     vertical-align: -20%;
     height: 15px;
@@ -12,17 +12,17 @@
   }
 
   &.done {
-    md-icon { color: #39aa56; }
+    mat-icon { color: #39aa56; }
   }
   &.stopped {
-    md-icon { color: #888; }
+    mat-icon { color: #888; }
   }
   &.errored {
-    md-icon { color: #db4545; }
+    mat-icon { color: #db4545; }
   }
 }
 
-md-progress-bar {
+mat-progress-bar {
   height: 3px;
   margin-top: 0.7em;
 }

@@ -1,6 +1,6 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
+import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 
 import { User } from '../models/user';
@@ -30,7 +30,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   isAuthUser = false;
 
-  editUserProfileDialog: MdDialogRef<EditUserProfileDialogComponent>;
+  editUserProfileDialog: MatDialogRef<EditUserProfileDialogComponent>;
 
   executions: Observable<Array<Observable<Execution>>>;
 
@@ -40,8 +40,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute,
               private labStorage: LabStorageService,
-              private dialog: MdDialog,
-              private snackBar: MdSnackBar,
+              private dialog: MatDialog,
+              private snackBar: MatSnackBar,
               private labExecutionService: LabExecutionService,
               private userService: UserService) {}
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
-import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { WindowRef } from '../../window-ref.service';
 
 @Component({
@@ -14,7 +14,7 @@ export class ShareDialogComponent {
   }
 
   constructor(
-    private dialogRef: MdDialogRef<ShareDialogComponent>,
+    private dialogRef: MatDialogRef<ShareDialogComponent>,
     private windowRef: WindowRef
   ) {}
 }

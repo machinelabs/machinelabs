@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'ml-edit-execution-dialog',
@@ -8,14 +8,14 @@ import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
     <ml-dialog-header>Edit Execution</ml-dialog-header>
     <form [formGroup]="form" (ngSubmit)="submit(form)">
       <ml-dialog-content>
-        <md-form-field>
-          <input mdInput placeholder="Name" formControlName="name">
-          <md-hint *ngIf="!form.valid && !form.pristine">This field is required.</md-hint>
-        </md-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Name" formControlName="name">
+          <mat-hint *ngIf="!form.valid && !form.pristine">This field is required.</mat-hint>
+        </mat-form-field>
       </ml-dialog-content>
       <ml-dialog-cta-bar>
-        <button md-button [disabled]="!form.valid" type="submit">Ok</button>
-        <button md-button type="button" (click)="dialogRef.close()">Cancel</button>
+        <button mat-button [disabled]="!form.valid" type="submit">Ok</button>
+        <button mat-button type="button" (click)="dialogRef.close()">Cancel</button>
       </ml-dialog-cta-bar>
     </form>
   `,
@@ -24,10 +24,10 @@ import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
       display: block;
       width: 500px;
     }
-    md-form-field {
+    mat-form-field {
       width: 100%;
     }
-    md-hint {
+    mat-hint {
       width: 100%;
       text-align: right;
     }
@@ -40,9 +40,9 @@ export class EditExecutionDialogComponent implements OnInit {
   form: FormGroup;
 
   constructor(
-    public dialogRef: MdDialogRef<EditExecutionDialogComponent>,
+    public dialogRef: MatDialogRef<EditExecutionDialogComponent>,
     private formBuilder: FormBuilder,
-    @Inject(MD_DIALOG_DATA) private data: any
+    @Inject(MAT_DIALOG_DATA) private data: any
   ) { }
 
   ngOnInit() {

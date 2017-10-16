@@ -4,14 +4,14 @@
   width: 100%;
 }
 
-md-card {
+mat-card {
   margin-left: auto;
   margin-right: auto;
   max-width: 80%;
 }
 
-md-cell {
-  md-icon {
+mat-cell {
+  mat-icon {
     vertical-align: -25%;
     color: #607d8b;
     font-size: 1.7em;
@@ -19,13 +19,13 @@ md-cell {
     height: initial;
   }
 
-  a md-icon {
+  a mat-icon {
     vertical-align: -38%;
   }
 }
 
-[md-icon-button][disabled] {
-  md-icon {
+[mat-icon-button][disabled] {
+  mat-icon {
     opacity: 0.2;
   }
 }

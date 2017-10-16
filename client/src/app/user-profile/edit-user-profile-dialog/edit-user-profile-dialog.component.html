@@ -2,21 +2,21 @@
   <form [formGroup]="form" (ngSubmit)="submit(form.value)">
   <ml-dialog-content>
     <div fxLayout="column">
-      <p class="ml-edit-user-profile-dialog-no-name-message" *ngIf="form.get('displayName').errors?.placeholderName"><md-icon>info</md-icon> Seems like you don't have a username yet.</p>
-      <md-form-field fxFlex>
-        <input mdInput placeholder="Profile name" formControlName="displayName">
-        <md-hint *ngIf="!form.valid && form.get('displayName').errors.required">This field is required.</md-hint>
-        <md-hint *ngIf="data.showNoUsernameMessage">
+      <p class="ml-edit-user-profile-dialog-no-name-message" *ngIf="form.get('displayName').errors?.placeholderName"><mat-icon>info</mat-icon> Seems like you don't have a username yet.</p>
+      <mat-form-field fxFlex>
+        <input matInput placeholder="Profile name" formControlName="displayName">
+        <mat-hint *ngIf="!form.valid && form.get('displayName').errors.required">This field is required.</mat-hint>
+        <mat-hint *ngIf="data.showNoUsernameMessage">
 
-        </md-hint>
-      </md-form-field>
-      <md-form-field fxFlex>
-        <textarea mdInput maxlength="200" placeholder="Tell us a little bit about you" formControlName="bio"></textarea>
-      </md-form-field>
+        </mat-hint>
+      </mat-form-field>
+      <mat-form-field fxFlex>
+        <textarea matInput maxlength="200" placeholder="Tell us a little bit about you" formControlName="bio"></textarea>
+      </mat-form-field>
     </div>
   </ml-dialog-content>
   <ml-dialog-cta-bar>
-    <button md-button [disabled]="!form.valid" type="submit">Save</button>
-    <button md-button type="button" mdDialogClose>Cancel</button>
+    <button mat-button [disabled]="!form.valid" type="submit">Save</button>
+    <button mat-button type="button" matDialogClose>Cancel</button>
   </ml-dialog-cta-bar>
 </form>
