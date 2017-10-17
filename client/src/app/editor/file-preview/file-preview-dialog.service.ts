@@ -1,12 +1,9 @@
 import { Injectable, Injector, Inject, ViewContainerRef, ComponentRef } from '@angular/core';
 import { Location } from '@angular/common';
-import { ComponentPortal } from '@angular/cdk/portal';
+import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
 
 import { FilePreviewDialogComponent } from './file-preview-dialog/file-preview-dialog.component';
 import { FilePreviewDialogRef } from './file-preview-dialog-ref';
-
-// Needs to be imported from here until @angular/material beta.12
-import { PortalInjector } from '@angular/material';
 
 import { OutputFile } from '../../models/output-file';
 

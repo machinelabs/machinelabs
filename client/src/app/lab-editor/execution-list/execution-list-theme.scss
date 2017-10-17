@@ -6,6 +6,14 @@
   $foreground: map-get($theme, foreground);
   $accent: map-get($theme, accent);
 
+  .mat-progress-spinner {
+    vertical-align: -45%;
+    svg {
+      width: initial!important;
+      height: initial!important;
+    }
+  }
+
   .ml-execution-panel-header {
     border-left: 5px solid mat-color($foreground, divider);
     .finished & {
