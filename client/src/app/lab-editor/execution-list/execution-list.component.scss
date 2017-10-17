@@ -18,16 +18,15 @@ mat-toolbar {
     height: initial;
   }
 
-  mat-progress-spinner {
-    width: 24px;
-    height: 27px;
+  .mat-progress-spinner {
+    width: 24px!important;
+    height: 27px!important;
     display: inline-block;
     margin-right: 0.2em;
     vertical-align: -45%;
 
     .mat-expanded & {
       height: 40px;
-      vertical-align: -80%;
     }
   }
 

@@ -47,6 +47,11 @@
         color: mat-color($accent);
         border-left-color: mat-color($accent);
       }
+
+      .mat-progress-spinner svg {
+        width: initial!important;
+        height: initial!important;
+      }
     }
   }
 
