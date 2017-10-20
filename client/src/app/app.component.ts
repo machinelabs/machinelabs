@@ -1,6 +1,8 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationError, NavigationCancel } from '@angular/router';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
+
+declare const require: any;
 const { version } = require('../../package.json');
 
 @Component({
