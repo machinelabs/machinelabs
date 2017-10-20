@@ -6,6 +6,7 @@ import { DATABASE } from '../app.tokens';
 import { DbRefBuilder } from '../firebase/db-ref-builder';
 import { FirebaseMock } from '../../test-helper/firebase-mock';
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 
 describe('UserService', () => {
 
@@ -34,7 +35,7 @@ describe('UserService', () => {
 
   let authServiceStub = {
     requireAuth: () => new Observable(obs => obs.next(loginUser)),
-    requireAuthOnce: () => Observable.of(loginUser)
+    requireAuthOnce: () => of(loginUser)
   };
 
   beforeEach(() => {

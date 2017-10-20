@@ -1,5 +1,8 @@
 import { DbRefBuilder } from '../../firebase/db-ref-builder';
-import { Observable } from 'rxjs/Observable';
+
+import { of } from 'rxjs/observable/of';
+import { switchMap, concat, take, map } from 'rxjs/operators';
+
 import { ExecutionMessage, MessageKind } from '../../models/execution';
 import { createSkipText } from '../util/skip-helper'
 
@@ -8,29 +11,31 @@ export class MessageStreamOptimizer {
   }
 
   listenForMessages(executionId) {
-    return this.getTailMessage(executionId)
-               .switchMap((message: ExecutionMessage) => message.index >= this.fullFetchTreshold ?
-                  this.getHeadTailAndLiveMessages(executionId, message.index) : this.getAllMessages(executionId));
+    return this.getTailMessage(executionId).pipe(
+      switchMap((message: ExecutionMessage) => message.index >= this.fullFetchTreshold ?
+        this.getHeadTailAndLiveMessages(executionId, message.index) : this.getAllMessages(executionId))
+    );
   }
 
   getHeadTailAndLiveMessages(executionId, maxIndex) {
-    return this.getHeadMessages(executionId, this.partitionSize)
-               .concat(Observable.of({
-                 data: createSkipText(maxIndex - (this.partitionSize * 2)),
-                 kind: MessageKind.Stdout
-                }))
-               .concat(this.getTailMessages(executionId, maxIndex - this.partitionSize, this.partitionSize))
-               .concat(this.getLiveMessages(executionId, maxIndex));
-
+    return this.getHeadMessages(executionId, this.partitionSize).pipe(
+      concat(of({
+        data: createSkipText(maxIndex - (this.partitionSize * 2)),
+        kind: MessageKind.Stdout
+      })),
+      concat(this.getTailMessages(executionId, maxIndex - this.partitionSize, this.partitionSize)),
+      concat(this.getLiveMessages(executionId, maxIndex))
+    );
   }
 
   getTailMessage(executionId) {
     return this.db.executionMessageRef(executionId)
                   .orderByChild('index')
                   .limitToLast(1)
-                  .childAdded()
-                  .take(1)
-                  .map(snapshot => snapshot.val());
+                  .childAdded().pipe(
+                    take(1),
+                    map(snapshot => snapshot.val())
+                  );
   }
 
   getHeadMessages(executionId, partitionSize) {
@@ -38,9 +43,10 @@ export class MessageStreamOptimizer {
                                .orderByChild('index')
                                .startAt(0)
                                .limitToFirst(partitionSize)
-                               .childAdded()
-                               .take(partitionSize)
-                               .map(snapshot => snapshot.val());
+                               .childAdded().pipe(
+                                  take(partitionSize),
+                                  map(snapshot => snapshot.val())
+                               );
   }
 
   getTailMessages(executionId, startAt, partitionSize) {
@@ -48,23 +54,22 @@ export class MessageStreamOptimizer {
                   .orderByChild('index')
                   .startAt(startAt)
                   .limitToFirst(partitionSize)
-                  .childAdded()
-                  .take(partitionSize)
-                  .map(snapshot => snapshot.val());
+                  .childAdded().pipe(
+                    take(partitionSize),
+                    map(snapshot => snapshot.val())
+                  );
   }
 
   getLiveMessages(executionId, startAt) {
      return this.db.executionMessageRef(executionId)
                    .orderByChild('index')
                    .startAt(startAt)
-                   .childAdded()
-                   .map(snapshot => snapshot.val());
+                   .childAdded().pipe(map(snapshot => snapshot.val()));
   }
 
   getAllMessages(executionId) {
     return this.db.executionMessageRef(executionId)
-               .childAdded()
-               .map(snapshot => snapshot.val());
+               .childAdded().pipe(map(snapshot => snapshot.val()));
   }
 
 }

@@ -5,12 +5,8 @@ import { DbRefBuilder } from './firebase/db-ref-builder';
 import { AuthService } from './auth';
 import { OutputFile } from './models/output-file';
 import { Observable } from 'rxjs/Observable';
-
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/take';
-import 'rxjs/add/operator/mergeMap';
+import { fromPromise } from 'rxjs/observable/fromPromise';
+import { map, switchMap, startWith, take, flatMap } from 'rxjs/operators';
 
 const fromSnapshot = snapshot => snapshot.val();
 
@@ -24,22 +20,25 @@ export class OutputFilesService {
 
   observeOutputFilesFromExecution(executionId: string): Observable<OutputFile> {
     return this.authService
-               .requireAuthOnce()
-               .switchMap(_ => this.db.executionOutputFilesRef(executionId).childAdded().map(fromSnapshot))
-               .flatMap(file => this.getDownloadUrlForPath(file.path).map(download_url => ({...file, download_url})));
+      .requireAuthOnce()
+      .pipe(
+        switchMap(_ => this.db.executionOutputFilesRef(executionId).childAdded().pipe(map(fromSnapshot))),
+        flatMap(file => this.getDownloadUrlForPath(file.path).pipe(map(download_url => ({...file, download_url}))))
+      );
   }
 
   getDownloadUrlForPath(path: string) {
-    return Observable.fromPromise(firebase.storage()
-                                          .ref(path)
-                                          .getDownloadURL());
+    return fromPromise(firebase.storage()
+                                .ref(path)
+                                .getDownloadURL());
   }
 
   hasOutputFiles(executionId: string) {
-    return this.observeOutputFilesFromExecution(executionId)
-        .map(output => !!output)
-        .startWith(false)
-        .take(2)
+    return this.observeOutputFilesFromExecution(executionId).pipe(
+      map(output => !!output),
+      startWith(false),
+      take(2)
+    );
   }
 }
 

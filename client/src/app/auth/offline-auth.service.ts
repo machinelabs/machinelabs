@@ -4,7 +4,8 @@ import { LoginUser } from '../models/user';
 import { AuthService } from './auth.service';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
+import { of } from 'rxjs/observable/of';
+import { take } from 'rxjs/operators';
 
 export let dummyUser = {
   id: 'some unique id',
@@ -28,16 +29,16 @@ export class OfflineAuthService implements OfflineAuth {
   user: LoginUser = dummyUser;
 
   requireAuth(): Observable<LoginUser> {
-    return Observable.of(this.user);
+    return of(this.user);
   }
 
   requireAuthOnce(): Observable<LoginUser> {
-    return this.requireAuth().take(1);
+    return this.requireAuth().pipe(take(1));
   }
 
   signInWithGitHub(): Observable<LoginUser> {
     this.user.isAnonymous = false;
-    return Observable.of(this.user);
+    return of(this.user);
   }
 
   linkOrSignInWithGitHub(): Observable<LoginUser> {
@@ -46,6 +47,6 @@ export class OfflineAuthService implements OfflineAuth {
 
   signOut(): Observable<any> {
     this.user.isAnonymous = true;
-    return Observable.of();
+    return of();
   }
 }

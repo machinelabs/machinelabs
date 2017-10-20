@@ -2,6 +2,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
+import { map, filter, switchMap } from 'rxjs/operators';
 
 import { User } from '../models/user';
 import { Lab } from '../models/lab';
@@ -12,10 +13,6 @@ import { LabExecutionService } from '../lab-execution.service';
 import { UserService } from '../user/user.service';
 
 import { EditUserProfileDialogComponent } from './edit-user-profile-dialog/edit-user-profile-dialog.component';
-
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/switchMap';
 
 @Component({
   selector: 'ml-user-profile',
@@ -46,21 +43,17 @@ export class UserProfileComponent implements OnInit, OnDestroy {
               private userService: UserService) {}
 
   ngOnInit() {
-    this.route.data
-        .map(data => data['user'])
-        .subscribe(user => {
-          this.user = user;
-          this.executions = this.labExecutionService.observeExecutionsForUser(user);
-        });
+    this.route.data.pipe(map(data => data['user'])).subscribe(user => {
+      this.user = user;
+      this.executions = this.labExecutionService.observeExecutionsForUser(user);
+    });
 
-    this.route.data
-        .map(data => data['labs'])
-        .subscribe(labs => this.labs = labs);
+    this.route.data.pipe(map(data => data['labs']))
+      .subscribe(labs => this.labs = labs);
 
-    this.userChangesSubscription = this.userService
-                                        .observeUserChanges()
-                                        .switchMap(_ => this.userService.isLoggedInUser(this.user.id))
-                                        .subscribe(isLoggedIn => this.isAuthUser = isLoggedIn);
+    this.userChangesSubscription = this.userService.observeUserChanges()
+      .pipe(switchMap(_ => this.userService.isLoggedInUser(this.user.id)))
+      .subscribe(isLoggedIn => this.isAuthUser = isLoggedIn);
 
     // Need to wrap this in a timeout, otherwise we're running into an
     // ExpressionChangedAfterItHasBeenCheckedError.
@@ -72,10 +65,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   edit() {
-    this.showEditDialog(this.user)
-        .filter(user => user)
-        .switchMap(user => this.userService.updateUser(user))
-        .subscribe(_ => this.snackBar.open('Profile updated.', 'Dismiss', { duration: 3000 }));
+    this.showEditDialog(this.user).pipe(
+      filter(user => user),
+      switchMap(user => this.userService.updateUser(user))
+    ).subscribe(_ => this.snackBar.open('Profile updated.', 'Dismiss', { duration: 3000 }));
   }
 
   showEditDialog(user: User) {

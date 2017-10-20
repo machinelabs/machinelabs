@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { LabTemplate } from './models/lab';
 import { LAB_TEMPLATES } from './data/lab-templates';
 
 export const BLANK_LAB_TPL_ID = 'blank';
 export const DEFAULT_LAB_TPL_ID = 'mnist';
-
-import 'rxjs/add/observable/of';
 
 export abstract class LabTemplateService {
   abstract getTemplate(name: string): Observable<LabTemplate>;
@@ -15,6 +14,6 @@ export abstract class LabTemplateService {
 export class InMemoryLabTemplateService extends LabTemplateService {
 
   getTemplate(name: string): Observable<LabTemplate> {
-    return Observable.of(LAB_TEMPLATES[name]);
+    return of(LAB_TEMPLATES[name]);
   }
 }

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatDialogRef, MatDialog } from '@angular/material';
+import { filter, map } from 'rxjs/operators';
 import { NameDialogComponent, NameDialogType } from 'app/editor/name-dialog/name-dialog.component';
 import { FileTreeService } from 'app/editor/file-tree/file-tree.service';
 import { File, Directory } from '@machinelabs/models';
@@ -45,19 +46,21 @@ export class NameDialogService {
   openFileNameDialog(type: NameDialogType, parentDirectory: Directory, file?: File) {
     let newFile = { name: '', content: '', clientState: { collapsed: false } };
 
-    return this.openNameDialog(type, parentDirectory, file || newFile).map(name => {
-      parentDirectory.clientState = { ...parentDirectory.clientState, collapsed: false };
+    return this.openNameDialog(type, parentDirectory, file || newFile).pipe(
+      map(name => {
+        parentDirectory.clientState = { ...parentDirectory.clientState, collapsed: false };
 
-      if (file) {
-        newFile = { ...newFile, name, content: file.content };
-        updateFileInDirectory(file, newFile, parentDirectory);
-      } else {
-        newFile = { ...newFile, name };
-        parentDirectory.contents.push(newFile);
-      }
+        if (file) {
+          newFile = { ...newFile, name, content: file.content };
+          updateFileInDirectory(file, newFile, parentDirectory);
+        } else {
+          newFile = { ...newFile, name };
+          parentDirectory.contents.push(newFile);
+        }
 
-      return newFile;
-    });
+        return newFile;
+      })
+    );
   }
 
   openNameDialog(type: NameDialogType, parentDirectory: Directory, fileOrDirectory: File | Directory) {
@@ -71,6 +74,6 @@ export class NameDialogService {
     });
 
     return this.fileNameDialogRef.afterClosed()
-      .filter(name => name !== '' && name !== undefined);
+      .pipe(filter(name => name !== '' && name !== undefined));
   }
 }

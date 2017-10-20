@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { Inject } from '@angular/core';
 import { File } from '@machinelabs/models';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 
 import { LabStorageService } from './lab-storage.service';
 import { LabTemplateService, InMemoryLabTemplateService, DEFAULT_LAB_TPL_ID } from './lab-template.service';
@@ -66,7 +66,7 @@ describe('LabStorageService', () => {
 
     let user = { uid: 'some-id' };
 
-    spyOn(authService, 'requireAuthOnce').and.returnValue(Observable.of(user));
+    spyOn(authService, 'requireAuthOnce').and.returnValue(of(user));
   });
 
   describe('.createLab()', () => {
@@ -102,7 +102,7 @@ describe('LabStorageService', () => {
 
       const TEMPLATE = DEFAULT_LAB_TPL_ID;
 
-      spyOn(labTemplateService, 'getTemplate').and.returnValue(Observable.of(LAB_TEMPLATES[TEMPLATE]));
+      spyOn(labTemplateService, 'getTemplate').and.returnValue(of(LAB_TEMPLATES[TEMPLATE]));
       spyOn(labStorageService, 'createLab').and.callThrough();
 
       labStorageService.createLabFromTemplate(TEMPLATE).subscribe(lab => {

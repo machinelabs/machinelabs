@@ -4,6 +4,7 @@ import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { MatDialogModule, MatDialog, MATERIAL_COMPATIBILITY_MODE } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 
 import { DATABASE } from '../../app.tokens';
 import { FirebaseMock } from '../../../test-helper/firebase-mock';
@@ -24,7 +25,7 @@ let loginUser = {
 
 let authServiceStub = {
   requireAuth: () => new Observable(obs => obs.next(loginUser)),
-  requireAuthOnce: () => Observable.of(loginUser)
+  requireAuthOnce: () => of(loginUser)
 };
 
 describe('EditUserProfileDialogComponent', () => {

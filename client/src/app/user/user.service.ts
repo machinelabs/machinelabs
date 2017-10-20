@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
+
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+import { map, switchMap } from 'rxjs/operators';
+
 import { AuthService } from 'app/auth';
 import { DbRefBuilder } from '../firebase/db-ref-builder';
 import { LoginUser, User } from '../models/user';
 import { Execution } from '../models/execution';
-import { Observable } from 'rxjs/Observable';
 import { Lang } from '../util/lang';
-
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/switchMap';
 
 export const PLACEHOLDER_USERNAME = 'Unnamed User';
 
@@ -18,16 +18,16 @@ export class UserService {
   constructor(private db: DbRefBuilder, private authService: AuthService) { }
 
   createUserIfMissing(): Observable<User> {
-    return this.authService
-               .requireAuthOnce()
-               .switchMap((user: LoginUser) => this.db.userRef(user.uid)
-                                                      .onceValue()
-                                                      .map(snapshot => snapshot.val())
-                                                      .map(existingUser => ({existingUser, user})))
-               .switchMap(data => !data.existingUser || this.isDifferent(data.user, data.existingUser)
-                                    ? this.saveUser(this.mapLoginUserToUser(data.user))
-                                    : Observable.of(data.existingUser)
-                                  );
+    return this.authService.requireAuthOnce().pipe(
+      switchMap((user: LoginUser) => this.db.userRef(user.uid).onceValue().pipe(
+        map(snapshot => snapshot.val()),
+        map(existingUser => ({existingUser, user}))
+      )),
+      switchMap(data => !data.existingUser || this.isDifferent(data.user, data.existingUser)
+                          ? this.saveUser(this.mapLoginUserToUser(data.user))
+                          : of(data.existingUser)
+                        )
+    );
   }
 
   private isDifferent(loginUser: LoginUser, user: User) {
@@ -59,32 +59,32 @@ export class UserService {
   }
 
   saveUser(user: User): Observable<User> {
-    return this.authService.requireAuthOnce()
-                           .switchMap(_ => this.db.userRef(user.id).set(user))
-                           .map(_ => user);
+    return this.authService.requireAuthOnce().pipe(
+      switchMap(_ => this.db.userRef(user.id).set(user)),
+      map(_ => user)
+    );
   }
 
   updateUser(user: User): Observable<User> {
-    return this.authService.requireAuthOnce()
-                           .switchMap(_ => this.db.userRef(user.id).update(user))
-                           .map(_ => user);
+    return this.authService.requireAuthOnce().pipe(
+      switchMap(_ => this.db.userRef(user.id).update(user)),
+      map(_ => user)
+    );
   }
 
   getUser(id: string): Observable<User> {
-    return this.authService.requireAuthOnce()
-                           .switchMap(_ => this.db.userRef(id).onceValue())
-                           .map(snapshot => snapshot.val());
-
+    return this.authService.requireAuthOnce().pipe(
+      switchMap(_ => this.db.userRef(id).onceValue()),
+      map(snapshot => snapshot.val())
+    );
   }
 
   observeUserChanges(): Observable<User> {
-    return this.authService.requireAuth()
-                           .map(loginUser => this.mapLoginUserToUser(loginUser));
+    return this.authService.requireAuth().pipe(map(loginUser => this.mapLoginUserToUser(loginUser)));
   }
 
   isLoggedInUser(id: string): Observable <boolean> {
-    return this.authService.requireAuthOnce()
-                           .map(sessionUser => id === sessionUser.uid);
+    return this.authService.requireAuthOnce().pipe(map(sessionUser => id === sessionUser.uid));
   };
 
   userOwnsLab(user: User, lab) {

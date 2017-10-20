@@ -1,5 +1,7 @@
 import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+import { combineLatest, filter, map, share, startWith, skip, switchMap, tap } from 'rxjs/operators';
+
 import { Injectable, EventEmitter } from '@angular/core';
 import { UrlSerializer, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -39,14 +41,6 @@ export enum TabIndex {
   Outputs = 'outputs'
 }
 
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/scan';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/combineLatest';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/skip';
 import { getMainFile } from 'app/util/directory';
 
 export interface ListenAndNotifyOptions {
@@ -154,12 +148,14 @@ export class EditorService {
           });
 
     let messages = wrapper.messages
-      .filter(_ => !options || !options.inPauseMode())
-      .filter(msg => msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr)
-      // We replace newlines with carriage returns to ensure all messages start
-      // at the beginning of a new line. This needed when rendering messages in
-      // a terminal emulation, that haven't been produced by a tty emulation.
-      .map(msg => msg.terminal_mode ? <string>msg.data : (<string>msg.data).replace(/[\n]/g, '\n\r'));
+      .pipe(
+        filter(_ => !options || !options.inPauseMode()),
+        filter(msg => msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr),
+        // We replace newlines with carriage returns to ensure all messages start
+        // at the beginning of a new line. This needed when rendering messages in
+        // a terminal emulation, that haven't been produced by a tty emulation.
+        map(msg => msg.terminal_mode ? <string>msg.data : (<string>msg.data).replace(/[\n]/g, '\n\r'))
+      );
 
     return {
       execution: wrapper.execution,
@@ -186,67 +182,74 @@ export class EditorService {
   observeExecutionsForLab(lab: Lab) {
     return this.labExecutionService
         .observeExecutionsForLab(this.lab)
-        .startWith([])
-        .combineLatest(this.localExecutions$.startWith(new Map()), (confirmedExecutions, localExecutions) => {
-          localExecutions.forEach((localExecution, index) => {
-            let confirmedEx = confirmedExecutions.find(execution => execution.id === localExecution.id);
-            if (confirmedEx) {
-              localExecutions.delete(localExecution.id);
-            } else {
-              confirmedExecutions = [{
-                id: localExecution.id,
-                execution: Observable.of(localExecution)
-              }, ...confirmedExecutions];
-            }
+        .pipe(
+          startWith([]),
+          combineLatest(
+            this.localExecutions$.pipe(startWith(new Map())),
+            (confirmedExecutions, localExecutions) => {
+              localExecutions.forEach((localExecution, index) => {
+                let confirmedEx = confirmedExecutions.find(execution => execution.id === localExecution.id);
+                if (confirmedEx) {
+                  localExecutions.delete(localExecution.id);
+                } else {
+                  confirmedExecutions = [{
+                    id: localExecution.id,
+                    execution: of(localExecution)
+                  }, ...confirmedExecutions];
+                }
 
-          });
-          return confirmedExecutions.map(v => v.execution);
-        })
-        .skip(1)
-        .share();
+              });
+              return confirmedExecutions.map(v => v.execution);
+            }
+          ),
+          skip(1),
+          share()
+        );
 
   }
 
   forkLab(lab: Lab) {
     return this.labStorageService
-      .createLab(lab)
-      .do(createdLab => this.lab = createdLab);
+      .createLab(lab).pipe(tap(createdLab => this.lab = createdLab));
   }
 
   saveLab(lab: Lab, msg = 'Lab saved') {
     return this.labStorageService
       .saveLab(lab)
-      .do(_ => {
-        const urlSegments = [`/${this.locationHelper.getRootUrlSegment()}`, lab.id];
+      .pipe(
+        tap(_ => {
+          const urlSegments = [`/${this.locationHelper.getRootUrlSegment()}`, lab.id];
 
-        if (this.activeExecutionId) {
-          urlSegments.push(this.activeExecutionId);
-        }
+          if (this.activeExecutionId) {
+            urlSegments.push(this.activeExecutionId);
+          }
 
-        this.locationHelper.updateUrl(urlSegments, {
-          queryParamsHandling: 'merge',
-          queryParams: this.locationHelper.getQueryParams(this.location.path())
-        });
+          this.locationHelper.updateUrl(urlSegments, {
+            queryParamsHandling: 'merge',
+            queryParams: this.locationHelper.getQueryParams(this.location.path())
+          });
 
-        this.editorSnackbar.notify(msg);
-      })
-      .map(_ => lab);
+          this.editorSnackbar.notify(msg);
+        }),
+        map(_ => lab)
+      );
   }
 
   deleteLab(lab: Lab) {
     lab.hidden = true;
     return this.labStorageService
-      .saveLab(lab)
-      .do(_ => this.editorSnackbar.notifyLabDeleted());
+      .saveLab(lab).pipe(tap(_ => this.editorSnackbar.notifyLabDeleted()));
   }
 
   executeLab(lab: Lab) {
     return this.labStorageService
       .labExists(lab.id)
-      // First check if this lab is already persisted or not. We don't want to
-      // execute labs that don't exist in the database.
-      .switchMap(exists => exists ? Observable.of(null) : this.labStorageService.saveLab(lab))
-      .switchMap(_ => this.rleService.run(lab));
+      .pipe(
+        // First check if this lab is already persisted or not. We don't want to
+        // execute labs that don't exist in the database.
+        switchMap(exists => exists ? of(null) : this.labStorageService.saveLab(lab)),
+        switchMap(_ => this.rleService.run(lab))
+      );
   }
 
   selectTab(tabIndex: TabIndex) {

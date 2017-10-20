@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 
 import { LabResolver } from './lab.resolver';
 import { LabStorageService } from './lab-storage.service';
@@ -59,7 +59,7 @@ describe('LabResolver', () => {
       let activatedRouteSnapshotStub =  new ActivatedRouteSnapshot();
       activatedRouteSnapshotStub.params = {};
       activatedRouteSnapshotStub.queryParams = {};
-      spyOn(labStorageService, 'createLabFromTemplate').and.returnValue(Observable.of(newLab));
+      spyOn(labStorageService, 'createLabFromTemplate').and.returnValue(of(newLab));
 
       labResolver.resolve(activatedRouteSnapshotStub).subscribe(lab => {
         expect(labStorageService.createLabFromTemplate).toHaveBeenCalledWith(DEFAULT_LAB_TPL_ID);
@@ -75,7 +75,7 @@ describe('LabResolver', () => {
       activatedRouteSnapshotStub.params = {};
       activatedRouteSnapshotStub.queryParams = { tpl: BLANK_LAB_TPL_ID };
 
-      spyOn(labStorageService, 'createLab').and.returnValue(Observable.of(newLab));
+      spyOn(labStorageService, 'createLab').and.returnValue(of(newLab));
 
       labResolver.resolve(activatedRouteSnapshotStub).subscribe(lab => {
         expect(labStorageService.createLab).toHaveBeenCalled();
@@ -91,7 +91,7 @@ describe('LabResolver', () => {
       activatedRouteSnapshotStub.params = {};
       activatedRouteSnapshotStub.queryParams = { tpl: 'any'};
 
-      spyOn(labStorageService, 'createLabFromTemplate').and.returnValue(Observable.of(newLab));
+      spyOn(labStorageService, 'createLabFromTemplate').and.returnValue(of(newLab));
 
       labResolver.resolve(activatedRouteSnapshotStub).subscribe(lab => {
         expect(labStorageService.createLabFromTemplate).toHaveBeenCalledWith('any');
@@ -106,7 +106,7 @@ describe('LabResolver', () => {
       let activatedRouteSnapshotStub = new ActivatedRouteSnapshot();
       activatedRouteSnapshotStub.params = { id: 'some-id' };
 
-      spyOn(labStorageService, 'getLab').and.returnValue(Observable.of(existingLab));
+      spyOn(labStorageService, 'getLab').and.returnValue(of(existingLab));
 
       labResolver.resolve(activatedRouteSnapshotStub).subscribe(lab => {
         expect(labStorageService.getLab)
@@ -119,7 +119,7 @@ describe('LabResolver', () => {
       let activatedRouteSnapshotStub = new ActivatedRouteSnapshot();
       activatedRouteSnapshotStub.params = { id: 'some-id' };
 
-      spyOn(labStorageService, 'getLab').and.returnValue(Observable.of(null));
+      spyOn(labStorageService, 'getLab').and.returnValue(of(null));
       spyOn(router, 'navigate');
 
       labResolver.resolve(activatedRouteSnapshotStub).subscribe(lab => {

@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth';
 import { Router } from '@angular/router';
-import { UserService, PLACEHOLDER_USERNAME } from './user/user.service';
 import { MatSnackBar } from '@angular/material';
-
-import 'rxjs/add/operator/switchMap';
+import { switchMap } from 'rxjs/operators';
+import { UserService, PLACEHOLDER_USERNAME } from './user/user.service';
 
 @Injectable()
 export class LoginService {
@@ -17,15 +16,15 @@ export class LoginService {
 
   loginWithGitHub() {
     this.authService.linkOrSignInWithGitHub()
-                    .switchMap(loginUser => this.userService.createUserIfMissing())
-                    .subscribe(user => {
+      .pipe(switchMap(loginUser => this.userService.createUserIfMissing()))
+      .subscribe(user => {
 
-      if (user.displayName === PLACEHOLDER_USERNAME) {
-        this.router.navigate(['/user', user.id], { queryParams: { editing: true }});
-      }
+        if (user.displayName === PLACEHOLDER_USERNAME) {
+          this.router.navigate(['/user', user.id], { queryParams: { editing: true }});
+        }
 
-      this.snackBar.open(`Logged in as ${user.displayName}`, 'Dismiss', { duration: 3000 });
-    }, e => this.snackBar.open('Login failed, please try again.', 'Dismiss', { duration: 3000 }));
+        this.snackBar.open(`Logged in as ${user.displayName}`, 'Dismiss', { duration: 3000 });
+      }, e => this.snackBar.open('Login failed, please try again.', 'Dismiss', { duration: 3000 }));
   }
 
   logout() {

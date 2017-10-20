@@ -6,13 +6,12 @@ import {
   Router,
   ActivatedRoute
 } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+
+import { of } from 'rxjs/observable/of';
+import { map, tap, switchMap } from 'rxjs/operators';
+
 import { LabExecutionService } from '../lab-execution.service';
 import { LocationHelper } from '../util/location-helper';
-
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
 
 @Injectable()
 export class HasValidExecutionGuard implements CanActivate {
@@ -38,26 +37,27 @@ export class HasValidExecutionGuard implements CanActivate {
     // If no execution exists, simply activate the component. This means that we're
     // navigating to a lab that simply hasn't been executed yet.
     const checkForLatestExecution$ = this.labExecutionService
-                      .getLatestVisibleExecutionIdForLab(labId)
-                      .do(_executionId => {
-                        const rootUrlSegment = this.locationHelper.getRootUrlSegment();
-                        const urlSegments = [`/${rootUrlSegment}`, labId];
+                      .getLatestVisibleExecutionIdForLab(labId).pipe(
+                        tap(_executionId => {
+                          const rootUrlSegment = this.locationHelper.getRootUrlSegment();
+                          const urlSegments = [`/${rootUrlSegment}`, labId];
 
-                        if (_executionId) {
-                          urlSegments.push(_executionId);
-                        }
-                        this.router.navigate(urlSegments, {
-                          queryParamsHandling: 'merge'
-                        });
-                      })
-                      // This is only to satisfy the guard API. Technically,
-                      // we never really end up here as we've redirected at
-                      // this point already
-                      .map(_executionId => !_executionId);
+                          if (_executionId) {
+                            urlSegments.push(_executionId);
+                          }
+                          this.router.navigate(urlSegments, {
+                            queryParamsHandling: 'merge'
+                          });
+                        }),
+                        // This is only to satisfy the guard API. Technically,
+                        // we never really end up here as we've redirected at
+                        // this point already
+                        map(_executionId => !_executionId)
+                      );
 
     return !executionId ?
       checkForLatestExecution$ :
       this.labExecutionService.executionExists(executionId)
-        .switchMap(exists => exists ? Observable.of(true) : checkForLatestExecution$);
+        .pipe(switchMap(exists => exists ? of(true) : checkForLatestExecution$));
   }
 }

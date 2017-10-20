@@ -1,7 +1,7 @@
 import { MatSnackBarModule } from '@angular/material';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 
 import { UserService } from '../user/user.service';
 import { LabStorageService } from '../lab-storage.service';
@@ -33,7 +33,7 @@ describe('UserResolver', () => {
     userService = TestBed.get(UserService);
     router = TestBed.get(Router);
     routeSnapshotStub = new ActivatedRouteSnapshot();
-    spyOn(userService, 'getUser').and.returnValue(Observable.of(null));
+    spyOn(userService, 'getUser').and.returnValue(of(null));
     spyOn(router, 'navigate');
   });
 
@@ -72,7 +72,7 @@ describe('UserLabsResolver', () => {
     userLabsResolver = TestBed.get(UserLabsResolver);
     labStorage = TestBed.get(LabStorageService);
     routeSnapshotStub = new ActivatedRouteSnapshot();
-    spyOn(labStorage, 'getLabsFromUser').and.returnValue(Observable.of(null));
+    spyOn(labStorage, 'getLabsFromUser').and.returnValue(of(null));
   });
 
   describe('.resolve()', () => {

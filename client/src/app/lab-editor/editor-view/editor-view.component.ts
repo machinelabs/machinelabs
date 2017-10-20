@@ -2,6 +2,11 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogRef, MatSnackBar, MatTabGroup, MatDrawer } from '@angular/material';
 import { FormControl } from '@angular/forms';
+
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+import { filter, tap, map, skip, switchMap, take, share } from 'rxjs/operators';
+
 import { File } from '@machinelabs/models';
 import { AceEditorComponent } from '../../editor/ace-editor/ace-editor.component';
 import { XtermComponent } from '../../editor/xterm/xterm.component';
@@ -19,23 +24,12 @@ import { EditorService, TabIndex } from '../../editor/editor.service';
 import { EditorSnackbarService } from '../../editor/editor-snackbar.service';
 import { LabStorageService } from '../../lab-storage.service';
 import { UserService } from '../../user/user.service';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
 import { Lab } from '../../models/lab';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { LocationHelper } from '../../util/location-helper';
 import { Execution, ExecutionRejectionReason } from '../../models/execution';
 import { EditorToolbarAction, EditorToolbarActionTypes } from '../editor-toolbar/editor-toolbar.component';
 import { TimeoutError, RateLimitError } from '../../editor/remote-code-execution/errors';
-
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/skip';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/take';
-import 'rxjs/add/operator/share';
 
 const METADATA_SIDEBAR_OPEN_TIMEOUT = 600;
 const INITIAL_LOADING_INDICATOR_PROGRESS = 10;
@@ -130,11 +124,12 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
     // one would get when all the state would live in the component.
     this.editorService.initialize();
     this.activeExecutionId = this.route.snapshot.paramMap.get('executionId');
-    this.route.data.map(data => data['lab'])
-              // Only init lab when it's opened for the first time
-              // or when switching labs.
-              .filter(lab => !this.lab || lab.id !== this.lab.id)
-              .subscribe(lab => this.initLab(lab));
+    this.route.data.pipe(
+      map(data => data['lab']),
+      // Only init lab when it's opened for the first time
+      // or when switching labs.
+      filter(lab => !this.lab || lab.id !== this.lab.id)
+    ).subscribe(lab => this.initLab(lab));
 
     if (this.activeExecutionId) {
       this.listen(this.activeExecutionId);
@@ -173,9 +168,8 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
   }
 
   forkAndRun(lab: Lab) {
-    this.editorService
-      .forkLab(lab)
-      .switchMap(forkedLab => this.editorService.saveLab(forkedLab, 'Lab forked'))
+    this.editorService.forkLab(lab)
+      .pipe(switchMap(forkedLab => this.editorService.saveLab(forkedLab, 'Lab forked')))
       .subscribe(savedLab => {
         this.initLab(savedLab);
         this.run(savedLab)
@@ -183,9 +177,7 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
   }
 
   run(lab: Lab) {
-    this.userService
-      .observeUserChanges()
-      .take(1)
+    this.userService.observeUserChanges().pipe(take(1))
       .subscribe(user => {
         if (user.isAnonymous) {
           this.openRejectionDialog(ExecutionRejectionReason.NoAnonymous);
@@ -195,7 +187,7 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
 
           this.latestLab = Object.assign({}, lab);
 
-          const runInfo$ = this.editorService.executeLab(lab).share();
+          const runInfo$ = this.editorService.executeLab(lab).pipe(share());
 
           runInfo$.subscribe(info => {
             this.editorService.addLocalExecution(info.executionId);
@@ -229,7 +221,7 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
             }
           });
 
-          this.editorSnackbar.notifyLateExecutionUnless(runInfo$.skip(1));
+          this.editorSnackbar.notifyLateExecutionUnless(runInfo$.pipe(skip(1)));
         }
       })
   }
@@ -269,8 +261,7 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
     // but think about an Execution coming in late when the user actually has already
     // opened up a different execution. It would cause our lab contents to get overwritten
     // with the wrong files.
-    this.executionSubscription = this.execution
-      .take(1)
+    this.executionSubscription = this.execution.pipe(take(1))
       .subscribe(execution => {
         this.slimLoadingBarService.complete();
         this.editorService.initDirectory(execution.lab.directory);
@@ -282,9 +273,8 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
   }
 
   fork(lab: Lab) {
-    this.editorService
-      .forkLab(lab)
-      .switchMap(createdLab => this.showEditDialog(createdLab, { hideCancelButton: true }))
+    this.editorService.forkLab(lab)
+      .pipe(switchMap(createdLab => this.showEditDialog(createdLab, { hideCancelButton: true })))
       .subscribe(info => {
         this.outputPanel.reset();
         this.activeExecutionId = null;
@@ -328,16 +318,16 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
           }
         });
 
-    return this.editLabDialogRef
-            .afterClosed()
-            // if it doesn't have an info it was closed by ESC
-            // TODO: any way to handle this from inside the EditDialog?
-            .map(info => info || { shouldSave: false, lab: null })
-            .do(info => {
-              if (info.shouldSave) {
-                this.lab = info.lab;
-              }
-            });
+    return this.editLabDialogRef.afterClosed().pipe(
+      // if it doesn't have an info it was closed by ESC
+      // TODO: any way to handle this from inside the EditDialog?
+      map(info => info || { shouldSave: false, lab: null }),
+      tap(info => {
+        if (info.shouldSave) {
+          this.lab = info.lab;
+        }
+      })
+    );
   }
 
   create(labTemplate?: string) {
@@ -348,18 +338,18 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
       }
     });
 
-    this.navigationConfirmDialogRef.afterClosed()
-      .filter(confirmed => confirmed)
-      .switchMap(_ => labTemplate ?
+    this.navigationConfirmDialogRef.afterClosed().pipe(
+      filter(confirmed => confirmed),
+      switchMap(_ => labTemplate ?
         this.labStorageService.createLabFromTemplate(labTemplate) :
         this.labStorageService.createLab()
       )
-      .subscribe(lab => {
-        this.outputPanel.reset();
-        this.goToLab();
-        this.initLab(lab);
-        this.editorSnackbar.notifyLabCreated();
-      });
+    ).subscribe(lab => {
+      this.outputPanel.reset();
+      this.goToLab();
+      this.initLab(lab);
+      this.editorSnackbar.notifyLabCreated();
+    });
   }
 
   scrollToBottom() {
@@ -385,15 +375,15 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
 
   private initExecutionList() {
     this.executions = this.editorService.observeExecutionsForLab(this.lab);
-    this.executions
-        .take(1)
-        .filter(executions => !!executions.length)
-        .subscribe(_ => {
-          this.openExecutionList()
-          if (this.activeExecutionId && !this.route.snapshot.queryParamMap.get('tab')) {
-            this.editorService.selectConsoleTab();
-          }
-        });
+    this.executions.pipe(
+      take(1),
+      filter(executions => !!executions.length)
+    ).subscribe(_ => {
+      this.openExecutionList()
+      if (this.activeExecutionId && !this.route.snapshot.queryParamMap.get('tab')) {
+        this.editorService.selectConsoleTab();
+      }
+    });
   }
 
   restoreLab() {

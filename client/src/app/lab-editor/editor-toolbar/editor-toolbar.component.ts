@@ -8,15 +8,14 @@ import {
   OnChanges
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+
 import { Observable } from 'rxjs/Observable';
+import { filter, tap, switchMap } from 'rxjs/operators';
+
 import { Lab } from '../../models/lab';
 import { User } from '../../models/user';
 import { UserService } from '../../user/user.service';
 import { LabStorageService } from '../../lab-storage.service';
-
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/switchMap';
 
 export enum EditorToolbarActionTypes {
   Run, Save, Fork, Create, Edit, ForkAndRun
@@ -61,12 +60,12 @@ export class EditorToolbarComponent implements OnInit, OnChanges, OnDestroy {
     this.forkOwner = null;
     if (this.lab.fork_of) {
       this.labStorageService
-        .labExists(this.lab.fork_of)
-        .filter(exists => exists)
-        .switchMap(_ => this.labStorageService.getLab(this.lab.fork_of))
-        .do(lab => this.forkedLab = lab)
-        .switchMap(lab => this.userService.getUser(lab.user_id))
-        .subscribe(user => this.forkOwner = user);
+        .labExists(this.lab.fork_of).pipe(
+          filter(exists => exists),
+          switchMap(_ => this.labStorageService.getLab(this.lab.fork_of)),
+          tap(lab => this.forkedLab = lab),
+          switchMap(lab => this.userService.getUser(lab.user_id))
+        ).subscribe(user => this.forkOwner = user);
     }
   }
 

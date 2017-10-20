@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
-import { Observable } from 'rxjs/Observable';
 
-import 'rxjs/add/observable/timer';
-import 'rxjs/add/operator/takeUntil';
+import { Observable } from 'rxjs/Observable';
+import { timer } from 'rxjs/observable/timer';
+import { takeUntil } from 'rxjs/operators';
 
 @Injectable()
 export class EditorSnackbarService {
@@ -86,9 +86,7 @@ export class EditorSnackbarService {
   }
 
   notifyUnless<T>(notifier$: Observable<T>, message: string, waitMs = 10000) {
-    Observable.timer(waitMs)
-              .takeUntil(notifier$)
-              .subscribe(_ => this.notify(message));
+    timer(waitMs).pipe(takeUntil(notifier$)).subscribe(_ => this.notify(message));
   }
 
   notifyLateExecutionUnless<T>(notifier$: Observable<T>, waitMs?) {

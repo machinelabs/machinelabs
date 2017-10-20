@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 
 import { ToolbarMenuComponent } from './toolbar-menu.component';
 import { MachineLabsMaterialModule } from '../../ml-material.module';
@@ -55,13 +55,13 @@ describe('ToolbarMenuComponent', () => {
     authService = TestBed.get(AuthService);
     userService = TestBed.get(UserService);
 
-    spyOn(authService, 'linkOrSignInWithGitHub').and.returnValue(Observable.of(dummyUser));
-    spyOn(authService, 'signOut').and.returnValue(Observable.of(null));
-    spyOn(userService, 'createUserIfMissing').and.returnValue(Observable.of(dummyUser));
+    spyOn(authService, 'linkOrSignInWithGitHub').and.returnValue(of(dummyUser));
+    spyOn(authService, 'signOut').and.returnValue(of(null));
+    spyOn(userService, 'createUserIfMissing').and.returnValue(of(dummyUser));
   });
 
   it('should login via GitHub', () => {
-    spyOn(userService, 'observeUserChanges').and.returnValue(Observable.of(dummyUser));
+    spyOn(userService, 'observeUserChanges').and.returnValue(of(dummyUser));
     fixture.detectChanges();
     const menuButton = fixture.debugElement.query(By.css('[mat-icon-button]'));
 
@@ -78,7 +78,7 @@ describe('ToolbarMenuComponent', () => {
     // fake logged-in state
     let user = Object.assign({}, dummyUser);
     user.isAnonymous = false;
-    spyOn(userService, 'observeUserChanges').and.returnValue(Observable.of(user));
+    spyOn(userService, 'observeUserChanges').and.returnValue(of(user));
     fixture.detectChanges();
 
     const menuButton = fixture.debugElement.query(By.css('[mat-icon-button]'));
