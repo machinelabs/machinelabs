@@ -1,22 +1,12 @@
 import { Observable } from 'rxjs/Observable';
+import { skipWhile, take, takeWhile, publish, merge } from 'rxjs/operators';
 
-import 'rxjs/add/operator/skipWhile';
-import 'rxjs/add/operator/take';
-import 'rxjs/add/operator/takeWhile';
-import 'rxjs/add/operator/publish';
-import 'rxjs/add/operator/merge';
-
-function takeWhileInclusive<T>(predicate: (val: T) => boolean): Observable<T> {
-  return this.publish(co => co.takeWhile(predicate)
-                              .merge(co.skipWhile(predicate).take(1)));
-
-}
-
-Observable.prototype.takeWhileInclusive = takeWhileInclusive;
-
-declare module 'rxjs/Observable' {
-  interface Observable<T> {
-    takeWhileInclusive: typeof takeWhileInclusive;
-  }
-}
+export const takeWhileInclusive = <T>(predicate: (val: T) => boolean) => (source: Observable<T>) => {
+  return source.pipe(
+    publish(co => co.pipe(
+      takeWhile(predicate),
+      merge(co.pipe(skipWhile(predicate), take(1)))
+    ))
+  );
+};
 

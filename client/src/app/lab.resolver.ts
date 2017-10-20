@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
+import { tap } from 'rxjs/operators';
 import { Lab } from './models/lab';
 import { LabStorageService } from './lab-storage.service';
-import { Observable } from 'rxjs/Observable';
 import { BLANK_LAB_TPL_ID, DEFAULT_LAB_TPL_ID } from './lab-template.service';
-
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/switchMap';
 
 @Injectable()
 export class LabResolver implements Resolve<Lab> {
@@ -15,24 +12,23 @@ export class LabResolver implements Resolve<Lab> {
   constructor(
     private labStorageService: LabStorageService,
     private router: Router,
-    private snackBar: MatSnackBar) {
-
-  }
+    private snackBar: MatSnackBar
+  ) {}
 
   resolve(route: ActivatedRouteSnapshot) {
     if (route.paramMap.get('id')) {
       // If we have a lab id, try to fetch it and fall back to
       // a new empty lab if no lab with the given id exists.
-      return this.labStorageService
-                  .getLab(route.paramMap.get('id'))
-                  .do(lab => {
-                    if (!lab || lab.hidden) {
-                      this.snackBar.open('This lab doesn\'t exist anymore', 'Dismiss', {
-                        duration: 3000
-                      });
-                      this.router.navigate(['/editor']);
-                    }
-                  });
+      return this.labStorageService.getLab(route.paramMap.get('id')).pipe(
+        tap(lab => {
+          if (!lab || lab.hidden) {
+            this.snackBar.open('This lab doesn\'t exist anymore', 'Dismiss', {
+              duration: 3000
+            });
+            this.router.navigate(['/editor']);
+          }
+        })
+      );
     }
 
     // If a template id is specified, create a lab from that template,

@@ -1,6 +1,25 @@
 import { Injectable, Inject } from '@angular/core';
+
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { of } from 'rxjs/observable/of';
+import { merge as mergeStatic } from 'rxjs/observable/merge';
+import { _throw } from 'rxjs/observable/throw';
+import { timer } from 'rxjs/observable/timer';
+import {
+  catchError,
+  filter,
+  map,
+  merge,
+  share,
+  startWith,
+  switchMap,
+  take,
+  takeUntil
+} from 'rxjs/operators';
+
+import { takeWhileInclusive } from '../../rx/takeWhileInclusive';
+
 import { Lab } from '../../models/lab';
 import { Invocation, InvocationType } from '../../models/invocation';
 import { TimeoutError, RateLimitError } from './errors';
@@ -21,17 +40,6 @@ import * as firebase from 'firebase';
 import { DbRefBuilder } from '../../firebase/db-ref-builder';
 import { AuthService } from '../../auth';
 
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/share';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/concat';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/takeUntil';
-import '../../rx/takeWhileInclusive';
 import { parseLabDirectory } from '@machinelabs/core/io/lab-fs/parse';
 
 @Injectable()
@@ -50,11 +58,11 @@ export class RemoteLabExecService {
 
     let id = this.newInvocationId();
 
-    let timeout$ =  Observable.timer(timeout)
-                              .switchMap(_ => Observable.throw(new TimeoutError(id, 'Timeout')));
+    let timeout$ =  timer(timeout)
+      .pipe(switchMap(_ => _throw(new TimeoutError(id, 'Timeout'))));
 
-    return this.startWithRateProof(id)
-      .switchMap(login => this.db.invocationRef(id).set({
+    return this.startWithRateProof(id).pipe(
+      switchMap(login => this.db.invocationRef(id).set({
         id: id,
         user_id: login.uid,
         timestamp: firebase.database.ServerValue.TIMESTAMP,
@@ -63,14 +71,14 @@ export class RemoteLabExecService {
           id: lab.id,
           directory: JSON.stringify(lab.directory)
         }
-      }))
-      .switchMap(_ =>  this.db.executionMessageRef(id).limitToFirst(1).childAdded().take(1))
-      .map(snapshot => snapshot.val())
-      .switchMap(message => {
+      })),
+      switchMap(_ =>  this.db.executionMessageRef(id).limitToFirst(1).childAdded().take(1)),
+      map(snapshot => snapshot.val()),
+      switchMap(message => {
         // If the execution was rejected, there's no point to try to fetch it
         // hence we directly return the ExecutionInvocationInfo which ends the whole stream
         if (message.kind === MessageKind.ExecutionRejected) {
-          return Observable.of({
+          return of({
             executionId: id,
             rejection: message.data,
             persistent: false
@@ -83,46 +91,46 @@ export class RemoteLabExecService {
           // has `persistent` set to `false` but that would match exactly the same message
           // that gets propagated synchronously in the beginning which means it doesn't add any
           // value, hence we filter it out.
-          return this.db.executionRef(id)
-                 .value()
-                 .map(s => s.val())
-                 .takeWhileInclusive(e => e === null)
-                 .filter(e => e !== null)
-                 .map(_ => ({ persistent: true, executionId: id, rejection: null}));
+          return this.db.executionRef(id).value().pipe(
+            map(s => s.val()),
+            takeWhileInclusive(e => e === null),
+            filter(e => e !== null),
+            map(_ => ({ persistent: true, executionId: id, rejection: null}))
+          );
         }
-      })
-      .startWith({
+      }),
+      startWith({
         executionId: id,
         persistent: false,
         rejection: null
-      })
-      .merge(timeout$)
+      }),
+      merge(timeout$),
       // The API is expected to complete after two notifications but the
       // merge of the $timeout would prevent that.
-      .take(2)
-      .catch((e) => {
+      take(2),
+      catchError((e) => {
         let error = e instanceof TimeoutError ? e : new RateLimitError(id, 'Rate limit exceeded');
         console.error(error);
-        return Observable.throw(error);
+        return _throw(error);
       })
+    );
   }
 
   runAndListen(lab: Lab): Observable<ExecutionWrapper> {
-    return this.run(lab)
-               .map(info => this.listen(info.executionId));
+    return this.run(lab).pipe(map(info => this.listen(info.executionId)));
   }
 
   listen(executionId: string): ExecutionWrapper {
 
-    let execution$ = this.db.executionRef(executionId)
-                            .value()
-                            .map(snapshot => snapshot.val())
-                            .map(execution => {
-                              if (execution && execution.lab) {
-                                execution.lab.directory = parseLabDirectory(execution.lab.directory);
-                              }
-                              return execution;
-                            });
+    let execution$ = this.db.executionRef(executionId).value().pipe(
+      map(snapshot => snapshot.val()),
+      map(execution => {
+        if (typeof execution.lab.directory === 'string') {
+          execution.lab.directory = parseLabDirectory(execution.lab.directory);
+        }
+        return execution;
+      })
+    );
 
     let messages$ = this.messageStreamOptimizer.listenForMessages(executionId);
 
@@ -143,9 +151,9 @@ export class RemoteLabExecService {
                    controlMessages: Observable<ExecutionMessage>,
                    execution: Observable<Execution>): ExecutionWrapper {
 
-    let controlMessages$ = controlMessages.share();
-    let sharedMessages = messages.share();
-    let sharedExecution = execution.share();
+    let controlMessages$ = controlMessages.pipe(share());
+    let sharedMessages = messages.pipe(share());
+    let sharedExecution = execution.pipe(share());
 
     let messagesNotFinishedOrRejected = (msg: ExecutionMessage) =>
                       msg.kind !== MessageKind.ExecutionFinished &&
@@ -153,14 +161,15 @@ export class RemoteLabExecService {
 
     let executingExecutions = (exec: Execution) => exec.status === ExecutionStatus.Executing;
 
-    let messages$ = sharedMessages.takeWhileInclusive(messagesNotFinishedOrRejected);
+    let messages$ = sharedMessages.pipe(takeWhileInclusive(messagesNotFinishedOrRejected));
 
-    let rejectedMessage = controlMessages$.filter(msg => msg.kind === MessageKind.ExecutionRejected);
+    let rejectedMessage = controlMessages$.pipe(filter(msg => msg.kind === MessageKind.ExecutionRejected));
 
-    let execution$ = sharedExecution
-                      .filter(exec => !!exec)
-                      .takeWhileInclusive(executingExecutions)
-                      .takeUntil(rejectedMessage);
+    let execution$ = sharedExecution.pipe(
+      filter(exec => !!exec),
+      takeWhileInclusive(executingExecutions),
+      takeUntil(rejectedMessage),
+    );
 
     return {
       messages: messages$,
@@ -173,26 +182,26 @@ export class RemoteLabExecService {
 
     let id = this.newInvocationId();
 
-    return this.startWithRateProof(id)
-              .switchMap(login => this.db.invocationRef(id).set({
-                id: id,
-                type: InvocationType.StopExecution,
-                data: { execution_id: executionId },
-                user_id: login.uid,
-                timestamp: firebase.database.ServerValue.TIMESTAMP
-              })).subscribe();
+    return this.startWithRateProof(id).pipe(
+      switchMap(login => this.db.invocationRef(id).set({
+        id: id,
+        type: InvocationType.StopExecution,
+        data: { execution_id: executionId },
+        user_id: login.uid,
+        timestamp: firebase.database.ServerValue.TIMESTAMP
+      }))
+    ).subscribe();
   }
 
   private startWithRateProof(id) {
-    return this.authService
-      .requireAuthOnce()
+    return this.authService.requireAuthOnce().pipe(
       // Unfortunately we can't batch this. The request that sets the
       // RateProof must come first.
-      .switchMap(login => this.db.userInvocationRateProofRef(login.uid).set({
+      switchMap(login => this.db.userInvocationRateProofRef(login.uid).set({
         timestamp: firebase.database.ServerValue.TIMESTAMP,
         key: id
-      })
-      .map(_ => login))
+      }).pipe(map(_ => login)))
+    );
   }
 
   private newInvocationId() {
@@ -200,21 +209,21 @@ export class RemoteLabExecService {
   }
 
   private observeControlMessages(executionId: string) {
-    return Observable.merge(
+    return mergeStatic(
       this.observeControlMessage(executionId, MessageKind.ExecutionRejected),
       this.observeControlMessage(executionId, MessageKind.ExecutionStarted),
       this.observeControlMessage(executionId, MessageKind.ExecutionFinished)
-    )
-    .takeWhileInclusive((msg: ExecutionMessage) => msg.kind === MessageKind.ExecutionStarted);
+    ).pipe(takeWhileInclusive((msg: ExecutionMessage) => msg.kind === MessageKind.ExecutionStarted));
   }
 
   private observeControlMessage(executionId: string, kind: MessageKind) {
     return this.db.executionMessageRef(executionId)
-                  .orderByChild('kind')
-                  .equalTo(kind)
-                  .limitToFirst(1)
-                  .childAdded()
-                  .take(1)
-                  .map(snapshot => snapshot.val());
+      .orderByChild('kind')
+      .equalTo(kind)
+      .limitToFirst(1)
+      .childAdded().pipe(
+        take(1),
+        map(snapshot => snapshot.val())
+      );
   }
 }

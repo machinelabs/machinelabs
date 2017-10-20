@@ -1,17 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { Inject } from '@angular/core';
 import { DoneWhen } from '../../../test-helper/doneWhen';
+
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+import { delay, tap, finalize } from 'rxjs/operators';
 
 import { RemoteLabExecService } from './remote-lab-exec.service';
 import { AuthService } from '../../auth';
 import { DATABASE } from '../../app.tokens';
 import { DbRefBuilder } from '../../firebase/db-ref-builder';
 import { MessageKind, ExecutionStatus, ExecutionMessage, Execution } from '../../models/execution';
-
-import 'rxjs/add/operator/delay';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/finally';
 
 let createSnapshot = data => ({ val: () => data });
 let createMessageSnapshot = (kind, data) => createSnapshot({kind, data});
@@ -92,7 +91,7 @@ describe('RemoteLabExecService', () => {
     db = TestBed.get(DbRefBuilder);
     rleService = TestBed.get(RemoteLabExecService);
 
-    spyOn(authService, 'requireAuthOnce').and.returnValue(Observable.of(user));
+    spyOn(authService, 'requireAuthOnce').and.returnValue(of(user));
   });
 
   describe('.run()', () => {
@@ -129,7 +128,7 @@ describe('RemoteLabExecService', () => {
             // which seems to be the only way to properly test this.
             doneWhen.call();
           };
-      }).delay(1);
+      }).pipe(delay(1));
 
       let playedExecutions = [
         { id: '1', status: ExecutionStatus.Executing },
@@ -149,7 +148,7 @@ describe('RemoteLabExecService', () => {
             // which seems to be the only way to properly test this.
             doneWhen.call();
           };
-      }).delay(1);
+      }).pipe(delay(1));
 
       let actualMessages = [];
       let actualExecutions = [];
@@ -162,24 +161,24 @@ describe('RemoteLabExecService', () => {
 
       const wrapper = rleService.consumeExecution(messages$, controllMessages$, executions$);
 
-      wrapper.messages
-              .do(msg => actualMessages.push(msg))
-              .finally(() => {
-                expect(actualMessages.length).toBe(3);
-                doneWhen.call();
-              })
-              .subscribe();
+      wrapper.messages.pipe(
+        tap(msg => actualMessages.push(msg)),
+        finalize(() => {
+          expect(actualMessages.length).toBe(3);
+          doneWhen.call();
+        })
+      ).subscribe();
 
-      wrapper.execution
-              .do(e => {
-                console.log(e);
-                actualExecutions.push(e);
-              })
-              .finally(() => {
-                expect(actualExecutions.length).toBe(2);
-                doneWhen.call();
-              })
-              .subscribe();
+      wrapper.execution.pipe(
+        tap(e => {
+          console.log(e);
+          actualExecutions.push(e);
+        }),
+        finalize(() => {
+          expect(actualExecutions.length).toBe(2);
+          doneWhen.call();
+        })
+      ).subscribe();
     });
 
     it('should handle ExecutionRejected gracefully', (done) => {
@@ -213,7 +212,7 @@ describe('RemoteLabExecService', () => {
             console.log('unsubscribed messages$');
             doneWhen.call();
           };
-      }).delay(1);
+      }).pipe(delay(1));
 
       let playedExecutions = [
         null
@@ -231,7 +230,7 @@ describe('RemoteLabExecService', () => {
             console.log('unsubscribed executions$');
             doneWhen.call();
           };
-      }).delay(1);
+      }).pipe(delay(1));
 
       let actualMessages = [];
       let actualExecutions = [];
@@ -244,25 +243,25 @@ describe('RemoteLabExecService', () => {
 
       const wrapper = rleService.consumeExecution(messages$, controllMessages$, executions$);
 
-      wrapper.messages
-              .do(msg => actualMessages.push(msg))
-              .finally(() => {
-                expect(actualMessages.length).toBe(1);
-                console.log('messages$ completed');
-                doneWhen.call();
-              })
-              .subscribe();
+      wrapper.messages.pipe(
+        tap(msg => actualMessages.push(msg)),
+        finalize(() => {
+          expect(actualMessages.length).toBe(1);
+          console.log('messages$ completed');
+          doneWhen.call();
+        })
+      ).subscribe();
 
-      wrapper.execution
-              .do(e => {
-                actualExecutions.push(e);
-              })
-              .finally(() => {
-                expect(actualExecutions.length).toBe(0);
-                console.log('execution$ completed');
-                doneWhen.call();
-              })
-              .subscribe();
+      wrapper.execution.pipe(
+        tap(e => {
+          actualExecutions.push(e);
+        }),
+        finalize(() => {
+          expect(actualExecutions.length).toBe(0);
+          console.log('execution$ completed');
+          doneWhen.call();
+        })
+      ).subscribe();
     });
   });
 });

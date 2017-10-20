@@ -2,17 +2,15 @@ import { Component, OnInit, OnDestroy, OnChanges, Input } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+
 import { Observable } from 'rxjs/Observable';
+import { filter, mergeMap, scan, take } from 'rxjs/operators';
+
 import { OutputFilesService } from '../../output-files.service';
 import { OutputFile } from '../../models/output-file';
 import { FilePreviewDialogService } from '../file-preview/file-preview-dialog.service';
 import { LocationHelper } from '../../util/location-helper';
 import { isImage } from '../../util/output';
-
-import 'rxjs/add/operator/scan';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/take';
 
 @Component({
   selector: 'ml-file-outputs',
@@ -42,13 +40,15 @@ export class FileOutputsComponent implements OnChanges, OnInit {
     const outputFileId = this.route.snapshot.queryParamMap.get('preview');
 
     if (outputFileId) {
-      this.hasOutput.filter(hasOutput => hasOutput)
-                    .mergeMap(() => this.dataSource.connect())
-                    .mergeMap(outputFiles => outputFiles)
-                    .filter(outputFile => outputFile.id === outputFileId)
-                    .filter(outputFile => isImage(outputFile.name))
-                    .take(1)
-                    .subscribe(outputFile => this.openPreview(outputFile));
+      this.hasOutput
+        .pipe(
+          filter(hasOutput => hasOutput),
+          mergeMap(() => this.dataSource.connect()),
+          mergeMap(outputFiles => outputFiles),
+          filter(outputFile => outputFile.id === outputFileId),
+          filter(outputFile => isImage(outputFile.name)),
+          take(1)
+        ).subscribe(outputFile => this.openPreview(outputFile));
     }
   }
 
@@ -81,7 +81,7 @@ export class OutputFilesDataSource extends DataSource<any> {
   connect(): Observable<OutputFile[]> {
     return this.outputFilesService
       .observeOutputFilesFromExecution(this.executionId)
-      .scan((acc, val) => [val, ...acc], []);
+      .pipe(scan((acc: OutputFile[], val: OutputFile) => [val, ...acc], []));
   }
 
   disconnect() { }

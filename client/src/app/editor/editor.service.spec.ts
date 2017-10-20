@@ -3,7 +3,6 @@ import { EditorTestingModule } from './testing/editor-testing.module';
 import { Location } from '@angular/common';
 import { UrlSerializer } from '@angular/router';
 import { File } from '@machinelabs/models';
-import { Observable } from 'rxjs/Observable';
 
 import { LAB_STUB } from '../../test-helper/stubs/lab.stubs';
 

@@ -2,7 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { File } from '@machinelabs/models';
+
 import { Observable } from 'rxjs/Observable';
+import { take } from 'rxjs/operators';
 
 import { LabExecutionService } from '../../lab-execution.service';
 import { EditorService, TabIndex } from '../../editor/editor.service';
@@ -12,9 +14,6 @@ import { Lab } from '../../models/lab';
 import { AceEditorComponent } from '../../editor/ace-editor/ace-editor.component';
 import { XtermComponent } from '../../editor/xterm/xterm.component';
 import { NoExecutionDialogComponent } from '../no-execution-dialog/no-execution-dialog.component';
-
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/take';
 
 @Component({
   selector: 'ml-embedded-editor-view',
@@ -74,7 +73,7 @@ export class EmbeddedEditorViewComponent implements OnInit {
     this.console.clear();
     let wrapper = this.editorService.listenAndNotify(this.executionId);
 
-    wrapper.execution.take(1)
+    wrapper.execution.pipe(take(1))
       .subscribe(execution => this.editorService.initDirectory(execution.lab.directory));
 
     this.output = wrapper.messages;

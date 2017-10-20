@@ -4,6 +4,7 @@ import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { MatDialogModule, MatDialog } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 
 import { EditLabDialogComponent, EditLabDialogActions } from './edit-lab-dialog.component';
 
@@ -24,7 +25,7 @@ let loginUser = {
 
 let authServiceStub = {
   requireAuth: () => new Observable(obs => obs.next(loginUser)),
-  requireAuthOnce: () => Observable.of(loginUser)
+  requireAuthOnce: () => of(loginUser)
 };
 
 const lab = {

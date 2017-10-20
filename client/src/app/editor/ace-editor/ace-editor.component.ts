@@ -9,8 +9,7 @@ import {
   OnChanges
 } from '@angular/core';
 
-declare var ace: any;
-
+declare const ace: any;
 
 const ACE_EDITOR_THEME_PREFIX = 'ace/theme/';
 const ACE_EDITOR_THEME_DEFAULT = `${ACE_EDITOR_THEME_PREFIX}github`;

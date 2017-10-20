@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { MachineLabsMaterialModule } from '../../ml-material.module';
 import { SharedModule } from '../../shared/shared.module';
 import { AuthService, dummyUser } from '../../auth/';
@@ -70,8 +71,8 @@ describe('EditorToolbarComponent', () => {
 
     let lab = Object.assign({}, testLab);
     component.lab = lab;
-    spyOn(authService, 'requireAuth').and.returnValue(Observable.of(dummyUser));
-    spyOn(authService, 'requireAuthOnce').and.returnValue(Observable.of(dummyUser));
+    spyOn(authService, 'requireAuth').and.returnValue(of(dummyUser));
+    spyOn(authService, 'requireAuthOnce').and.returnValue(of(dummyUser));
     fixture.detectChanges();
   });
 

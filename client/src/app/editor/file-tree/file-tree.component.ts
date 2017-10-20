@@ -1,5 +1,4 @@
 import { Component, Input, Optional, SkipSelf, Output, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 
 import {
   File,

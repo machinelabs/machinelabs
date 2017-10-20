@@ -11,11 +11,10 @@ import {
 } from '@angular/platform-browser-dynamic/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import './app/rx/rx.operators';
-
 // Unfortunately there's no typing for the `__karma__` variable. Just declare it as any.
 declare const __karma__: any;
 declare const require: any;
+declare const ace: any;
 
 // Prevent Karma from running prematurely.
 __karma__.loaded = function () {};
