@@ -34,6 +34,7 @@
     "@types/socket.io-client": "1.4.29",
     "ace-builds": "1.2.6",
     "autotrack": "^2.4.1",
+    "bricks.js": "^1.8.0",
     "core-js": "2.4.1",
     "date-fns": "^1.28.4",
     "firebase": "4.3.0",

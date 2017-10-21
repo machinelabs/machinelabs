@@ -43,7 +43,7 @@ const AnimationsModule = [environment.testing ? NoopAnimationsModule : BrowserAn
     AppComponent
   ],
   imports: [
-    ... AnimationsModule,
+    ...AnimationsModule,
     BrowserModule,
     HttpModule,
     FormsModule,
@@ -51,7 +51,7 @@ const AnimationsModule = [environment.testing ? NoopAnimationsModule : BrowserAn
     FlexLayoutModule,
     RouterModule.forRoot(APP_ROUTES, { preloadingStrategy: PreloadAllModules }),
     SlimLoadingBarModule.forRoot(),
-    SharedModule
+    SharedModule.forRoot()
   ],
   providers: [
     LoginService,
