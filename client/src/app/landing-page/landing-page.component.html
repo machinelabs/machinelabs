@@ -1,0 +1,32 @@
+<ml-toolbar>
+  <ml-toolbar-logo></ml-toolbar-logo>
+  <ml-toolbar-cta-bar>
+    <a routerLink="/editor" title="Launch Editor" mat-button>
+      <mat-icon>exit_to_app</mat-icon> Launch Editor</a>
+  </ml-toolbar-cta-bar>
+  <ml-toolbar-menu></ml-toolbar-menu>
+</ml-toolbar>
+<div class="ml-promo-content">
+  <div class="ml-promo-text">
+    <h1>
+      <strong>MachineLabs</strong> is an online editor for Machine Learning. Our mission is
+      to make this field <strong>explorable, sharable</strong> and <strong>accessible for everyone</strong>.
+    </h1>
+    <div class="cta-bar">
+      <button mat-raised-button color="primary" [disabled]="isLoggedIn$ | async" (click)="login()">Login with GitHub</button>
+      <a href="https://docs.machinelabs.ai/guide/quickstart.html" title="Quickstart" mat-raised-button>Get Started</a>
+    </div>
+    <div class="patron">
+      <p>Support us on our mission and become a Patron!</p>
+      <a href="https://www.patreon.com/bePatron?u=7888689">
+        <img src="../../assets/images/become_a_patron_button@2x.png" alt="Become a Patron">
+      </a>
+    </div>
+  </div>
+  <div class="ml-promo-image">
+    <img src="../../assets/images/machinelabs_ai.png" alt="MachineLabs Editor">
+  </div>
+</div>
+<div class="ml-explore-view-content">
+  <ml-explore-labs></ml-explore-labs>
+</div>

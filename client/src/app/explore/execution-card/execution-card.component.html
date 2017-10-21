@@ -1,0 +1,30 @@
+<div class="ml-execution-card-panel" *ngIf="execution" [ngClass]="{
+    finished: execution.status == ExecutionStatus.Finished,
+    executing: execution.status == ExecutionStatus.Executing,
+    stopped: execution.status == ExecutionStatus.Stopped,
+    failed: execution.status == ExecutionStatus.Failed
+  }">
+  <div class="ml-execution-card-title">
+    <ng-container [ngSwitch]="execution.status">
+      <mat-icon *ngSwitchCase="ExecutionStatus.Finished">done</mat-icon>
+      <mat-progress-spinner
+        strokeWidth="2.5" [diameter]="30"
+        *ngSwitchCase="ExecutionStatus.Executing" color="accent" mode="indeterminate">
+      </mat-progress-spinner>
+      <mat-icon *ngSwitchCase="ExecutionStatus.Stopped">info</mat-icon>
+      <mat-icon *ngSwitchCase="ExecutionStatus.Failed">block</mat-icon>
+    </ng-container>
+    {{ execution.name || '#' + execution.id }}
+  </div>
+  <div class="ml-execution-card-content">
+    <div class="ml-execution-card-info">
+      <mat-icon>update</mat-icon>
+      <time [attr.datetime]="execution.started_at">
+        {{ execution.started_at | distanceInWordsToNow }} ago
+      </time>
+    </div>
+  </div>
+  <button class="ml-execution-card-button" mat-icon-button (click)="view.emit(execution)">
+    <mat-icon>keyboard_arrow_right</mat-icon>
+  </button>
+</div>

@@ -1,0 +1,59 @@
+@import '../../../node_modules/@angular/material/theming';
+
+$padding-horizontal: 30px;
+$max-width-promo-block: 690px;
+
+:host {
+  display: block;
+  overflow: hidden;
+}
+
+.ml-promo-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ml-promo-content,
+.ml-explore-view-content {
+  padding: 20px $padding-horizontal;
+}
+
+.ml-explore-view-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.ml-promo-text {
+  align-self: center;
+  max-width: $max-width-promo-block;
+
+  h1 {
+    font-weight: 300;
+  }
+
+  [mat-raised-button] + [mat-raised-button] {
+    margin-left: 10px;
+  }
+}
+
+.ml-promo-image {
+  max-width: $max-width-promo-block;
+
+  img {
+    max-width: 100%;
+    height: auto;
+    transform: translateX($padding-horizontal);
+  }
+}
+
+.patron {
+  margin-top: 30px;
+  color: #888;
+
+  img {
+    @include mat-elevation(2);
+    border-radius: 2px;
+    width: 130px;
+    height: auto;
+  }
+}

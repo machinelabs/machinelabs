@@ -1,0 +1,17 @@
+<mat-card *ngIf="lab">
+  <header>
+    <div class="ml-title-wrapper">
+      <h3>{{ lab.name | words: 5 }}</h3>
+      <div class="ml-lab-card-user" *ngIf="user">
+        by <a title="{{ user.displayName }}'s profile" [routerLink]="['/user', user.id]">{{user.displayName}}</a>
+      </div>
+    </div>
+    <a class="ml-lab-card-cta" mat-icon-button [routerLink]="['/editor', lab.id]">
+      <mat-icon>keyboard_arrow_right</mat-icon>
+    </a>
+  </header>
+  <ml-execution-card *ngFor="let recentExecution of executions; trackBy: trackExecutionById"
+    [execution]="recentExecution.execution | async"
+    (view)="view.emit($event)">
+  </ml-execution-card>
+</mat-card>

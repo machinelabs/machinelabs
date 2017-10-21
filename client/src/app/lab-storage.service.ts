@@ -6,7 +6,7 @@ import { Injectable, Inject } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { of } from 'rxjs/observable/of';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, mergeMap } from 'rxjs/operators';
 import { snapshotToValue } from './rx/snapshotToValue';
 
 import { Lab, LabTemplate } from './models/lab';
@@ -23,7 +23,7 @@ export class LabStorageService {
   constructor(
     private db: DbRefBuilder,
     private authService: AuthService,
-    private labTemplateService: LabTemplateService) {}
+    private labTemplateService: LabTemplateService) { }
 
   createLab(lab?: Lab | LabTemplate): Observable<Lab> {
     return this.authService
@@ -47,7 +47,7 @@ export class LabStorageService {
 
   createLabFromTemplate(templateName: string): Observable<Lab> {
     return this.labTemplateService.getTemplate(templateName)
-        .pipe(switchMap(template => template ? this.createLab(template) : this.createLab()))
+      .pipe(switchMap(template => template ? this.createLab(template) : this.createLab()))
   }
 
   getLab(id: string): Observable<Lab> {
@@ -66,6 +66,28 @@ export class LabStorageService {
     );
   }
 
+  getRecentLabs(limitToLast = 10) {
+    const recentLabs$ = this.db.recentLabsRef()
+      .orderByChild('updated_at')
+      .limitToLast(limitToLast)
+      .onceValue();
+
+    return this.authService
+      .requireAuthOnce().pipe(
+        switchMap(_ => recentLabs$),
+        map((snapshot: any) => {
+          let labs = [];
+
+          snapshot.forEach(childSnapshot => {
+            labs.unshift(childSnapshot.val());
+          });
+
+          return labs;
+        }),
+        map(labs => labs.map(lab => this.getLab(lab.lab_id))),
+        mergeMap(labs => forkJoin(labs))
+      );
+  }
 
   labExists(id: string) {
     return this.getLab(id).pipe(map(lab => !!lab && !lab.hidden));
@@ -108,5 +130,4 @@ export class LabStorageService {
       map(labs => labs.sort((a, b) => b.modified_at - a.modified_at))
     );
   }
-
 }
