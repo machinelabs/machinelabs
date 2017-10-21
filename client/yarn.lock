@@ -781,6 +781,12 @@ braces@^1.8.2:
     preserve "^0.2.0"
     repeat-element "^1.1.2"
 
+bricks.js@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/bricks.js/-/bricks.js-1.8.0.tgz#8fdeb3c0226af251f4d5727a7df7f9ac0092b4b2"
+  dependencies:
+    knot.js "^1.1.5"
+
 brorand@^1.0.1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/brorand/-/brorand-1.1.0.tgz#12c25efe40a45e3c323eb8675a0a0ce57b22371f"
@@ -3522,6 +3528,10 @@ kind-of@^4.0.0:
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-4.0.0.tgz#20813df3d712928b207378691a45066fae72dd57"
   dependencies:
     is-buffer "^1.1.5"
+
+knot.js@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/knot.js/-/knot.js-1.1.5.tgz#28e72522f703f50fe98812fde224dd72728fef5d"
 
 lazy-cache@^0.2.3:
   version "0.2.7"

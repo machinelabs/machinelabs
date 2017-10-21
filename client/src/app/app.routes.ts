@@ -1,10 +1,12 @@
 import { Routes } from '@angular/router';
 
+import { LandingPageComponent } from './landing-page/landing-page.component';
+
 export const APP_ROUTES: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'editor'
+    loadChildren: './landing-page/landing-page.module#LandingPageModule'
   },
   {
     path: 'editor',
@@ -15,16 +17,11 @@ export const APP_ROUTES: Routes = [
     loadChildren: './embedded-editor/embedded-editor.module#EmbeddedEditorModule'
   },
   {
-    path: ':id',
-    pathMatch: 'full',
-    redirectTo: 'editor/:id',
-  },
-  {
     path: 'user/:userId',
     loadChildren: './user-profile/user-profile.module#UserProfileModule'
   },
   {
     path: '**',
-    redirectTo: 'editor'
+    redirectTo: '/'
   }
 ];

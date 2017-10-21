@@ -7,7 +7,7 @@ describe('Editor-View Component', function() {
   const editorView: EditorViewPageObject = new EditorViewPageObject();
 
   beforeEach(() => {
-    browser.get('/');
+    browser.get('/editor');
     waitForContentReady();
   });
 

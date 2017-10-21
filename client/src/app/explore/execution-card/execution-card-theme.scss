@@ -1,0 +1,54 @@
+@import '../../../../node_modules/@angular/material/theming';
+
+@mixin ml-execution-card-theme($theme) {
+
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+  $accent: map-get($theme, accent);
+
+  $success: #39aa56;
+  $failed: #db4545;
+  $executing: mat-color($accent);
+
+  .ml-execution-card-panel {
+    background: white;
+
+    &.finished {
+      border-left-color: $success;
+    }
+
+    &.failed {
+      border-left-color: $failed;
+    }
+
+    &.executing {
+      border-left-color: $executing;
+    }
+
+    .ml-execution-card-button {
+      color: #888;
+    }
+  }
+
+  .ml-execution-card-title {
+    border-top-color: #DCDCE9;
+
+    .finished & {
+      color: $success;
+    }
+
+    .failed & {
+      color: $failed;
+    }
+
+    .executing & {
+      color: $executing;
+    }
+  }
+
+  .ml-execution-card-info {
+    mat-icon {
+      color: #888;
+    }
+  }
+}

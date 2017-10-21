@@ -1,0 +1,20 @@
+:host {
+  display: block;
+}
+
+header {
+  margin-bottom: 25px;
+
+  h1 {
+    margin: 0 0 10px 0;
+  }
+}
+
+.ml-explore-labs-spinner {
+  display: flex;
+  align-items: center;
+
+  mat-progress-spinner {
+    margin-right: 0.5em;
+  }
+}

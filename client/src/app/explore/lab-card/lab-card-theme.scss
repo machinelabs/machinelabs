@@ -1,0 +1,13 @@
+@import '../../../../node_modules/@angular/material/theming';
+
+@mixin ml-lab-card-theme($theme) {
+
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+
+  ml-lab-card {
+    header {
+      color: mat-color($primary) !important;
+    }
+  }
+}

@@ -1,0 +1,35 @@
+mat-card {
+  padding: 0;
+}
+
+header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 20px 5px 20px 20px;
+
+  h3 {
+    margin: 0 0 ;
+  }
+
+  .ml-title-wrapper {
+    flex: 1;
+  }
+
+  a:not(.ml-lab-card-cta) {
+    color: currentColor;
+    text-decoration: none;
+    border-bottom: 1px dotted currentColor;
+
+    &:hover,
+    &:focus,
+    &:active {
+      border-bottom: 1px solid currentColor;
+    }
+  }
+
+  img {
+    width: 1.4em;
+    border-radius: 50%;
+  }
+}

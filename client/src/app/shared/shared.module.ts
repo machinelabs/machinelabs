@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MachineLabsMaterialModule } from '../ml-material.module';
 import { TagListComponent } from './tag-list/tag-list.component';
@@ -13,6 +13,8 @@ import { DistanceInWordsStrictPipe } from './distance-in-words-strict.pipe';
 import { DistanceInWordsToNowPipe } from './distance-in-words-to-now.pipe';
 import { DigitalFormatUnitPipe } from './digital-format-unit.pipe';
 import { ZippyComponent } from './zippy/zippy.component';
+import { MasonryComponent } from './masonry/masonry.component';
+import { MasonryItemComponent, MutationObserverFactory } from './masonry/masonry-item.component';
 
 
 @NgModule({
@@ -26,7 +28,9 @@ import { ZippyComponent } from './zippy/zippy.component';
     DistanceInWordsStrictPipe,
     DistanceInWordsToNowPipe,
     DigitalFormatUnitPipe,
-    ZippyComponent
+    ZippyComponent,
+    MasonryComponent,
+    MasonryItemComponent
   ],
   imports: [MachineLabsMaterialModule, CommonModule],
   exports: [
@@ -41,7 +45,16 @@ import { ZippyComponent } from './zippy/zippy.component';
     DistanceInWordsStrictPipe,
     DistanceInWordsToNowPipe,
     DigitalFormatUnitPipe,
-    ZippyComponent
+    ZippyComponent,
+    MasonryComponent,
+    MasonryItemComponent
   ]
 })
-export class SharedModule {}
+export class SharedModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: SharedModule,
+      providers: [MutationObserverFactory]
+    }
+  }
+}

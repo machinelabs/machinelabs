@@ -63,4 +63,3 @@ export class DbRefBuilder {
     return new ObservableDbRef(this.db.ref(`idx/user_visible_labs/${id}`));
   }
 }
-

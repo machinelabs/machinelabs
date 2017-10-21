@@ -1,0 +1,68 @@
+$ml-execution-card-icon-margin: 5px;
+
+:host {
+  display: block;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.ml-execution-card-panel {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  border-left-width: 5px;
+  border-left-style: solid;
+
+  &:hover {
+    .ml-execution-card-button {
+      transform: translate(-5px, -50%);
+      opacity: 1;
+    }
+  }
+
+  .ml-execution-card-button {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(100%, -50%);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition-property: transform, opacity;
+    opacity: 0;
+  }
+}
+
+.ml-execution-card-title {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  height: 45px;
+  border-top-width: 1px;
+  border-top-style: solid;
+
+  mat-icon, mat-progress-spinner {
+    margin-right: $ml-execution-card-icon-margin;
+  }
+}
+
+.ml-execution-card-content {
+  display: block;
+  padding: 0 10px 10px;
+  font-size: 0.8em;
+}
+
+.ml-execution-card-info {
+  display: flex;
+  align-items: center;
+
+  mat-icon {
+    margin-right: $ml-execution-card-icon-margin;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  time {
+    font-size: 0.9em;
+  }
+}

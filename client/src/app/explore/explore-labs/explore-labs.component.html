@@ -1,0 +1,24 @@
+<header class="ml-explore-labs-header">
+  <h1>Explore Recent Labs</h1>
+</header>
+<ng-container *ngIf="recentLabs$ | async as recentLabs; else loading">
+  <ml-masonry *ngIf="recentLabs.length; else noRecentLabs">
+    <ml-masonry-item *ngFor="let recentLab of recentLabs">
+      <ml-lab-card
+        [lab]="recentLab.lab"
+        [user]="recentLab.user | async"
+        [executions]="recentLab.executions | async"
+        (view)="viewExecution($event)">
+      </ml-lab-card>
+    </ml-masonry-item>
+  </ml-masonry>
+  <ng-template #noRecentLabs>
+    Bummer! No recent labs available at the moment.
+  </ng-template>
+</ng-container>
+<ng-template #loading>
+  <div class="ml-explore-labs-spinner">
+    <mat-progress-spinner strokeWidth="2.5" [diameter]="30" mode="indeterminate"></mat-progress-spinner>
+    Hold tight! Loading recent labs...
+  </div>
+</ng-template>
