@@ -7,6 +7,7 @@ export const environment = {
     messagingSenderId: '351438476852'
   },
   serverId: 'ahlem',
+  rootMountPath: '/bucket',
   slackLogging: {
     allChannel: 'log-staging-all',
     errorChannel: 'log-staging-error'
