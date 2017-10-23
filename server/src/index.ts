@@ -25,13 +25,15 @@ import { replaceConsole } from './logging';
 import { DockerFileUploader } from './code-runner/uploader/docker-file-uploader';
 import { DockerFileDownloader } from './code-runner/downloader/docker-file-downloader';
 import { spawn, spawnShell } from '@machinelabs/core';
+import { MountService } from './mounts/mount.service';
 const { version } = require('../package.json');
 
 replaceConsole();
 
 console.log(`Starting MachineLabs server (${environment.serverId})`);
 
-const labConfigService = new LabConfigService;
+const labConfigService = new LabConfigService();
+const mountService = new MountService(environment.rootMountPath, dbRefBuilder);
 const dockerImageService = new DockerImageService(getDockerImages());
 const usageStatisticService = new UsageStatisticService(new CostCalculator(), <any>dbRefBuilder);
 const recycleService = new RecycleService({
@@ -61,7 +63,7 @@ dockerImageService
       .addRule(new WithinConcurrencyLimit())
       .addRule(new ServerHasCapacityRule(runner))
       .addResolver(UserResolver, new UserResolver())
-      .addResolver(LabConfigResolver, new LabConfigResolver(dockerImageService, labConfigService))
+      .addResolver(LabConfigResolver, new LabConfigResolver(dockerImageService, mountService, labConfigService))
       .addResolver(UsageStatisticResolver, new UsageStatisticResolver(usageStatisticService));
 
     const stopValidationService = new ValidationService();
