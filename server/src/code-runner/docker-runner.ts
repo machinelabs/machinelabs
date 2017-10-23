@@ -12,6 +12,7 @@ import { environment } from '../environments/environment';
 import { getCurlForUpload } from '../util/file-upload';
 import { DockerFileUploader } from './uploader/docker-file-uploader';
 import { DockerFileDownloader } from './downloader/docker-file-downloader';
+import { flatMap } from 'lodash';
 
 const RUN_PARTITION_SIZE = '5g';
 const RUN_PARTITION_MODE = '1777';
@@ -42,6 +43,8 @@ export class DockerRunner implements CodeRunner {
 
     const args = configuration.parameters.map(param => param['pass-as']).join(' ');
 
+    let mounts = flatMap(configuration.mountPoints, mp => ['-v', `${mp.source}:${mp.destination}:ro`]);
+
     return this.spawn('docker', [
       'create',
       '--cap-drop=ALL',
@@ -52,6 +55,7 @@ export class DockerRunner implements CodeRunner {
       `/run:rw,size=${RUN_PARTITION_SIZE},mode=${RUN_PARTITION_MODE}`,
       '--tmpfs',
       `/tmp:rw,size=${TMP_PARTITION_SIZE},mode=${TMP_PARTITION_MODE}`,
+      ...mounts,
       `--name`,
       invocation.id,
       configuration.imageWithDigest,

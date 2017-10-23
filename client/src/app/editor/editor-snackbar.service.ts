@@ -14,8 +14,8 @@ export class EditorSnackbarService {
     return this.snackBar.open(text, config.actionLabel, { duration: config.duration });
   }
 
-  notifyInvalidConfig() {
-    this.notify('Execution Rejected. Please check your ml.yaml');
+  notifyInvalidConfig(msg = 'Please check your ml.yaml') {
+    this.notify(`Execution Rejected. ${msg}`);
   }
 
   notifyLabCreated() {

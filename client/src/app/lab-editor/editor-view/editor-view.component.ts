@@ -206,7 +206,7 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
             } else if (info.rejection) {
               this.editorService.removeLocalExecution(info.executionId);
               if (info.rejection.reason === ExecutionRejectionReason.InvalidConfig) {
-                this.editorSnackbar.notifyInvalidConfig();
+                this.editorSnackbar.notifyInvalidConfig(info.rejection.message);
               } else {
                 this.openRejectionDialog(info.rejection.reason);
               }

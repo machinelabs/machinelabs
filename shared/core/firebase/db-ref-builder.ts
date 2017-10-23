@@ -8,6 +8,10 @@ export class DbRefBuilder {
     return new ObservableDbRef(this.db.ref());
   }
 
+  mountRef(userId: string, mount: string) {
+    return new ObservableDbRef(this.db.ref(`mounts/${userId}/${mount}`));
+  }
+
   userRef(id: string) {
     return new ObservableDbRef(this.db.ref(`users/${id}`));
   }
