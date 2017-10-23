@@ -217,6 +217,12 @@ path /servers {
 
 path /servers/{id} is Server {}
 
+path /idx/recent_labs {
+  read() { true }
+  write() { false }
+  index() { ['updated_at'] }
+}
+
 path /idx/user_labs/{id} {
   read() { true }
   write() { false }

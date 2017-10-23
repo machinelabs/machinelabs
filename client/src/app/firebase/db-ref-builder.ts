@@ -51,6 +51,10 @@ export class DbRefBuilder {
     return new ObservableDbRef(this.db.ref(`executions/${executionId}/outputs`));
   }
 
+  recentLabsRef() {
+    return new ObservableDbRef(this.db.ref('idx/recent_labs'));
+  }
+
   userLabsRef(id: string) {
     return new ObservableDbRef(this.db.ref(`idx/user_labs/${id}`));
   }

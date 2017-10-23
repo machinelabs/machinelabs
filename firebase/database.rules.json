@@ -17,6 +17,12 @@
           ".write": "auth != null && auth.uid == $userId && newData.val() != null"
         }
       },
+      "recent_labs": {
+        ".read": "true",
+        ".indexOn": [
+          "updated_at"
+        ]
+      },
       "user_labs": {
         "$id": {
           ".read": "true"

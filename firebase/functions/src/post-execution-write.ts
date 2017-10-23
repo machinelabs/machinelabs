@@ -17,6 +17,7 @@ export const postExecutionWrite = functions.database.ref('/executions/{id}/commo
     updateVisibleExecutions(event, data, delta);
     updateLabExecution(event, data, delta);
     updateUserExecutions(event, data, delta);
+    updateRecentLabs(event, data, delta);
 
     console.log(JSON.stringify(delta));
     return admin.database().ref().update(delta);
@@ -47,4 +48,11 @@ function updateUserExecutions(event, data, delta) {
   }
 
   delta[`/idx/user_executions/${data.user_id}/live/${data.id}`] = data.finished_at ? null : true;
+}
+
+function updateRecentLabs(event, data, delta) {
+  delta[`/idx/recent_labs/${data.lab.id}`] = {
+    'updated_at': data.started_at,
+    'lab_id': data.lab.id
+  };
 }
