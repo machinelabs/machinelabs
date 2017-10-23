@@ -1,4 +1,4 @@
-import { Lab, File, instanceOfFile  } from '@machinelabs/models';
+import { Lab, File, instanceOfFile, MountOption } from '@machinelabs/models';
 import { PublicLabConfiguration, InternalLabConfiguration, ScriptParameter } from '../models/lab-configuration';
 import { safeLoad} from 'js-yaml';
 import isString = require('lodash.isstring');
@@ -7,7 +7,8 @@ import isObject = require('lodash.isobject');
 const CONFIG_FILE_NAME = 'ml.yaml';
 
 export class LabConfigService {
-  readConfig(lab: Lab) {
+
+  readConfig(lab: Lab): PublicLabConfiguration {
 
     let configFile = this.getMlYaml(lab);
 
@@ -46,4 +47,5 @@ export class LabConfigService {
     return Array.isArray(config.parameters) &&
       config.parameters.every(param => isObject(param) && !!param['pass-as']);
   }
+
 }
