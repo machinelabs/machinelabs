@@ -11,6 +11,7 @@
     "@machinelabs/models": "file:../shared/models",
     "@reactivex/rxjs": "^5.4.2",
     "@types/js-yaml": "^3.5.30",
+    "@types/lodash.flatmap": "^4.5.3",
     "@types/lodash.isnumber": "^3.0.3",
     "@types/lodash.isobject": "^3.0.3",
     "@types/lodash.isstring": "^4.0.3",
@@ -18,12 +19,14 @@
     "firebase": "^4.2.0",
     "firebase-admin": "^4.2.1",
     "js-yaml": "^3.8.4",
+    "lodash.flatmap": "^4.5.0",
     "lodash.isnumber": "^3.0.3",
     "lodash.isobject": "^3.0.2",
     "lodash.isstring": "^4.0.1",
     "log4js": "^2.3.3",
     "minimist": "1.2.0",
-    "tslint": "^5.5.0"
+    "tslint": "^5.5.0",
+    "valid-filename": "^2.0.1"
   },
   "jest": {
     "transform": {
