@@ -8,6 +8,10 @@ export class DbRefBuilder {
     return new ObservableDbRef(this.db.ref());
   }
 
+  datasetRef(userId: string, datasetId: string) {
+    return new ObservableDbRef(this.db.ref(`datasets/${userId}/${datasetId}`));
+  }
+
   userRef(id: string) {
     return new ObservableDbRef(this.db.ref(`users/${id}`));
   }
