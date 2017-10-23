@@ -68,6 +68,12 @@
   dependencies:
     "@types/node" "*"
 
+"@types/lodash.flatmap@^4.5.3":
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/@types/lodash.flatmap/-/lodash.flatmap-4.5.3.tgz#039ad385339f06201c659d22bbfda6f310186174"
+  dependencies:
+    "@types/lodash" "*"
+
 "@types/lodash.isnumber@^3.0.3":
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@types/lodash.isnumber/-/lodash.isnumber-3.0.3.tgz#86c37551c1762af42eba550f0917f9cda935b0a7"
@@ -883,6 +889,10 @@ file-uri-to-path@1:
 filename-regex@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/filename-regex/-/filename-regex-2.0.1.tgz#c1c4b9bee3e09725ddb106b75c1e301fe2f18b26"
+
+filename-reserved-regex@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/filename-reserved-regex/-/filename-reserved-regex-2.0.0.tgz#abf73dfab735d045440abfea2d91f389ebbfa229"
 
 fileset@^2.0.2:
   version "2.0.3"
@@ -1853,6 +1863,10 @@ locate-path@^2.0.0:
 lodash.assign@^4.0.3, lodash.assign@^4.0.6:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/lodash.assign/-/lodash.assign-4.2.0.tgz#0d99f3ccd7a6d261d19bdaeb9245005d285808e7"
+
+lodash.flatmap@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.flatmap/-/lodash.flatmap-4.5.0.tgz#ef8cbf408f6e48268663345305c6acc0b778702e"
 
 lodash.isnumber@^3.0.3:
   version "3.0.3"
@@ -3002,6 +3016,12 @@ util-deprecate@~1.0.1:
 uuid@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.1.0.tgz#3dd3d3e790abc24d7b0d3a034ffababe28ebbc04"
+
+valid-filename@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/valid-filename/-/valid-filename-2.0.1.tgz#0768d6f364b1ed3bdf68f0d15abffb0d9d6cecaf"
+  dependencies:
+    filename-reserved-regex "^2.0.0"
 
 validate-npm-package-license@^3.0.1:
   version "3.0.1"

@@ -48,6 +48,9 @@ describe('.run(lab)', () => {
       dockerImageId: 'foo',
       imageWithDigest: 'bar',
       inputs: [],
+      mountPoints: [],
+      mounts: [],
+      errors: [],
       parameters: [
         { 'pass-as': '--learning_rate=5' },
         { 'pass-as': '--max_steps=200' }
