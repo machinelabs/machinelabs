@@ -1,6 +1,6 @@
 {
   "name": "@machinelabs/models",
-  "version": "0.18.0-dev+utc.2017.Oct.24-15.12.16",
+  "version": "0.18.0-dev+utc.2017.Oct.24-18.37.02",
   "description": "Models and data structures that can be shared across various projects.",
   "main": "index.js",
   "jest": {
