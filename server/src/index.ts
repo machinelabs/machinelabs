@@ -43,7 +43,7 @@ const recycleService = new RecycleService({
   deleteCount: 5000
 });
 
-const uploader = new DockerFileUploader(5, 5);
+const uploader = new DockerFileUploader(20, 5);
 const downloader = new DockerFileDownloader(spawn);
 
 dockerImageService
