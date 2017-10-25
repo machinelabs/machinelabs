@@ -19,7 +19,10 @@
   (@slideContent.start)="onAnimationStart($event)"
   (@slideContent.done)="onAnimationDone($event)">
 
-  <mat-spinner mode="indeterminate" *ngIf="loading && !error"></mat-spinner>
+  <div class="ml-spinner-wrapper" *ngIf="loading && !error">
+    <mat-spinner mode="indeterminate" ></mat-spinner>
+  </div>
+
   <img [@fade]="loading ? 'fadeOut' : 'fadeIn'" #image [src]="outputFile.download_url"
     (load)="onLoad($event)" (error)="onError($event)" alt="Output file">
 
