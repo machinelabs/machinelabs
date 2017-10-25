@@ -45,11 +45,9 @@ describe('.run(lab)', () => {
     };
 
     let conf: InternalLabConfiguration = {
-      dockerImageId: 'foo',
       imageWithDigest: 'bar',
       inputs: [],
       mountPoints: [],
-      mounts: [],
       errors: [],
       parameters: [
         { 'pass-as': '--learning_rate=5' },
