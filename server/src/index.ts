@@ -32,9 +32,9 @@ replaceConsole();
 
 console.log(`Starting MachineLabs server (${environment.serverId})`);
 
-const labConfigService = new LabConfigService();
 const mountService = new MountService(environment.rootMountPath, dbRefBuilder);
 const dockerImageService = new DockerImageService(getDockerImages());
+const labConfigService = new LabConfigService(dockerImageService, mountService);
 const usageStatisticService = new UsageStatisticService(new CostCalculator(), <any>dbRefBuilder);
 const recycleService = new RecycleService({
   messageRepository: new MessageRepository(),
@@ -63,7 +63,7 @@ dockerImageService
       .addRule(new WithinConcurrencyLimit())
       .addRule(new ServerHasCapacityRule(runner))
       .addResolver(UserResolver, new UserResolver())
-      .addResolver(LabConfigResolver, new LabConfigResolver(dockerImageService, mountService, labConfigService))
+      .addResolver(LabConfigResolver, new LabConfigResolver(labConfigService))
       .addResolver(UsageStatisticResolver, new UsageStatisticResolver(usageStatisticService));
 
     const stopValidationService = new ValidationService();

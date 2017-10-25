@@ -11,6 +11,7 @@ dockerImageId: ${dockerImageId}
 `;
 
 let invalidConfig = `
+|||
 dockerImageId= ${dockerImageId}
 `;
 
@@ -52,28 +53,28 @@ let labWithoutConfig: Lab = {
 let svc: LabConfigService;
 
 beforeEach(() => {
-  svc = new LabConfigService();
+  svc = new LabConfigService(null, null);
 
 });
 
 describe('.readConfig(lab)', () => {
   it('should return parsed PublicLabConfiguration', () => {
-    let config: PublicLabConfiguration = svc.readConfig(lab);
+    let config: PublicLabConfiguration = svc.readPublicConfig(lab);
     expect(config.dockerImageId).toBe(dockerImageId);
   });
 
   it('should return parsed PublicLabConfiguration no matter file name casing', () => {
-    let config: PublicLabConfiguration = svc.readConfig(labWithPascalCase);
+    let config: PublicLabConfiguration = svc.readPublicConfig(labWithPascalCase);
     expect(config.dockerImageId).toBe(dockerImageId);
   });
 
   it('should return null for invalid configs', () => {
-    let config: PublicLabConfiguration = svc.readConfig(labWithInvalidConfig);
+    let config: PublicLabConfiguration = svc.readPublicConfig(labWithInvalidConfig);
     expect(config).toBeNull();
   });
 
   it('should return null if config does not exist', () => {
-    let config: PublicLabConfiguration = svc.readConfig(labWithoutConfig);
+    let config: PublicLabConfiguration = svc.readPublicConfig(labWithoutConfig);
     expect(config).toBeNull();
   });
 
