@@ -52,6 +52,9 @@ export class MessagingService {
       if (typeof invocation.data.directory === 'string') {
         invocation.data.directory = JSON.parse(invocation.data.directory);
       }
+
+      invocation.data.directory = Array.isArray(invocation.data.directory) ? invocation.data.directory : [];
+
       return invocation;
     })
     .subscribe(invocation => {
