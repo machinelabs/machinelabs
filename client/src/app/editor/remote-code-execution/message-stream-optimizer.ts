@@ -5,6 +5,7 @@ import { switchMap, concat, take, map } from 'rxjs/operators';
 
 import { ExecutionMessage, MessageKind } from '../../models/execution';
 import { createSkipText } from '../util/skip-helper'
+import { snapshotToValue } from '../../rx/snapshotToValue';
 
 export class MessageStreamOptimizer {
   constructor(private db: DbRefBuilder, private partitionSize, private fullFetchTreshold) {
@@ -34,7 +35,7 @@ export class MessageStreamOptimizer {
                   .limitToLast(1)
                   .childAdded().pipe(
                     take(1),
-                    map(snapshot => snapshot.val())
+                    snapshotToValue
                   );
   }
 
@@ -45,7 +46,7 @@ export class MessageStreamOptimizer {
                                .limitToFirst(partitionSize)
                                .childAdded().pipe(
                                   take(partitionSize),
-                                  map(snapshot => snapshot.val())
+                                  snapshotToValue
                                );
   }
 
@@ -56,7 +57,7 @@ export class MessageStreamOptimizer {
                   .limitToFirst(partitionSize)
                   .childAdded().pipe(
                     take(partitionSize),
-                    map(snapshot => snapshot.val())
+                    snapshotToValue
                   );
   }
 
@@ -64,12 +65,12 @@ export class MessageStreamOptimizer {
      return this.db.executionMessageRef(executionId)
                    .orderByChild('index')
                    .startAt(startAt)
-                   .childAdded().pipe(map(snapshot => snapshot.val()));
+                   .childAdded().pipe(snapshotToValue);
   }
 
   getAllMessages(executionId) {
     return this.db.executionMessageRef(executionId)
-               .childAdded().pipe(map(snapshot => snapshot.val()));
+               .childAdded().pipe(snapshotToValue);
   }
 
 }
