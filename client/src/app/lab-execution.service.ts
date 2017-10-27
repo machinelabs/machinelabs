@@ -9,6 +9,17 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/let';
+import { parseLabDirectory } from '@machinelabs/core/io/lab-fs/parse';
+
+
+const mapExecutionLabDirectory = (source: Observable<Execution>) =>
+  source.map(execution => {
+    if (execution && execution.lab) {
+      execution.lab.directory = parseLabDirectory(execution.lab.directory);
+    }
+    return execution;
+  });
 
 @Injectable()
 export class LabExecutionService {
@@ -22,7 +33,8 @@ export class LabExecutionService {
     return this.authService
               .requireAuthOnce()
               .switchMap(_ => this.db.executionRef(id).value())
-              .map((snapshot: any) => snapshot.val());
+              .map((snapshot: any) => snapshot.val())
+              .let(mapExecutionLabDirectory);
   }
 
   observeExecutionsForLab(lab: Lab): Observable<Array<{id: string, execution: Observable<Execution>}>> {
@@ -57,7 +69,8 @@ export class LabExecutionService {
     return this.authService
       .requireAuthOnce()
       .switchMap(_ => this.db.executionRef(id).onceValue())
-      .map((snapshot: any) => snapshot.val());
+      .map((snapshot: any) => snapshot.val())
+      .let(mapExecutionLabDirectory);
   }
 
   getLatestVisibleExecutionIdForLab(id: string) {

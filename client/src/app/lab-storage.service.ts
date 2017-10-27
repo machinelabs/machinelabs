@@ -13,6 +13,8 @@ import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
+import { LabDirectory } from '@machinelabs/models';
+import { parseLabDirectory } from '@machinelabs/core/io/lab-fs/parse';
 
 @Injectable()
 export class LabStorageService {
@@ -57,11 +59,12 @@ export class LabStorageService {
                 // this can be removed once we know for sure that all lab directories
                 // are strings in the database
                 if (value) {
-                  value.directory = typeof value.directory === 'string' ? JSON.parse(value.directory) : value.directory;
+                  value.directory = parseLabDirectory(value.directory);
                 }
                 return value;
               });
   }
+
 
   labExists(id: string) {
     return this.getLab(id).map(lab => !!lab && !lab.hidden);
