@@ -32,6 +32,7 @@ import 'rxjs/add/operator/concat';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/takeUntil';
 import '../../rx/takeWhileInclusive';
+import { parseLabDirectory } from '@machinelabs/core/io/lab-fs/parse';
 
 @Injectable()
 export class RemoteLabExecService {
@@ -117,8 +118,8 @@ export class RemoteLabExecService {
                             .value()
                             .map(snapshot => snapshot.val())
                             .map(execution => {
-                              if (typeof execution.lab.directory === 'string') {
-                                execution.lab.directory = JSON.parse(execution.lab.directory);
+                              if (execution && execution.lab) {
+                                execution.lab.directory = parseLabDirectory(execution.lab.directory);
                               }
                               return execution;
                             });
