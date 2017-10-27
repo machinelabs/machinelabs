@@ -12,18 +12,28 @@ module.exports = function (config) {
       require('karma-mocha-reporter'),
       require('@angular/cli/plugins/karma')
     ],
-    client:{
-      clearContext: false // leave Jasmine Spec Runner output visible in browser
+    files: [
+      { pattern: './src/test.ts', watched: false }
+    ],
+    preprocessors: {
+      './src/test.ts': ['@angular/cli']
     },
-    coverageIstanbulReporter: {
-      reports: [ 'html', 'lcovonly' ],
-      fixWebpackSourcePaths: true
+    mime: {
+      'text/x-typescript': ['ts','tsx']
+    },
+    remapIstanbulReporter: {
+      reports: {
+        html: 'coverage',
+        lcovonly: './coverage/coverage.lcov'
+      }
     },
     angularCli: {
       config: './angular-cli.json',
       environment: 'dev'
     },
-    reporters: ['mocha'],
+    reporters: config.angularCli && config.angularCli.codeCoverage
+              ? ['mocha', 'karma-remap-istanbul']
+              : ['mocha'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,

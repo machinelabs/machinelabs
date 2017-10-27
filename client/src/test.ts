@@ -1,3 +1,5 @@
+import './polyfills.ts';
+
 import 'zone.js/dist/long-stack-trace-zone';
 import 'zone.js/dist/proxy.js';
 import 'zone.js/dist/sync-test';
@@ -14,8 +16,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import './app/rx/rx.operators';
 
 // Unfortunately there's no typing for the `__karma__` variable. Just declare it as any.
-declare const __karma__: any;
-declare const require: any;
+declare var __karma__: any;
+declare var require: any;
 
 // Prevent Karma from running prematurely.
 __karma__.loaded = function () {};
