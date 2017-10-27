@@ -2,6 +2,8 @@ import { DbRefBuilder } from '../../firebase/db-ref-builder';
 import { Observable } from 'rxjs/Observable';
 import { ExecutionMessage, MessageKind } from '../../models/execution';
 import { createSkipText } from '../util/skip-helper'
+import 'rxjs/add/operator/let';
+import { snapshotToValue } from '../../rx/snapshotToValue';
 
 export class MessageStreamOptimizer {
   constructor(private db: DbRefBuilder, private partitionSize, private fullFetchTreshold) {
@@ -30,7 +32,7 @@ export class MessageStreamOptimizer {
                   .limitToLast(1)
                   .childAdded()
                   .take(1)
-                  .map(snapshot => snapshot.val());
+                  .let(snapshotToValue);
   }
 
   getHeadMessages(executionId, partitionSize) {
@@ -40,7 +42,7 @@ export class MessageStreamOptimizer {
                                .limitToFirst(partitionSize)
                                .childAdded()
                                .take(partitionSize)
-                               .map(snapshot => snapshot.val());
+                               .let(snapshotToValue);
   }
 
   getTailMessages(executionId, startAt, partitionSize) {
@@ -50,7 +52,7 @@ export class MessageStreamOptimizer {
                   .limitToFirst(partitionSize)
                   .childAdded()
                   .take(partitionSize)
-                  .map(snapshot => snapshot.val());
+                  .let(snapshotToValue);
   }
 
   getLiveMessages(executionId, startAt) {
@@ -58,13 +60,13 @@ export class MessageStreamOptimizer {
                    .orderByChild('index')
                    .startAt(startAt)
                    .childAdded()
-                   .map(snapshot => snapshot.val());
+                   .let(snapshotToValue);
   }
 
   getAllMessages(executionId) {
     return this.db.executionMessageRef(executionId)
                .childAdded()
-               .map(snapshot => snapshot.val());
+               .let(snapshotToValue);
   }
 
 }

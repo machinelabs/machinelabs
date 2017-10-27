@@ -32,6 +32,7 @@ import 'rxjs/add/operator/concat';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/takeUntil';
 import '../../rx/takeWhileInclusive';
+import { snapshotToValue } from '../../rx/snapshotToValue';
 
 @Injectable()
 export class RemoteLabExecService {
@@ -64,7 +65,7 @@ export class RemoteLabExecService {
         }
       }))
       .switchMap(_ =>  this.db.executionMessageRef(id).limitToFirst(1).childAdded().take(1))
-      .map(snapshot => snapshot.val())
+      .let(snapshotToValue)
       .switchMap(message => {
         // If the execution was rejected, there's no point to try to fetch it
         // hence we directly return the ExecutionInvocationInfo which ends the whole stream
@@ -84,7 +85,7 @@ export class RemoteLabExecService {
           // value, hence we filter it out.
           return this.db.executionRef(id)
                  .value()
-                 .map(s => s.val())
+                 .let(snapshotToValue)
                  .takeWhileInclusive(e => e === null)
                  .filter(e => e !== null)
                  .map(_ => ({ persistent: true, executionId: id, rejection: null}));
@@ -115,7 +116,7 @@ export class RemoteLabExecService {
 
     let execution$ = this.db.executionRef(executionId)
                             .value()
-                            .map(snapshot => snapshot.val())
+                            .let(snapshotToValue)
                             .map(execution => {
                               if (typeof execution.lab.directory === 'string') {
                                 execution.lab.directory = JSON.parse(execution.lab.directory);
@@ -214,6 +215,6 @@ export class RemoteLabExecService {
                   .limitToFirst(1)
                   .childAdded()
                   .take(1)
-                  .map(snapshot => snapshot.val());
+                  .let(snapshotToValue);
   }
 }

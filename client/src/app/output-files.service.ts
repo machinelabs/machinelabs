@@ -11,8 +11,8 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/mergeMap';
+import { snapshotToValue } from './rx/snapshotToValue';
 
-const fromSnapshot = snapshot => snapshot.val();
 
 @Injectable()
 export class OutputFilesService {
@@ -25,7 +25,7 @@ export class OutputFilesService {
   observeOutputFilesFromExecution(executionId: string): Observable<OutputFile> {
     return this.authService
                .requireAuthOnce()
-               .switchMap(_ => this.db.executionOutputFilesRef(executionId).childAdded().map(fromSnapshot))
+               .switchMap(_ => this.db.executionOutputFilesRef(executionId).childAdded().let(snapshotToValue))
                .flatMap(file => this.getDownloadUrlForPath(file.path).map(download_url => ({...file, download_url})));
   }
 

@@ -9,6 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
+import { snapshotToValue } from 'app/rx/snapshotToValue';
 
 @Injectable()
 export class LabExecutionService {
@@ -22,7 +23,7 @@ export class LabExecutionService {
     return this.authService
               .requireAuthOnce()
               .switchMap(_ => this.db.executionRef(id).value())
-              .map((snapshot: any) => snapshot.val());
+              .let(snapshotToValue);
   }
 
   observeExecutionsForLab(lab: Lab): Observable<Array<{id: string, execution: Observable<Execution>}>> {
@@ -49,7 +50,7 @@ export class LabExecutionService {
     return this.authService
       .requireAuthOnce()
       .switchMap(_ => this.db.labExecutionsRef(id).limitToLast(1).onceValue())
-      .map((snapshot: any) => snapshot.val())
+      .let(snapshotToValue)
       .map(value => value ? Object.keys(value)[0] : null);
   }
 
@@ -57,14 +58,14 @@ export class LabExecutionService {
     return this.authService
       .requireAuthOnce()
       .switchMap(_ => this.db.executionRef(id).onceValue())
-      .map((snapshot: any) => snapshot.val());
+      .let(snapshotToValue);
   }
 
   getLatestVisibleExecutionIdForLab(id: string) {
     return this.authService
       .requireAuthOnce()
       .switchMap(_ => this.db.labVisibleExecutionsRef(id).limitToLast(1).onceValue())
-      .map((snapshot: any) => snapshot.val())
+      .let(snapshotToValue)
       .map(value => value ? Object.keys(value)[0] : null);
   }
 
@@ -79,7 +80,7 @@ export class LabExecutionService {
     return this.authService
       .requireAuthOnce()
       .switchMap(_ => this.db.labVisibleExecutionsRef(id).onceValue())
-      .map((snapshot: any) => snapshot.val())
+      .let(snapshotToValue)
       .map(executionIds => Object.keys(executionIds || {}))
       .map(executionIds => executionIds.map(executionId => this.getExecution(executionId)))
       .switchMap(executionRefs => executionRefs.length ? Observable.forkJoin(executionRefs) : Observable.of([]))
