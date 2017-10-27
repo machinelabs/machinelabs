@@ -13,6 +13,7 @@ import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
+import { snapshotToValue } from './rx/snapshotToValue';
 
 @Injectable()
 export class LabStorageService {
@@ -51,7 +52,7 @@ export class LabStorageService {
     return this.authService
               .requireAuthOnce()
               .switchMap(_ => this.db.labRef(id).onceValue())
-              .map((snapshot: any) => snapshot.val())
+              .let(snapshotToValue)
               .map(value => {
                 // existing lab directories might not be converted yet
                 // this can be removed once we know for sure that all lab directories
@@ -96,7 +97,7 @@ export class LabStorageService {
   getLabsFromUser(userId: string): Observable<Array<Lab>> {
     return this.db.userVisibleLabsRef(userId)
               .onceValue()
-              .map((snapshot: any) => snapshot.val())
+              .let(snapshotToValue)
               .map(labIds => Object.keys(labIds || {}))
               .map(labIds => labIds.map(labId => this.getLab(labId)))
               .switchMap(labRefs => labRefs.length ? Observable.forkJoin(labRefs) : Observable.of([]))

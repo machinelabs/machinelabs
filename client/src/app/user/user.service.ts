@@ -9,6 +9,7 @@ import { Lang } from '../util/lang';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
+import { snapshotToValue } from '../rx/snapshotToValue';
 
 export const PLACEHOLDER_USERNAME = 'Unnamed User';
 
@@ -22,7 +23,7 @@ export class UserService {
                .requireAuthOnce()
                .switchMap((user: LoginUser) => this.db.userRef(user.uid)
                                                       .onceValue()
-                                                      .map(snapshot => snapshot.val())
+                                                      .let(snapshotToValue)
                                                       .map(existingUser => ({existingUser, user})))
                .switchMap(data => !data.existingUser || this.isDifferent(data.user, data.existingUser)
                                     ? this.saveUser(this.mapLoginUserToUser(data.user))
@@ -73,7 +74,7 @@ export class UserService {
   getUser(id: string): Observable<User> {
     return this.authService.requireAuthOnce()
                            .switchMap(_ => this.db.userRef(id).onceValue())
-                           .map(snapshot => snapshot.val());
+                           .let(snapshotToValue);
 
   }
 
