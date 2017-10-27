@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { map, scan, switchMap } from 'rxjs/operators';
+import { snapshotToValue } from './rx/snapshotToValue';
 
 import { DbRefBuilder } from './firebase/db-ref-builder';
 import { AuthService } from './auth';
@@ -31,7 +32,7 @@ export class LabExecutionService {
   observeExecution(id: string): Observable<Execution> {
     return this.authService.requireAuthOnce().pipe(
       switchMap(_ => this.db.executionRef(id).value()),
-      map((snapshot: any) => snapshot.val()),
+      snapshotToValue,
       mapExecutionLabDirectory
     );
   }
@@ -62,7 +63,7 @@ export class LabExecutionService {
   getLatestExecutionIdForLab(id: string) {
     return this.authService.requireAuthOnce().pipe(
       switchMap(_ => this.db.labExecutionsRef(id).limitToLast(1).onceValue()),
-      map((snapshot: any) => snapshot.val()),
+      snapshotToValue,
       map(value => value ? Object.keys(value)[0] : null)
     );
   }
@@ -70,7 +71,7 @@ export class LabExecutionService {
   getExecution(id: string) {
     return this.authService.requireAuthOnce().pipe(
       switchMap(_ => this.db.executionRef(id).onceValue()),
-      map((snapshot: any) => snapshot.val()),
+      snapshotToValue,
       mapExecutionLabDirectory
     );
   }
@@ -78,7 +79,7 @@ export class LabExecutionService {
   getLatestVisibleExecutionIdForLab(id: string) {
     return this.authService.requireAuthOnce().pipe(
       switchMap(_ => this.db.labVisibleExecutionsRef(id).limitToLast(1).onceValue()),
-      map((snapshot: any) => snapshot.val()),
+      snapshotToValue,
       map(value => value ? Object.keys(value)[0] : null)
     );
   }
@@ -93,7 +94,7 @@ export class LabExecutionService {
   getExecutionsFromLab(id: string) {
     return this.authService.requireAuthOnce().pipe(
       switchMap(_ => this.db.labVisibleExecutionsRef(id).onceValue()),
-      map((snapshot: any) => snapshot.val()),
+      snapshotToValue,
       map(executionIds => Object.keys(executionIds || {})),
       map(executionIds => executionIds.map(executionId => this.getExecution(executionId))),
       switchMap(executionRefs => executionRefs.length ? forkJoin(executionRefs) : of([])),

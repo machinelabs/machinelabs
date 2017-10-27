@@ -3,12 +3,14 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { map, switchMap } from 'rxjs/operators';
+import { snapshotToValue } from '../rx/snapshotToValue';
 
 import { AuthService } from 'app/auth';
 import { DbRefBuilder } from '../firebase/db-ref-builder';
 import { LoginUser, User } from '../models/user';
 import { Execution } from '../models/execution';
 import { Lang } from '../util/lang';
+
 
 export const PLACEHOLDER_USERNAME = 'Unnamed User';
 
@@ -20,7 +22,7 @@ export class UserService {
   createUserIfMissing(): Observable<User> {
     return this.authService.requireAuthOnce().pipe(
       switchMap((user: LoginUser) => this.db.userRef(user.uid).onceValue().pipe(
-        map(snapshot => snapshot.val()),
+        snapshotToValue,
         map(existingUser => ({existingUser, user}))
       )),
       switchMap(data => !data.existingUser || this.isDifferent(data.user, data.existingUser)
@@ -75,7 +77,7 @@ export class UserService {
   getUser(id: string): Observable<User> {
     return this.authService.requireAuthOnce().pipe(
       switchMap(_ => this.db.userRef(id).onceValue()),
-      map(snapshot => snapshot.val())
+      snapshotToValue
     );
   }
 

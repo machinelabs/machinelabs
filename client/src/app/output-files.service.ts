@@ -7,8 +7,8 @@ import { OutputFile } from './models/output-file';
 import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { map, switchMap, startWith, take, flatMap } from 'rxjs/operators';
+import { snapshotToValue } from './rx/snapshotToValue';
 
-const fromSnapshot = snapshot => snapshot.val();
 
 @Injectable()
 export class OutputFilesService {
@@ -22,7 +22,7 @@ export class OutputFilesService {
     return this.authService
       .requireAuthOnce()
       .pipe(
-        switchMap(_ => this.db.executionOutputFilesRef(executionId).childAdded().pipe(map(fromSnapshot))),
+        switchMap(_ => this.db.executionOutputFilesRef(executionId).childAdded().pipe(snapshotToValue)),
         flatMap(file => this.getDownloadUrlForPath(file.path).pipe(map(download_url => ({...file, download_url}))))
       );
   }

@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { of } from 'rxjs/observable/of';
 import { map, switchMap } from 'rxjs/operators';
+import { snapshotToValue } from './rx/snapshotToValue';
 
 import { Lab, LabTemplate } from './models/lab';
 import { DbRefBuilder } from './firebase/db-ref-builder';
@@ -53,7 +54,7 @@ export class LabStorageService {
   getLab(id: string): Observable<Lab> {
     return this.authService.requireAuthOnce().pipe(
       switchMap(_ => this.db.labRef(id).onceValue()),
-      map((snapshot: any) => snapshot.val()),
+      snapshotToValue,
       map(value => {
         // existing lab directories might not be converted yet
         // this can be removed once we know for sure that all lab directories
@@ -99,7 +100,7 @@ export class LabStorageService {
 
   getLabsFromUser(userId: string): Observable<Array<Lab>> {
     return this.db.userVisibleLabsRef(userId).onceValue().pipe(
-      map((snapshot: any) => snapshot.val()),
+      snapshotToValue,
       map(labIds => Object.keys(labIds || {})),
       map(labIds => labIds.map(labId => this.getLab(labId))),
       switchMap(labRefs => labRefs.length ? forkJoin(labRefs) : of([])),
