@@ -6,7 +6,7 @@ import { CodeRunner } from '../code-runner/code-runner';
 import { Observable } from '@reactivex/rxjs';
 import { Invocation, InvocationType } from '../models/invocation';
 import { Execution, ExecutionStatus } from '@machinelabs/models';
-import { ProcessStreamData } from '@machinelabs/core';
+import { ProcessStreamData, parseLabDirectory } from '@machinelabs/core';
 import { ExecutionMessage, MessageKind, toMessageKind } from '../models/execution';
 import { ValidationService } from '../validation/validation.service';
 import { Server } from '../models/server';
@@ -49,12 +49,7 @@ export class MessagingService {
     newInvocations$
     .filter((invocation: Invocation) => invocation.type === InvocationType.StartExecution)
     .map(invocation => {
-      if (typeof invocation.data.directory === 'string') {
-        invocation.data.directory = JSON.parse(invocation.data.directory);
-      }
-
-      invocation.data.directory = Array.isArray(invocation.data.directory) ? invocation.data.directory : [];
-
+      invocation.data.directory = parseLabDirectory(invocation.data.directory);
       return invocation;
     })
     .subscribe(invocation => {
