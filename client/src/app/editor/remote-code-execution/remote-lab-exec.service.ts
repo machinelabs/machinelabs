@@ -73,7 +73,7 @@ export class RemoteLabExecService {
           directory: JSON.stringify(lab.directory)
         }
       })),
-      switchMap(_ =>  this.db.executionMessageRef(id).limitToFirst(1).childAdded().take(1)),
+      switchMap(_ =>  this.db.executionMessageRef(id).limitToFirst(1).childAdded().pipe(take(1))),
       snapshotToValue,
       switchMap(message => {
         // If the execution was rejected, there's no point to try to fetch it

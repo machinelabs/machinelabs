@@ -15,6 +15,7 @@ import {
 } from './navigation-confirm-dialog/navigation-confirm-dialog.component';
 
 import { LabExecutionService } from '../lab-execution.service';
+import { take } from 'rxjs/operators';
 
 
 @Injectable()
@@ -45,7 +46,7 @@ export class HasRunningExecutionGuard implements CanDeactivate<EditorViewCompone
 
     return forkJoin(
       this.labStorageService.getLab(labId),
-      this.userService.observeUserChanges().take(1)
+      this.userService.observeUserChanges().pipe(take(1))
     ).pipe(
     // It might not be obvious why we're doing a forkJoin here, but we have to
     // resolve the loggedin user first so we can access state in isLoggedInUser
