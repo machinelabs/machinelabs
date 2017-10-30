@@ -42,6 +42,7 @@ import { DbRefBuilder } from '../../firebase/db-ref-builder';
 import { AuthService } from '../../auth';
 
 import { parseLabDirectory } from '@machinelabs/core/io/lab-fs/parse';
+import { stringifyDirectory } from '../../util/directory';
 
 @Injectable()
 export class RemoteLabExecService {
@@ -70,7 +71,7 @@ export class RemoteLabExecService {
         type: InvocationType.StartExecution,
         data: {
           id: lab.id,
-          directory: JSON.stringify(lab.directory)
+          directory: stringifyDirectory(lab.directory)
         }
       })),
       switchMap(_ =>  this.db.executionMessageRef(id).limitToFirst(1).childAdded().pipe(take(1))),
