@@ -64,6 +64,8 @@ export class EditorService {
 
   activeFile: File;
 
+  activeFilePath: string;
+
   private localExecutions: Map<string, Execution>;
 
   private localExecutions$: Subject<Map<string, Execution>>;
@@ -265,8 +267,19 @@ export class EditorService {
   }
 
   openFile(file: File, path?: string) {
-    this.fileTreeService.unselectFile(this.activeFile);
+
+    if (this.activeFilePath) {
+      // it's important to retrieve the previousActiveFile via its path because when we
+      // run an execution, we are overwriting `lab.directory` with a new directory
+      // from the server. Unselecting the `activeFile` wouldn't have any effect then
+      // because that file is not an instance in the `lab.directory` as the `activeFile`
+      // belongs to an outdated directory.
+      let previousActiveFile = getFileFromPath(this.activeFilePath, this.lab.directory);
+      this.fileTreeService.unselectFile(previousActiveFile);
+    }
+
     this.activeFile = file;
+    this.activeFilePath = path;
     this.fileTreeService.selectFile(this.activeFile);
 
     this.locationHelper.updateQueryParams(this.location.path(), {
