@@ -11,6 +11,7 @@ import { User } from '../../models/user';
 import { Execution, ExecutionStatus } from '../../models/execution';
 
 import { EditExecutionDialogComponent } from '../edit-execution-dialog/edit-execution-dialog.component';
+import { switchMap, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'ml-execution-list',
@@ -55,11 +56,13 @@ export class ExecutionListComponent implements OnInit, OnDestroy {
     execution.hidden = true;
     this.labExecutionService
         .updateExecution(execution)
-        .switchMap(_ => this.editorSnackbar.notifyExecutionRemoved().onAction())
-        .switchMap(_ => {
-          execution.hidden = false;
-          return this.labExecutionService.updateExecution(execution);
-        })
+        .pipe(
+          switchMap(_ => this.editorSnackbar.notifyExecutionRemoved().onAction()),
+          switchMap(_ => {
+            execution.hidden = false;
+            return this.labExecutionService.updateExecution(execution);
+          })
+        )
         .subscribe(
           _ => this.editorSnackbar.notifyActionUndone(),
           _ => this.editorSnackbar.notifyError()
@@ -75,11 +78,13 @@ export class ExecutionListComponent implements OnInit, OnDestroy {
 
     this.editExecutionDialogRef
         .afterClosed()
-        .filter(name => name !== undefined)
-        .switchMap(name => {
-          execution.name = name;
-          return this.labExecutionService.updateExecution(execution);
-        })
+        .pipe(
+          filter(name => name !== undefined),
+          switchMap((name: string) => {
+            execution.name = name;
+            return this.labExecutionService.updateExecution(execution);
+          })
+        )
         .subscribe(
           _ => this.editorSnackbar.notifyExecutionUpdated(),
           _ => this.editorSnackbar.notifyError()
