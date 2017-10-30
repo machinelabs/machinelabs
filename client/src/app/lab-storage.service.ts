@@ -14,8 +14,7 @@ import { DbRefBuilder } from './firebase/db-ref-builder';
 import { AuthService } from './auth';
 import { LabTemplateService } from './lab-template.service';
 import { ML_YAML_FILE } from './data/ml.yaml';
-
-import { LabDirectory } from '@machinelabs/models';
+import { stringifyDirectory } from './util/directory';
 import { parseLabDirectory } from '@machinelabs/core/io/lab-fs/parse';
 
 @Injectable()
@@ -73,8 +72,6 @@ export class LabStorageService {
   }
 
   saveLab(lab: Lab): Observable<any> {
-    const removeClientState = (key, value) => key === 'clientState' ? undefined : value;
-
     return this.authService.requireAuthOnce().pipe(
       switchMap((login: any) => this.db.labRef(lab.id).set({
           id: lab.id,
@@ -84,7 +81,7 @@ export class LabStorageService {
           // `lab.tags` can be undefined when editing an existing lab that
           // doesn't have any tags yet.
           tags: lab.tags || [],
-          directory: JSON.stringify(lab.directory, removeClientState),
+          directory: stringifyDirectory(lab.directory),
           // We typecast `hidden` to boolean to ensure exsting labs that haven't
           // migrated yet (and therefore don't have a `hidden` property) don't
           // make this code break.
