@@ -36,7 +36,7 @@ export class DockerFileDownloader {
       containerId,
       '/bin/bash',
       '-c',
-      `mkdir -p /run/inputs && curl --progress-bar -o /run/inputs/${input.name} -L ${input.url}`
+      `mkdir -p /run/inputs && curl --progress-bar -o "/run/inputs/${input.name}" -L "${input.url}"`
     ])
     // When the progress bar reaches 100 % it renders a new line which
     // then destroys all the other progress bars below, hence we filter it out.
