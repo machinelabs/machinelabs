@@ -15,7 +15,7 @@ import {
   DirectoryClientState
 } from '@machinelabs/models';
 
-import { getFileFromPath } from '@machinelabs/core/io/lab-fs/navigation';
+import { getFileFromPath } from '@machinelabs/core/dist/src/io/lab-fs/navigation';
 
 import { LocationHelper } from '../util/location-helper';
 import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.service';
@@ -25,6 +25,7 @@ import { LabStorageService } from '../lab-storage.service';
 import { createSkipTextHelper } from './util/skip-helper';
 import { FileTreeService } from './file-tree/file-tree.service';
 import { Lab } from '../models/lab';
+
 
 import {
   MessageKind,

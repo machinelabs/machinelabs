@@ -26,6 +26,7 @@
     "@types/moment": "^2.13.0",
     "@types/node": "^8.0.19",
     "@types/semver": "^5.3.33",
-    "@types/yargs": "^8.0.2"
+    "@types/yargs": "^8.0.2",
+    "typescript": "^2.4.2"
   }
 }

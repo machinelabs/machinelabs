@@ -9,6 +9,7 @@ import { cutCommand } from './commands/cut';
 import { onboardCommand } from './commands/onboard';
 import { exportUsersCommand } from './commands/export-users';
 import { migrateCommand } from './commands/migrate';
+import { buildSharedCommand } from './commands/build-shared';
 
 import { tryLoadTemplate } from './lib/load-template';
 
@@ -16,7 +17,14 @@ import { tryLoadTemplate } from './lib/load-template';
 // we can assume all further commands are realtive to root
 setRootDir();
 
-const commands = [ deployCommand, loginCommand, cutCommand, onboardCommand, migrateCommand];
+const commands = [
+  deployCommand,
+  loginCommand,
+  cutCommand,
+  onboardCommand,
+  migrateCommand,
+  buildSharedCommand
+];
 
 let sharedOptions = {
       'cfg.template': {
@@ -104,6 +112,8 @@ let argv = yargs(process.argv.slice(2))
     }, onboardCommand.run)
     .command('export-users [<options>]', 'Export csv of all users', {
     }, exportUsersCommand.run)
+    .command('build-shared', 'Build shared libs', {
+    }, buildSharedCommand.run)
     .command(
       'migrate [<options>]',
       `Migrates database with a migration file that contains a function

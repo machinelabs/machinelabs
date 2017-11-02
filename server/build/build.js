@@ -9,11 +9,19 @@ const setRootDir = () => {
   process.chdir('../');
 }
 
+let skipShared = process.argv.includes('--skip-shared');
+
 setRootDir();
 execute('rm -rf ./dist');
 copyConfig();
-// This makes sure that the latest @machinelabs/core code is 
-// copied over to node_modules
-execute('yarn upgrade @machinelabs/core @machinelabs/metrics @machinelabs/models');
+if (!skipShared) {
+  console.log('Building shared libs before building the server');
+  // Build shared libs
+  execute('(cd ../shared && node build.js)');
+  // copy over to node_modules
+  execute('yarn upgrade @machinelabs/core @machinelabs/metrics @machinelabs/models');
+} else {
+  console.log('--skip-shared used. Not building shared libs.');
+}
 execute('tsc');
 
