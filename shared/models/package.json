@@ -2,7 +2,8 @@
   "name": "@machinelabs/models",
   "version": "0.18.0+utc.2017.Oct.16-11.47.04",
   "description": "Models and data structures that can be shared across various projects.",
-  "main": "index.js",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "jest": {
     "transform": {
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
@@ -23,10 +24,9 @@
     ]
   },
   "scripts": {
-    "postinstall": "tsc",
     "test": "./node_modules/jest/bin/jest.js",
-    "tslint": "tslint  -c ./tslint.json './**/*.ts' --exclude './node_modules/**/*.ts' --exclude './**/*.d.ts'",
-    "tsfix": "tslint --fix -c ./tslint.json './**/*.ts' --exclude './node_modules/**/*.ts' --exclude './**/*.d.ts'",
+    "tslint": "tslint  -c ./tslint.json './src/**/*.ts'",
+    "tsfix": "tslint --fix -c ./tslint.json './src/**/*.ts'",
     "ci": "npm run tslint && npm run test"
   },
   "dependencies": {

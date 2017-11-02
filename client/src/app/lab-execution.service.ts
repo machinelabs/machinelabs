@@ -11,7 +11,7 @@ import { AuthService } from './auth';
 import { Lab } from './models/lab';
 import { User } from './models/user';
 import { Execution, ExecutionStatus } from './models/execution';
-import { parseLabDirectory } from '@machinelabs/core/io/lab-fs/parse';
+import { parseLabDirectory } from '@machinelabs/core/dist/src/io/lab-fs/parse';
 
 const mapExecutionLabDirectory = (source: Observable<Execution>) =>
   source.pipe(map(execution => {

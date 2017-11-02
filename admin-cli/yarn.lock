@@ -3,12 +3,19 @@
 
 
 "@machinelabs/core@file:../shared/core":
-  version "0.10.0"
+  version "0.18.0"
   dependencies:
+    "@machinelabs/models" "file:../../../../.cache/yarn/v1/npm-@machinelabs/models"
     "@reactivex/rxjs" "^5.4.2"
     "@types/node" "^8.0.19"
     firebase "^4.2.0"
     moment "^2.18.1"
+
+"@machinelabs/models@file:../shared/models":
+  version "0.18.0"
+  dependencies:
+    "@reactivex/rxjs" "^5.4.2"
+    "@types/node" "^8.0.19"
 
 "@reactivex/rxjs@^5.4.2", "@reactivex/rxjs@^5.4.3":
   version "5.4.3"
@@ -545,6 +552,10 @@ topo@1.x.x:
   resolved "https://registry.yarnpkg.com/topo/-/topo-1.1.0.tgz#e9d751615d1bb87dc865db182fa1ca0a5ef536d5"
   dependencies:
     hoek "2.x.x"
+
+typescript@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.6.1.tgz#ef39cdea27abac0b500242d6726ab90e0c846631"
 
 validate-npm-package-license@^3.0.1:
   version "3.0.1"

@@ -4,6 +4,7 @@
   "license": "MIT",
   "angular-cli": {},
   "scripts": {
+    "update-shared": "(cd ../shared && node build.js) && yarn upgrade @machinelabs/models && yarn upgrade @machinelabs/core",
     "start": "ng serve",
     "lint": "tslint \"src/**/*.ts\"",
     "test": "npm run lint && ng test --single-run && ng e2e --env=e2e",

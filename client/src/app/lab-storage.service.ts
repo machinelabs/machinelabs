@@ -15,7 +15,7 @@ import { AuthService } from './auth';
 import { LabTemplateService } from './lab-template.service';
 import { ML_YAML_FILE } from './data/ml.yaml';
 import { stringifyDirectory } from './util/directory';
-import { parseLabDirectory } from '@machinelabs/core/io/lab-fs/parse';
+import { parseLabDirectory } from '@machinelabs/core/dist/src/io/lab-fs/parse';
 
 @Injectable()
 export class LabStorageService {
