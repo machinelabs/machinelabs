@@ -17,7 +17,7 @@ const buildShared = (argv) => {
   sharedLibs.forEach((val, key) => {
 
     let upgrades = val.reduce((prev, cur) => `${prev} && yarn upgrade ${cur}`, '');
-    execute(`(cd ${key} && yarn install ${upgrades} && tsc)`, { stdio: 'inherit' });
+    execute(`(cd ${key} && yarn install ${upgrades} && ./node_modules/typescript/bin/tsc)`, { stdio: 'inherit' });
   });
 }
 
