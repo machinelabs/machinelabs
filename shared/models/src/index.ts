@@ -5,3 +5,4 @@ export * from './lab';
 export * from './directory';
 export * from './mount';
 export * from './mountoption';
+export * from './invocation';
