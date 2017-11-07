@@ -14,3 +14,13 @@ export interface Invocation {
 export interface InvocationExecution {
   execution_id: string;
 }
+
+export interface InvocationWrapper {
+  common: Invocation;
+  server: {
+    [index: string]: {
+      timestamp: number
+    } | string;
+    id: string
+  };
+}
