@@ -13,7 +13,12 @@
       to make this field <strong>explorable, sharable</strong> and <strong>accessible for everyone</strong>.
     </h1>
     <div class="cta-bar">
-      <button mat-raised-button color="primary" [disabled]="isLoggedIn$ | async" (click)="login()">Login with GitHub</button>
+      <ng-container *ngIf="isLoggedIn$ | async; else loginButton">
+        <a title="Launch Editor" mat-raised-button color="primary" routerLink="/editor">Launch Editor</a>
+      </ng-container>
+      <ng-template #loginButton>
+        <button mat-raised-button color="primary" (click)="login()">Login with GitHub</button>
+      </ng-template>
       <a href="https://docs.machinelabs.ai/guide/quickstart.html" title="Quickstart" mat-raised-button>Get Started</a>
     </div>
     <div class="patron">
