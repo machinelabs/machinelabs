@@ -1,8 +1,6 @@
 import { InvocationType, Invocation, InvocationWrapper } from '../models/invocation';
 import { ServerResolver } from './server-resolver/server-resolver';
 
-const DEFAULT_HARDWARE_TYPE = 'economy';
-
 export type getInvocationFn = (invocationId: string) => Promise<InvocationWrapper>;
 export type updateInvocationFn = (invocationWrapper: InvocationWrapper) => Promise<any>;
 
