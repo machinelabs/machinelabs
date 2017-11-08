@@ -31,6 +31,8 @@
   "dependencies": {
     "firebase-admin": "^4.1.2",
     "firebase-functions": "^0.5",
+    "js-yaml": "^3.10.0",
+    "lodash.isstring": "^4.0.1",
     "lodash.merge": "^4.6.0",
     "lodash.sample": "^4.2.1",
     "lodash.toarray": "^4.4.0",
@@ -39,6 +41,7 @@
   "private": true,
   "devDependencies": {
     "@types/jest": "^20.0.5",
+    "@types/js-yaml": "^3.9.1",
     "jest": "^20.0.4",
     "ts-jest": "^20.0.7",
     "tslint": "^5.5.0",
