@@ -3,7 +3,7 @@ import { Observable } from '@reactivex/rxjs';
 import { CodeRunner } from './code-runner';
 import { File } from '@machinelabs/models';
 import { createWriteLabDirectoryCmd } from '@machinelabs/core';
-import { Invocation } from '../models/invocation';
+import { Invocation } from '@machinelabs/models';
 import { InternalLabConfiguration } from '../models/lab-configuration';
 import { trimNewLines, ProcessStreamData, stdoutMsg, SpawnShellFn, SpawnFn } from '@machinelabs/core';
 import { mute } from '../rx/mute';
