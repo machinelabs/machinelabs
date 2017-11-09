@@ -1,11 +1,11 @@
 {
   "hainholz": {
-    "hardware_type": "economy",
+    "hardware_type": "cpu",
     "id": "hainholz",
     "name": "Hainholz"
   },
   "stephanskirchen": {
-    "hardware_type": "economy",
+    "hardware_type": "cpu",
     "id": "stephanskirchen",
     "name": "Stephanskirchen",
     "disabled": true

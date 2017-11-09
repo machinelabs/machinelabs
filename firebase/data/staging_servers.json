@@ -1,11 +1,11 @@
 {
   "ahlem": {
-    "hardware_type": "economy",
+    "hardware_type": "cpu",
     "id": "ahlem",
     "name": "Ahlem"
   },
   "list": {
-    "hardware_type": "economy",
+    "hardware_type": "cpu",
     "id": "list",
     "name": "List",
     "disabled": true

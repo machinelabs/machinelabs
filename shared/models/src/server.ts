@@ -1,6 +1,6 @@
 export enum HardwareType {
-  Economy = 'economy',
-  Premium = 'premium'
+  CPU = 'cpu',
+  GPU = 'gpu'
 }
 
 export class Server {
