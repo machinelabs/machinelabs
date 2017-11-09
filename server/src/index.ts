@@ -18,6 +18,7 @@ import { LabConfigResolver } from './validation/resolver/lab-config-resolver';
 import { ExecutionResolver } from './validation/resolver/execution-resolver';
 import { OwnsExecutionRule } from './validation/rules/owns-execution';
 import { WithinConcurrencyLimit } from './validation/rules/within-concurrency-limit';
+import { CanUseHardwareType } from './validation/rules/can-use-hardware-type';
 import { UsageStatisticResolver } from './validation/resolver/usage-statistic-resolver';
 import { CostCalculator } from '@machinelabs/metrics';
 import { dbRefBuilder } from './ml-firebase';
@@ -26,6 +27,7 @@ import { DockerFileUploader } from './code-runner/uploader/docker-file-uploader'
 import { DockerFileDownloader } from './code-runner/downloader/docker-file-downloader';
 import { spawn, spawnShell } from '@machinelabs/core';
 import { MountService } from './mounts/mount.service';
+
 const { version } = require('../package.json');
 
 replaceConsole();
@@ -59,6 +61,7 @@ dockerImageService
       .addRule(new NoAnonymousRule())
       .addRule(new HasPlanRule())
       .addRule(new HasValidConfigRule(labConfigService))
+      .addRule(new CanUseHardwareType())
       .addRule(new HasCreditsLeftRule())
       .addRule(new WithinConcurrencyLimit())
       .addRule(new ServerHasCapacityRule(runner))
