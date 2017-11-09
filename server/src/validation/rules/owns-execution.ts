@@ -1,6 +1,6 @@
 import { Observable } from '@reactivex/rxjs';
 import { ValidationRule } from './rule';
-import { Invocation } from '../../models/invocation';
+import { Invocation } from '@machinelabs/models';
 import { ValidationResult } from '../validation-result';
 import { Execution } from '@machinelabs/models';
 import { ExecutionResolver } from '../resolver/execution-resolver';

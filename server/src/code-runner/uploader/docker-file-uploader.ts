@@ -1,5 +1,5 @@
 import { Observable } from '@reactivex/rxjs';
-import { Invocation } from '../../models/invocation';
+import { Invocation } from '@machinelabs/models';
 import { getAccessToken } from '../../util/gcloud';
 import { mute } from '../../rx/mute';
 import { getCurlForUpload } from '../../util/file-upload';
