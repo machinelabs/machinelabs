@@ -1,4 +1,5 @@
 export enum Plans {
   Admin = 'admin',
-  Beta = 'beta'
+  Beta = 'beta',
+  BetaBacker = 'beta-backer'
 }
