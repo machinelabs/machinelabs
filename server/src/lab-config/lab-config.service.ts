@@ -1,5 +1,5 @@
 import { Observable } from '@reactivex/rxjs';
-import { Lab, File, instanceOfFile, MountOption } from '@machinelabs/models';
+import { Lab, File, instanceOfFile, MountOption, HardwareType } from '@machinelabs/models';
 import { PublicLabConfiguration, InternalLabConfiguration, ScriptParameter } from '../models/lab-configuration';
 import { safeLoad} from 'js-yaml';
 import isString = require('lodash.isstring');
@@ -47,6 +47,15 @@ export class LabConfigService {
     config.inputs = publicConfig.inputs;
     config.parameters = publicConfig.parameters;
     config.imageWithDigest = this.dockerImageService.getImageNameWithDigest(publicConfig.dockerImageId);
+
+    if (isString(publicConfig.hardwareType)) {
+      let specifiedHardwareType = publicConfig.hardwareType.toLowerCase();
+      if (Object.values(HardwareType).includes(specifiedHardwareType)) {
+        config.hardwareType = <HardwareType>publicConfig.hardwareType.toLowerCase();
+      } else {
+        config.errors.push('Invalid hardwareType');
+      }
+    }
 
     return this.mountService.validateMounts(userId, publicConfig.mounts)
     .do(validated => config.errors.push(...validated.errors))
