@@ -24,7 +24,8 @@ export enum ExecutionRejectionReason {
   InvalidConfig,
   OutOfCredits,
   ExceedsMaximumConcurrency,
-  OverCapacity
+  OverCapacity,
+  InsufficientPlan
 }
 
 export class ExecutionRejectionInfo extends AbstractValidationError {
