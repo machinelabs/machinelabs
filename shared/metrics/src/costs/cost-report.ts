@@ -7,7 +7,7 @@ export class CostReport {
   totalSeconds = 0;
 
   constructor() {
-    this.secondsPerHardware.set(HardwareType.Economy, 0);
-    this.secondsPerHardware.set(HardwareType.Premium, 0);
+    this.secondsPerHardware.set(HardwareType.CPU, 0);
+    this.secondsPerHardware.set(HardwareType.GPU, 0);
   }
 }
