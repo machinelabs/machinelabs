@@ -4,7 +4,7 @@ import { DockerRunner } from './docker-runner';
 import { stdout, ProcessStreamData, stdoutMsg } from '@machinelabs/core';
 import { Lab } from '@machinelabs/models';
 import { PublicLabConfiguration, InternalLabConfiguration } from '../models/lab-configuration';
-import { Invocation, InvocationType } from '@machinelabs/models';
+import { Invocation, InvocationType, HardwareType } from '@machinelabs/models';
 
 describe('.run(lab)', () => {
 
@@ -46,6 +46,7 @@ describe('.run(lab)', () => {
 
     let conf: InternalLabConfiguration = {
       imageWithDigest: 'bar',
+      hardwareType: HardwareType.CPU,
       inputs: [],
       mountPoints: [],
       errors: [],
