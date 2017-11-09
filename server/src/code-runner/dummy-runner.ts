@@ -1,6 +1,6 @@
 import { Observable } from '@reactivex/rxjs';
 import { CodeRunner } from './code-runner';
-import { Invocation } from '../models/invocation';
+import { Invocation } from '@machinelabs/models';
 import { InternalLabConfiguration } from '../models/lab-configuration';
 import { spawn, ProcessStreamData } from '@machinelabs/core';
 

@@ -4,7 +4,7 @@ import { environment } from '../environments/environment';
 import { db, dbRefBuilder } from '../ml-firebase/db';
 import { CodeRunner } from '../code-runner/code-runner';
 import { Observable } from '@reactivex/rxjs';
-import { Invocation, InvocationType } from '../models/invocation';
+import { Invocation, InvocationType } from '@machinelabs/models';
 import { Execution, ExecutionStatus, Server } from '@machinelabs/models';
 import { ProcessStreamData, parseLabDirectory } from '@machinelabs/core';
 import { ExecutionMessage, MessageKind, toMessageKind } from '../models/execution';

@@ -1,6 +1,6 @@
 import { Observable } from '@reactivex/rxjs';
 import { Resolver } from './resolver';
-import { Invocation } from '../../models/invocation';
+import { Invocation } from '@machinelabs/models';
 import { InternalLabConfiguration } from '../../models/lab-configuration';
 import { LabConfigService } from '../../lab-config/lab-config.service';
 
