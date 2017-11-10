@@ -24,6 +24,26 @@ describe('.toObservableProcess()', () => {
 
   });
 
+  it('should get an stderr message for an invalid command', (done) => {
+    let ps = spawn(`foo`, []);
+
+    let actualMessages: Array<any> = [];
+    let actualErrors: Array<any> = [];
+    toObservableProcess(ps)
+      .subscribe(
+        msg => actualMessages.push(msg),
+        (e) => actualErrors.push(e),
+        () => {
+
+          expect(actualMessages.length).toBe(1);
+          expect(actualErrors.length).toBe(0);
+          expect(actualMessages[0].origin).toEqual('stderr');
+          expect(actualMessages[0].str).toEqual('Error: spawn foo ENOENT');
+          done();
+        });
+
+  });
+
   it('should get four async messages in order, sterr, stdout, stderr and stdout again', (done) => {
     let ps = spawn(`node -e "setTimeout(() => console.error('error'), 50);
                              setTimeout(() => console.log('foo'), 100);
