@@ -1,3 +1,4 @@
+import { Observable } from '@reactivex/rxjs';
 import { DummyRunner } from './code-runner/dummy-runner.js';
 import { DockerRunner } from './code-runner/docker-runner.js';
 import { MessagingService } from './messaging/messaging.service';
@@ -27,6 +28,7 @@ import { DockerFileUploader } from './code-runner/uploader/docker-file-uploader'
 import { DockerFileDownloader } from './code-runner/downloader/docker-file-downloader';
 import { spawn, spawnShell } from '@machinelabs/core';
 import { MountService } from './mounts/mount.service';
+import { DockerAvailabilityChecker, DockerExecutable } from './code-runner/docker-availability-checker';
 
 const { version } = require('../package.json');
 
@@ -34,6 +36,7 @@ replaceConsole();
 
 console.log(`Starting MachineLabs server (${environment.serverId})`);
 
+const dockerAvailabilityChecker = new DockerAvailabilityChecker(spawn);
 const mountService = new MountService(environment.rootMountPath, dbRefBuilder);
 const dockerImageService = new DockerImageService(getDockerImages());
 const labConfigService = new LabConfigService(dockerImageService, mountService);
@@ -50,11 +53,11 @@ const recycleService = new RecycleService({
 const uploader = new DockerFileUploader(50, 5);
 const downloader = new DockerFileDownloader(spawn);
 
-dockerImageService
-  .init()
-  .subscribe(_ => {
-    const DUMMY_RUNNER = process.argv.includes('--dummy-runner');
-    let runner = DUMMY_RUNNER ? new DummyRunner() : new DockerRunner(spawn, spawnShell, uploader, downloader);
+Observable
+  .forkJoin(dockerImageService.init(), dockerAvailabilityChecker.getExecutable())
+  .subscribe(([_, dockerBinary]) => {
+    const DUMMY_RUNNER = process.argv.includes('--dummy-runner') || dockerBinary === DockerExecutable.None;
+    let runner = DUMMY_RUNNER ? new DummyRunner() : new DockerRunner(dockerBinary, spawn, spawnShell, uploader, downloader);
 
     const validationService = new ValidationService();
     validationService
