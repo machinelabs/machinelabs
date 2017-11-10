@@ -9,5 +9,11 @@
     "id": "list",
     "name": "List",
     "disabled": true
+  },
+  "portimao": {
+    "hardware_type": "gpu",
+    "id": "portimao",
+    "name": "Portimao",
+    "disabled": false
   }
 }
