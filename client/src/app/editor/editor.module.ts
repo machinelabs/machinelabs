@@ -26,7 +26,6 @@ import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.se
 import { EditorSnackbarService } from './editor-snackbar.service';
 import { FilePreviewDialogService } from './file-preview/file-preview-dialog.service';
 
-import { FILE_PREVIEW_DIALOG_SCROLL_STRATEGY_PROVIDER } from './file-preview/file-preview.tokens';
 import { FileTreeService } from './file-tree/file-tree.service';
 
 @NgModule({
@@ -57,8 +56,7 @@ import { FileTreeService } from './file-tree/file-tree.service';
     NameDialogService,
     RemoteLabExecService,
     EditorSnackbarService,
-    FilePreviewDialogService,
-    FILE_PREVIEW_DIALOG_SCROLL_STRATEGY_PROVIDER
+    FilePreviewDialogService
   ],
   exports: [
     AceEditorComponent,
