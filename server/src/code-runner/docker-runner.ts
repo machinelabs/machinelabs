@@ -13,6 +13,7 @@ import { getCurlForUpload } from '../util/file-upload';
 import { DockerFileUploader } from './uploader/docker-file-uploader';
 import { DockerFileDownloader } from './downloader/docker-file-downloader';
 import { flatMap } from 'lodash';
+import { DockerExecutable } from './docker-availability-checker';
 
 const RUN_PARTITION_SIZE = '5g';
 const RUN_PARTITION_MODE = '1777';
@@ -24,7 +25,8 @@ const TMP_PARTITION_MODE = '1777';
  */
 export class DockerRunner implements CodeRunner {
 
-  constructor(private spawn: SpawnFn,
+  constructor(private dockerBin: DockerExecutable,
+              private spawn: SpawnFn,
               private spawnShell: SpawnShellFn,
               private uploader: DockerFileUploader,
               private downloader: DockerFileDownloader) {}
@@ -45,7 +47,7 @@ export class DockerRunner implements CodeRunner {
 
     let mounts = flatMap(configuration.mountPoints, mp => ['-v', `${mp.source}:${mp.destination}:ro`]);
 
-    return this.spawn('docker', [
+    return this.spawn(this.dockerBin, [
       'create',
       '--cap-drop=ALL',
       '--security-opt=no-new-privileges',
@@ -65,7 +67,7 @@ export class DockerRunner implements CodeRunner {
     .flatMap(containerId =>
       this.spawnShell(`docker start ${containerId}`).let(mute)
           .concat(this.downloader.fetch(containerId, configuration.inputs))
-          .concat(this.spawn('docker', [
+          .concat(this.spawn(this.dockerBin, [
             'exec',
             '-t',
             containerId,

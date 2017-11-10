@@ -5,6 +5,7 @@ import { stdout, ProcessStreamData, stdoutMsg } from '@machinelabs/core';
 import { Lab } from '@machinelabs/models';
 import { PublicLabConfiguration, InternalLabConfiguration } from '../models/lab-configuration';
 import { Invocation, InvocationType, HardwareType } from '@machinelabs/models';
+import { DockerExecutable } from './docker-availability-checker';
 
 describe('.run(lab)', () => {
 
@@ -26,7 +27,7 @@ describe('.run(lab)', () => {
       fetch: jest.fn().mockReturnValue(stdout('downloader output'))
     };
 
-    let runner = new DockerRunner(spawn, spawnShell, uploader, downloader);
+    let runner = new DockerRunner(DockerExecutable.Docker, spawn, spawnShell, uploader, downloader);
 
 
     let inv: Invocation = {
