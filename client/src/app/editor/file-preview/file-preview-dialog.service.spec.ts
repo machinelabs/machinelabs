@@ -11,7 +11,6 @@ import { ESCAPE } from '@angular/cdk/keycodes';
 import { FilePreviewDialogService } from './file-preview-dialog.service';
 import { OutputFile } from '../../models/output-file';
 import { FilePreviewDialogComponent } from './file-preview-dialog/file-preview-dialog.component';
-import { FILE_PREVIEW_DIALOG_SCROLL_STRATEGY_PROVIDER } from './file-preview.tokens';
 import { FilePreviewDialogToolbarComponent } from './file-preview-dialog-toolbar/file-preview-dialog-toolbar.component';
 
 import { dispatchKeyboardEvent } from '../../../test-helper/dispatch-events';
@@ -293,8 +292,7 @@ class TestComponent {
   ],
   providers: [
     FilePreviewDialogService,
-    { provide: Location, useClass: SpyLocation },
-    FILE_PREVIEW_DIALOG_SCROLL_STRATEGY_PROVIDER
+    { provide: Location, useClass: SpyLocation }
   ],
   entryComponents: [
     TestComponent,
