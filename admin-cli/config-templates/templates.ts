@@ -49,6 +49,15 @@ export const templates = {
       }
     }
   },
+  'staging-portimao': {
+    ...stagingTemplate, ...{
+      server: {
+        name: 'portimao',
+        zone: 'us-east1-d',
+        env: 'portimao'
+      }
+    }
+  },
   production: productionTemplate,
   production2: {
     ...productionTemplate, ...{
