@@ -1,24 +1,42 @@
 {
-  "common": {
-    "keras_v2-0-x_python_3-1": {
-      "id": "keras_v2-0-x_python_3-1",
-      "name": "Keras 2.0.4 + Python 3.1"
+  "common" : {
+    "keras_v2-0-x_python_2-1" : {
+      "id" : "keras_v2-0-x_python_2-1",
+      "name" : "Keras 2.0.4 + Python 2.1"
     },
-    "keras_v2-0-x_python_2-1": {
-      "id": "keras_v2-0-x_python_2-1",
-      "name": "Keras 2.0.4 + Python 2.1"
+    "keras_v2-0-x_python_3-1" : {
+      "id" : "keras_v2-0-x_python_3-1",
+      "name" : "Keras 2.0.4 + Python 3.1"
+    },
+    "tensorflow_v1-4-x-gpu_python_2-1" : {
+      "id" : "tensorflow_v1-4-x-gpu_python_2-1",
+      "name" : "Tensorflow 1.4.x + Keras 2.0.6 + Python 2.1 (GPU)"
+    },
+    "tensorflow_v1-4-x-gpu_python_3-1" : {
+      "id" : "tensorflow_v1-4-x-gpu_python_3-1",
+      "name" : "Tensorflow 1.4.x + Keras 2.0.6 + Python 3.1 (GPU)"
     }
   },
-  "protected": {
-    "keras_v2-0-x_python_3-1": {
-      "id": "keras_v2-0-x_python_3-1",
-      "image_digest": "sha256:ab7e0110f31ba678ff7c429445d4ce432e068fd0446de6972b39a2fa41cb6a19",
-      "image_name": "floydhub/tensorflow:1.1.0-py3.1"
+  "protected" : {
+    "keras_v2-0-x_python_2-1" : {
+      "id" : "keras_v2-0-x_python_2-1",
+      "image_digest" : "sha256:c956c05aec71593cf684c6ddd7bb8d4993e387f152e075bed075bc9a573e59b9",
+      "image_name" : "floydhub/tensorflow:1.1.0-py2.1"
     },
-    "keras_v2-0-x_python_2-1": {
-      "id": "keras_v2-0-x_python_2-1",
-      "image_digest": "sha256:c956c05aec71593cf684c6ddd7bb8d4993e387f152e075bed075bc9a573e59b9",
-      "image_name": "floydhub/tensorflow:1.1.0-py2.1"
+    "keras_v2-0-x_python_3-1" : {
+      "id" : "keras_v2-0-x_python_3-1",
+      "image_digest" : "sha256:ab7e0110f31ba678ff7c429445d4ce432e068fd0446de6972b39a2fa41cb6a19",
+      "image_name" : "floydhub/tensorflow:1.1.0-py3.1"
+    },
+    "tensorflow_v1-4-x-gpu_python_2-1" : {
+      "id" : "tensorflow_v1-4-x-gpu_python_2-1",
+      "image_digest" : "sha256:78a5a5c1051f5a324f78649833fb09c8555197e2fb5453728a5a7232244ceefc",
+      "image_name" : "floydhub/tensorflow:1.4.0-gpu-py2_aws.14"
+    },
+    "tensorflow_v1-4-x-gpu_python_3-1" : {
+      "id" : "tensorflow_v1-4-x-gpu_python_3-1",
+      "image_digest" : "sha256:b71ad0116571c7175bb0bb65eb08cce71f36245dac3431800522f6a9acaf8073",
+      "image_name" : "floydhub/tensorflow:1.4.0-gpu-py3_aws.14"
     }
   }
 }
