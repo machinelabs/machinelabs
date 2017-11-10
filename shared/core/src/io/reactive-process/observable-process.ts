@@ -20,7 +20,21 @@ export const toObservableProcess = (process: ChildProcess) => {
     .map(mapFrom(OutputType.Stderr))
     .share();
 
+  // In contrast to STDERR these are errors directly related to the
+  // spawning of the process. We still want them to treat them as if
+  // it was a regular STDERR case.
+  let spawnErrStream = Observable.fromEvent(process, 'error')
+                            .map(mapFrom(OutputType.Stderr))
+                            // we duplicate the message because we need one to propagate as STDERR
+                            // and the second one to stop the entire stream
+                            .flatMap(val => [val, val])
+                            .share();
+
   let closeStream = Observable.fromEvent(process, 'close').share();
 
-  return Observable.merge(stdOutStream, stdErrStream).takeUntil(closeStream);
+  return Observable.merge(stdOutStream, stdErrStream, spawnErrStream)
+                   .takeUntil(closeStream)
+                   // we listen for the second message of `spawnErrStream` because we want one
+                   // message to go through to just propagate as a regular STDERR message
+                   .takeUntil(spawnErrStream.skip(1));
 };
