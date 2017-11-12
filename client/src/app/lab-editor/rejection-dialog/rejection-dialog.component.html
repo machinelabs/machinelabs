@@ -21,12 +21,23 @@
       <button mat-button [matDialogClose]="true">Ok, I'll wait</button>
     </ml-dialog-cta-bar>
   </ng-container>
-  <ng-container *ngSwitchCase="ExecutionRejectionReason.OutOfCredits">
+  <ng-container *ngSwitchCase="ExecutionRejectionReason.OutOfCpuCredits">
     <ml-dialog-header>Out of free monthly credits</ml-dialog-header>
     <ml-dialog-content>
-      <p>Woah, you've been active! Looks like you've used up all your <strong>free</strong> monthly credits!</p>
+      <p>Woah, you've been active! Looks like you've used up all your <strong>free</strong> monthly <strong>CPU</strong> credits!</p>
       <p>Next month you'll be able to launch executions as usual again.</p>
       <p>In the future you'll get to choose a paid plan that allows unlimited executions.</p>
+    </ml-dialog-content>
+    <ml-dialog-cta-bar>
+      <button mat-button [matDialogClose]="true">Ok</button>
+    </ml-dialog-cta-bar>
+  </ng-container>
+  <ng-container *ngSwitchCase="ExecutionRejectionReason.OutOfGpuCredits">
+    <ml-dialog-header>Out of free monthly credits</ml-dialog-header>
+    <ml-dialog-content>
+      <p>Woah, you've been active! Looks like you've used up all your <strong>free </strong> monthly <strong>GPU</strong> credits!</p>
+      <p>Next month you'll be able to launch executions on GPU again. In the meantime, try running your execution on CPU.</p>
+      <p>In the future you'll get to choose a paid plan that allows unlimited executions on GPU.</p>
     </ml-dialog-content>
     <ml-dialog-cta-bar>
       <button mat-button [matDialogClose]="true">Ok</button>

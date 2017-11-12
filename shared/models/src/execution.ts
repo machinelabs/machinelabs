@@ -33,10 +33,12 @@ export enum ExecutionRejectionReason {
   NoAnonymous = 'no_anonymous',
   NoPlan = 'no_plan',
   InvalidConfig = 'invalid_config',
-  OutOfCredits = 'out_of_credits',
+  OutOfCpuCredits = 'out_of_cpu_credits',
+  OutOfGpuCredits = 'out_of_gpu_credits',
   ExceedsMaximumConcurrency = 'exceeds_maximum_concurrency',
   OverCapacity = 'over_capacity',
-  HardwareTypeNotPermitted = 'hardwaretype_not_permitted'
+  HardwareTypeNotPermitted = 'hardwaretype_not_permitted',
+  InternalError = 'internal_error'
 }
 
 export class ExecutionRejectionInfo {

@@ -1,11 +1,12 @@
 import { Observable } from '@reactivex/rxjs';
 import { ObservableDbRef, DbRefBuilder, DateUtil } from '@machinelabs/core';
-import { ShortMonth, toShortMonth } from '@machinelabs/models';
+import { ShortMonth, toShortMonth, HardwareType } from '@machinelabs/models';
 import { CostCalculator } from '../costs/cost-calculator';
 import { UsageStatistic } from './usage-statistic';
 
-// Give everyone 72 hours per month
-const FREE_MONTHLY_COMPUTATION_SECONDS = 72 * 60 * 60;
+// Give everyone 72 CPU hours per month
+const FREE_MONTHLY_CPU_SECONDS = 72 * 60 * 60;
+const FREE_MONTHLY_GPU_SECONDS = 20 * 60 * 60;
 
 export class UsageStatisticService {
 
@@ -33,7 +34,8 @@ export class UsageStatisticService {
     return this.costCalculator.calc(executions$)
                               .map(costReport => ({
                                   costReport: costReport,
-                                  secondsLeft: FREE_MONTHLY_COMPUTATION_SECONDS - costReport.totalSeconds
+                                  cpuSecondsLeft: FREE_MONTHLY_CPU_SECONDS - costReport.getSecondsPerHardware(HardwareType.CPU),
+                                  gpuSecondsLeft: FREE_MONTHLY_GPU_SECONDS - costReport.getSecondsPerHardware(HardwareType.GPU)
                                 }));
   }
 }
