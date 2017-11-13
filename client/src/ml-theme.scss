@@ -11,6 +11,7 @@
 @import 'app/lab-editor/panel/panel-theme.scss';
 @import 'app/user-profile/user-profile-theme.scss';
 @import 'app/user-profile/edit-user-profile-dialog/edit-user-profile-dialog-theme.scss';
+@import 'app/landing-page/landing-page-theme.scss';
 @import 'app/explore/execution-card/execution-card-theme.scss';
 @import 'app/explore/explore-labs/explore-labs-theme.scss';
 @import 'app/explore/lab-card/lab-card-theme.scss';
@@ -39,6 +40,7 @@ $ml-app-theme: mat-light-theme($ml-app-primary, $ml-app-accent, $ml-app-warn);
   @include ml-explore-view-theme($theme);
   @include ml-execution-card-theme($theme);
   @include ml-lab-card-theme($theme);
+  @include ml-landing-page-theme($theme);
 }
 
 @include angular-material-theme($ml-app-theme);

@@ -8,32 +8,54 @@ $max-width-promo-block: 690px;
   overflow: hidden;
 }
 
-.ml-promo-content {
+ml-toolbar {
+  box-shadow: none;
+}
+
+.ml-landing-page-banner {
   display: flex;
   justify-content: space-between;
 }
 
-.ml-promo-content,
-.ml-explore-view-content {
-  padding: 20px $padding-horizontal;
-}
-
-.ml-explore-view-content {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.ml-promo-text {
+.ml-landing-page-promo-text {
   align-self: center;
-  max-width: $max-width-promo-block;
+  max-width: 700px;
+  padding-left: 6em;
+  color: #fff;
 
   h1 {
     font-weight: 300;
   }
 
   [mat-raised-button] + [mat-raised-button] {
-    margin-left: 10px;
+    margin-left: 14px;
+    background: #39aa56;
   }
+}
+
+.ml-landing-page-cta-bar {
+  margin-top: 2em;
+  .mat-raised-button {
+    font-size: 1.4em;
+    padding: 0.2em 0.8em;
+  }
+}
+
+.ml-explore-view-content {
+  padding: 60px $padding-horizontal;
+}
+
+.ml-explore-labs-header {
+  margin-bottom: 25px;
+
+  h1 {
+    margin: 0 0 10px 0;
+  }
+}
+
+.ml-landing-page-main-content {
+  max-width: 1200px;
+  margin: auto;
 }
 
 .ml-promo-image {
@@ -47,8 +69,16 @@ $max-width-promo-block: 690px;
 }
 
 .patron {
-  margin-top: 30px;
-  color: #888;
+  text-align: center;
+  background: #03a9f4;
+  color: #fff;
+  font-weight: 600;
+  padding: 1.5em;
+
+  p {
+    margin: 0;
+    margin-bottom: 1em;
+  }
 
   img {
     @include mat-elevation(2);
