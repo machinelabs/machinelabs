@@ -30,13 +30,13 @@ export interface Execution {
 }
 
 export enum ExecutionRejectionReason {
-  NoAnonymous,
-  NoPlan,
-  InvalidConfig,
-  OutOfCredits,
-  ExceedsMaximumConcurrency,
-  OverCapacity,
-  HardwareTypeNotPermitted
+  NoAnonymous = 'no_anonymous',
+  NoPlan = 'no_plan',
+  InvalidConfig = 'invalid_config',
+  OutOfCredits = 'out_of_credits',
+  ExceedsMaximumConcurrency = 'exceeds_maximum_concurrency',
+  OverCapacity = 'over_capacity',
+  HardwareTypeNotPermitted = 'hardwaretype_not_permitted'
 }
 
 export class ExecutionRejectionInfo {
