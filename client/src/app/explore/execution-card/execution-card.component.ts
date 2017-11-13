@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { ExecutionStatus, Execution } from '../../models/execution';
+import { Execution } from '../../models/execution';
+import { ExecutionStatus } from '@machinelabs/models';
 
 @Component({
   selector: 'ml-execution-card',

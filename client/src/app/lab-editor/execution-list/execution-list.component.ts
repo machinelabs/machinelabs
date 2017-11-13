@@ -8,7 +8,8 @@ import { LabExecutionService } from '../../lab-execution.service';
 import { EditorSnackbarService } from '../../editor/editor-snackbar.service';
 
 import { User } from '../../models/user';
-import { Execution, ExecutionStatus } from '../../models/execution';
+import { Execution } from '../../models/execution';
+import { ExecutionStatus } from '@machinelabs/models';
 
 import { EditExecutionDialogComponent } from '../edit-execution-dialog/edit-execution-dialog.component';
 import { switchMap, filter } from 'rxjs/operators';

@@ -10,8 +10,9 @@ import { DbRefBuilder } from './firebase/db-ref-builder';
 import { AuthService } from './auth';
 import { Lab } from './models/lab';
 import { User } from './models/user';
-import { Execution, ExecutionStatus } from './models/execution';
+import { Execution } from './models/execution';
 import { parseLabDirectory } from '@machinelabs/core/dist/src/io/lab-fs/parse';
+import { ExecutionStatus } from '@machinelabs/models';
 
 const mapExecutionLabDirectory = (source: Observable<Execution>) =>
   source.pipe(map(execution => {
