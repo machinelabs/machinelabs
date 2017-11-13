@@ -1,8 +1,7 @@
 import { Observable } from '@reactivex/rxjs';
 import { ValidationRule } from './rule';
-import { Invocation } from '@machinelabs/models';
+import { Invocation, ExecutionRejectionInfo, ExecutionRejectionReason } from '@machinelabs/models';
 import { ValidationResult } from '../validation-result';
-import { ExecutionRejectionInfo, ExecutionRejectionReason } from '../../models/execution';
 import { dbRefBuilder } from '../../ml-firebase';
 
 export class WithinConcurrencyLimit implements ValidationRule {

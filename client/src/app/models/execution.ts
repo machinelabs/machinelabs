@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import { InvocationLab } from './invocation';
+import { ExecutionRejectionInfo } from '@machinelabs/models';
 
 export enum ExecutionStatus {
   Pristine = 'pristine',
@@ -38,27 +39,6 @@ export interface ExecutionMessage {
   kind: MessageKind;
   timestamp: number;
   terminal_mode: boolean;
-}
-
-export enum ExecutionRejectionReason {
-  NoAnonymous,
-  NoPlan,
-  InvalidConfig,
-  OutOfCredits,
-  ExceedsMaximumConcurrency
-}
-
-export class ExecutionRejectionInfo {
-
-  // we need this because after deserialization from JSON a simple instanceof
-  // does not work anymore. TS calls these Type Guards
-  // https://www.typescriptlang.org/docs/handbook/advanced-types.html
-  static isOfType(info: any): info is ExecutionRejectionInfo {
-    return info.message && info.reason !== undefined;
-  }
-
-  constructor(public reason: ExecutionRejectionReason,
-              public message: string) {}
 }
 
 export interface ExecutionWrapper {

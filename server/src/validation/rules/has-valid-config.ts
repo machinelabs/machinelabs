@@ -1,10 +1,9 @@
 import { Observable } from '@reactivex/rxjs';
 import { ValidationRule } from './rule';
-import { Invocation } from '@machinelabs/models';
+import { Invocation, ExecutionRejectionInfo, ExecutionRejectionReason } from '@machinelabs/models';
 import { ValidationResult } from '../validation-result';
 import { InternalLabConfiguration } from '../../models/lab-configuration';
 import { LabConfigService } from '../../lab-config/lab-config.service';
-import { ExecutionRejectionInfo, ExecutionRejectionReason } from '../../models/execution';
 import { LabConfigResolver } from '../resolver/lab-config-resolver';
 
 export class HasValidConfigRule implements ValidationRule {

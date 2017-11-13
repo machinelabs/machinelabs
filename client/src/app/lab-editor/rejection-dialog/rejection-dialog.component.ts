@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
-import { ExecutionRejectionReason } from '../../models/execution';
 import { LoginService } from '../../login.service';
+import { ExecutionRejectionReason } from '@machinelabs/models';
 
 @Component({
   selector: 'ml-rejection-dialog',
