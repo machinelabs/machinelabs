@@ -29,8 +29,6 @@ import { Lab } from '../models/lab';
 
 import {
   MessageKind,
-  ExecutionRejectionInfo,
-  ExecutionRejectionReason,
   Execution,
   ExecutionStatus
 } from '../models/execution';

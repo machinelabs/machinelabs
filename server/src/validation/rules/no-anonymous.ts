@@ -1,9 +1,8 @@
 import { Observable } from '@reactivex/rxjs';
 import { ValidationRule } from './rule';
 import { ExtendedUser } from '../../models/user';
-import { Invocation } from '@machinelabs/models';
+import { Invocation, ExecutionRejectionInfo, ExecutionRejectionReason } from '@machinelabs/models';
 import { ValidationResult } from '../validation-result';
-import { ExecutionRejectionReason, ExecutionRejectionInfo } from '../../models/execution';
 import { UserResolver } from '../resolver/user-resolver';
 
 export class NoAnonymousRule implements ValidationRule {

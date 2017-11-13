@@ -1,5 +1,5 @@
-export class AbstractValidationError {
-  constructor(public message: string) {}
+export interface ValidationError {
+  message: string;
 }
 
-export type ValidationResult = boolean | AbstractValidationError;
+export type ValidationResult = boolean | ValidationError;

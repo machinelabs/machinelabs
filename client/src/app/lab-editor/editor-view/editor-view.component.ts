@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { filter, tap, map, skip, switchMap, take, share } from 'rxjs/operators';
 
-import { File } from '@machinelabs/models';
+import { File, ExecutionRejectionReason } from '@machinelabs/models';
 import { AceEditorComponent } from '../../editor/ace-editor/ace-editor.component';
 import { XtermComponent } from '../../editor/xterm/xterm.component';
 import {
@@ -27,7 +27,7 @@ import { UserService } from '../../user/user.service';
 import { Lab } from '../../models/lab';
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { LocationHelper } from '../../util/location-helper';
-import { Execution, ExecutionRejectionReason } from '../../models/execution';
+import { Execution } from '../../models/execution';
 import { EditorToolbarAction, EditorToolbarActionTypes } from '../editor-toolbar/editor-toolbar.component';
 import { TimeoutError, RateLimitError } from '../../editor/remote-code-execution/errors';
 

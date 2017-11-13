@@ -1,4 +1,4 @@
-import { AbstractValidationError } from '../validation/validation-result';
+import { ExecutionRejectionInfo } from '@machinelabs/models';
 
 export enum MessageKind {
   Stdout = 'stdout',
@@ -26,13 +26,6 @@ export enum ExecutionRejectionReason {
   ExceedsMaximumConcurrency,
   OverCapacity,
   HardwareTypeNotPermitted
-}
-
-export class ExecutionRejectionInfo extends AbstractValidationError {
-  constructor(public reason: ExecutionRejectionReason,
-              public message: string) {
-                super(message);
-              }
 }
 
 export function toMessageKind(kind: string) {

@@ -3,8 +3,7 @@ import 'jest';
 import { ValidationService } from './validation.service';
 import { ValidationRule } from './rules/rule';
 import { Observable } from '@reactivex/rxjs';
-import { ExecutionRejectionInfo, ExecutionRejectionReason } from '../models/execution';
-import { Invocation, InvocationType } from '@machinelabs/models';
+import { Invocation, InvocationType, ExecutionRejectionInfo, ExecutionRejectionReason } from '@machinelabs/models';
 
 let dummyInvocation: Invocation = {
   id: 'dummy',
