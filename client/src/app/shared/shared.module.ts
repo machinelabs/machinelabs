@@ -15,6 +15,7 @@ import { DigitalFormatUnitPipe } from './digital-format-unit.pipe';
 import { ZippyComponent } from './zippy/zippy.component';
 import { MasonryComponent } from './masonry/masonry.component';
 import { MasonryItemComponent, MutationObserverFactory } from './masonry/masonry-item.component';
+import { PageFooterComponent } from './page-footer/page-footer.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { MasonryItemComponent, MutationObserverFactory } from './masonry/masonry
     DigitalFormatUnitPipe,
     ZippyComponent,
     MasonryComponent,
-    MasonryItemComponent
+    MasonryItemComponent,
+    PageFooterComponent
   ],
   imports: [MachineLabsMaterialModule, CommonModule],
   exports: [
@@ -47,7 +49,8 @@ import { MasonryItemComponent, MutationObserverFactory } from './masonry/masonry
     DigitalFormatUnitPipe,
     ZippyComponent,
     MasonryComponent,
-    MasonryItemComponent
+    MasonryItemComponent,
+    PageFooterComponent
   ]
 })
 export class SharedModule {
