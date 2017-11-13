@@ -1,7 +1,8 @@
 import 'jest';
 
 import { recycleCmdFactory, RecycleCmdInfo } from './recycle-cmd-factory';
-import { ExecutionMessage, MessageKind } from '../../models/execution';
+import { ExecutionMessage } from '../../models/execution';
+import { MessageKind } from '@machinelabs/models';
 
 let toSnapshot = (v: any) => ({ val: () => v});
 

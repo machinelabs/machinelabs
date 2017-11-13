@@ -1,12 +1,4 @@
-import { ExecutionRejectionInfo } from '@machinelabs/models';
-
-export enum MessageKind {
-  Stdout = 'stdout',
-  Stderr = 'stderr',
-  ExecutionStarted = 'started',
-  ExecutionFinished = 'finished',
-  ExecutionRejected = 'rejected'
-}
+import { ExecutionRejectionInfo, MessageKind } from '@machinelabs/models';
 
 export interface ExecutionMessage {
   id?: string;

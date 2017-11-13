@@ -9,6 +9,14 @@ export enum ExecutionStatus {
   Failed = 'failed'
 }
 
+export enum MessageKind {
+  Stdout = 'stdout',
+  Stderr = 'stderr',
+  ExecutionStarted = 'started',
+  ExecutionFinished = 'finished',
+  ExecutionRejected = 'rejected'
+}
+
 export interface Execution {
   id: string;
   cache_hash: string;

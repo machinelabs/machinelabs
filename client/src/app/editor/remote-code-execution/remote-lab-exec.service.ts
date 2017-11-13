@@ -28,7 +28,6 @@ import { TimeoutError, RateLimitError } from './errors';
 import {
   Execution,
   ExecutionMessage,
-  MessageKind,
   ExecutionWrapper,
   ExecutionInvocationInfo
 } from '../../models/execution';
@@ -42,7 +41,7 @@ import { AuthService } from '../../auth';
 
 import { parseLabDirectory } from '@machinelabs/core/dist/src/io/lab-fs/parse';
 import { stringifyDirectory } from '../../util/directory';
-import { ExecutionStatus } from '@machinelabs/models';
+import { ExecutionStatus, MessageKind } from '@machinelabs/models';
 
 @Injectable()
 export class RemoteLabExecService {

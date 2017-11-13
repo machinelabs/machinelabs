@@ -2,9 +2,11 @@ import 'jest';
 
 import { Observable } from '@reactivex/rxjs';
 import { RecycleAccumulator } from './recycle-accumulator';
-import { ExecutionMessage, MessageKind } from '../../models/execution';
+import { ExecutionMessage } from '../../models/execution';
 import { recycleCmdFactory } from './recycle-cmd-factory';
 import { RecycleService, RecycleConfig } from './recycle.service';
+import { MessageKind } from '@machinelabs/models';
+
 
 let toSnapshot = (v: any) => ({ val: () => v});
 

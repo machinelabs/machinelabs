@@ -10,7 +10,9 @@ import { RemoteLabExecService } from './remote-lab-exec.service';
 import { AuthService } from '../../auth';
 import { DATABASE } from '../../app.tokens';
 import { DbRefBuilder } from '../../firebase/db-ref-builder';
-import { MessageKind, ExecutionStatus, ExecutionMessage, Execution } from '../../models/execution';
+import { ExecutionMessage, Execution } from '../../models/execution';
+import { MessageKind, ExecutionStatus } from '@machinelabs/models';
+
 
 let createSnapshot = data => ({ val: () => data });
 let createMessageSnapshot = (kind, data) => createSnapshot({kind, data});

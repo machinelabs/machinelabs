@@ -3,9 +3,10 @@ import { DbRefBuilder } from '../../firebase/db-ref-builder';
 import { of } from 'rxjs/observable/of';
 import { switchMap, concat, take, map } from 'rxjs/operators';
 
-import { ExecutionMessage, MessageKind } from '../../models/execution';
+import { ExecutionMessage } from '../../models/execution';
 import { createSkipText } from '../util/skip-helper'
 import { snapshotToValue } from '../../rx/snapshotToValue';
+import { MessageKind } from '@machinelabs/models';
 
 export class MessageStreamOptimizer {
   constructor(private db: DbRefBuilder, private partitionSize, private fullFetchTreshold) {

@@ -10,7 +10,7 @@ import { MachineLabsMaterialModule } from '../../ml-material.module';
 import { SharedModule } from '../../shared/shared.module';
 import { AuthService, dummyUser } from '../../auth/';
 import { EditorToolbarComponent, EditorToolbarActionTypes } from './editor-toolbar.component';
-import { ExecutionStatus } from '../../models/execution';
+import { ExecutionStatus } from '@machinelabs/models';
 import { UserService } from '../../user/user.service';
 import { LabStorageService } from '../../lab-storage.service';
 import { LabTemplateService, InMemoryLabTemplateService } from '../../lab-template.service';

@@ -2,7 +2,6 @@ import { Observable } from '@reactivex/rxjs';
 import { Resolver } from './resolver';
 import { dbRefBuilder } from '../../ml-firebase';
 import { Invocation, InvocationExecution } from '@machinelabs/models';
-import { MessageKind } from '../../models/execution';
 
 export class ExecutionResolver implements Resolver {
 
