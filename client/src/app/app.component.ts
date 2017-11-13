@@ -12,6 +12,11 @@ const { version } = require('../../package.json');
     <router-outlet></router-outlet>
   `,
   styles: [`
+    :host {
+      display: block;
+      background: linear-gradient(145deg, #0d47a1, #42a5f5);
+    }
+
     ng2-slim-loading-bar {
       height: 3px;
       position: absolute;

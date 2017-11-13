@@ -21,6 +21,10 @@
   box-shadow: 0 0 0 5px #fff;
 }
 
+.ml-user-profile-main {
+  background: #fafafa;
+}
+
 .ml-user-profile-info-bar {
   position: relative;
   padding: 20px 12px;
@@ -122,8 +126,3 @@
   }
 }
 
-.ml-user-profile-footer {
-  text-align: center;
-  font-size: 0.9em;
-  padding: 1rem;
-}
