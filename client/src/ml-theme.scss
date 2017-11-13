@@ -1,6 +1,7 @@
 @import '../node_modules/@angular/material/theming';
 
 @import 'app/shared/dialog/dialog-theme.scss';
+@import 'app/toolbar/toolbar-menu/toolbar-menu-theme.scss';
 @import 'app/editor/layout/editor-layout-theme.scss';
 @import 'app/editor/file-tree/file-tree-theme.scss';
 @import 'app/lab-editor/editor-view/editor-view-theme.scss';
@@ -24,6 +25,7 @@ $ml-app-warn: mat-palette($mat-red);
 $ml-app-theme: mat-light-theme($ml-app-primary, $ml-app-accent, $ml-app-warn);
 
 @mixin machine-labs-theme($theme) {
+  @include ml-toolbar-menu-theme($theme);
   @include ml-editor-layout-theme($theme);
   @include ml-editor-view-theme($theme);
   @include ml-editor-footer-theme($theme);

@@ -1,9 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../auth/auth.service';
 import { LoginService } from '../../login.service';
 import { UserService } from '../../user/user.service';
 import { User } from '../../models/user';
+
+export enum MenuTriggerType {
+  LoginButton,
+  MenuButton
+}
 
 @Component({
   selector: 'ml-toolbar-menu',
@@ -12,7 +17,11 @@ import { User } from '../../models/user';
 })
 export class ToolbarMenuComponent implements OnInit {
 
+  @Input() menuTrigger = MenuTriggerType.MenuButton
+
   user: Observable<User>;
+
+  MenuTriggerType = MenuTriggerType;
 
   constructor(private userService: UserService,
               private loginService: LoginService) {}
