@@ -13,7 +13,8 @@ import {
   instanceOfFile,
   instanceOfDirectory,
   DirectoryClientState,
-  ExecutionStatus
+  ExecutionStatus,
+  MessageKind
 } from '@machinelabs/models';
 
 import { getFileFromPath } from '@machinelabs/core/dist/src/io/lab-fs/navigation';
@@ -29,7 +30,6 @@ import { Lab } from '../models/lab';
 
 
 import {
-  MessageKind,
   Execution,
 } from '../models/execution';
 
