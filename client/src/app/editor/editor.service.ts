@@ -12,7 +12,8 @@ import {
   Directory,
   instanceOfFile,
   instanceOfDirectory,
-  DirectoryClientState
+  DirectoryClientState,
+  ExecutionStatus
 } from '@machinelabs/models';
 
 import { getFileFromPath } from '@machinelabs/core/dist/src/io/lab-fs/navigation';
@@ -30,7 +31,6 @@ import { Lab } from '../models/lab';
 import {
   MessageKind,
   Execution,
-  ExecutionStatus
 } from '../models/execution';
 
 export enum TabIndex {

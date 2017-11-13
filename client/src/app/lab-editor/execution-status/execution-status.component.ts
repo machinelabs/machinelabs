@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Execution, ExecutionStatus } from '../../models/execution';
+import { Execution } from '../../models/execution';
+import { ExecutionStatus } from '@machinelabs/models';
 import { Observable } from 'rxjs/Observable';
 
 @Component({

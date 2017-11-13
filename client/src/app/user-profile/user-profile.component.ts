@@ -6,7 +6,8 @@ import { map, filter, switchMap } from 'rxjs/operators';
 
 import { User } from '../models/user';
 import { Lab } from '../models/lab';
-import { Execution, ExecutionStatus } from '../models/execution';
+import { Execution } from '../models/execution';
+import { ExecutionStatus } from '@machinelabs/models';
 
 import { LabStorageService } from '../lab-storage.service';
 import { LabExecutionService } from '../lab-execution.service';

@@ -1,14 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import { InvocationLab } from './invocation';
-import { ExecutionRejectionInfo } from '@machinelabs/models';
-
-export enum ExecutionStatus {
-  Pristine = 'pristine',
-  Executing = 'executing',
-  Finished = 'finished',
-  Stopped = 'stopped',
-  Failed = 'failed'
-}
+import { ExecutionRejectionInfo, ExecutionStatus } from '@machinelabs/models';
 
 export interface Execution {
   id?: string;

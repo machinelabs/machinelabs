@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ExecutionStatus } from '../models/execution';
+import { ExecutionStatus } from '@machinelabs/models';
 
 const executionStatusLabelMap = new Map();
 
