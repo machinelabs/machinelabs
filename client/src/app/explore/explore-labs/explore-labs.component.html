@@ -1,6 +1,3 @@
-<header class="ml-explore-labs-header">
-  <h1>Explore Recent Labs</h1>
-</header>
 <ng-container *ngIf="recentLabs$ | async as recentLabs; else loading">
   <ml-masonry *ngIf="recentLabs.length; else noRecentLabs">
     <ml-masonry-item *ngFor="let recentLab of recentLabs">

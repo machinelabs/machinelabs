@@ -1,37 +1,39 @@
 <ml-toolbar>
   <ml-toolbar-logo></ml-toolbar-logo>
   <ml-toolbar-cta-bar>
-    <a routerLink="/editor" title="Launch Editor" mat-button>
-      <mat-icon>exit_to_app</mat-icon> Launch Editor</a>
+    <a mat-button title="Documentation" href="https://docs.machinelabs.ai">Documentation</a>
+    <a mat-button title="Blog" href="https://blog.machinelabs.ai">Blog</a>
   </ml-toolbar-cta-bar>
-  <ml-toolbar-menu></ml-toolbar-menu>
+  <ml-toolbar-menu [menuTrigger]="MenuTriggerType.LoginButton"></ml-toolbar-menu>
 </ml-toolbar>
-<div class="ml-promo-content">
-  <div class="ml-promo-text">
+<div class="ml-landing-page-banner">
+  <div class="ml-landing-page-promo-text">
     <h1>
-      <strong>MachineLabs</strong> is an online editor for Machine Learning. Our mission is
-      to make this field <strong>explorable, sharable</strong> and <strong>accessible for everyone</strong>.
+      <strong>MachineLabs</strong> is a platform making Machine Learning <strong>explorable, sharable</strong> and <strong>accessible</strong> for everyone.
     </h1>
-    <div class="cta-bar">
-      <ng-container *ngIf="isLoggedIn$ | async; else loginButton">
-        <a title="Launch Editor" mat-raised-button color="primary" routerLink="/editor">Launch Editor</a>
-      </ng-container>
-      <ng-template #loginButton>
-        <button mat-raised-button color="primary" (click)="login()">Login with GitHub</button>
-      </ng-template>
-      <a href="https://docs.machinelabs.ai/guide/quickstart.html" title="Quickstart" mat-raised-button>Get Started</a>
-    </div>
-    <div class="patron">
-      <p>Support us on our mission and become a Patron!</p>
-      <a href="https://www.patreon.com/machinelabs">
-        <img src="../../assets/images/become_a_patron_button@2x.png" alt="Become a Patron">
-      </a>
+    <div class="ml-landing-page-cta-bar">
+      <a title="Launch Editor" mat-raised-button color="primary" routerLink="/editor">Launch editor</a>
+      <a href="https://docs.machinelabs.ai/guide/quickstart.html" color="primary" title="Quickstart" mat-raised-button>Learn more</a>
     </div>
   </div>
   <div class="ml-promo-image">
-    <img src="../../assets/images/machinelabs_ai.png" alt="MachineLabs Editor">
+    <img src="/assets/images/machinelabs_ai.png" alt="MachineLabs Editor">
   </div>
 </div>
-<div class="ml-explore-view-content">
-  <ml-explore-labs></ml-explore-labs>
+<div class="patron">
+  <p>Support us on our mission and become a Patron!</p>
+  <a href="https://www.patreon.com/machinelabs">
+    <img src="/assets/images/become_a_patron_button@2x.png" alt="Become a Patron">
+  </a>
 </div>
+<main role="main" class="ml-landing-page-main">
+  <div class="ml-landing-page-main-content">
+    <div class="ml-explore-view-content">
+      <header class="ml-explore-labs-header">
+        <h1>Recent Labs</h1>
+      </header>
+      <ml-explore-labs></ml-explore-labs>
+    </div>
+  </div>
+</main>
+<ml-page-footer></ml-page-footer>
