@@ -4,7 +4,7 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 import { File } from '@machinelabs/models';
 
 import { Observable } from 'rxjs/Observable';
-import { take } from 'rxjs/operators';
+import { take, map } from 'rxjs/operators';
 
 import { LabExecutionService } from '../../lab-execution.service';
 import { EditorService, TabIndex } from '../../editor/editor.service';
@@ -58,7 +58,8 @@ export class EmbeddedEditorViewComponent implements OnInit {
     // one would get when all the state would live in the component.
     this.editorService.initialize();
     this.executionId = this.route.snapshot.paramMap.get('executionId');
-    this.route.data.map(data => data['lab'])
+    this.route.data
+      .pipe(map(data => data['lab']))
               .subscribe(lab => this.editorService.initLab(lab));
 
     if (!this.executionId) {
