@@ -22,7 +22,7 @@ let dockerImages = {
 describe('.getImageInfo()', () => {
   it('should raise exception if no image info available', () => {
 
-    let svc = new DockerImageService(Observable.empty());
+    let svc = new DockerImageService(Observable.empty(), null);
 
     expect(() => {
       svc.getImageInfo('some-id');
@@ -32,7 +32,7 @@ describe('.getImageInfo()', () => {
 
   it('should return null for non existent ids', () => {
 
-    let svc = new DockerImageService(Observable.of(dockerImages));
+    let svc = new DockerImageService(Observable.of(dockerImages), null);
     svc.init().subscribe();
     expect(svc.getImageInfo('some-id')).toBeNull();
   });

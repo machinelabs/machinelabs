@@ -38,7 +38,7 @@ console.log(`Starting MachineLabs server (${environment.serverId})`);
 
 const dockerAvailabilityChecker = new DockerAvailabilityChecker(spawn);
 const mountService = new MountService(environment.rootMountPath, dbRefBuilder);
-const dockerImageService = new DockerImageService(getDockerImages());
+const dockerImageService = new DockerImageService(getDockerImages(), spawnShell);
 const labConfigService = new LabConfigService(dockerImageService, mountService);
 const usageStatisticService = new UsageStatisticService(new CostCalculator(), <any>dbRefBuilder);
 const recycleService = new RecycleService({
@@ -53,9 +53,19 @@ const recycleService = new RecycleService({
 const uploader = new DockerFileUploader(50, 5);
 const downloader = new DockerFileDownloader(spawn);
 
+let initActions = [dockerImageService.init(), dockerAvailabilityChecker.getExecutable()];
+
+if (environment['pullImages']) {
+  console.log('Pulling docker images...hold on');
+  initActions = [dockerImageService.pullImages(), ...initActions];
+} else {
+  console.log('Not pulling docker images');
+}
+
 Observable
-  .forkJoin(dockerImageService.init(), dockerAvailabilityChecker.getExecutable())
-  .subscribe(([_, dockerBinary]) => {
+  .forkJoin(initActions)
+  .map(results => results[results.length - 1])
+  .subscribe(dockerBinary => {
     const DUMMY_RUNNER = process.argv.includes('--dummy-runner') || dockerBinary === DockerExecutable.None;
     let runner = DUMMY_RUNNER ? new DummyRunner() : new DockerRunner(dockerBinary, spawn, spawnShell, uploader, downloader);
 
