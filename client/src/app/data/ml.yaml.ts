@@ -12,6 +12,10 @@ export const ML_YAML = `
 
 dockerImageId: keras_v2-0-x_python_3-1
 
+# Hardware Type defaults which machine our code will run on.
+# Default is "cpu" but "gpu" is also available
+# hardwareType: gpu
+
 # You can define command line arguments that will be passed to the
 # execution of main.py (optional)
 #
