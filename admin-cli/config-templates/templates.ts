@@ -67,5 +67,14 @@ export const templates = {
         env: 'production2'
       }
     }
+  },
+  'production-rijnbuurt': {
+    ...productionTemplate, ...{
+      server: {
+        name: 'rijnbuurt',
+        zone: 'us-east1-c',
+        env: 'production-rijnbuurt'
+      }
+    }
   }
 };

@@ -174,7 +174,13 @@ path /invocations/{id} {
 }
 
 path /invocations {
-  index() { ['server/id', 'server/ahlem/timestamp', 'server/hainholz/timestamp', 'server/stephanskirchen/timestamp'] }
+  index() { [
+    'server/id',
+    'server/ahlem/timestamp',
+    'server/hainholz/timestamp',
+    'server/stephanskirchen/timestamp',
+    'server/rijnbuurt/timestamp'
+    ] }
 }
 
 path /executions/{id}/common is Execution {

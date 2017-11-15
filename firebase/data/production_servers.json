@@ -9,5 +9,11 @@
     "id": "stephanskirchen",
     "name": "Stephanskirchen",
     "disabled": true
+  },
+  "rijnbuurt": {
+    "hardware_type": "gpu",
+    "id": "rijnbuurt",
+    "name": "Rijnbuurt",
+    "disabled": true
   }
 }
