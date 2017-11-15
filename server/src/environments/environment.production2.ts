@@ -8,6 +8,7 @@ export const environment = {
     messagingSenderId: '273257478502'
   },
   serverId: 'stephanskirchen',
+  pullImages: true,
   rootMountPath: '/bucket',
   slackLogging: {
     allChannel: 'log-production-all',

@@ -7,6 +7,7 @@ export const environment = {
     messagingSenderId: '351438476852'
   },
   serverId: 'list',
+  pullImages: true,
   rootMountPath: '/bucket',
   slackLogging: {
     allChannel: 'log-staging-all',
