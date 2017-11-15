@@ -21,6 +21,17 @@
       <button mat-button [matDialogClose]="true">Ok, I'll wait</button>
     </ml-dialog-cta-bar>
   </ng-container>
+  <ng-container *ngSwitchCase="ExecutionRejectionReason.HardwareTypeNotPermitted">
+    <ml-dialog-header>Back us on Patreon to run on GPU!</ml-dialog-header>
+    <ml-dialog-content>
+      <p>During <strong>private beta</strong> the usage of <strong>GPU</strong> is exclusively reserved for backers only!</p>
+      <p>Back us on <a href="https://patreon.com/machinelabs" title="Patreon">Patreon</a> an get <strong>20 GPU hours every month</strong>.</p>
+    </ml-dialog-content>
+    <ml-dialog-cta-bar>
+      <a mat-button href="https://patreon.com/machinelabs">I'd love to help!</a>
+      <button mat-button [matDialogClose]="true">No, thanks</button>
+    </ml-dialog-cta-bar>
+  </ng-container>
   <ng-container *ngSwitchCase="ExecutionRejectionReason.OutOfCpuCredits">
     <ml-dialog-header>Out of free monthly credits</ml-dialog-header>
     <ml-dialog-content>
