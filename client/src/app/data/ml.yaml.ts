@@ -4,9 +4,11 @@ export const ML_YAML = `
 #
 # Currently supported:
 #
-# dockerImageId                  |      description
-# keras_v2-0-x_python_3-1        | Keras 2.0.4 and Python 3.1
-# keras_v2-0-x_python_2-1        | Keras 2.0.4 and Python 2.1
+# dockerImageId                       |      description
+# keras_v2-0-x_python_3-1             | Keras 2.0.4 and Python 3.1
+# keras_v2-0-x_python_2-1             | Keras 2.0.4 and Python 2.1
+# tensorflow_v1-4-x-gpu_python_2-1    | TensorFlow 1.4.x + Keras 2.0.x + Python 2.1 with GPU
+# tensorflow_v1-4-x-gpu_python_3-1    | TensorFlow 1.4.x + Keras 2.0.x + Python 3.1 with GPU
 
 dockerImageId: keras_v2-0-x_python_3-1
 
