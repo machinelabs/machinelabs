@@ -1,22 +1,60 @@
 import { dbRefBuilder } from './ml-firebase/db';
 import { Observable } from '@reactivex/rxjs';
+import { SpawnShellFn, ProcessStreamData } from '@machinelabs/core';
 
 export function getDockerImages() {
   return dbRefBuilder.dockerImagesRef()
     .onceValue()
-    .map(snapshot => this.dockerImages = snapshot.val());
+    .map(snapshot => snapshot.val());
+}
+
+export interface DockerImages {
+  common: {
+    [index: string]: {
+      id: string;
+      name: string;
+    }
+  };
+
+  protected: {
+    [index: string]: {
+      id: string;
+      image_digest: string;
+      image_name: string;
+    }
+  };
 }
 
 export class DockerImageService {
 
-  private dockerImages: any;
+  private dockerImages$: Observable<DockerImages>;
+  private dockerImages: DockerImages;
 
-  constructor(private dockerImages$: Observable<any>) { }
+  constructor(dockerImages$: Observable<DockerImages>,
+              private spawnShell: SpawnShellFn) {
+    this.dockerImages$ = dockerImages$.share();
+  }
 
   init(): Observable<any> {
-    let dockerImages = this.dockerImages$.share();
-    dockerImages.subscribe(images => this.dockerImages = images);
-    return dockerImages;
+    this.dockerImages$.subscribe(images => this.dockerImages = images);
+    return this.dockerImages$;
+  }
+
+  pullImages() {
+    if (this.dockerImages) {
+      return this.pull(this.dockerImages);
+    } else {
+      return this.dockerImages$.flatMap(images => this.pull(images));
+    }
+  }
+
+  private pull(images: DockerImages) {
+    return Observable.forkJoin(Object.values(images.protected).map(val => this.pullImage(val.id)));
+  }
+
+  private pullImage(id: string) {
+    return this.spawnShell(`docker pull ${this.getImageNameWithDigest(id)}`)
+               .do(msg => console.log(msg.str));
   }
 
   getImageInfo(id: string) {
