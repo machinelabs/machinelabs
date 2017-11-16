@@ -1,7 +1,7 @@
 import { NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatDialogModule, MatDialog, MATERIAL_COMPATIBILITY_MODE } from '@angular/material';
+import { MatDialogModule, MatDialog } from '@angular/material';
 
 import { TestBed, ComponentFixture, inject } from '@angular/core/testing';
 
@@ -17,9 +17,6 @@ describe('NameDialogComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [MatDialogModule, DialogTestModule],
-      providers: [
-        { provide: MATERIAL_COMPATIBILITY_MODE, useValue: true }
-      ],
       schemas: [NO_ERRORS_SCHEMA]
     });
   });

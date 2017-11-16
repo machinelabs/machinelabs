@@ -17,8 +17,7 @@ import {
   MatCardModule,
   MatExpansionModule,
   MatCheckboxModule,
-  MatTableModule,
-  MATERIAL_COMPATIBILITY_MODE
+  MatTableModule
 } from '@angular/material';
 
 @NgModule({
@@ -41,9 +40,6 @@ import {
     MatExpansionModule,
     MatCheckboxModule,
     MatTableModule
-  ],
-  providers: [
-    { provide: MATERIAL_COMPATIBILITY_MODE, useValue: true }
   ]
 })
 export class MachineLabsMaterialModule {}
