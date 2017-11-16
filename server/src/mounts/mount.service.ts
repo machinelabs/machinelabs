@@ -6,7 +6,7 @@ import { DbRefBuilder } from '@machinelabs/core';
 import { MountOption, Mount } from '@machinelabs/models';
 import { MountPoint } from '../models/lab-configuration';
 
-const CONTAINER_MOUNT_PREFIX = '/mlmounts';
+const CONTAINER_MOUNT_PREFIX = '/machinelabs/mounts';
 
 export interface MountFragments {
   user: string;
