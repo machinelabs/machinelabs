@@ -1,7 +1,7 @@
 import { NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
-import { MatDialogModule, MatDialog, MATERIAL_COMPATIBILITY_MODE } from '@angular/material';
+import { MatDialogModule, MatDialog } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
@@ -91,10 +91,7 @@ describe('EditUserProfileDialogComponent', () => {
 @NgModule({
   imports: [MatDialogModule, ReactiveFormsModule, CommonModule],
   declarations: [EditUserProfileDialogComponent],
-  providers: [
-    UserService,
-    { provide: MATERIAL_COMPATIBILITY_MODE, useValue: true }
-  ],
+  providers: [UserService],
   exports: [EditUserProfileDialogComponent],
   entryComponents: [EditUserProfileDialogComponent],
   schemas: [NO_ERRORS_SCHEMA]

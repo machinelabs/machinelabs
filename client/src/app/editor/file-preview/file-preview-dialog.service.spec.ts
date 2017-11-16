@@ -5,7 +5,7 @@ import { PortalModule } from '@angular/cdk/portal';
 import { NgModule, NO_ERRORS_SCHEMA, Component, ViewContainerRef } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { OverlayModule, OverlayContainer } from '@angular/cdk/overlay';
-import { MatProgressSpinnerModule, MATERIAL_COMPATIBILITY_MODE } from '@angular/material';
+import { MatProgressSpinnerModule } from '@angular/material';
 import { ESCAPE } from '@angular/cdk/keycodes';
 
 import { FilePreviewDialogService } from './file-preview-dialog.service';
@@ -34,8 +34,7 @@ describe('FilePreviewDialogService', () => {
             overlayContainerElement = document.createElement('div');
             return { getContainerElement: () => overlayContainerElement };
           }
-        },
-        { provide: MATERIAL_COMPATIBILITY_MODE, useValue: true }
+        }
       ]
     });
 
