@@ -4,7 +4,7 @@ import { flatMap, isString, trimStart } from 'lodash';
 
 import { DbRefBuilder } from '@machinelabs/core';
 import { MountOption, Mount } from '@machinelabs/models';
-import { MountPoint } from 'src/models/lab-configuration';
+import { MountPoint } from '../models/lab-configuration';
 
 const CONTAINER_MOUNT_PREFIX = '/mlmounts';
 
