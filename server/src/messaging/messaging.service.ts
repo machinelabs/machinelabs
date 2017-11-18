@@ -51,7 +51,7 @@ export class MessagingService {
       invocation.data.directory = parseLabDirectory(invocation.data.directory);
       return invocation;
     })
-    .subscribe(invocation => {
+    .subscribe((invocation: Invocation) => {
 
       this.getOutputAsObservable(invocation)
           .flatMap(data => this.handleOutput(data.message, data.invocation))
@@ -60,7 +60,7 @@ export class MessagingService {
             console.error(error);
             console.log(`Stopping execution ${invocation.id} now`);
             this.codeRunner.stop(invocation.id);
-            this.completeExecution(invocation, ExecutionStatus.Failed);
+            this.completeExecution(invocation.id, ExecutionStatus.Failed);
           }, () => {
             console.log(`Message stream completed for execution ${invocation.id} at ${Date.now()}`);
           });
@@ -71,8 +71,9 @@ export class MessagingService {
       .filter((invocation: Invocation) => invocation.type === InvocationType.StopExecution)
       .flatMap(invocation => this.stopValidationService.validate(invocation))
       .subscribe(validationContext => {
-          let execution = validationContext.resolved.get(ExecutionResolver);
+          let execution: Execution = validationContext.resolved.get(ExecutionResolver);
           if (validationContext.isApproved() && execution) {
+            this.completeExecution(execution.id, ExecutionStatus.Stopped);
             this.codeRunner.stop(execution.id);
           } else {
             console.log('Request to stop invocation was invalid');
@@ -112,7 +113,7 @@ export class MessagingService {
             }))
             .do(msg => {
               if (msg.kind === MessageKind.ExecutionFinished) {
-                this.completeExecution(invocation);
+                this.completeExecution(invocation.id);
               }
             })
             .let(msgs => this.recycleService.watch(invocation.id, msgs));
@@ -170,12 +171,28 @@ export class MessagingService {
       .subscribe();
   }
 
-  completeExecution(run: Invocation, status = ExecutionStatus.Finished) {
-    dbRefBuilder.executionRef(run.id)
-      .update({
-        finished_at: firebase.database.ServerValue.TIMESTAMP,
-        status: status
-      });
+  completeExecution(executionId: string, status = ExecutionStatus.Finished) {
+
+    dbRefBuilder.executionRef(executionId).onceValue()
+                .map(snapshot => snapshot.val())
+                .switchMap(execution => {
+                  let executing = execution && execution.status === ExecutionStatus.Executing;
+
+                  let delta = {};
+
+                  if (status === ExecutionStatus.Finished) {
+                    delta['finished_at'] = firebase.database.ServerValue.TIMESTAMP;
+                  }
+
+                  // We want to change the status only if it is still `executing`.
+                  // If not, it is finalized already and the state shouldn't change.
+                  if (executing) {
+                    delta['status'] = status;
+                  }
+
+                  return dbRefBuilder.executionRef(executionId).update(delta);
+                })
+                .subscribe();
   }
 
   processStreamDataToExecutionMessage(data: ProcessStreamData): ExecutionMessage {
