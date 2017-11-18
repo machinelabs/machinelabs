@@ -184,6 +184,14 @@ export class MessagingService {
                     delta['finished_at'] = firebase.database.ServerValue.TIMESTAMP;
                   }
 
+                  if (status === ExecutionStatus.Failed) {
+                    delta['failed_at'] = firebase.database.ServerValue.TIMESTAMP;
+                  }
+
+                  if (status === ExecutionStatus.Stopped) {
+                    delta['stopped_at'] = firebase.database.ServerValue.TIMESTAMP;
+                  }
+
                   // We want to change the status only if it is still `executing`.
                   // If not, it is finalized already and the state shouldn't change.
                   if (executing) {
