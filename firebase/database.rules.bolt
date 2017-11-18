@@ -78,6 +78,8 @@ type Execution {
   cache_hash: ServerWritableString,
   started_at: ServerWritableNumber,
   finished_at: ServerWritableNumber | Null,
+  failed_at: ServerWritableNumber | Null,
+  stopped_at: ServerWritableNumber | Null,
   server_id: ServerWritableString,
   server_info: ServerWritableString,
   hardware_type: ServerWritableString,

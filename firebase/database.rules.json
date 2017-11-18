@@ -173,6 +173,12 @@
           "finished_at": {
             ".validate": "newData.isNumber() && auth.uid == 'execution-server'"
           },
+          "failed_at": {
+            ".validate": "newData.isNumber() && auth.uid == 'execution-server'"
+          },
+          "stopped_at": {
+            ".validate": "newData.isNumber() && auth.uid == 'execution-server'"
+          },
           "server_id": {
             ".validate": "newData.isString() && auth.uid == 'execution-server'"
           },
