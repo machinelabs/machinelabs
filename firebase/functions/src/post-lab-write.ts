@@ -23,6 +23,10 @@ function updateIndices(event) {
   delta[`/idx/user_labs/${data.user_id}/${data.id}`] = true;
   delta[`/idx/user_visible_labs/${data.user_id}/${data.id}`] = data.hidden ? null : true;
 
+  if (data.hidden) {
+    delta[`/idx/recent_labs/${data.id}`] = null;
+  }
+
   // We need to find all executions that are attached to this lab
   // and hide them as well.
   //
