@@ -266,7 +266,6 @@ export class EditorService {
   }
 
   openFile(file: File, path?: string) {
-
     if (this.activeFilePath) {
       // it's important to retrieve the previousActiveFile via its path because when we
       // run an execution, we are overwriting `lab.directory` with a new directory
@@ -278,7 +277,7 @@ export class EditorService {
     }
 
     this.activeFile = file;
-    this.activeFilePath = path;
+    this.activeFilePath = path || file.name;
     this.fileTreeService.selectFile(this.activeFile);
 
     this.locationHelper.updateQueryParams(this.location.path(), {
