@@ -1,6 +1,6 @@
 {
   "name": "@machinelabs/models",
-  "version": "0.21.0+utc.2017.Nov.19-21.24.26",
+  "version": "0.21.1+utc.2017.Nov.21-13.16.11",
   "description": "Models and data structures that can be shared across various projects.",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
