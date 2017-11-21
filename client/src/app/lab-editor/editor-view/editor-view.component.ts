@@ -202,7 +202,7 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
               ], {
                 queryParamsHandling: 'merge'
               });
-              this.listen(this.activeExecutionId);
+              this.listen(this.activeExecutionId, false);
             } else if (info.rejection) {
               this.editorService.removeLocalExecution(info.executionId);
               if (info.rejection.reason === ExecutionRejectionReason.InvalidConfig) {
@@ -234,7 +234,7 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
     this.listen(this.activeExecutionId);
   }
 
-  listen(executionId: string) {
+  listen(executionId: string, initLabDirectory = true) {
     this.slimLoadingBarService.progress = INITIAL_LOADING_INDICATOR_PROGRESS;
     this.outputPanel.reset();
 
@@ -264,7 +264,9 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
     this.executionSubscription = this.execution.pipe(take(1))
       .subscribe(execution => {
         this.slimLoadingBarService.complete();
-        this.editorService.initDirectory(execution.lab.directory);
+        if (initLabDirectory) {
+          this.editorService.initDirectory(execution.lab.directory);
+        }
       });
 
     this.output = wrapper.messages;
