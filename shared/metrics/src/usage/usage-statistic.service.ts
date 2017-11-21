@@ -1,12 +1,11 @@
 import { Observable } from '@reactivex/rxjs';
 import { ObservableDbRef, DbRefBuilder, DateUtil } from '@machinelabs/core';
-import { ShortMonth, toShortMonth, HardwareType } from '@machinelabs/models';
+import { ShortMonth, toShortMonth, HardwareType, PlanId, PlanCredits } from '@machinelabs/models';
 import { CostCalculator } from '../costs/cost-calculator';
+import { CostReport } from '../costs/cost-report';
 import { UsageStatistic } from './usage-statistic';
 
-// Give everyone 72 CPU hours per month
-const FREE_MONTHLY_CPU_SECONDS = 72 * 60 * 60;
-const FREE_MONTHLY_GPU_SECONDS = 20 * 60 * 60;
+const hoursToSeconds = (hours: number) => hours * 60 * 60;
 
 export class UsageStatisticService {
 
@@ -14,28 +13,69 @@ export class UsageStatisticService {
 
   }
 
-  getStatisticForCurrentMonth(userId: string) {
-    return this.getStatistic(userId, DateUtil.getCurrentUtcYear(), DateUtil.getCurrentUtcShortMonth());
+  getUsageStatisticForAllCurrentlyActiveUsers() {
+    return this.db.userExecutions()
+    .orderByChild('live')
+    .startAt('')
+    .onceValue()
+    .map(snapshot => snapshot.val())
+    .filter(val => !!val)
+    .flatMap(val => Object.keys(val))
+    .flatMap(userId => {
+      return Observable.forkJoin(
+        this.db.userRef(userId).onceValue().map(snapshot => snapshot.val()),
+        this.getCostReportForCurrentMonth(userId)
+      )
+      .map(([fullUser, costReport]) => this.calculateStatisticForPlan(fullUser.common.id, fullUser.plan.plan_id, costReport));
+    });
   }
 
-  getStatistic(userId: string, year: number, month: ShortMonth): Observable<UsageStatistic> {
+  getUsageStatisticForCurrentMonth(userId: string, planId: PlanId): Observable<UsageStatistic> {
+    let costReport$ = this.getCostReportForCurrentMonth(userId);
+    return this.calculateStatistic(userId, planId, costReport$);
+  }
 
-    let executions$ = Observable.merge(
-      this.db.userExecutionsByMonthRef(userId, year, month).onceValue(),
-      this.db.userExecutionsLiveRef(userId).onceValue()
-      )
-      .map(snapshot => snapshot.val())
-      .map(val => val ? Object.keys(val) : [])
-      .flatMap(executionIds => Observable.from(executionIds)
-                                         .flatMap(id => this.db.executionRef(id).onceValue()))
-      .map(snapshot => snapshot.val())
-      .filter(execution => execution !== null);
+  getUsageStatistic(userId: string, planId: PlanId, year: number, month: ShortMonth): Observable<UsageStatistic> {
+    let costReport$ = this.getCostReport(userId, year, month);
+    return this.calculateStatistic(userId, planId, costReport$);
+  }
 
-    return this.costCalculator.calc(executions$)
-                              .map(costReport => ({
-                                  costReport: costReport,
-                                  cpuSecondsLeft: FREE_MONTHLY_CPU_SECONDS - costReport.getSecondsPerHardware(HardwareType.CPU),
-                                  gpuSecondsLeft: FREE_MONTHLY_GPU_SECONDS - costReport.getSecondsPerHardware(HardwareType.GPU)
-                                }));
+  getCostReportForCurrentMonth(userId: string) {
+    return this.getCostReport(userId, DateUtil.getCurrentUtcYear(), DateUtil.getCurrentUtcShortMonth());
+  }
+
+  getCostReport(userId: string, year: number, month: ShortMonth): Observable<CostReport> {
+        let executions$ = Observable.merge(
+          this.db.userExecutionsByMonthRef(userId, year, month).onceValue(),
+          this.db.userExecutionsLiveRef(userId).onceValue()
+          )
+          .map(snapshot => snapshot.val())
+          .map(val => val ? Object.keys(val) : [])
+          .flatMap(executionIds => Observable.from(executionIds)
+                                             .flatMap(id => this.db.executionRef(id).onceValue()))
+          .map(snapshot => snapshot.val())
+          .filter(execution => execution !== null);
+
+        return this.costCalculator.calc(executions$);
+      }
+
+  calculateStatistic(userId: string, planId: PlanId, costReport: Observable<CostReport>) {
+    return costReport.map(report => this.calculateStatisticForPlan(userId, planId, report));
+  }
+
+  calculateStatisticForPlan(userId: string, planId: PlanId, report: CostReport): UsageStatistic {
+    let credits = PlanCredits.get(planId);
+
+    if (!credits || !report) {
+      return null;
+    }
+
+    return {
+      userId: userId,
+      planId: planId,
+      costReport: report,
+      cpuSecondsLeft: hoursToSeconds(credits.cpuHoursPerMonth) - report.getSecondsPerHardware(HardwareType.CPU),
+      gpuSecondsLeft: hoursToSeconds(credits.gpuHoursPerMonth) - report.getSecondsPerHardware(HardwareType.GPU)
+    };
   }
 }

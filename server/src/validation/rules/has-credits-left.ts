@@ -1,28 +1,30 @@
 import { Observable } from '@reactivex/rxjs';
 import { ValidationRule } from './rule';
-import { Invocation, HardwareType, ExecutionRejectionInfo, ExecutionRejectionReason } from '@machinelabs/models';
+import { Invocation, HardwareType, ExecutionRejectionInfo, ExecutionRejectionReason, PlanId } from '@machinelabs/models';
 import { ValidationResult } from '../validation-result';
 import { UserResolver } from '../resolver/user-resolver';
-import { UsageStatisticResolver } from '../resolver/usage-statistic-resolver';
+import { CostReportResolver } from '../resolver/usage-statistic-resolver';
 import { LabConfigResolver } from '../resolver/lab-config-resolver';
-import { Plans } from '../../models/plans';
-import { UsageStatistic } from '@machinelabs/metrics';
+import { UsageStatistic, UsageStatisticService, CostReport } from '@machinelabs/metrics';
 
 export class HasCreditsLeftRule implements ValidationRule {
 
+  constructor(private usageStatisticService: UsageStatisticService) {}
+
+
   check(validationContext: Invocation, resolves: Map<Function, Observable<any>>): Observable<ValidationResult> {
 
-    if (!resolves.has(UsageStatisticResolver)) {
-      throw new Error('Missing resoler: UsageStatisticResolver');
+    if (!resolves.has(CostReportResolver)) {
+      throw new Error('Missing resoler: CostReportResolver');
     }
 
-    return Observable.forkJoin(resolves.get(UsageStatisticResolver),
+    return Observable.forkJoin(resolves.get(CostReportResolver),
                                resolves.get(UserResolver),
                                resolves.get(LabConfigResolver))
-      .map(([_statistic, user, config]) => {
-        const isAdmin = user.plan.plan_id === Plans.Admin;
+      .map(([costReport, user, config]) => {
+        const isAdmin = user.plan.plan_id === PlanId.Admin;
         const hardwareType = config.hardwareType;
-        const statistic: UsageStatistic = _statistic;
+        const statistic: UsageStatistic = this.usageStatisticService.calculateStatisticForPlan(user.common.id, user.plan.plan_id, costReport);
 
         if (isAdmin) {
           return true;

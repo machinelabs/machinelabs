@@ -20,7 +20,7 @@ import { ExecutionResolver } from './validation/resolver/execution-resolver';
 import { OwnsExecutionRule } from './validation/rules/owns-execution';
 import { WithinConcurrencyLimit } from './validation/rules/within-concurrency-limit';
 import { CanUseHardwareType } from './validation/rules/can-use-hardware-type';
-import { UsageStatisticResolver } from './validation/resolver/usage-statistic-resolver';
+import { CostReportResolver } from './validation/resolver/usage-statistic-resolver';
 import { CostCalculator } from '@machinelabs/metrics';
 import { dbRefBuilder } from './ml-firebase';
 import { replaceConsole } from './logging';
@@ -75,12 +75,12 @@ Observable
       .addRule(new HasPlanRule())
       .addRule(new HasValidConfigRule(labConfigService))
       .addRule(new CanUseHardwareType())
-      .addRule(new HasCreditsLeftRule())
+      .addRule(new HasCreditsLeftRule(usageStatisticService))
       .addRule(new WithinConcurrencyLimit())
       .addRule(new ServerHasCapacityRule(runner))
       .addResolver(UserResolver, new UserResolver())
       .addResolver(LabConfigResolver, new LabConfigResolver(labConfigService))
-      .addResolver(UsageStatisticResolver, new UsageStatisticResolver(usageStatisticService));
+      .addResolver(CostReportResolver, new CostReportResolver(usageStatisticService));
 
     const stopValidationService = new ValidationService();
     stopValidationService

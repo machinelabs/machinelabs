@@ -10,11 +10,14 @@ export class CostCalculator {
 
               let timeSpent = this.msToSecond((execution.finished_at || Date.now()) - execution.started_at);
 
-              let secondsPerHardware = acc.secondsPerHardware.get(execution.hardware_type) + timeSpent;
-              acc.secondsPerHardware.set(execution.hardware_type, secondsPerHardware);
+              // to make all past calculations work
+              let hardwareType = <HardwareType>execution.hardware_type.replace('economy', 'cpu');
 
-              let costsPerHardware = +(secondsPerHardware * COST_PER_SECOND_PER_TYPE.get(execution.hardware_type)).toFixed(2);
-              acc.costPerHardware.set(execution.hardware_type, costsPerHardware);
+              let secondsPerHardware = acc.secondsPerHardware.get(hardwareType) + timeSpent;
+              acc.secondsPerHardware.set(hardwareType, secondsPerHardware);
+
+              let costsPerHardware = +(secondsPerHardware * COST_PER_SECOND_PER_TYPE.get(hardwareType)).toFixed(2);
+              acc.costPerHardware.set(hardwareType, costsPerHardware);
 
               acc.totalSeconds = acc.totalSeconds + timeSpent;
 
