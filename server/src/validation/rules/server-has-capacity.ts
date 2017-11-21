@@ -2,7 +2,6 @@ import { Observable } from '@reactivex/rxjs';
 import { ValidationRule } from './rule';
 import { Invocation, ExecutionRejectionInfo, ExecutionRejectionReason } from '@machinelabs/models';
 import { ValidationResult } from '../validation-result';
-import { UsageStatisticResolver } from '../resolver/usage-statistic-resolver';
 import { CodeRunner } from '../../code-runner/code-runner';
 
 export class ServerHasCapacityRule implements ValidationRule {

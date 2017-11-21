@@ -3,16 +3,18 @@
 
 
 "@machinelabs/core@file:../core":
-  version "0.20.0"
+  version "0.21.1"
   dependencies:
     "@machinelabs/models" "file:../../../../../.cache/yarn/v1/npm-@machinelabs/models"
     "@reactivex/rxjs" "^5.4.2"
     "@types/node" "^8.0.19"
+    "@types/shortid" "^0.0.29"
     firebase "^4.2.0"
     moment "^2.18.1"
+    shortid "^2.2.8"
 
 "@machinelabs/models@file:../models":
-  version "0.20.0"
+  version "0.21.1"
   dependencies:
     "@reactivex/rxjs" "^5.4.2"
     "@types/node" "^8.0.19"
@@ -26,6 +28,10 @@
 "@types/node@^8.0.19":
   version "8.0.20"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.20.tgz#65c7375255c24b184c215a5d0b63247c32f01c91"
+
+"@types/shortid@^0.0.29":
+  version "0.0.29"
+  resolved "https://registry.yarnpkg.com/@types/shortid/-/shortid-0.0.29.tgz#8093ee0416a6e2bf2aa6338109114b3fbffa0e9b"
 
 abab@^1.0.3:
   version "1.0.3"
@@ -1970,6 +1976,10 @@ shebang-regex@^1.0.0:
 shellwords@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/shellwords/-/shellwords-0.1.0.tgz#66afd47b6a12932d9071cbfd98a52e785cd0ba14"
+
+shortid@^2.2.8:
+  version "2.2.8"
+  resolved "https://registry.yarnpkg.com/shortid/-/shortid-2.2.8.tgz#033b117d6a2e975804f6f0969dbe7d3d0b355131"
 
 signal-exit@^3.0.0:
   version "3.0.2"

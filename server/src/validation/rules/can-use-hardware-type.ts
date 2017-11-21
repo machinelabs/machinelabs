@@ -1,10 +1,9 @@
 import { Observable } from '@reactivex/rxjs';
 import { ValidationRule } from './rule';
-import { Invocation, HardwareType, ExecutionRejectionInfo, ExecutionRejectionReason } from '@machinelabs/models';
+import { Invocation, HardwareType, ExecutionRejectionInfo, ExecutionRejectionReason, PlanId } from '@machinelabs/models';
 import { ValidationResult } from '../validation-result';
 import { LabConfigResolver } from '../resolver/lab-config-resolver';
 import { UserResolver } from '../resolver/user-resolver';
-import { Plans } from '../../models/plans';
 
 export class CanUseHardwareType implements ValidationRule {
 
@@ -21,7 +20,7 @@ export class CanUseHardwareType implements ValidationRule {
     return Observable.forkJoin(resolves.get(UserResolver), resolves.get(LabConfigResolver))
       .map(([user, config]) => {
 
-        let isAdminOrBacker = [Plans.Admin, Plans.BetaBacker].includes(user.plan.plan_id);
+        let isAdminOrBacker = [PlanId.Admin, PlanId.BetaBacker].includes(user.plan.plan_id);
 
         let reject = config.hardwareType === HardwareType.GPU && !isAdminOrBacker;
 
