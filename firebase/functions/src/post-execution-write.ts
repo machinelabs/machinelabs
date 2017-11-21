@@ -4,7 +4,7 @@ import { TriggerAnnotated, Event} from 'firebase-functions';
 import { DeltaSnapshot } from 'firebase-functions/lib/providers/database';
 
 
-import { appendEntryToMonthIndex } from './user-execution-index-tools';
+import { appendEntryToMonthIndex, updateUserExecutions } from './user-execution-index-tools';
 import { pathify } from './util/pathify';
 
 export const postExecutionWrite = functions.database.ref('/executions/{id}/common')
@@ -32,23 +32,7 @@ function updateLabExecution(event, data, delta) {
   delta[`/idx/lab_executions/${data.lab.id}/${data.id}`] = true;
 }
 
-function updateUserExecutions(event, data, delta) {
-  if (data.started_at && data.finished_at) {
-    let userIdx = {};
-    let idx = {
-      idx: {
-        user_executions: {
-          [data.user_id]: userIdx
-        }
-      }
-    };
 
-    appendEntryToMonthIndex(userIdx, data.started_at, data.finished_at, data.id);
-    Object.assign(delta, pathify(idx));
-  }
-
-  delta[`/idx/user_executions/${data.user_id}/live/${data.id}`] = data.finished_at ? null : true;
-}
 
 function updateRecentLabs(event, data, delta) {
   delta[`/idx/recent_labs/${data.lab.id}`] = {
