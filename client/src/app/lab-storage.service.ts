@@ -32,7 +32,7 @@ export class LabStorageService {
           return {
             id: shortid.generate(),
             user_id: user.uid,
-            name: lab ? `Fork of ${lab.name}` : 'Untitled',
+            name: this.determineLabName(lab),
             description: lab ? lab.description : '',
             tags: lab ? lab.tags : [],
             directory: lab ? lab.directory : [{ name: 'main.py', content: '' }, ML_YAML_FILE],
@@ -129,5 +129,12 @@ export class LabStorageService {
       map(labs => labs.filter(lab => lab)),
       map(labs => labs.sort((a, b) => b.modified_at - a.modified_at))
     );
+  }
+
+  private determineLabName(lab?: Lab | LabTemplate) {
+    if (lab) {
+      return lab.name.startsWith('Fork of') ? lab.name : `Fork of ${lab.name}`
+    }
+    return 'Untitled';
   }
 }
