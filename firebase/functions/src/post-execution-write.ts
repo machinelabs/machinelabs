@@ -17,10 +17,17 @@ export const postExecutionWrite = functions.database.ref('/executions/{id}/commo
     updateVisibleExecutions(event, data, delta);
     updateLabExecution(event, data, delta);
     updateUserExecutions(event, data, delta);
-    updateRecentLabs(event, data, delta);
 
-    console.log(JSON.stringify(delta));
-    return admin.database().ref().update(delta);
+    return admin.database().ref(`/labs/${data.lab.id}/common/name`)
+      .once('value')
+      .then(snapshot => snapshot.val())
+      .then(name => {
+        if (name && !name.startsWith('Fork of')) {
+          updateRecentLabs(event, data, delta);
+        }
+      })
+      .then(_ => console.log(JSON.stringify(delta)))
+      .then(_ => admin.database().ref().update(delta))
   });
 
 function updateVisibleExecutions(event, data, delta) {
