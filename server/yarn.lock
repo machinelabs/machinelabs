@@ -3,7 +3,7 @@
 
 
 "@machinelabs/core@file:../shared/core":
-  version "0.21.2"
+  version "0.21.3"
   dependencies:
     "@machinelabs/models" "file:../../../../.cache/yarn/v1/npm-@machinelabs/models"
     "@reactivex/rxjs" "^5.4.2"
@@ -14,7 +14,7 @@
     shortid "^2.2.8"
 
 "@machinelabs/metrics@file:../shared/metrics":
-  version "0.21.2"
+  version "0.21.3"
   dependencies:
     "@machinelabs/core" "file:../../../../.cache/yarn/v1/npm-@machinelabs/core"
     "@machinelabs/models" "file:../../../../.cache/yarn/v1/npm-@machinelabs/models"
@@ -24,7 +24,7 @@
     jest "^20.0.4"
 
 "@machinelabs/models@file:../shared/models":
-  version "0.21.2"
+  version "0.21.3"
   dependencies:
     "@reactivex/rxjs" "^5.4.2"
     "@types/node" "^8.0.19"
