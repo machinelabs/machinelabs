@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
   template: `
     <footer>
       <p>&copy; 2017 MachineLabs Inc. All rights reserved.</p>
+      <p><a href="/terms-of-service" title="Terms of Service">Terms of Service</a></p>
     </footer>
   `,
   styles: [`
@@ -14,6 +15,10 @@ import { Component, OnInit } from '@angular/core';
       font-size: 0.9em;
       padding: 1rem;
       background: rgb(59, 59, 68);
+      color: #fff;
+    }
+
+    a {
       color: #fff;
     }
 
