@@ -57,7 +57,7 @@ export class HasValidExecutionGuard implements CanActivate {
 
     return !executionId ?
       checkForLatestExecution$ :
-      this.labExecutionService.executionExists(executionId)
+      this.labExecutionService.executionExistsAndVisible(executionId)
         .pipe(switchMap(exists => exists ? of(true) : checkForLatestExecution$));
   }
 }

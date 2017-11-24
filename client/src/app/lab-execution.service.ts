@@ -92,6 +92,14 @@ export class LabExecutionService {
     );
   }
 
+  executionExistsAndVisible(id: string) {
+    return this.authService.requireAuth().pipe(
+      switchMap(_ => this.db.executionRef(id).onceValue()),
+      snapshotToValue,
+      map(execution => !execution.hidden)
+    );
+  }
+
   getExecutionsFromLab(id: string) {
     return this.authService.requireAuthOnce().pipe(
       switchMap(_ => this.db.labVisibleExecutionsRef(id).onceValue()),
