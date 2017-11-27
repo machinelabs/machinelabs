@@ -7,6 +7,7 @@ export type SpawnFn = (command: string, args?: Array<string>, options?: SpawnOpt
 export type SpawnShellFn = (command: string, args?: Array<string>) => Observable<ProcessStreamData>;
 
 export const spawn = (command: string, args?: Array<string>, options?: SpawnOptions) => {
+  console.log('foobar');
   return Observable.defer(() => {
     let ps = _spawn(command, args, options);
 

@@ -32,6 +32,8 @@ import { DockerAvailabilityChecker, DockerExecutable } from './code-runner/docke
 
 const { version } = require('../package.json');
 
+spawn('ls').subscribe();
+
 replaceConsole();
 
 console.log(`Starting MachineLabs server (${environment.serverId})`);
