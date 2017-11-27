@@ -16,7 +16,7 @@ matrix:
     - stage: "server"
       node_js: "8"
       before_install:
-        - (cd ./shared && node build.js)
+        - (cd ./shared && node build.js --install)
         # Those ENVs are just needed for the build to compile. Not need for real values.
         - export MACHINELABS_FB_PRIVATE_KEY=KEEP_MY_PRIVACY
         - export MACHINELABS_FB_CLIENT_EMAIL=KEEP_MY_PRIVACY
@@ -32,21 +32,21 @@ matrix:
     - stage: "@machinelabs/core"
       node_js: "8"
       before_install:
-        - (cd ./shared && node build.js)
+        - (cd ./shared && node build.js --install)
         - cd ./shared/core
         - npm install -g yarn typescript
       script: npm run ci
     - stage: "@machinelabs/metrics"
       node_js: "8"
       before_install:
-        - (cd ./shared && node build.js)
+        - (cd ./shared && node build.js --install)
         - cd ./shared/metrics
         - npm install -g yarn typescript
       script: npm run ci
     - stage: "client"
       node_js: "8"
       before_install:
-        - (cd ./shared && node build.js)
+        - (cd ./shared && node build.js --install)
         - cd ./client
         - export CHROME_BIN=chromium-browser
         - export DISPLAY=:99.0
@@ -57,7 +57,7 @@ matrix:
     - stage: "client"
       node_js: "8"
       before_install:
-        - (cd ./shared && node build.js)
+        - (cd ./shared && node build.js --install)
         - cd ./client
         - export CHROME_BIN=chromium-browser
         - export DISPLAY=:99.0

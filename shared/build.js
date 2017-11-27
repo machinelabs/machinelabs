@@ -6,20 +6,15 @@
 
 const execute = require('child_process').execSync;
 
-let sharedLibs = new Map();
-sharedLibs.set('models', []);
-sharedLibs.set('core', ['@machinelabs/models']);
-sharedLibs.set('metrics', ['@machinelabs/models', '@machinelabs/core']);
-sharedLibs.set('supervisor', ['@machinelabs/models', '@machinelabs/core']);
+const doInstall = !!process.argv.includes('--install');
 
-const buildShared = (argv) => {
-  console.log('Building shared libs');
-  
-  sharedLibs.forEach((val, key) => {
+// packages need to be built in order (e.g core depends on models)
+let buildOrder = ['models', 'core', 'metrics', 'supervisor'];
 
-    let upgrades = val.reduce((prev, cur) => `${prev} && yarn upgrade ${cur}`, '');
-    execute(`(cd ${key} && yarn install ${upgrades} && ./node_modules/typescript/bin/tsc)`, { stdio: 'inherit' });
-  });
-}
+const buildCmd = dir => execute(`(cd ${dir} && ./node_modules/typescript/bin/tsc)`, { stdio: 'inherit' });
 
-buildShared();
+const installAndBuildCmd = dir => execute(`(cd ${dir} && yarn install && ./node_modules/typescript/bin/tsc)`, { stdio: 'inherit' });
+
+console.log('Building shared libs...');
+buildOrder.forEach(doInstall ? installAndBuildCmd : buildCmd);
+

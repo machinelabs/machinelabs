@@ -16,10 +16,7 @@ execute('rm -rf ./dist');
 copyConfig();
 if (!skipShared) {
   console.log('Building shared libs before building the server');
-  // Build shared libs
   execute('(cd ../shared && node build.js)');
-  // copy over to node_modules
-  execute('yarn upgrade @machinelabs/core @machinelabs/metrics @machinelabs/models');
 } else {
   console.log('--skip-shared used. Not building shared libs.');
 }
