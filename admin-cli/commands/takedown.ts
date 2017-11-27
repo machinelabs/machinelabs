@@ -14,7 +14,7 @@ const hasArgsForTakedown = argv => argv.cfg &&
                                    argv.cfg.firebase.databaseUrl;
 
 const check = argv => {
-  if (!hasArgsForTakedown(argv)) {
+  if (argv._.includes('takedown') && !hasArgsForTakedown(argv)) {
     throw new Error('Command needs `cfg.server.name`, `cfg.server.zone` and `cfg.googleProjectId`');
   }
 }
