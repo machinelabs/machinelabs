@@ -6,9 +6,9 @@
   "author": "Christoph Burgdorf <christoph.burgdorf@bvsn.org> (http://cburgdorf.wordpress.com/)",
   "license": "ISC",
   "dependencies": {
-    "@machinelabs/core": "file:../shared/core",
-    "@machinelabs/metrics": "file:../shared/metrics",
-    "@machinelabs/models": "file:../shared/models",
+    "@machinelabs/core": "link:../shared/core",
+    "@machinelabs/metrics": "link:../shared/metrics",
+    "@machinelabs/models": "link:../shared/models",
     "@reactivex/rxjs": "^5.4.2",
     "@types/js-yaml": "^3.5.30",
     "@types/lodash.flatmap": "^4.5.3",

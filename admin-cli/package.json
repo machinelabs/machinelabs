@@ -5,15 +5,16 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
-    "mla": "echo \"Compiling admin-cli\" && tsc && node ./dist/index.js",
+    "build": "echo \"Compiling admin-cli\" && (cd ../shared && node build.js --install) && tsc",
+    "mla:build": "yarn run build && yarn run mla",
+    "mla": "node ./dist/index.js",
     "tslint": "tslint -c ./tslint.json ./**/*.ts",
     "tsfix": "tslint --fix -c ./tslint.json ./**/*.ts"
   },
   "dependencies": {
-    "@machinelabs/core": "file:../shared/core",
-    "@machinelabs/metrics": "file:../shared/metrics",
-    "@machinelabs/supervisor": "file:../shared/supervisor",
+    "@machinelabs/core": "link:../shared/core",
+    "@machinelabs/metrics": "link:../shared/metrics",
+    "@machinelabs/supervisor": "link:../shared/supervisor",
     "@reactivex/rxjs": "^5.4.3",
     "chalk": "^2.0.1",
     "firebase-admin": "^5.1.0",

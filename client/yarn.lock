@@ -174,20 +174,13 @@
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.2.1.tgz#2c4dbc15edd1de4f656d543a6f512ded7978ef72"
 
-"@machinelabs/core@file:../shared/core":
-  version "0.20.0"
-  dependencies:
-    "@machinelabs/models" "file:../../../../Library/Caches/Yarn/v1/npm-@machinelabs/models"
-    "@reactivex/rxjs" "^5.4.2"
-    "@types/node" "^8.0.19"
-    firebase "^4.2.0"
-    moment "^2.18.1"
+"@machinelabs/core@link:../shared/core":
+  version "0.0.0"
+  uid ""
 
-"@machinelabs/models@file:../shared/models":
-  version "0.20.0"
-  dependencies:
-    "@reactivex/rxjs" "^5.4.2"
-    "@types/node" "^8.0.19"
+"@machinelabs/models@link:../shared/models":
+  version "0.0.0"
+  uid ""
 
 "@ngtools/json-schema@1.1.0", "@ngtools/json-schema@^1.1.0":
   version "1.1.0"
@@ -248,6 +241,10 @@
 "@types/shortid@0.0.28":
   version "0.0.28"
   resolved "https://registry.yarnpkg.com/@types/shortid/-/shortid-0.0.28.tgz#b359e25348351f6bf736eed20d2e666528c248c6"
+
+"@types/shortid@^0.0.29":
+  version "0.0.29"
+  resolved "https://registry.yarnpkg.com/@types/shortid/-/shortid-0.0.29.tgz#8093ee0416a6e2bf2aa6338109114b3fbffa0e9b"
 
 "@types/socket.io-client@1.4.29":
   version "1.4.29"
@@ -5542,6 +5539,10 @@ shebang-regex@^1.0.0:
 shortid@2.2.6:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/shortid/-/shortid-2.2.6.tgz#3abbefc6c51074cf2c1f1e72f6216a1b45876d72"
+
+shortid@^2.2.8:
+  version "2.2.8"
+  resolved "https://registry.yarnpkg.com/shortid/-/shortid-2.2.8.tgz#033b117d6a2e975804f6f0969dbe7d3d0b355131"
 
 signal-exit@^3.0.0:
   version "3.0.2"

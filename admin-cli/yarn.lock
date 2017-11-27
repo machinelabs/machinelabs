@@ -2,43 +2,21 @@
 # yarn lockfile v1
 
 
-"@machinelabs/core@file:../shared/core":
-  version "0.21.1"
-  dependencies:
-    "@machinelabs/models" "file:../../../../.cache/yarn/v1/npm-@machinelabs/models"
-    "@reactivex/rxjs" "^5.4.2"
-    "@types/node" "^8.0.19"
-    "@types/shortid" "^0.0.29"
-    firebase "^4.2.0"
-    moment "^2.18.1"
-    shortid "^2.2.8"
+"@machinelabs/core@link:../shared/core":
+  version "0.0.0"
+  uid ""
 
-"@machinelabs/metrics@file:../shared/metrics":
-  version "0.21.1"
-  dependencies:
-    "@machinelabs/core" "file:../../../../.cache/yarn/v1/npm-@machinelabs/core"
-    "@machinelabs/models" "file:../../../../.cache/yarn/v1/npm-@machinelabs/models"
-    "@reactivex/rxjs" "^5.4.2"
-    "@types/node" "^8.0.19"
-    firebase "^4.2.0"
-    jest "^20.0.4"
+"@machinelabs/metrics@link:../shared/metrics":
+  version "0.0.0"
+  uid ""
 
-"@machinelabs/models@file:../shared/models":
-  version "0.21.1"
-  dependencies:
-    "@reactivex/rxjs" "^5.4.2"
-    "@types/node" "^8.0.19"
+"@machinelabs/models@link:../shared/models":
+  version "0.0.0"
+  uid ""
 
-"@machinelabs/supervisor@file:../shared/supervisor":
-  version "0.6.1"
-  dependencies:
-    "@machinelabs/core" "file:../../../../.cache/yarn/v1/npm-@machinelabs/core"
-    "@machinelabs/models" "file:../../../../.cache/yarn/v1/npm-@machinelabs/models"
-    "@reactivex/rxjs" "^5.4.2"
-    "@types/node" "^8.0.19"
-    firebase "^4.2.0"
-    firebase-admin "^4.2.1"
-    jest "^20.0.4"
+"@machinelabs/supervisor@link:../shared/supervisor":
+  version "0.0.0"
+  uid ""
 
 "@reactivex/rxjs@^5.4.2", "@reactivex/rxjs@^5.4.3":
   version "5.4.3"

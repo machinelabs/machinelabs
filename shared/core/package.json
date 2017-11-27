@@ -30,7 +30,7 @@
     "ci": "npm run tslint && npm run test"
   },
   "dependencies": {
-    "@machinelabs/models": "file:../models",
+    "@machinelabs/models": "link:../models",
     "@reactivex/rxjs": "^5.4.2",
     "@types/node": "^8.0.19",
     "@types/shortid": "^0.0.29",

@@ -2,22 +2,13 @@
 # yarn lockfile v1
 
 
-"@machinelabs/core@file:../core":
-  version "0.21.2"
-  dependencies:
-    "@machinelabs/models" "file:../../../../../.cache/yarn/v1/npm-@machinelabs/models"
-    "@reactivex/rxjs" "^5.4.2"
-    "@types/node" "^8.0.19"
-    "@types/shortid" "^0.0.29"
-    firebase "^4.2.0"
-    moment "^2.18.1"
-    shortid "^2.2.8"
+"@machinelabs/core@link:../core":
+  version "0.0.0"
+  uid ""
 
-"@machinelabs/models@file:../models":
-  version "0.21.2"
-  dependencies:
-    "@reactivex/rxjs" "^5.4.2"
-    "@types/node" "^8.0.19"
+"@machinelabs/models@link:../models":
+  version "0.0.0"
+  uid ""
 
 "@reactivex/rxjs@^5.4.2":
   version "5.4.2"

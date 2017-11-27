@@ -32,7 +32,9 @@ export function deployServer(project, serverName, zone, env) {
 
     // zip the server directory
     stdout(chalk.green('Zipping files for better performance')),
-    spawnShell(`tar -zcf machinelabs-server.tar.gz ./server`),
+
+    // -h dereferences symlinks which is needed to "inline" shared libs
+    spawnShell(`tar -h -zcf machinelabs-server.tar.gz ./server`),
 
     // copy over
     stdout(chalk.green('Transferring files to server')),
