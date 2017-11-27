@@ -11,6 +11,7 @@ import { exportUsersCommand } from './commands/export-users';
 import { migrateCommand } from './commands/migrate';
 import { buildSharedCommand } from './commands/build-shared';
 import { takedownCommand } from './commands/takedown';
+import { cleanDepsCommand } from './commands/clean-deps';
 import { tryLoadTemplate } from './lib/load-template';
 
 // set process directory to root directory so that
@@ -24,7 +25,8 @@ const commands = [
   onboardCommand,
   migrateCommand,
   buildSharedCommand,
-  takedownCommand
+  takedownCommand,
+  cleanDepsCommand
 ];
 
 let sharedOptions = {
@@ -115,6 +117,8 @@ let argv = yargs(process.argv.slice(2))
     }, exportUsersCommand.run)
     .command('build-shared', 'Build shared libs', {
     }, buildSharedCommand.run)
+    .command('clean-deps', 'Delete node_modules across the entire repository', {
+    }, cleanDepsCommand.run)
     .command(
       'migrate [<options>]',
       `Migrates database with a migration file that contains a function
