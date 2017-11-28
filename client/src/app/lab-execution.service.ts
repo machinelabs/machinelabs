@@ -53,7 +53,7 @@ export class LabExecutionService {
         //
         // More information:
         // https://github.com/machinelabs/machinelabs/issues/632#issuecomment-347498709
-        if(!acc.find(execution => execution.id === val.id)) {
+        if (!acc.find(execution => execution.id === val.id)) {
           return [val, ...acc]
         }
         return acc;
