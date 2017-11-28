@@ -13,6 +13,7 @@ import { buildSharedCommand } from './commands/build-shared';
 import { takedownCommand } from './commands/takedown';
 import { cleanDepsCommand } from './commands/clean-deps';
 import { tryLoadTemplate } from './lib/load-template';
+import { lsLiveExecutionsCommand } from './commands/ls-live-executions';
 
 // set process directory to root directory so that
 // we can assume all further commands are realtive to root
@@ -26,7 +27,8 @@ const commands = [
   migrateCommand,
   buildSharedCommand,
   takedownCommand,
-  cleanDepsCommand
+  cleanDepsCommand,
+  lsLiveExecutionsCommand
 ];
 
 let sharedOptions = {
@@ -133,6 +135,7 @@ let argv = yargs(process.argv.slice(2))
         }
     }, migrateCommand.run)
     .command('takedown [<options>]', 'Taking down (overtime) executions', {}, takedownCommand.run)
+    .command('ls-live-executions [<options>]', 'Display all live executions according to our index', {}, lsLiveExecutionsCommand.run)
     
     .coerce('cfg', cfg => {
       if (cfg.template) {
