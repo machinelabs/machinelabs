@@ -45,7 +45,19 @@ export class LabExecutionService {
       scan((
         acc: Array<{id: string, execution: Observable<Execution> }>,
         val: {id: string, execution: Observable<Execution>}
-      ) => [val, ...acc], []),
+      ) => {
+        // Some updates on executions cause changes in our database indices that
+        // can make the same execution being pushed and therefore show up twice
+        // in the execution list. That's why remove the latest added execution in the
+        // list (always the first one) if it already exists.
+        //
+        // More information:
+        // https://github.com/machinelabs/machinelabs/issues/632#issuecomment-347498709
+        if(!acc.find(execution => execution.id === val.id)) {
+          return [val, ...acc]
+        }
+        return acc;
+      }, []),
       map(val => [...val])
     );
   }
