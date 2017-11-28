@@ -32,12 +32,15 @@ export const takedown = (argv) => {
     let takedownService = new TakedownService(<any>refBuilder);
     let svc = new UsageStatisticService(new CostCalculator(), liveMetricsService, <any>refBuilder);
 
+    let isDryRun = !!argv['dry-run'];
+    let dryRunPrefix = isDryRun ? `[Dry Run] ` : '';
+
     if (argv.execution) {
+      console.log(chalk.red.bold(`\n${dryRunPrefix}Taking down execution ${argv.execution}`));
       takedownService.takedown(argv.execution);
       return;
     }
 
-    let isDryRun = !!argv['dry-run'];
 
     if (isDryRun) {
       console.log(chalk.green.bold('This is a dry run. Not taking down any executions.'));
@@ -49,7 +52,6 @@ export const takedown = (argv) => {
       .filter(statistic => !!statistic)
       .do(statistic => printStatistic(statistic))
       .flatMap(statistic => {
-        let dryRunPrefix = isDryRun ? `[Dry Run] ` : '';
         if (statistic.cpuSecondsLeft <= 0 && statistic.gpuSecondsLeft <= 0) {
           console.log(chalk.red.bold(`\n${dryRunPrefix}Taking down all executions from user ${statistic.userId}...`));
           return isDryRun ? Observable.empty() : takedownService.takedownByUser(statistic.userId).do(takeDownMsg);
