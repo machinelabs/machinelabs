@@ -44,10 +44,10 @@ const usageStatisticService = new UsageStatisticService(new CostCalculator(), <a
 const recycleService = new RecycleService({
   messageRepository: new MessageRepository(),
   getMessageTimeout: 5000,
-  triggerIndex: 7000,
-  triggerIndexStep: 100,
-  tailLength: 6000,
-  deleteCount: 5000
+  triggerIndex: 5000,
+  triggerIndexStep: 1000,
+  tailLength: 4000,
+  deleteCount: 3000
 });
 
 const uploader = new DockerFileUploader(50, 5);
