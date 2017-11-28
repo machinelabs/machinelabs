@@ -4,19 +4,21 @@ import { ShortMonth, toShortMonth, HardwareType, PlanId, PlanCredits } from '@ma
 import { CostCalculator } from '../costs/cost-calculator';
 import { CostReport } from '../costs/cost-report';
 import { UsageStatistic } from './usage-statistic';
+import { LiveMetricsService } from '../live/live-metrics.service';
 
 const hoursToSeconds = (hours: number) => hours * 60 * 60;
 
 export class UsageStatisticService {
 
-  constructor(private costCalculator: CostCalculator, private db: DbRefBuilder) {
+  constructor(private costCalculator: CostCalculator,
+              private liveMetricsService: LiveMetricsService,
+              private db: DbRefBuilder) {
 
   }
 
   getUsageStatisticForAllCurrentlyActiveUsers() {
-    return this.db.userExecutions()
-    .orderByChild('live')
-    .startAt('')
+    return this.liveMetricsService
+    .getLiveExecutionsRef()
     .onceValue()
     .map(snapshot => snapshot.val())
     .filter(val => !!val)
