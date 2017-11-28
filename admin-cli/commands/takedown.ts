@@ -5,7 +5,7 @@ import { HardwareType } from '@machinelabs/models';
 import { createDb } from '../lib/create-db';
 import { getEnv } from '../lib/get-env';
 import { printStatistic } from '../lib/print-statistic';
-import { UsageStatisticService, CostCalculator } from '@machinelabs/metrics';
+import { UsageStatisticService, CostCalculator, LiveMetricsService } from '@machinelabs/metrics';
 import { Observable } from '@reactivex/rxjs';
 
 const hasArgsForTakedown = argv => argv.cfg &&
@@ -28,8 +28,9 @@ export const takedown = (argv) => {
     let db = createDb(fbPrivateKey, fbClientEmail, fbDatabaseUrl);
     let refBuilder = new DbRefBuilder(db);
 
+    let liveMetricsService = new LiveMetricsService(<any>refBuilder);
     let takedownService = new TakedownService(<any>refBuilder);
-    let svc = new UsageStatisticService(new CostCalculator(), <any>refBuilder);
+    let svc = new UsageStatisticService(new CostCalculator(), liveMetricsService, <any>refBuilder);
 
     if (argv.execution) {
       takedownService.takedown(argv.execution);
