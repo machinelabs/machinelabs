@@ -36,6 +36,7 @@
     "lodash.merge": "^4.6.0",
     "lodash.sample": "^4.2.1",
     "lodash.toarray": "^4.4.0",
+    "mailchimp-api-v3": "^1.8.0",
     "moment": "^2.18.1"
   },
   "private": true,
