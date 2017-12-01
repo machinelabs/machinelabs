@@ -11,7 +11,8 @@
     "test:e2e:production": "ng e2e --target=production --env=e2e",
     "pree2e": "webdriver-manager update",
     "e2e": "ng e2e --serve false",
-    "node_modules": "rm -rf ./node_modules && yarn install"
+    "node_modules": "rm -rf ./node_modules && yarn install",
+    "cypress:open": "cypress open"
   },
   "private": true,
   "dependencies": {
@@ -35,6 +36,7 @@
     "autotrack": "^2.4.1",
     "bricks.js": "^1.8.0",
     "core-js": "2.4.1",
+    "cypress": "^1.1.2",
     "date-fns": "^1.28.4",
     "firebase": "4.3.0",
     "js-yaml": "^3.8.4",
