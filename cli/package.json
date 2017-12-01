@@ -1,0 +1,19 @@
+{
+  "name": "@machinelabs/cli",
+  "version": "0.21.3+utc.2017.Nov.24-15.07.59",
+  "description": "CLI for MachineLabs",
+  "main": "index.js",
+  "bin": {
+    "ml": "./bin/ml"
+  },
+  "license": "MIT",
+  "scripts": {},
+  "dependencies": {
+    "@types/commander": "^2.11.0",
+    "commander": "^2.12.2"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.53",
+    "typescript": "^2.4.2"
+  }
+}
