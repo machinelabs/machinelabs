@@ -1,6 +1,6 @@
 {
   "name": "@machinelabs/metrics",
-  "version": "0.21.3+utc.2017.Nov.24-15.07.59",
+  "version": "0.22.0+utc.2017.Dec.15-10.03.53",
   "description": "Metrics such as usage statistics",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
