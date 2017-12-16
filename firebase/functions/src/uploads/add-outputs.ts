@@ -10,8 +10,6 @@ export const bucketChange = functions.storage.object().onChange(event => {
     return Promise.resolve(true);
   }
 
-  console.log(event);
-
   let { execution_id, user_id, name } = event.data.metadata;
 
   let id = admin.database().ref().push().key;
@@ -19,7 +17,6 @@ export const bucketChange = functions.storage.object().onChange(event => {
   let output = {
     id, execution_id, user_id, name,
     path: event.data.name,
-    content_type: event.data.contentType,
     created_at: Date.now(),
     size_bytes: event.data.size
   };
