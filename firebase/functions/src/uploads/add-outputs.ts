@@ -17,7 +17,7 @@ export const bucketChange = functions.storage.object().onChange(event => {
   let output = {
     id, execution_id, user_id, name,
     path: event.data.name,
-    content_type: event.data.contentType,
+    content_type: '',
     created_at: Date.now(),
     size_bytes: event.data.size
   };
