@@ -1,6 +1,6 @@
 {
   "name": "machinelabs-server",
-  "version": "0.22.0+utc.2017.Dec.15-10.03.53",
+  "version": "0.22.1+utc.2017.Dec.16-11.36.29",
   "description": "Prototype backend for machinelabs",
   "main": "index.js",
   "author": "Christoph Burgdorf <christoph.burgdorf@bvsn.org> (http://cburgdorf.wordpress.com/)",
