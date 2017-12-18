@@ -5,7 +5,7 @@ import { MessagingService } from './messaging/messaging.service';
 import { RecycleService } from './messaging/recycling/recycle.service';
 import { MessageRepository } from './messaging/message-repository';
 import { ValidationService } from './validation/validation.service';
-import { UsageStatisticService } from '@machinelabs/metrics';
+import { UsageStatisticService, LiveMetricsService } from '@machinelabs/metrics';
 import { environment } from './environments/environment';
 import { DockerImageService, getDockerImages } from './docker-image.service';
 import { HasPlanRule } from './validation/rules/has-plan';
@@ -40,7 +40,8 @@ const dockerAvailabilityChecker = new DockerAvailabilityChecker(spawn);
 const mountService = new MountService(environment.rootMountPath, dbRefBuilder);
 const dockerImageService = new DockerImageService(getDockerImages(), spawnShell);
 const labConfigService = new LabConfigService(dockerImageService, mountService);
-const usageStatisticService = new UsageStatisticService(new CostCalculator(), <any>dbRefBuilder);
+const liveMetricsService = new LiveMetricsService(<any>dbRefBuilder);
+const usageStatisticService = new UsageStatisticService(new CostCalculator(), liveMetricsService, <any>dbRefBuilder);
 const recycleService = new RecycleService({
   messageRepository: new MessageRepository(),
   getMessageTimeout: 5000,
