@@ -22,7 +22,7 @@ const ANIMATION_TIMINGS = '400ms cubic-bezier(0.25, 0.8, 0.25, 1)';
       state('void', style({ transform: 'translate3d(0, 25%, 0) scale(0.9)', opacity: 0 })),
       state('enter', style({ transform: 'none', opacity: 1 })),
       state('leave', style({ transform: 'translate3d(0, 25%, 0)', opacity: 0 })),
-      transition('* => *', animate(ANIMATION_TIMINGS)),
+      transition('* => *', animate(ANIMATION_TIMINGS))
     ])
   ]
 })

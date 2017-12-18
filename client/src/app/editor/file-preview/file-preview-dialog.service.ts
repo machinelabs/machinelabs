@@ -15,10 +15,7 @@ import {
   BlockScrollStrategy
 } from '@angular/cdk/overlay';
 
-import {
-  FILE_PREVIEW_DIALOG_SCROLL_STRATEGY,
-  FILE_PREVIEW_DIALOG_DATA
-} from './file-preview.tokens';
+import { FILE_PREVIEW_DIALOG_DATA } from './file-preview.tokens';
 
 export interface FilePreviewDialogData {
   outputFile: OutputFile;
@@ -48,8 +45,7 @@ export class FilePreviewDialogService {
   constructor(
     private overlay: Overlay,
     private injector: Injector,
-    private location: Location,
-    @Inject(FILE_PREVIEW_DIALOG_SCROLL_STRATEGY) private scrollStrategy) {
+    private location: Location) {
     location.subscribe(() => {
       if (this.openDialog) {
         this.openDialog.close();
@@ -100,17 +96,18 @@ export class FilePreviewDialogService {
   }
 
   private getOverlayConfig(config: FilePreviewDialogConfig): OverlayConfig {
+    const positionStrategy = this.overlay.position()
+      .global()
+      .centerHorizontally()
+      .centerVertically();
+
     const overlayConfig = new OverlayConfig({
       hasBackdrop: config.hasBackdrop,
       backdropClass: config.backdropClass,
       panelClass: config.panelClass,
-      scrollStrategy: this.scrollStrategy()
+      scrollStrategy: this.overlay.scrollStrategies.block(),
+      positionStrategy
     });
-
-    overlayConfig.positionStrategy = this.overlay.position()
-      .global()
-      .centerHorizontally()
-      .centerVertically();
 
     return overlayConfig;
   }
