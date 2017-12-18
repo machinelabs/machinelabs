@@ -7,9 +7,7 @@
   <div class="ml-execution-card-title">
     <ng-container [ngSwitch]="execution.status">
       <mat-icon *ngSwitchCase="ExecutionStatus.Finished">done</mat-icon>
-      <mat-progress-spinner
-        strokeWidth="2.5" [diameter]="30"
-        *ngSwitchCase="ExecutionStatus.Executing" color="accent" mode="indeterminate">
+      <mat-progress-spinner *ngSwitchCase="ExecutionStatus.Executing" color="accent" mode="indeterminate">
       </mat-progress-spinner>
       <mat-icon *ngSwitchCase="ExecutionStatus.Stopped">info</mat-icon>
       <mat-icon *ngSwitchCase="ExecutionStatus.Failed">block</mat-icon>
