@@ -11,6 +11,9 @@ import { OutputFile } from '../../models/output-file';
 import { FilePreviewDialogService } from '../file-preview/file-preview-dialog.service';
 import { LocationHelper } from '../../util/location-helper';
 import { isImage } from '../../util/output';
+import { EditorSnackbarService } from '../editor-snackbar.service';
+
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'ml-file-outputs',
@@ -31,6 +34,7 @@ export class FileOutputsComponent implements OnChanges, OnInit {
 
   constructor(
     public outputFilesService: OutputFilesService,
+    private editorSnackbarService: EditorSnackbarService,
     private filePreviewService: FilePreviewDialogService,
     private route: ActivatedRoute,
     private locationHelper: LocationHelper,
@@ -40,15 +44,14 @@ export class FileOutputsComponent implements OnChanges, OnInit {
     const outputFileId = this.route.snapshot.queryParamMap.get('preview');
 
     if (outputFileId) {
-      this.hasOutput
-        .pipe(
-          filter(hasOutput => hasOutput),
-          mergeMap(() => this.dataSource.connect()),
-          mergeMap(outputFiles => outputFiles),
-          filter(outputFile => outputFile.id === outputFileId),
-          filter(outputFile => isImage(outputFile.name)),
-          take(1)
-        ).subscribe(outputFile => this.openPreview(outputFile));
+      this.hasOutput.pipe(
+        filter(hasOutput => hasOutput),
+        mergeMap(() => this.dataSource.connect()),
+        mergeMap(outputFiles => outputFiles),
+        filter(outputFile => outputFile.id === outputFileId),
+        filter(outputFile => isImage(outputFile.name)),
+        take(1)
+      ).subscribe(outputFile => this.openPreview(outputFile));
     }
   }
 
@@ -69,6 +72,15 @@ export class FileOutputsComponent implements OnChanges, OnInit {
     }).beforeClose().subscribe(() => {
       this.locationHelper.removeQueryParams(this.location.path(), 'preview');
     });
+  }
+
+  getApiLink(outputFile: OutputFile) {
+    return `${environment.restApiURL}/executions/${outputFile.execution_id}/outputs/${outputFile.name}`;
+  }
+
+  copyDone(error = false) {
+    const message = error ? 'Could not copy link' : 'Link copied';
+    this.editorSnackbarService.notify(message);
   }
 }
 

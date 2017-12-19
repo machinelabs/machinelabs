@@ -2,6 +2,7 @@ export const environment = {
   production: false,
   offline: false,
   testing: true,
+  restApiURL: 'https://rest-staging.machinelabs.ai',
   firebaseConfig: {
     apiKey: 'AIzaSyDD0Q23LRt-GWK62WgagF0Px5baznRHSRw',
     authDomain: 'machinelabs-database-testing.firebaseapp.com',
