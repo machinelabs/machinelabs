@@ -6,7 +6,11 @@
         <mat-table #table [dataSource]="dataSource">
           <ng-container matColumnDef="name">
             <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
-            <mat-cell *matCellDef="let row"><mat-icon>description</mat-icon> {{row.name}} </mat-cell>
+            <mat-cell *matCellDef="let row">
+              <div class="text-ellipsis">
+                <mat-icon>description</mat-icon> {{row.name}}
+              </div>
+            </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="created">
@@ -30,7 +34,18 @@
               <button mat-icon-button color="primary" matTooltip="Preview" (click)="openPreview(row)"
                 [disabled]="!isImage(row.name)" title="Preview file"><mat-icon>visibility</mat-icon>
               </button>
-              <a mat-button color="primary" [attr.download]="row.name" target="_blank" [href]="row.download_url" title="Download file"><mat-icon>file_download</mat-icon> Download</a>
+
+              <button mat-icon-button color="primary" matTooltip="Copy API Link"
+                ngxClipboard [cbContent]="getApiLink(row)"
+                (cbOnSuccess)="editorSnackbarService.notifyCopyDone()"
+                (cbOnError)="editorSnackbarService.notifyCopyFailed()"
+                title="Copy API link"><mat-icon>link</mat-icon>
+              </button>
+
+              <a mat-icon-button color="primary" matTooltip="Download" [attr.download]="row.name"
+                target="_blank" [href]="row.download_url"
+                title="Download file"><mat-icon>file_download</mat-icon>
+              </a>
             </mat-cell>
           </ng-container>
 

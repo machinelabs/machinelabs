@@ -28,7 +28,7 @@ import { AppComponent } from './app.component';
 import { APP_ROUTES } from './app.routes';
 
 import { environment } from '../environments/environment';
-import { DATABASE } from './app.tokens';
+import { DATABASE, REST_API_URL } from './app.tokens';
 import { DbRefBuilder } from './firebase/db-ref-builder';
 
 // We need to export this factory function to make AoT happy
@@ -63,6 +63,7 @@ const AnimationsModule = [environment.testing ? NoopAnimationsModule : BrowserAn
     UserService,
     DbRefBuilder,
     { provide: DATABASE, useFactory: databaseFactory },
+    { provide: REST_API_URL, useValue: environment.restApiURL },
     { provide: AuthService, useClass: environment.offline ? OfflineAuthService : FirebaseAuthService },
     LocationHelper,
     WindowRef
