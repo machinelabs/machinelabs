@@ -31,15 +31,15 @@ mat-cell {
 }
 
 .mat-column-name {
-  display: inline-block;
-  min-width: 20%;
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
+
+  .text-ellipsis {
+    display: inline-block;
+    overflow: hidden;
+  }
 }
 
 .mat-column-actions {
   display: flex;
-  min-width: 30%;
 }
-
