@@ -6,3 +6,4 @@ export * from './util/string';
 export * from './io/reactive-process/index';
 export * from './io/lab-fs/index';
 export * from './lab-config/index';
+export * from './realtime-api/lab-api';
