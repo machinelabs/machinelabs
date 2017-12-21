@@ -16,6 +16,13 @@ describe('.hashLabFiles()', () => {
 
     let lab: Lab = {
       id: 'test',
+      name: '',
+      description: '',
+      tags: [],
+      user_id: '',
+      created_at: Date.now(),
+      modified_at: Date.now(),
+      hidden: false,
       directory: [
         {
           name: 'test',

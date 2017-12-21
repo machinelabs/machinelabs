@@ -17,6 +17,13 @@ dockerImageId= ${dockerImageId}
 
 let lab: Lab = {
   id: 'some-lab',
+  name: '',
+  description: '',
+  tags: [],
+  user_id: '',
+  created_at: Date.now(),
+  modified_at: Date.now(),
+  hidden: false,
   directory: [
     {
       name: 'ml.yaml',
@@ -27,6 +34,13 @@ let lab: Lab = {
 
 let labWithPascalCase: Lab = {
   id: 'some-lab',
+  name: '',
+  description: '',
+  tags: [],
+  user_id: '',
+  created_at: Date.now(),
+  modified_at: Date.now(),
+  hidden: false,
   directory: [
     {
       name: 'Ml.yaml',
@@ -37,6 +51,13 @@ let labWithPascalCase: Lab = {
 
 let labWithInvalidConfig: Lab = {
   id: 'some-lab',
+  name: '',
+  description: '',
+  tags: [],
+  user_id: '',
+  created_at: Date.now(),
+  modified_at: Date.now(),
+  hidden: false,
   directory: [
     {
       name: 'Ml.yaml',
@@ -47,6 +68,13 @@ let labWithInvalidConfig: Lab = {
 
 let labWithoutConfig: Lab = {
   id: 'some-lab',
+  name: '',
+  description: '',
+  tags: [],
+  user_id: '',
+  created_at: Date.now(),
+  modified_at: Date.now(),
+  hidden: false,
   directory: []
 };
 
