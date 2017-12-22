@@ -61,6 +61,8 @@
     "karma-jasmine": "1.1.0",
     "karma-mocha-reporter": "2.2.3",
     "karma-remap-istanbul": "0.6.0",
+    "monaco-editor": "^0.10.1",
+    "ngx-monaco": "^0.2.0",
     "protractor": "5.1.1",
     "ts-node": "3.3.0",
     "tslint": "5.4.3",
