@@ -35,10 +35,6 @@ export class EditorViewPageObject {
     return element(by.css('.mat-tab-link[ng-reflect-active="true"]')).getText();
   }
 
-  get editorMode(): promise.Promise<string> {
-    return element(by.tagName('ml-ace-editor.active')).getAttribute('mode');
-  }
-
   getTabByLabel(label: string): ElementArrayFinder {
     return this.tabs.filter((elem, index) => elem.getText().then(text => text === label));
   }

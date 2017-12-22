@@ -45,11 +45,11 @@
                 [mandatoryFiles]="['main.py', 'ml.yaml']">
               </ml-file-tree>
             </mat-drawer>
-            <ml-ace-editor
-              #editor
-              [(value)]="activeFile.content"
-              mode="python"
-              [class.active]="editorService.editorTabActive()"></ml-ace-editor>
+            <monaco-editor
+              [file]="MonacoFileTypeAdapter.labFileToMonacoFile(activeFile)"
+              (fileChange)="onFileChange($event)"
+              [class.active]="editorService.editorTabActive()"
+            ></monaco-editor>
           </mat-drawer-container>
         </ml-editor-layout-panel>
         <ml-editor-layout-panel [class.hidden]="!editorService.consoleTabActive()">

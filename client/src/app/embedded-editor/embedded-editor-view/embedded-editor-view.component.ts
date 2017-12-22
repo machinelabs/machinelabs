@@ -11,9 +11,9 @@ import { EditorService, TabIndex } from '../../editor/editor.service';
 import { LocationHelper } from '../../util/location-helper';
 import { Lab } from '../../models/lab';
 
-import { AceEditorComponent } from '../../editor/ace-editor/ace-editor.component';
 import { XtermComponent } from '../../editor/xterm/xterm.component';
 import { NoExecutionDialogComponent } from '../no-execution-dialog/no-execution-dialog.component';
+import { MonacoFileTypeAdapter } from '../../editor/monaco-file-type-adapter';
 
 @Component({
   selector: 'ml-embedded-editor-view',
@@ -37,6 +37,8 @@ export class EmbeddedEditorViewComponent implements OnInit {
   @ViewChild('console') console: XtermComponent;
 
   noExecutionDialogRef: MatDialogRef<NoExecutionDialogComponent>;
+
+  MonacoFileTypeAdapter = MonacoFileTypeAdapter;
 
   constructor(
     private route: ActivatedRoute,

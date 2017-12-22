@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MonacoEditorModule } from 'ngx-monaco';
 import { MachineLabsMaterialModule } from '../ml-material.module';
 import { SharedModule } from '../shared/shared.module';
 import { ToolbarModule } from '../toolbar/toolbar.module';
@@ -40,7 +41,8 @@ import { ExecutionListComponent } from './execution-list/execution-list.componen
     SharedModule,
     EditorModule,
     ReactiveFormsModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MonacoEditorModule
   ],
   declarations: [
     EditorToolbarComponent,
@@ -61,7 +63,7 @@ import { ExecutionListComponent } from './execution-list/execution-list.componen
   providers: [
     HasValidExecutionGuard,
     HasRunningExecutionGuard,
-    LabConfigService,
+    LabConfigService
   ],
   entryComponents: [
     NavigationConfirmDialogComponent,

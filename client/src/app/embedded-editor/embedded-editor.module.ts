@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { MonacoEditorModule } from 'ngx-monaco';
 
 import { MachineLabsMaterialModule } from '../ml-material.module';
 import { SharedModule } from '../shared/shared.module';
@@ -20,7 +21,8 @@ import { EMBEDDED_EDITOR_ROUTES } from './embedded-editor.routes';
     MachineLabsMaterialModule,
     SharedModule,
     ToolbarModule,
-    EditorModule
+    EditorModule,
+    MonacoEditorModule
   ],
   declarations: [
     EmbeddedEditorToolbarComponent,
