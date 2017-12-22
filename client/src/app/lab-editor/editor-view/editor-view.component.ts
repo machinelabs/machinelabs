@@ -177,7 +177,7 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
   }
 
   run(lab: Lab) {
-    this.userService.observeUserChanges().pipe(take(1))
+    this.userService.getCurrentUser()
       .subscribe(user => {
         if (user.isAnonymous) {
           this.openRejectionDialog(ExecutionRejectionReason.NoAnonymous);
