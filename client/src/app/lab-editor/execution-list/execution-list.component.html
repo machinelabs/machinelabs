@@ -42,6 +42,10 @@
               {{execution.started_at | distanceInWordsToNow}} ago
             </time>
           </div>
+          <div class="ml-execution-metadata-info hardware-type">
+            <mat-icon>memory</mat-icon>
+            {{ execution.hardware_type || '-' }}
+          </div>
         </div>
         <div class="ml-execution-panel-cta-bar">
           <button mat-button (click)="view.emit(execution)" *ngIf="execution.id !== activeId">View</button>

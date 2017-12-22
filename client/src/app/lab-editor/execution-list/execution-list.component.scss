@@ -63,3 +63,18 @@ mat-toolbar {
     top: -0.1em;
   }
 }
+
+.ml-execution-metadata-info {
+  &:last-of-type {
+    margin-bottom: 1em;
+  }
+}
+
+.hardware-type {
+  mat-icon {
+    position: relative;
+    top: 3px;
+  }
+
+  text-transform: uppercase;
+}
