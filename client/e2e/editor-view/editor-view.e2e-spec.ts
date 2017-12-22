@@ -19,14 +19,6 @@ describe('Editor-View Component', function() {
     expect(editorView.activeTabLabel).toEqual('Editor');
   });
 
-  it('should show the correct editor theme when switching editor views', () => {
-    expect(editorView.editorMode).toEqual('python');
-
-    editorView.getTabByLabel('Editor').click();
-    expect(editorView.editorMode).toEqual('python');
-  });
-
-
   describe('in EDIT mode', () => {
     it('should display the current lab file structure', () => {
       expect(editorView.fileTree.count()).toEqual(2);

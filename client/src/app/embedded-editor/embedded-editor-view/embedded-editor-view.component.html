@@ -27,8 +27,7 @@
               [mandatoryFiles]="['main.py', 'ml.yaml']"
               [showActionButtons]="false"></ml-file-tree>
           </mat-drawer>
-          <ml-ace-editor [value]="activeFile.content" mode="python">
-          </ml-ace-editor>
+          <monaco-editor [file]="MonacoFileTypeAdapter.labFileToMonacoFile(activeFile)"></monaco-editor>
         </mat-drawer-container>
       </ml-editor-layout-panel>
       <ml-editor-layout-panel [class.hidden]="!editorService.consoleTabActive()">

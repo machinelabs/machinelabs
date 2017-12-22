@@ -11,7 +11,12 @@
       "assets": [
         "terms-of-service.html",
         "assets",
-        "favicon.ico"
+        "favicon.ico",
+        {
+            "glob": "**/*",
+            "input": "../node_modules/monaco-editor/min/vs",
+            "output": "libs/vs"
+        }
       ],
       "index": "index.html",
       "main": "main.ts",
@@ -27,9 +32,6 @@
       "scripts": [
         "../node_modules/xterm/dist/xterm.js",
         "../node_modules/xterm/dist/addons/fit/fit.js",
-        "../node_modules/ace-builds/src-noconflict/ace.js",
-        "../node_modules/ace-builds/src-noconflict/theme-github.js",
-        "../node_modules/ace-builds/src-noconflict/mode-python.js",
         "../node_modules/autotrack/autotrack.js"
       ],
       "environmentSource": "environments/environment.ts",

@@ -2,13 +2,13 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogRef, MatSnackBar, MatTabGroup, MatDrawer } from '@angular/material';
 import { FormControl } from '@angular/forms';
+import { MonacoFile } from 'ngx-monaco';
 
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { filter, tap, map, skip, switchMap, take, share } from 'rxjs/operators';
 
 import { File, ExecutionRejectionReason } from '@machinelabs/models';
-import { AceEditorComponent } from '../../editor/ace-editor/ace-editor.component';
 import { XtermComponent } from '../../editor/xterm/xterm.component';
 import {
   EditLabDialogComponent,
@@ -30,6 +30,7 @@ import { LocationHelper } from '../../util/location-helper';
 import { Execution } from '../../models/execution';
 import { EditorToolbarAction, EditorToolbarActionTypes } from '../editor-toolbar/editor-toolbar.component';
 import { TimeoutError, RateLimitError } from '../../editor/remote-code-execution/errors';
+import { MonacoFileTypeAdapter } from '../../editor/monaco-file-type-adapter';
 
 const METADATA_SIDEBAR_OPEN_TIMEOUT = 600;
 const INITIAL_LOADING_INDICATOR_PROGRESS = 10;
@@ -97,9 +98,9 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
 
   @ViewChild('outputPanel') outputPanel: XtermComponent;
 
-  @ViewChild('editor') editor: AceEditorComponent;
-
   TabIndex = TabIndex;
+
+  MonacoFileTypeAdapter = MonacoFileTypeAdapter;
 
   pauseModeControl = new FormControl(false);
 
@@ -155,14 +156,7 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
 
   selectTab(tabIndex: TabIndex) {
     this.editorService.selectTab(tabIndex);
-    if (this.editorService.editorTabActive() && this.editor) {
-      // This has to run in the next tick after the editor has become visible
-      // https://github.com/ajaxorg/ace/issues/3070
-      setTimeout(_ => this.editor.resize(), 0);
-      if (!this.fileTreeSidebarOpened) {
-        this.openFileTreeSidebar();
-      }
-    } else if (this.editorService.consoleTabActive() && this.outputPanel) {
+    if (this.editorService.consoleTabActive() && this.outputPanel) {
       setTimeout(_ => this.outputPanel.resize(), 0);
     }
   }
@@ -401,6 +395,10 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
       this.executionMetadataSidebar.close();
       this.editorSnackbar.notifyLabRestored();
     }, METADATA_SIDEBAR_OPEN_TIMEOUT);
+  }
+
+  onFileChange(file: MonacoFile) {
+    this.activeFile = MonacoFileTypeAdapter.monacoFileToLabFile(file);
   }
 
   private goToLab(lab?: Lab, queryParams?) {

@@ -19,6 +19,14 @@ mat-drawer-container {
   flex: 1;
 }
 
+monaco-editor {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
 .ml-editor-panel-cta-bar {
   background: red;
   width: 40px;

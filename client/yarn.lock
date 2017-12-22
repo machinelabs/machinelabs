@@ -278,10 +278,6 @@ accepts@~1.3.4:
     mime-types "~2.1.16"
     negotiator "0.6.1"
 
-ace-builds@1.2.6:
-  version "1.2.6"
-  resolved "https://registry.yarnpkg.com/ace-builds/-/ace-builds-1.2.6.tgz#a9233c27c37b8494f20af84917ee1619489af429"
-
 acorn-dynamic-import@^2.0.0:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/acorn-dynamic-import/-/acorn-dynamic-import-2.0.2.tgz#c752bd210bef679501b6c6cb7fc84f8f47158cc4"
@@ -3940,6 +3936,10 @@ moment@2.x.x, moment@^2.18.1:
   version "2.18.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
 
+monaco-editor@^0.10.1:
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.10.1.tgz#8c96c4f15b6b5258bf92cbde93cad8a7e3007e14"
+
 move-concurrently@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/move-concurrently/-/move-concurrently-1.0.1.tgz#be2c005fda32e0b29af1f05d7c4b33214c701f92"
@@ -3997,6 +3997,10 @@ negotiator@0.6.1:
 ng2-slim-loading-bar@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/ng2-slim-loading-bar/-/ng2-slim-loading-bar-4.0.0.tgz#7256fdde7c058f14955a3ef2e65afafb5b664603"
+
+ngx-monaco@^0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/ngx-monaco/-/ngx-monaco-0.5.2.tgz#bdb6428f37983e59c23c3d781610649487352437"
 
 no-case@^2.2.0:
   version "2.3.2"

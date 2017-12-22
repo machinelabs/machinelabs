@@ -13,7 +13,6 @@ import { EditorLayoutFooterComponent } from './layout/editor-layout-footer.compo
 
 import { FileTreeComponent } from './file-tree/file-tree.component';
 import { NameDialogComponent } from './name-dialog/name-dialog.component';
-import { AceEditorComponent } from './ace-editor/ace-editor.component';
 import { XtermComponent } from './xterm/xterm.component';
 import { FileOutputsComponent } from './file-outputs/file-outputs.component';
 import { FilePreviewDialogToolbarComponent } from './file-preview/file-preview-dialog-toolbar/file-preview-dialog-toolbar.component';
@@ -35,7 +34,6 @@ import { FileTreeService } from './file-tree/file-tree.service';
     ReactiveFormsModule
   ],
   declarations: [
-    AceEditorComponent,
     XtermComponent,
     EditorLayoutComponent,
     EditorLayoutHeaderComponent,
@@ -61,7 +59,6 @@ import { FileTreeService } from './file-tree/file-tree.service';
     FILE_PREVIEW_DIALOG_SCROLL_STRATEGY_PROVIDER
   ],
   exports: [
-    AceEditorComponent,
     XtermComponent,
     EditorLayoutComponent,
     EditorLayoutHeaderComponent,
