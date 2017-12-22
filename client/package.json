@@ -51,6 +51,7 @@
   "devDependencies": {
     "@angular/cli": "1.6.3",
     "@angular/compiler-cli": "5.2.0-beta.1",
+    "@bahmutov/add-typescript-to-cypress": "^1.1.1",
     "@types/jasmine": "2.5.38",
     "@types/node": "6.0.60",
     "chalk": "^1.1.3",
