@@ -16,6 +16,7 @@ import { ZippyComponent } from './zippy/zippy.component';
 import { MasonryComponent } from './masonry/masonry.component';
 import { MasonryItemComponent, MutationObserverFactory } from './masonry/masonry-item.component';
 import { PageFooterComponent } from './page-footer/page-footer.component';
+import { DurationTrackerComponent } from './duration-tracker/duration-tracker.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { PageFooterComponent } from './page-footer/page-footer.component';
     ZippyComponent,
     MasonryComponent,
     MasonryItemComponent,
-    PageFooterComponent
+    PageFooterComponent,
+    DurationTrackerComponent
   ],
   imports: [MachineLabsMaterialModule, CommonModule],
   exports: [
@@ -50,7 +52,8 @@ import { PageFooterComponent } from './page-footer/page-footer.component';
     ZippyComponent,
     MasonryComponent,
     MasonryItemComponent,
-    PageFooterComponent
+    PageFooterComponent,
+    DurationTrackerComponent
   ]
 })
 export class SharedModule {
