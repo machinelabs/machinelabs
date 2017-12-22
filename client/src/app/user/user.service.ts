@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
 import { snapshotToValue } from '../rx/snapshotToValue';
 
 import { AuthService } from 'app/auth';
@@ -79,6 +79,10 @@ export class UserService {
       switchMap(_ => this.db.userRef(id).onceValue()),
       snapshotToValue
     );
+  }
+
+  getCurrentUser(): Observable<User> {
+    return this.observeUserChanges().pipe(take(1));
   }
 
   observeUserChanges(): Observable<User> {
