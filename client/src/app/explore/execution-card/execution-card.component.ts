@@ -12,7 +12,5 @@ export class ExecutionCardComponent {
 
   @Input() execution;
 
-  @Output() view = new EventEmitter<Execution>();
-
   ExecutionStatus = ExecutionStatus;
 }

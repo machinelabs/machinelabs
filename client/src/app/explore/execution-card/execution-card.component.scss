@@ -14,10 +14,12 @@ $ml-execution-card-icon-margin: 5px;
   overflow: hidden;
   border-left-width: 5px;
   border-left-style: solid;
+  text-decoration: none;
+  color: inherit;
 
   &:hover {
     .ml-execution-card-cta-indicator {
-      transform: translate(-5px, -50%);
+      transform: translate(-13px, -50%);
       opacity: 1;
     }
   }

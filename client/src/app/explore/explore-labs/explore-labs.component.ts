@@ -34,15 +34,10 @@ export class ExploreLabsComponent implements OnInit {
   constructor(
     private labExecutionService: LabExecutionService,
     private labStorageService: LabStorageService,
-    private userService: UserService,
-    private router: Router) { }
+    private userService: UserService) { }
 
   ngOnInit() {
     this.recentLabs$ = this.getRecentLabs();
-  }
-
-  viewExecution(execution: Execution) {
-    this.router.navigate(['/editor', execution.lab.id, execution.id]);
   }
 
   private getRecentLabs() {
