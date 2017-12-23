@@ -44,7 +44,8 @@ Go into your firebase and add at least one server. Add as many as you like but k
     "demo1": {
       "id": "demo1",
       "hardware_type": "cpu",
-      "name": "My demo server"
+      "name": "My demo server",
+      "disabled": false
     }
   }
 }
@@ -86,16 +87,25 @@ Switch into the `firebase` directory and deploy cloud functions and security rul
 **ATTENTION: Never deploy firebase to `machinelabs-staging` or `machinelabs-production` manually. (See Deployment)**
 
 ```
-cd ./firebase
+cd ./firebase/functions
+yarn install
 firebase use <my-dev-firebase>`
-firebase deploy
+yarn run deploy
 ```
 
-**2. Build and run the server**
+**3. Install dependencies for each package in `shared`
+
+```
+cd shared/*
+yarn install
+```
+
+**3. Build and run the server**
 
 ```
 cd ./server
-npm run build -- --env=demo1 && node dist/index.js
+yarn install
+yarn run build -- --env=demo1 && node dist/index.js
 ```
 
 If you have multiple servers, repeat this step to run them all in parallel.
