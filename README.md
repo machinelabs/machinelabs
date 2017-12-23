@@ -35,7 +35,7 @@ Once installed login with `firebase login`
 
 **3. Create at least one server**
 
-Go into your firebase and add at least one server. Add as many as you like but keep in mind that they get assigned randomly so if you have multiple registered servers, you'll need to have all of them running when you develop.
+Go into your firebase and add at least one server. Add as many as you like but keep in mind that they get assigned randomly so if you have multiple registered servers, you'll either need to have all of them running when you develop or use the `disabled` property in the server configuration to make sure only one server will get executions assigned.
 
 ```
 {
@@ -43,7 +43,7 @@ Go into your firebase and add at least one server. Add as many as you like but k
   "servers": {
     "demo1": {
       "id": "demo1",
-      "hardware_type": "economy",
+      "hardware_type": "cpu",
       "name": "My demo server"
     }
   }
