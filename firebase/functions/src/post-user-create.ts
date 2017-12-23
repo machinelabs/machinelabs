@@ -8,7 +8,7 @@ import { MailChimp } from './mailchimp/mailchimp';
 let mailchimpConfig = functions.config().mailchimp;
 let mailchimp;
 
-if (mailchimpConfig) {
+if (!mailchimpConfig) {
   console.warn('MailChimp config not set. For production make sure this is correctly configured.');
 } else {
   mailchimp = new MailChimp(mailchimpConfig.api_key);
