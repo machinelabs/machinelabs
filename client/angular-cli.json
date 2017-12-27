@@ -11,7 +11,12 @@
       "assets": [
         "terms-of-service.html",
         "assets",
-        "favicon.ico"
+        "favicon.ico",
+        {
+            "glob": "**/*",
+            "input": "../node_modules/monaco-editor/min/vs",
+            "output": "libs/vs"
+        }
       ],
       "index": "index.html",
       "main": "main.ts",

@@ -7,6 +7,7 @@ import { MachineLabsMaterialModule } from '../ml-material.module';
 import { SharedModule } from '../shared/shared.module';
 import { ToolbarModule } from '../toolbar/toolbar.module';
 import { EditorModule } from '../editor/editor.module';
+import { MonacoEditorModule } from 'ngx-monaco';
 
 import { HasValidExecutionGuard } from './has-valid-execution.guard';
 import { HasRunningExecutionGuard } from './has-running-execution.guard';
@@ -40,7 +41,8 @@ import { ExecutionListComponent } from './execution-list/execution-list.componen
     SharedModule,
     EditorModule,
     ReactiveFormsModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MonacoEditorModule
   ],
   declarations: [
     EditorToolbarComponent,
