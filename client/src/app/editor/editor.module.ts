@@ -28,10 +28,13 @@ import { FilePreviewDialogService } from './file-preview/file-preview-dialog.ser
 
 import { FileTreeService } from './file-tree/file-tree.service';
 
+import { ClipboardModule } from 'ngx-clipboard';
+
 @NgModule({
   imports: [
     SharedModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ClipboardModule
   ],
   declarations: [
     AceEditorComponent,

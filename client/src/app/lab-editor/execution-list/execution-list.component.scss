@@ -19,8 +19,8 @@ mat-toolbar {
   }
 
   .mat-progress-spinner {
-    width: 24px!important;
-    height: 27px!important;
+    width: 24px !important;
+    height: 24px !important;
     display: inline-block;
     margin-right: 0.2em;
     vertical-align: -45%;
@@ -62,4 +62,24 @@ mat-toolbar {
     right: -1em;
     top: -0.1em;
   }
+}
+
+.ml-execution-panel-info,
+.ml-execution-metadata-info {
+  display: flex;
+  align-items: center;
+
+  mat-icon {
+    margin-right: 0.2em;
+  }
+}
+
+.ml-execution-metadata-info {
+  &:last-of-type {
+    margin-bottom: 1em;
+  }
+}
+
+.hardware-type {
+  text-transform: uppercase;
 }

@@ -8,20 +8,23 @@ $ml-execution-card-icon-margin: 5px;
 }
 
 .ml-execution-card-panel {
+  cursor: pointer;
   display: block;
   position: relative;
   overflow: hidden;
   border-left-width: 5px;
   border-left-style: solid;
+  text-decoration: none;
+  color: inherit;
 
   &:hover {
-    .ml-execution-card-button {
-      transform: translate(-5px, -50%);
+    .ml-execution-card-cta-indicator {
+      transform: translate(-13px, -50%);
       opacity: 1;
     }
   }
 
-  .ml-execution-card-button {
+  .ml-execution-card-cta-indicator {
     position: absolute;
     right: 0;
     top: 50%;
@@ -42,6 +45,11 @@ $ml-execution-card-icon-margin: 5px;
 
   mat-icon, mat-progress-spinner {
     margin-right: $ml-execution-card-icon-margin;
+  }
+
+  mat-progress-spinner {
+    width: 24px !important;
+    height: 24px !important;
   }
 }
 

@@ -14,6 +14,14 @@ export class EditorSnackbarService {
     return this.snackBar.open(text, config.actionLabel, { duration: config.duration });
   }
 
+  notifyCopyDone() {
+    this.notify('Link copied');
+  }
+
+  notifyCopyFailed() {
+    this.notify('Could not copy link');
+  }
+
   notifyInvalidConfig(msg = 'Please check your ml.yaml') {
     this.notify(`Execution Rejected. ${msg}`);
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, OnChanges, Input, Inject } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -11,6 +11,9 @@ import { OutputFile } from '../../models/output-file';
 import { FilePreviewDialogService } from '../file-preview/file-preview-dialog.service';
 import { LocationHelper } from '../../util/location-helper';
 import { isImage } from '../../util/output';
+import { EditorSnackbarService } from '../editor-snackbar.service';
+
+import { REST_API_URL } from '../../app.tokens';
 
 @Component({
   selector: 'ml-file-outputs',
@@ -31,24 +34,25 @@ export class FileOutputsComponent implements OnChanges, OnInit {
 
   constructor(
     public outputFilesService: OutputFilesService,
+    public editorSnackbarService: EditorSnackbarService,
     private filePreviewService: FilePreviewDialogService,
     private route: ActivatedRoute,
     private locationHelper: LocationHelper,
-    private location: Location) { }
+    private location: Location,
+    @Inject(REST_API_URL) private restApiURL: string) { }
 
   ngOnInit() {
     const outputFileId = this.route.snapshot.queryParamMap.get('preview');
 
     if (outputFileId) {
-      this.hasOutput
-        .pipe(
-          filter(hasOutput => hasOutput),
-          mergeMap(() => this.dataSource.connect()),
-          mergeMap(outputFiles => outputFiles),
-          filter(outputFile => outputFile.id === outputFileId),
-          filter(outputFile => isImage(outputFile.name)),
-          take(1)
-        ).subscribe(outputFile => this.openPreview(outputFile));
+      this.hasOutput.pipe(
+        filter(hasOutput => hasOutput),
+        mergeMap(() => this.dataSource.connect()),
+        mergeMap(outputFiles => outputFiles),
+        filter(outputFile => outputFile.id === outputFileId),
+        filter(outputFile => isImage(outputFile.name)),
+        take(1)
+      ).subscribe(outputFile => this.openPreview(outputFile));
     }
   }
 
@@ -69,6 +73,10 @@ export class FileOutputsComponent implements OnChanges, OnInit {
     }).beforeClose().subscribe(() => {
       this.locationHelper.removeQueryParams(this.location.path(), 'preview');
     });
+  }
+
+  getApiLink(outputFile: OutputFile) {
+    return `${this.restApiURL}/executions/${outputFile.execution_id}/outputs/${outputFile.name}`;
   }
 }
 
