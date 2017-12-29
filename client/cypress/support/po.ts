@@ -58,6 +58,14 @@ export class EditorViewPageObject {
     this.confirmFileNameDialog();
   }
 
+  removeFile(index: number) {
+    this.getFileTree().within(() => {
+      cy.get('.ml-file-tree-item')
+        .eq(index)
+        .find('.ml-file-tree-item-button.delete').click();
+    });
+  }
+
   changeFileName(index: number, newName: string) {
     this.getFileTree().within(() => {
       cy.get('.ml-file-tree-item')
@@ -89,6 +97,6 @@ export class EditorViewPageObject {
   }
 
   openShareDialog() {
-    cy.get('.ml-editor-footer-cta-bar button:first-child').click();
+    cy.get('.ml-editor-footer-cta-bar button').contains('Share').click();
   }
 }

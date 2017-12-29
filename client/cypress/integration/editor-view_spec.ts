@@ -97,6 +97,15 @@ describe('Editor View', () => {
           cy.get('.ml-file-tree-item').eq(fileIndex).contains(newName);
         });
       });
+
+      it('should allow users to remove files', () => {
+        const fileIndex = 2;
+        editorView.addFile('ml-main-2.py');
+        editorView.removeFile(fileIndex);
+        editorView.getFileTree().within(() => {
+          cy.get('.ml-file-tree-item').should('have.length', 2);
+        });
+      });
     });
   });
 
