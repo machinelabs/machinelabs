@@ -83,4 +83,12 @@ export class EditorViewPageObject {
   toggleExecutionList() {
     return cy.get('ml-editor-layout-footer mat-slide-toggle').click();
   }
+
+  getShareDialog() {
+    return cy.get('ml-share-dialog');
+  }
+
+  openShareDialog() {
+    cy.get('.ml-editor-footer-cta-bar button:first-child').click();
+  }
 }
