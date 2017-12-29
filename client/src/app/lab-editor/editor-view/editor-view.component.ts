@@ -156,7 +156,9 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
 
   selectTab(tabIndex: TabIndex) {
     this.editorService.selectTab(tabIndex);
-    if (this.editorService.consoleTabActive() && this.outputPanel) {
+    if (this.editorService.editorTabActive() && !this.fileTreeSidebarOpened) {
+      this.openFileTreeSidebar();
+    } else if (this.editorService.consoleTabActive() && this.outputPanel) {
       setTimeout(_ => this.outputPanel.resize(), 0);
     }
   }
