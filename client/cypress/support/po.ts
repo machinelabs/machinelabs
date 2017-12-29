@@ -1,35 +1,86 @@
-export const getToolbar = () => {
-  return cy.get('ml-toolbar');
-};
+export class EditorViewPageObject {
 
-export const getToolbarCtaBar = () => {
-  return cy.get('ml-toolbar-cta-bar');
-};
+  getToolbar() {
+    return cy.get('ml-toolbar');
+  }
 
-export const getEditorTabs = () => {
-  return cy.get('.mat-tab-link');
-};
+  getToolbarActionButtons() {
+    return cy.get('ml-toolbar-cta-bar [mat-button]');
+  }
 
-export const getActiveTab = () => {
-  return cy.get('.mat-tab-link[ng-reflect-active="true"]');
-};
+  getTabs() {
+    return cy.get('.mat-tab-link');
+  }
 
-export const getEditorPanels = () => {
-  return cy.get('ml-editor-layout-panel');
-};
+  openTab(label: string) {
+    this.getTabs().contains(label).click();
+  }
 
-export const getFileTreeToggle = () => {
-  return cy.get('ml-editor-layout-panel-cta-bar button:first-child');
-};
+  openEditorTab() {
+    this.openTab('Editor');
+  }
 
-export const getFileTree = () => {
-  return cy.get('ml-file-tree');
-};
+  openConsoleTab() {
+    this.openTab('Console');
+  }
 
-export const getExecutionListToggle = () => {
-  return cy.get('ml-editor-layout-footer mat-slide-toggle');
-};
+  openOutputsTab() {
+    this.openTab('Outputs');
+  }
 
-export const getExecutionListDrawer = () => {
-  return cy.get('.ml-execution-list-drawer');
-};
+  getActiveTab() {
+    return cy.get('.mat-tab-link[ng-reflect-active="true"]');
+  }
+
+  getEditorPanel() {
+    return cy.get('monaco-editor');
+  }
+
+  getConsolePanel() {
+    return cy.get('ml-xterm');
+  }
+
+  getOutputsPanel() {
+    return cy.get('ml-file-outputs');
+  }
+
+  getFileTree() {
+    return cy.get('ml-file-tree');
+  }
+
+  toggleFileTree() {
+    return cy.get('ml-editor-layout-panel-cta-bar button:first-child').click();
+  }
+
+  addFile(name: string) {
+    this.openFileNameDialog();
+    cy.get('ml-name-dialog input').type(name);
+    this.confirmFileNameDialog();
+  }
+
+  changeFileName(index: number, newName: string) {
+    this.getFileTree().within(() => {
+      cy.get('.ml-file-tree-item')
+        .eq(index)
+        .find('.ml-file-tree-item-button.edit').click();
+    });
+    cy.get('ml-name-dialog input').type(newName);
+    this.confirmFileNameDialog();
+  }
+
+  openFileNameDialog() {
+    cy.get('.ml-file-tree-item-button.add').click();
+  }
+
+  confirmFileNameDialog() {
+    cy.get('ml-name-dialog button[type=submit]').click();
+  }
+
+  getExecutionListDrawer() {
+    return cy.get('.ml-execution-list-drawer');
+  }
+
+  toggleExecutionList() {
+    return cy.get('ml-editor-layout-footer mat-slide-toggle').click();
+  }
+}
