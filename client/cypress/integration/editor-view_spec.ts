@@ -13,7 +13,7 @@ describe('Editor View', () => {
 
     it('should show name of default lab template', () => {
       const defaultLabName = 'Fork of Simple MNIST';
-      cy.get('.ml-toolbar-lab-name').contains(defaultLabName);
+      editorView.getLabName().contains(defaultLabName);
     });
 
     it('should have default action buttons', () => {
@@ -120,6 +120,57 @@ describe('Editor View', () => {
     it('should open share dialog', () => {
       editorView.openShareDialog();
       editorView.getShareDialog().should('be.visible');
+    });
+  });
+
+  describe('User flows', () => {
+
+    describe('creating labs', () => {
+
+      it('should warn users about unsaved changes', () => {
+        editorView.createBlankLab();
+        editorView.getNavigationConfirmDialog().should('be.visible');
+        editorView.cancelNavigationConfirmDialog();
+      });
+
+      it('should create blank lab', () => {
+        editorView.createBlankLab();
+        editorView.confirmNavigationConfirmDialog();
+        editorView.getLabName().contains('Untitled');
+      });
+      /* it.only('should create blank labs', () => { */
+      /*   editorView.createBlankLab(); */
+      /* }); */
+    });
+
+    it('should edit lab name', () => {
+      const previousLabName = 'Fork of Simple MNIST';
+      const updatedLabName = 'Some name';
+
+      editorView.getLabName().contains(previousLabName);
+      editorView.changeLabName(updatedLabName);
+      editorView.getLabName().contains(updatedLabName);
+    });
+
+    it('should save lab', () => {
+      editorView.saveLab();
+      cy.get('snack-bar-container').should('be.visible');
+      cy.get('snack-bar-container').contains('Lab saved');
+    });
+
+    it('should fork lab', () => {
+      editorView.forkLab();
+      cy.get('snack-bar-container').should('be.visible');
+      cy.get('snack-bar-container').contains('Lab forked');
+      editorView.getLabName().contains('Fork of');
+    });
+
+    describe('running labs', () => {
+
+      it('should show rejection dialog when user isn\'t logged-in', () => {
+        editorView.runLab();
+        editorView.getRejectionDialog().should('be.visible');
+      });
     });
   });
 });
