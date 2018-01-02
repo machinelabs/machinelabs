@@ -75,22 +75,24 @@
           #executionMetadataSidebar
           class="ml-sidebar"
           >
-        <ng-container *ngIf="executions | async as executions; else noExecutionMessage">
-          <ml-execution-list
-            [executions]="executions"
-            [activeId]="activeExecutionId"
-            (restart)="run($event.lab)"
-            (view)="listenAndUpdateUrl($event)"
-            ></ml-execution-list>
-        </ng-container>
+        <div class="ml-execution-list-drawer">
+          <ng-container *ngIf="executions | async as executions; else noExecutionMessage">
+            <ml-execution-list
+              [executions]="executions"
+              [activeId]="activeExecutionId"
+              (restart)="run($event.lab)"
+              (view)="listenAndUpdateUrl($event)"
+              ></ml-execution-list>
+          </ng-container>
 
-        <ng-template #noExecutionMessage>
-          <div class="ml-no-information-message">
-            <mat-icon class="ml-no-information-message-icon">info_outline</mat-icon>
-            <h4 class="ml-no-information-message-headline">No information available</h4>
-            <p class="ml-no-information-message-text">Execute your lab and its execution data will show up here.</p>
-          </div>
-        </ng-template>
+          <ng-template #noExecutionMessage>
+            <div class="ml-no-information-message">
+              <mat-icon class="ml-no-information-message-icon">info_outline</mat-icon>
+              <h4 class="ml-no-information-message-headline">No information available</h4>
+              <p class="ml-no-information-message-text">Execute your lab and its execution data will show up here.</p>
+            </div>
+          </ng-template>
+        </div>
       </mat-drawer>
     </mat-drawer-container>
   </ml-editor-layout-main>
