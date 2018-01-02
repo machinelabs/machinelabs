@@ -144,6 +144,10 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
   }
 
   toolbarAction(action: EditorToolbarAction) {
+    if (action.type !== EditorToolbarActionTypes.Create &&
+      action.type !== EditorToolbarActionTypes.Edit) {
+      this.slimLoadingBarService.start();
+    }
     switch (action.type) {
       case EditorToolbarActionTypes.Run: this.run(action.data); break;
       case EditorToolbarActionTypes.Edit: this.edit(action.data); break;
@@ -177,6 +181,7 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
       .subscribe(user => {
         if (user.isAnonymous) {
           this.openRejectionDialog(ExecutionRejectionReason.NoAnonymous);
+          this.slimLoadingBarService.complete();
         } else {
           this.outputPanel.reset();
           this.editorService.selectConsoleTab();
@@ -199,8 +204,10 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
                 queryParamsHandling: 'merge'
               });
               this.listen(this.activeExecutionId, false);
+              this.slimLoadingBarService.complete();
             } else if (info.rejection) {
               this.editorService.removeLocalExecution(info.executionId);
+              this.slimLoadingBarService.complete();
               if (info.rejection.reason === ExecutionRejectionReason.InvalidConfig) {
                 this.editorSnackbar.notifyInvalidConfig(info.rejection.message);
               } else {
@@ -210,6 +217,7 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
             }
           }, e => {
             this.editorService.removeLocalExecution(e.executionId);
+            this.slimLoadingBarService.complete();
             if (e instanceof TimeoutError) {
               this.editorSnackbar.notifyServerNotAvailable();
             } else if (e instanceof RateLimitError) {
@@ -219,7 +227,7 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
 
           this.editorSnackbar.notifyLateExecutionUnless(runInfo$.pipe(skip(1)));
         }
-      })
+      });
   }
 
   listenAndUpdateUrl(execution: Execution) {
@@ -296,7 +304,10 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
   save(lab: Lab, msg = 'Lab saved', fetchExecutions = false) {
     this.editorService
         .saveLab(lab, msg)
-        .subscribe(_ => this.initLab(lab, fetchExecutions, false));
+        .subscribe(_ => {
+          this.initLab(lab, fetchExecutions, false)
+          this.slimLoadingBarService.complete();
+        });
   }
 
   delete(lab: Lab) {
