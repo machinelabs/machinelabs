@@ -1,6 +1,6 @@
 {
   "name": "machinelabs-client",
-  "version": "0.22.2+utc.2017.Dec.16-11.36.55",
+  "version": "0.22.2-dev+utc.2018.Jan.03-16.56.59",
   "license": "MIT",
   "angular-cli": {},
   "scripts": {
@@ -39,8 +39,8 @@
     "firebase": "4.3.0",
     "js-yaml": "^3.8.4",
     "ng2-slim-loading-bar": "^4.0.0",
-    "ngx-monaco": "^0.5.2",
     "ngx-clipboard": "^9.0.0",
+    "ngx-monaco": "^0.5.2",
     "rxjs": "5.5.2",
     "shortid": "2.2.6",
     "xterm": "^2.9.2",
