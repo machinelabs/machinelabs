@@ -4,6 +4,7 @@ let pgk = require('../package.json');
 import './firebase/fb';
 
 import './commands/login'
+import './commands/import';
 
 program
   .version(pgk.version);
