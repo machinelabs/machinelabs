@@ -77,5 +77,13 @@ export class DbRefBuilder {
   executionMessageRef(executionId: string, messageId: string) {
     return new ObservableDbRef(this.db.ref(`executions/${executionId}/messages/${messageId}`));
   }
+
+  handshakeRequestRef(id: string) {
+    return new ObservableDbRef(this.db.ref(`/handshakes/${id}/request`));
+  }
+
+  handshakeCommitRef(id: string) {
+    return new ObservableDbRef(this.db.ref(`/handshakes/${id}/commit`));
+  }
 }
 
