@@ -62,4 +62,12 @@ export class DbRefBuilder {
   userVisibleLabsRef(id: string) {
     return new ObservableDbRef(this.db.ref(`idx/user_visible_labs/${id}`));
   }
+
+  rootRef() {
+    return new ObservableDbRef(this.db.ref());
+  }
+
+  handshakeCommitRef(id: string) {
+    return new ObservableDbRef(this.db.ref(`/handshakes/${id}/commit`));
+  }
 }

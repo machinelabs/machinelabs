@@ -1,0 +1,19 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.ml-handshake-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background:white;
+}
+
+.ml-handshake-content {
+  border: 1px solid grey; 
+  padding: 22px
+}

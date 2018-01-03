@@ -24,6 +24,16 @@ isInvocationRateProofKey(userId, key) {
   key === root.child('/idx/invocation_rate_proof/' + userId + '/key').val()
 }
 
+type HandshakeRequest {
+  id: String,
+  token: String | Null
+}
+
+type HandshakeCommit {
+  id: String,
+  user_id: String
+}
+
 type Lab {
   id: String,
   user_id: String,
@@ -224,6 +234,26 @@ path /servers {
 }
 
 path /servers/{id} is Server {}
+
+// The one initiating the handshake (e.g. CLI) is the only one who
+// will be able to read or write to this. Hence, no one else can
+// access the token. Still, it is preferable to delete the token
+// immediately after it was read.
+
+path /handshakes/{id}/request is HandshakeRequest {
+  read() { isCurrentUser(id) }
+  write() { isCurrentUser(id) }
+}
+
+// Everyone can commit a request but it is guaranteed that the user_id
+// that is used for the commit matches the one who is making the commit.
+// In other words, one can not make a commit with the user_id of someone else.
+
+// In addition, it is guaranteed that commits can not be changed once written.
+path /handshakes/{id}/commit is HandshakeCommit {
+  read() { isCurrentUser(id) }
+  write() { prior(this) == null && isCurrentUser(this.child('user_id').val()) }
+}
 
 path /idx/recent_labs {
   read() { true }

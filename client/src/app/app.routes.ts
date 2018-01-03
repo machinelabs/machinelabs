@@ -21,6 +21,10 @@ export const APP_ROUTES: Routes = [
     loadChildren: './user-profile/user-profile.module#UserProfileModule'
   },
   {
+    path: 'handshake/:id',
+    loadChildren: './handshake/handshake.module#HandshakeModule'
+  },
+  {
     path: '**',
     redirectTo: '/'
   }
