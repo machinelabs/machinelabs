@@ -17,7 +17,8 @@
     "inlineSources": true,
     "stripInternal": true,
     "paths": {
-      "@reactivex/*": ["./node_modules/@machinelabs/core/node_modules/@reactivex/*"]
+      "@reactivex/*": ["./node_modules/@machinelabs/core/node_modules/@reactivex/*"],
+      "firebase": ["./node_modules/firebase"]
     },
     "baseUrl": "",
     "typeRoots": [  "./node_modules/@types" ],
