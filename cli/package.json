@@ -13,8 +13,17 @@
     "build:personal": "ncp ./src/environments/environment.personal.ts ./src/environments/environment.ts && tsc"
   },
   "dependencies": {
+    "@machinelabs/core": "link:../shared/core",
+    "@machinelabs/models": "link:../shared/models",
+    "@types/chalk": "^2.2.0",
     "@types/commander": "^2.11.0",
-    "commander": "^2.12.2"
+    "@types/node": "^8.0.57",
+    "chalk": "^2.3.0",
+    "commander": "^2.12.2",
+    "configstore": "^3.1.1",
+    "firebase": "4.8.0",
+    "open": "^0.0.5",
+    "shortid": "^2.2.8"
   },
   "devDependencies": {
     "ncp": "^2.0.0",

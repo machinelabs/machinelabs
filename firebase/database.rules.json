@@ -317,6 +317,38 @@
           ".validate": "false"
         }
       }
+    },
+    "handshakes": {
+      "$id": {
+        "request": {
+          ".validate": "newData.hasChildren(['id'])",
+          "id": {
+            ".validate": "newData.isString()"
+          },
+          "token": {
+            ".validate": "newData.isString()"
+          },
+          "$other": {
+            ".validate": "false"
+          },
+          ".read": "auth != null && auth.uid == $id",
+          ".write": "auth != null && auth.uid == $id"
+        },
+        "commit": {
+          ".validate": "newData.hasChildren(['id', 'user_id'])",
+          "id": {
+            ".validate": "newData.isString()"
+          },
+          "user_id": {
+            ".validate": "newData.isString()"
+          },
+          "$other": {
+            ".validate": "false"
+          },
+          ".read": "auth != null && auth.uid == $id",
+          ".write": "data.val() == null && (auth != null && auth.uid == newData.child('user_id').val())"
+        }
+      }
     }
   }
 }
