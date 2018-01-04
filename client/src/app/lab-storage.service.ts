@@ -13,7 +13,7 @@ import { Lab, LabTemplate } from './models/lab';
 import { DbRefBuilder } from './firebase/db-ref-builder';
 import { AuthService } from './auth';
 import { LabTemplateService } from './lab-template.service';
-import { ML_YAML_FILE } from './data/ml.yaml';
+import { ML_YAML_FILE } from '@machinelabs/core/dist/src/lab-config/ml.yaml';
 import { stringifyDirectory } from './util/directory';
 import { parseLabDirectory } from '@machinelabs/core/dist/src/io/lab-fs/parse';
 

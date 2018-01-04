@@ -1,6 +1,6 @@
 import { SIMPLE_XOR_LAB_CODE } from './xor-lab-code';
 import { SIMPLE_MNIST_CODE } from './mnist-lab-code';
-import { ML_YAML } from './ml.yaml';
+import { ML_YAML } from '@machinelabs/core/dist/src/lab-config/ml.yaml';
 
 export const LAB_TEMPLATES = {
   'xor': {
