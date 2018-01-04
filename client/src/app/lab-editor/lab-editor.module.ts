@@ -13,8 +13,6 @@ import { HasValidExecutionGuard } from './has-valid-execution.guard';
 import { HasRunningExecutionGuard } from './has-running-execution.guard';
 import { ROUTES } from './lab-editor.routes';
 
-import { LabConfigService } from './lab-config.service';
-
 import { EditorToolbarComponent } from './editor-toolbar/editor-toolbar.component';
 import { EditorViewComponent } from './editor-view/editor-view.component';
 import { PanelComponent } from './panel/panel.component';
@@ -62,8 +60,7 @@ import { ExecutionListComponent } from './execution-list/execution-list.componen
   ],
   providers: [
     HasValidExecutionGuard,
-    HasRunningExecutionGuard,
-    LabConfigService
+    HasRunningExecutionGuard
   ],
   entryComponents: [
     NavigationConfirmDialogComponent,
