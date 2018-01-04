@@ -11,8 +11,9 @@ import { loginFromCache } from '../lib/auth/auth';
 import { environment } from '../environments/environment';
 
 program
-.command('import')
-.description('Import current directory as lab')
+.command('save')
+.description('Save current directory as a lab')
+.option('-i --id [id]', 'Specify lab id to save to')
 .action(cmd => {
   let dir = readLabDirectory('.', DEFAULT_READ_OPTIONS);
 
@@ -31,7 +32,7 @@ program
 
   // TODO: Make many of these configureable
   let lab: Lab = {
-    id: shortid.generate(),
+    id: cmd.id || shortid.generate(),
     directory: dir,
     user_id: '',
     name: '',
@@ -48,10 +49,10 @@ program
       return labApi.save(lab);
     })
     .subscribe(res => {
-      console.log(chalk.default.green.bold(`Directory imported as ${environment.mlDomain}/editor/${lab.id}`));
+      console.log(chalk.default.green.bold(`Directory saved to ${environment.mlDomain}/editor/${lab.id}`));
       process.exit();
     }, e => {
-      console.error('Import failed. Try logging in again with `ml login`');
+      console.error('Save failed. Try logging in again with `ml login`');
       process.exit(1);
     });
 });
