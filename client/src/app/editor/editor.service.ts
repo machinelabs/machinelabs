@@ -6,6 +6,8 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { UrlSerializer, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
+import { MonacoEditorService } from 'ngx-monaco';
+
 import {
   LabDirectory,
   File,
@@ -82,6 +84,7 @@ export class EditorService {
     private rleService: RemoteLabExecService,
     private labExecutionService: LabExecutionService,
     private route: ActivatedRoute,
+    private monacoEditorService: MonacoEditorService,
     private fileTreeService: FileTreeService
   ) {
     this.initialize();
@@ -105,6 +108,7 @@ export class EditorService {
 
   initLab(lab: Lab, collapseDirectories = true) {
     this.lab = lab;
+    this.monacoEditorService.disposeModels();
 
     if (collapseDirectories) {
       this.fileTreeService.collapseAll(this.lab.directory);

@@ -4005,9 +4005,9 @@ ngx-clipboard@^9.0.0:
   dependencies:
     ngx-window-token "0.0.4"
 
-ngx-monaco@^0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/ngx-monaco/-/ngx-monaco-0.5.2.tgz#bdb6428f37983e59c23c3d781610649487352437"
+ngx-monaco@0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/ngx-monaco/-/ngx-monaco-0.6.0.tgz#eebc87ea3bc67398c1cf900cc0b5fa1daebcd044"
 
 ngx-window-token@0.0.4:
   version "0.0.4"
