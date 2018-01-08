@@ -5,6 +5,8 @@ import { MatDialogModule } from '@angular/material';
 import { MachineLabsMaterialModule } from '../../ml-material.module';
 import { EditorModule } from '../editor.module';
 
+import { MonacoEditorService } from 'ngx-monaco';
+
 import { EditorService } from '../editor.service';
 import { EditorSnackbarService } from '../editor-snackbar.service';
 import { RemoteLabExecService } from '../remote-code-execution/remote-lab-exec.service';
@@ -42,7 +44,8 @@ import { AUTH_SERVICE_STUB } from '../../../test-helper/stubs/auth.service.stubs
     LabExecutionService,
     { provide: AuthService, useValue: AUTH_SERVICE_STUB },
     { provide: DATABASE, useValue: DATABASE_STUB },
-    DbRefBuilder
+    DbRefBuilder,
+    MonacoEditorService
   ]
 })
 export class EditorTestingModule {}
