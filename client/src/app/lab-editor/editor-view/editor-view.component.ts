@@ -411,7 +411,7 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
   }
 
   onFileChange(file: MonacoFile) {
-    this.activeFile = MonacoFileTypeAdapter.monacoFileToLabFile(file);
+    this.activeFile.content = file.content;
   }
 
   private goToLab(lab?: Lab, queryParams?) {
