@@ -87,3 +87,53 @@ ml-toolbar {
     height: auto;
   }
 }
+
+.ml-supporters {
+  padding: 30px;
+}
+
+.ml-supporters-header {
+  text-align: center;
+
+  h1 {
+    color: #3b3b44;
+    position: relative;
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: 55px;
+      left: 50%;
+      width: 450px;
+      transform: translateX(-50%);
+    }
+  }
+}
+
+.ml-supporters-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 50px 0;
+}
+
+.ml-supporters-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 25%;
+  margin: 20px 0;
+  padding: 0 20px;
+
+  img {
+    width: 60%;
+
+    &.shopware-logo {
+      width: 95%;
+    }
+
+    &.thoughtram-logo {
+      width: 70%;
+    }
+  }
+}
