@@ -19,5 +19,9 @@
     .ml-explore-labs-header {
       border-bottom: 5px solid mat-color($accent);
     }
+
+    .ml-supporters-headline:after {
+      border-top: 5px solid mat-color($accent);
+    }
   }
 }
