@@ -1,6 +1,6 @@
 {
   "name": "@machinelabs/core",
-  "version": "0.23.1+utc.2018.Jan.09-15.43.59",
+  "version": "0.23.1-dev+utc.2018.Jan.12-14.37.23",
   "description": "Fundamentals that can be shared across various projects",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
