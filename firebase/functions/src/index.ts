@@ -16,10 +16,12 @@ let conf = functions.config().firebase;
 
 let serviceAccount = functions.config().fb_service_account;
 
-conf.credential = admin.credential.cert(<any>{
-  'private_key': serviceAccount.private_key,
-  'client_email': serviceAccount.client_email,
-});
+if (serviceAccount) {
+  conf.credential = admin.credential.cert(<any>{
+    'private_key': serviceAccount.private_key,
+    'client_email': serviceAccount.client_email,
+  });
+}
 
 admin.initializeApp(conf);
 
