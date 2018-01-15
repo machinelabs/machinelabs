@@ -3,6 +3,8 @@ import * as chalk from 'chalk';
 import * as firebase from 'firebase';
 import * as shortid from 'shortid';
 
+import { existsSync } from 'fs';
+
 import { refBuilder } from '../firebase/fb';
 import { Lab, LabDirectory, instanceOfFile } from '@machinelabs/models';
 import { LabApi, readLabDirectory, parseMlYamlFromPath, DEFAULT_READ_OPTIONS } from '@machinelabs/core';
@@ -25,7 +27,7 @@ program
 
   let dir = readLabDirectory('.', DEFAULT_READ_OPTIONS);
 
-  if (!dir) {
+  if (!existsSync('main.py')) {
     console.error(chalk.default.red('No main.py found. Labs are currently required to use main.py as the program entry file.'));
     process.exit(1);
   }
