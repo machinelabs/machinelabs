@@ -32,10 +32,12 @@
   "dependencies": {
     "@machinelabs/models": "link:../models",
     "@reactivex/rxjs": "^5.4.2",
+    "@types/js-yaml": "^3.10.1",
     "@types/node": "^8.0.19",
     "@types/shortid": "^0.0.29",
     "firebase": "^4.2.0",
     "isbinaryfile": "^3.0.2",
+    "js-yaml": "^3.10.0",
     "moment": "^2.18.1",
     "shortid": "^2.2.8"
   },

@@ -1,8 +1,13 @@
-import { Lab, File, instanceOfFile, LabDirectory, Directory } from '@machinelabs/models';
-import { readLabDirectory, ReadOptions } from '../io/lab-fs/read';
-import { getMlYamlFromLabDirectory } from './read';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
-export const getMlYamlFromPath = (path: string, options?: ReadOptions) => {
-  let dir = readLabDirectory(path, options);
-  return getMlYamlFromLabDirectory(dir);
+const ML_YAML_NAME = 'ml.yaml';
+
+export const getMlYamlFromPath = (path: string) => {
+
+  let content = readFileSync(join(path, ML_YAML_NAME)).toString();
+  return {
+    content: content,
+    name: ML_YAML_NAME
+  };
 };
