@@ -7,7 +7,7 @@ import { existsSync } from 'fs';
 
 import { refBuilder } from '../firebase/fb';
 import { Lab, LabDirectory, instanceOfFile } from '@machinelabs/models';
-import { LabApi, readLabDirectory, parseMlYamlFromPath, DEFAULT_READ_OPTIONS } from '@machinelabs/core';
+import { LabApi, readLabDirectory, parseMlYamlFromPath } from '@machinelabs/core';
 import { configstore } from '../configstore';
 import { loginFromCache } from '../lib/auth/auth';
 import { environment } from '../environments/environment';
@@ -25,7 +25,16 @@ program
     process.exit(1);;
   }
 
-  let dir = readLabDirectory('.', DEFAULT_READ_OPTIONS);
+  let cliOptions = parsedMlYaml.cli || {};
+  let excludeRegex = cliOptions.exclude && cliOptions.exclude.length ? cliOptions.exclude : [];
+
+  let readOptions = {
+    exclude: excludeRegex,
+    excludeBinaries: true,
+    extensions: null
+  };
+
+  let dir = readLabDirectory('.', readOptions);
 
   if (!existsSync('main.py')) {
     console.error(chalk.default.red('No main.py found. Labs are currently required to use main.py as the program entry file.'));

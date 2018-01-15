@@ -1,7 +1,7 @@
 let program = require('commander');
 import * as chalk from 'chalk';
 import { writeFileSync } from 'fs';
-import { readLabDirectory, getMlYamlFromPath, ML_YAML, DEFAULT_READ_OPTIONS } from '@machinelabs/core';
+import { readLabDirectory, getMlYamlFromPath, ML_YAML } from '@machinelabs/core';
 
 program
 .command('init')
