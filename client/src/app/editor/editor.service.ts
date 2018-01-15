@@ -120,6 +120,7 @@ export class EditorService {
 
   initDirectory(directory: LabDirectory) {
     this.lab.directory = directory;
+    this.monacoEditorService.disposeModels();
     this.fileTreeService.collapseAll(this.lab.directory);
     this.initActiveFile();
   }
