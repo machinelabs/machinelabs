@@ -8,7 +8,7 @@ program
 .description('Initialize current directory as lab')
 .option('-f --force', 'Overwrite ml.yaml if it already exists')
 .action(cmd => {
-  let config = getMlYamlFromPath('.', DEFAULT_READ_OPTIONS);
+  let config = getMlYamlFromPath('.');
 
   if (config && !cmd.force) {
     console.error(chalk.default.red('ml.yaml already exists. Run `ml init --force` if you intend to overwrite ml.yaml with default settings'));

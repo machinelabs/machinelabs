@@ -5,7 +5,7 @@ import * as shortid from 'shortid';
 
 import { refBuilder } from '../firebase/fb';
 import { Lab, LabDirectory, instanceOfFile } from '@machinelabs/models';
-import { LabApi, readLabDirectory, getMlYamlFromLabDirectory, DEFAULT_READ_OPTIONS } from '@machinelabs/core';
+import { LabApi, readLabDirectory, parseMlYamlFromPath, DEFAULT_READ_OPTIONS } from '@machinelabs/core';
 import { configstore } from '../configstore';
 import { loginFromCache } from '../lib/auth/auth';
 import { environment } from '../environments/environment';
@@ -15,17 +15,19 @@ program
 .description('Save current directory as a lab')
 .option('-i --id [id]', 'Specify lab id to save to')
 .action(cmd => {
-  let dir = readLabDirectory('.', DEFAULT_READ_OPTIONS);
 
-  if (!dir || !getMlYamlFromLabDirectory(dir)) {
-    console.error(chalk.default.red('No main.py found. Labs are currently required to use main.py as the program entry file.'));
+  let parsedMlYaml = parseMlYamlFromPath('.');
+
+  if (!parsedMlYaml) {
+    console.error(chalk.default.red('No ml.yaml found. Run `ml init` to create one with default settings'));
+    process.exit(1);;
   }
 
-  let config = getMlYamlFromLabDirectory(dir);
+  let dir = readLabDirectory('.', DEFAULT_READ_OPTIONS);
 
-  if (!config) {
-    console.error(chalk.default.red('No ml.yaml found. Run `ml init` to create one with default settings'));
-    return;
+  if (!dir) {
+    console.error(chalk.default.red('No main.py found. Labs are currently required to use main.py as the program entry file.'));
+    process.exit(1);
   }
 
   let labApi = new LabApi(refBuilder);
