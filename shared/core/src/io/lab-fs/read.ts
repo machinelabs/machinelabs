@@ -10,12 +10,6 @@ export interface ReadOptions {
   excludeBinaries: boolean;
 }
 
-export const DEFAULT_READ_OPTIONS: ReadOptions = {
-  exclude: /node_modules/,
-  excludeBinaries: true,
-  extensions: null
-};
-
 const safeReadDirSync = (path: string) => {
   let dirData = [];
   try {
