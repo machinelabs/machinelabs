@@ -1,14 +1,14 @@
 import { Observable } from '@reactivex/rxjs';
 import { Lab, File, instanceOfFile, MountOption, HardwareType } from '@machinelabs/models';
 import { PublicLabConfiguration, InternalLabConfiguration, ScriptParameter } from '../models/lab-configuration';
+import { getMlYamlFromLab, parseMlYaml } from '@machinelabs/core';
+
 import { safeLoad} from 'js-yaml';
 import isString = require('lodash.isstring');
 import isObject = require('lodash.isobject');
 import { DockerImageService } from '../docker-image.service';
 import { MountService } from '../mounts/mount.service';
 import { mute } from '../rx/mute';
-
-const CONFIG_FILE_NAME = 'ml.yaml';
 
 export class LabConfigService {
 
@@ -17,19 +17,15 @@ export class LabConfigService {
 
   readPublicConfig(lab: Lab): PublicLabConfiguration {
 
-    let configFile = this.getMlYaml(lab);
+    let configFile = getMlYamlFromLab(lab);
 
-    if (!configFile || !configFile.content) {
+    let parsed = parseMlYaml(configFile);
+
+    if (!parsed) {
       return null;
     }
 
-    try {
-      let config = safeLoad(configFile.content);
-
-      return Object.assign(new PublicLabConfiguration(), config);
-    } catch (error) {
-      return null;
-    }
+    return Object.assign(new PublicLabConfiguration(), parsed);
   }
 
   getInternalConfig(userId: string, lab: Lab) {
@@ -64,13 +60,6 @@ export class LabConfigService {
     .map(this.reportError('Invalid parameters', this.hasValidParameters))
     .map(this.reportError('Unknown dockerImageId', this.isValidImage))
     .map(this.reportError('Invalid inputs', this.hasValidInputs));
-  }
-
-  private getMlYaml(lab: Lab) {
-    let file = lab.directory
-                  .find(currentFile => currentFile.name.toLowerCase() === CONFIG_FILE_NAME);
-
-    return instanceOfFile(file) ? file : null;
   }
 
   private reportError(error: string, validate: (config: InternalLabConfiguration) => boolean) {
