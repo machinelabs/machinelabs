@@ -27,7 +27,8 @@ program
 
   let cliOptions = parsedMlYaml.cli || {};
   let excludeRegex = cliOptions.exclude && cliOptions.exclude.length ? cliOptions.exclude : [];
-
+  let id = cmd.id || cliOptions.id || shortid.generate();
+  
   let readOptions = {
     exclude: excludeRegex,
     excludeBinaries: true,
@@ -45,7 +46,7 @@ program
 
   // TODO: Make many of these configureable
   let lab: Lab = {
-    id: cmd.id || shortid.generate(),
+    id: id,
     directory: dir,
     user_id: '',
     name: '',
