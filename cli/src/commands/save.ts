@@ -2,7 +2,7 @@ let program = require('commander');
 import * as chalk from 'chalk';
 import * as firebase from 'firebase';
 import * as shortid from 'shortid';
-
+import isString = require('lodash.isstring');
 import { existsSync } from 'fs';
 
 import { refBuilder } from '../firebase/fb';
@@ -16,6 +16,8 @@ program
 .command('save')
 .description('Save current directory as a lab')
 .option('-i --id [id]', 'Specify lab id to save to')
+.option('-d --description [description]', 'Specify lab description')
+.option('-n --name [name]', 'Specify lab name')
 .action(cmd => {
 
   let parsedMlYaml = parseMlYamlFromPath('.');
@@ -44,25 +46,38 @@ program
 
   let labApi = new LabApi(refBuilder);
 
-  // TODO: Make many of these configureable
-  let lab: Lab = {
-    id: id,
-    directory: dir,
-    user_id: '',
-    name: '',
-    description: '',
-    tags: [],
-    created_at: Date.now(),
-    modified_at: Date.now(),
-    hidden: false
-  };
-
   loginFromCache()
-    .switchMap(res => {
-      lab.user_id = res.uid;
-      return labApi.save(lab);
-    })
-    .subscribe(res => {
+    .switchMap(res => refBuilder.labRef(id).onceValue()
+                                .map(snapshot => snapshot.val())
+                                .map(lab => {
+
+                                  if (!lab) {
+                                    lab = {
+                                      id: id,
+                                      directory: dir,
+                                      user_id: res.uid,
+                                      name: isString(cmd.name) ? cmd.name : 'Untitled',
+                                      description: isString(cmd.description) ? cmd.description : '',
+                                      tags: [],
+                                      created_at: Date.now(),
+                                      modified_at: Date.now(),
+                                      hidden: false
+                                    };
+                                  } else if (lab.user_id !== res.uid) {
+                                    console.error(`Can't write to lab from another user`);
+                                    process.exit(1);
+                                  }
+
+                                  // We can't use `cmd.something || 'something'` here because of the way commander
+                                  // handles these flags.
+                                  lab.name = isString(cmd.name) ? cmd.name : lab.name;
+                                  lab.description = isString(cmd.description) ? cmd.description : lab.description;
+                                  lab.directory = dir;
+
+                                  return lab;
+                                }))
+    .switchMap(lab => labApi.save(lab).map(_ => lab))
+    .subscribe(lab => {
       console.log(chalk.default.green.bold(`Directory saved to ${environment.mlDomain}/editor/${lab.id}`));
       process.exit();
     }, e => {

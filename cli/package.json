@@ -17,11 +17,13 @@
     "@machinelabs/models": "link:../shared/models",
     "@types/chalk": "^2.2.0",
     "@types/commander": "^2.11.0",
+    "@types/lodash.isstring": "^4.0.3",
     "@types/node": "^8.0.57",
     "chalk": "^2.3.0",
     "commander": "^2.12.2",
     "configstore": "^3.1.1",
     "firebase": "4.8.0",
+    "lodash.isstring": "^4.0.1",
     "open": "^0.0.5",
     "shortid": "^2.2.8"
   },
