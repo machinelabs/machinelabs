@@ -105,6 +105,10 @@ export class SnackbarService {
     this.notify('Request failed, please try again');
   }
 
+  notifySaveLabFailed() {
+    this.notify('Saving Lab failed, please try again');
+  }
+
   notifyActionUndone() {
     this.notify('Undone');
   }
