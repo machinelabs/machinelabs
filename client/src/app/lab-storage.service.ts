@@ -85,7 +85,7 @@ export class LabStorageService {
           return labs;
         }),
         map(labs => labs.map(lab => this.getLab(lab.lab_id))),
-        mergeMap(labs => forkJoin(labs))
+        mergeMap(labs => labs.length ? forkJoin(labs) : of([]))
       );
   }
 
