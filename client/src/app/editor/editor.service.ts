@@ -249,7 +249,7 @@ export class EditorService {
         }),
         map(_ => lab),
         catchError(_ => {
-          this.editorSnackbar.notifySaveLabFailed()
+          this.snackbarService.notifySaveLabFailed()
           return of(null);
         })
       );

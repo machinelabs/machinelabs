@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { tap } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
 import { Lab } from './models/lab';
 import { LabStorageService } from './lab-storage.service';
 import { SnackbarService } from './snackbar.service';
@@ -25,6 +26,11 @@ export class LabResolver implements Resolve<Lab> {
             this.snackBar.notifyLabDoesntExist();
             this.router.navigate(['/editor']);
           }
+        }),
+        catchError(error => {
+          this.snackBar.notifyLabDoesntExist();
+          this.router.navigate(['/editor']);
+          return of(null);
         })
       );
     }
