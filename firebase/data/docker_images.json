@@ -2,19 +2,23 @@
   "common" : {
     "keras_v2-0-x_python_2-1" : {
       "id" : "keras_v2-0-x_python_2-1",
-      "name" : "Keras 2.0.4 + Python 2.1"
+      "name" : "Keras 2.0.4 + Python 2.1",
+      "description" : "Keras 2.0.4 and Python 2.1"
     },
     "keras_v2-0-x_python_3-1" : {
       "id" : "keras_v2-0-x_python_3-1",
-      "name" : "Keras 2.0.4 + Python 3.1"
+      "name" : "Keras 2.0.4 + Python 3.1",
+      "description" : "Keras 2.0.4 and Python 3.1"
     },
     "tensorflow_v1-4-x-gpu_python_2-1" : {
       "id" : "tensorflow_v1-4-x-gpu_python_2-1",
-      "name" : "Tensorflow 1.4.x + Keras 2.0.6 + Python 2.1 (GPU)"
+      "name" : "Tensorflow 1.4.x + Keras 2.0.6 + Python 2.1 (GPU)",
+      "description" : "TensorFlow 1.4.x + Keras 2.0.x + Python 2.1 with GPU"
     },
     "tensorflow_v1-4-x-gpu_python_3-1" : {
       "id" : "tensorflow_v1-4-x-gpu_python_3-1",
-      "name" : "Tensorflow 1.4.x + Keras 2.0.6 + Python 3.1 (GPU)"
+      "name" : "Tensorflow 1.4.x + Keras 2.0.6 + Python 3.1 (GPU)",
+      "description" : "TensorFlow 1.4.x + Keras 2.0.x + Python 3.1 with GPU"
     }
   },
   "protected" : {
