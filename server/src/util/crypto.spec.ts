@@ -28,7 +28,8 @@ describe('.hashLabFiles()', () => {
           name: 'test',
           content: 'test'
         }
-      ]
+      ],
+      is_private: false
     };
 
     let hash = Crypto.getCacheHash(lab);

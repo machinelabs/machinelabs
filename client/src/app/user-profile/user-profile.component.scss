@@ -87,6 +87,19 @@
   }
 }
 
+.ml-user-profile-lab-card-private-badge {
+  display: inline-block;
+  font-weight: 400;
+  color: #586069;
+  background-color: cornsilk;
+  border: 1px solid rgba(27,31,35,0.15);
+  border-radius: 2px;
+  padding: 3px 4px;
+  font-size: 12px;
+  line-height: 1;
+  vertical-align: 25%;
+}
+
 .ml-user-profile-execution-list {
   padding-top: 25px;
   padding-bottom: 25px;

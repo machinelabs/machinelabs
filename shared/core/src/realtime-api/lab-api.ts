@@ -26,7 +26,8 @@ export class LabApi {
       hidden: !!lab.hidden,
       created_at: lab.created_at,
       modified_at: firebase.database.ServerValue.TIMESTAMP,
-      fork_of: lab.fork_of || null
+      fork_of: lab.fork_of || null,
+      is_private: !!lab.is_private
     });
   }
 

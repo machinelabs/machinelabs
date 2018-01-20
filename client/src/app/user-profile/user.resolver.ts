@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { tap } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
+import { tap, catchError } from 'rxjs/operators';
 
 import { LabStorageService } from '../lab-storage.service';
 import { SnackbarService } from '../snackbar.service';
@@ -32,9 +33,14 @@ export class UserResolver implements Resolve<User> {
 @Injectable()
 export class UserLabsResolver implements Resolve<any> {
 
-  constructor(private labStorage: LabStorageService) {}
+  constructor(private labStorage: LabStorageService, private snackBar: SnackbarService) {}
 
   resolve(route: ActivatedRouteSnapshot) {
-    return this.labStorage.getLabsFromUser(route.paramMap.get('userId'));
+    return this.labStorage
+      .getLabsFromUser(route.paramMap.get('userId'))
+      .pipe(catchError(_ => {
+        this.snackBar.notifyLoadingUserLabsFailed();
+        return of([]);
+      }));
   }
 }

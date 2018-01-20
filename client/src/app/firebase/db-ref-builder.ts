@@ -11,6 +11,10 @@ export class DbRefBuilder {
     return new ObservableDbRef(this.db.ref(`users/${id}/common`));
   }
 
+  userPlansRef(userId: string) {
+    return new ObservableDbRef(this.db.ref(`users/${userId}/plan`));
+  }
+
   labRef(id: string) {
     return new ObservableDbRef(this.db.ref(`labs/${id}/common`));
   }
