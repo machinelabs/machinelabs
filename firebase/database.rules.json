@@ -349,6 +349,11 @@
           ".write": "data.val() == null && (auth != null && auth.uid == newData.child('user_id').val())"
         }
       }
+    },
+    "docker_images": {
+      "common": {
+        ".read": "true"
+      }
     }
   }
 }

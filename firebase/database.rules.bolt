@@ -291,5 +291,8 @@ path /idx/user_visible_labs/{id} {
   write() { false }
 }
 
+path /docker_images/common {
+  read() { true }
+}
 
 
