@@ -1,5 +1,6 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { COMPLETION_PROVIDERS } from 'ngx-monaco';
 import { SharedModule } from '../shared/shared.module';
 
 import { EditorLayoutComponent } from './layout/editor-layout.component';
@@ -26,6 +27,8 @@ import { EditorSnackbarService } from './editor-snackbar.service';
 import { FilePreviewDialogService } from './file-preview/file-preview-dialog.service';
 
 import { FileTreeService } from './file-tree/file-tree.service';
+
+import { LabConfigCompletionProvider } from './completion-providers/lab-config-completion-provider/lab-config-completion-provider';
 
 import { ClipboardModule } from 'ngx-clipboard';
 
@@ -79,5 +82,14 @@ import { ClipboardModule } from 'ngx-clipboard';
     NameDialogComponent
   ]
 })
-export class EditorModule {}
+export class EditorModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: EditorModule,
+      providers: [
+        { provide: COMPLETION_PROVIDERS, useClass: LabConfigCompletionProvider, multi: true }
+      ]
+    };
+  }
+}
 
