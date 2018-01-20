@@ -9,6 +9,7 @@ import { AuthService } from 'app/auth';
 import { DbRefBuilder } from '../firebase/db-ref-builder';
 import { LoginUser, User } from '../models/user';
 import { Execution } from '../models/execution';
+import { PlanId } from '@machinelabs/models';
 import { Lang } from '../util/lang';
 
 
@@ -99,5 +100,12 @@ export class UserService {
 
   userOwnsExecution(user: User, execution: Execution) {
     return user && user.id === execution.user_id;
+  }
+
+  getUserPlan() {
+    return this.getCurrentUser().pipe(
+      switchMap(user => this.db.userPlansRef(user.id).onceValue()),
+      snapshotToValue
+    );
   }
 }

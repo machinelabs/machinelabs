@@ -68,8 +68,10 @@ describe('UserLabsResolver', () => {
     TestBed.configureTestingModule({
       providers: [
         UserLabsResolver,
+        SnackbarService,
         {provide: LabStorageService, useValue: labStorageStub}
-      ]
+      ],
+      imports: [MatSnackBarModule]
     });
     userLabsResolver = TestBed.get(UserLabsResolver);
     labStorage = TestBed.get(LabStorageService);

@@ -24,3 +24,15 @@ h4 {
   margin: 0;
 }
 
+.checkbox-field {
+  mat-hint {
+    text-align: left;
+    display: block;
+    font-size: 0.8em;
+    margin-top: 0.5em;
+  }
+
+  a {
+    color: #03a9f4;
+  }
+}
