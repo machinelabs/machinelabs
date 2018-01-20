@@ -6715,6 +6715,12 @@ yallist@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/yallist/-/yallist-2.1.2.tgz#1c11f9218f076089a47dd512f93c6699a6a81d52"
 
+yaml-completion-helper@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/yaml-completion-helper/-/yaml-completion-helper-0.2.1.tgz#71824a2b4c79949be01268bd9cb4ab6a31e7130d"
+  dependencies:
+    redent "^1.0.0"
+
 yargs-parser@^4.2.0:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-4.2.1.tgz#29cceac0dc4f03c6c87b4a9f217dd18c9f74871c"

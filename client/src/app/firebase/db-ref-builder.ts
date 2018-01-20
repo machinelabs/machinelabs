@@ -70,4 +70,8 @@ export class DbRefBuilder {
   handshakeCommitRef(id: string) {
     return new ObservableDbRef(this.db.ref(`/handshakes/${id}/commit`));
   }
+
+  dockerImagesRef() {
+    return new ObservableDbRef(this.db.ref('docker_images/common'));
+  }
 }

@@ -10,9 +10,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule, PreloadAllModules } from '@angular/router';
 import { SlimLoadingBarModule } from 'ng2-slim-loading-bar';
-import { MonacoEditorModule } from 'ngx-monaco';
+import { MonacoEditorModule, COMPLETION_PROVIDERS } from 'ngx-monaco';
 
 import { SharedModule } from './shared/shared.module';
+import { EditorModule } from './editor/editor.module';
 
 import { LabResolver } from './lab.resolver';
 import { LabStorageService } from './lab-storage.service';
@@ -20,6 +21,7 @@ import { LabTemplateService, InMemoryLabTemplateService } from './lab-template.s
 import { LabExecutionService } from './lab-execution.service';
 import { OutputFilesService } from './output-files.service';
 import { LoginService } from './login.service';
+import { DockerImageService } from './docker-image.service';
 import { UserService } from 'app/user/user.service';
 import { AuthService, FirebaseAuthService, OfflineAuthService } from './auth';
 import { LocationHelper } from './util/location-helper';
@@ -53,6 +55,7 @@ const AnimationsModule = [environment.testing ? NoopAnimationsModule : BrowserAn
     RouterModule.forRoot(APP_ROUTES, { preloadingStrategy: PreloadAllModules }),
     SlimLoadingBarModule.forRoot(),
     SharedModule.forRoot(),
+    EditorModule.forRoot(),
     MonacoEditorModule.forRoot({
       options: {
         minimap: {
@@ -73,6 +76,7 @@ const AnimationsModule = [environment.testing ? NoopAnimationsModule : BrowserAn
     LabResolver,
     { provide: LabTemplateService, useClass: InMemoryLabTemplateService },
     UserService,
+    DockerImageService,
     DbRefBuilder,
     { provide: DATABASE, useFactory: databaseFactory },
     { provide: AuthService, useClass: environment.offline ? OfflineAuthService : FirebaseAuthService },
