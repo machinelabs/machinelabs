@@ -20,19 +20,7 @@ import { FirebaseMock } from '../../../test-helper/firebase-mock';
 import { EditLabDialogComponent } from '../edit-lab-dialog/edit-lab-dialog.component';
 import { AUTH_SERVICE_STUB } from '../../../test-helper/stubs/auth.service.stubs';
 import { ROUTER_STUB, ACTIVATED_ROUTE_STUB } from '../../../test-helper/stubs/router.stubs';
-
-let testLab = {
-  id: 'some-id',
-  user_id: 'user id',
-  name: 'Existing lab',
-  description: '',
-  tags: ['existing'],
-  directory: [],
-  has_cached_run: false,
-  created_at: Date.now(),
-  modified_at: Date.now(),
-  hidden: false
-};
+import { LAB_STUB } from '../../../test-helper/stubs/lab.stubs';
 
 describe('EditorToolbarComponent', () => {
   let component: EditorToolbarComponent;
@@ -69,7 +57,7 @@ describe('EditorToolbarComponent', () => {
     component = fixture.componentInstance;
     authService = TestBed.get(AuthService);
 
-    let lab = Object.assign({}, testLab);
+    let lab = Object.assign({}, LAB_STUB);
     component.lab = lab;
     spyOn(authService, 'requireAuth').and.returnValue(of(dummyUser));
     spyOn(authService, 'requireAuthOnce').and.returnValue(of(dummyUser));
@@ -82,7 +70,7 @@ describe('EditorToolbarComponent', () => {
 
   it('should render lab name', () => {
     // The user will be available in the next tick hence the setTimeout
-    let lab = Object.assign({}, testLab);
+    let lab = Object.assign({}, LAB_STUB);
 
     component.lab = lab;
     fixture.detectChanges();

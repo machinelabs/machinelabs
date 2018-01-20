@@ -1,4 +1,4 @@
-import { SpecialUser, InvocationType, HardwareType } from '@machinelabs/models';
+import { SYSTEM_USER, InvocationType, HardwareType } from '@machinelabs/models';
 import { ObservableDbRef, DbRefBuilder, uniqueId } from '@machinelabs/core';
 import { Observable } from '@reactivex/rxjs';
 import * as firebase from 'firebase';
@@ -15,7 +15,7 @@ export class TakedownService {
         id: id,
         type: InvocationType.StopExecution,
         data: { execution_id: executionId },
-        user_id: SpecialUser.System,
+        user_id: SYSTEM_USER,
         timestamp: firebase.database.ServerValue.TIMESTAMP
       })
       .map(_ => executionId);

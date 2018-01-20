@@ -2,7 +2,7 @@ import * as admin from 'firebase-admin';
 import { environment } from '../environments/environment';
 import { Config } from '../util/config';
 import { DbRefBuilder } from '@machinelabs/core';
-import { SpecialUser } from '@machinelabs/models';
+import { SYSTEM_USER } from '@machinelabs/models';
 
 admin.initializeApp({
   credential: admin.credential.cert(<any>{
@@ -11,7 +11,7 @@ admin.initializeApp({
   }),
   databaseURL: environment.firebaseConfig.databaseURL,
   databaseAuthVariableOverride: {
-    uid: SpecialUser.ExecutionServer
+    uid: SYSTEM_USER
   }
 });
 

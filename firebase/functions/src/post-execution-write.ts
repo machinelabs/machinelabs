@@ -18,11 +18,11 @@ export const postExecutionWrite = functions.database.ref('/executions/{id}/commo
     updateLabExecution(event, data, delta);
     updateUserExecutions(event, data, delta);
 
-    return admin.database().ref(`/labs/${data.lab.id}/common/name`)
+    return admin.database().ref(`/labs/${data.lab.id}/common`)
       .once('value')
       .then(snapshot => snapshot.val())
-      .then(name => {
-        if (name && !name.startsWith('Fork of')) {
+      .then(lab => {
+        if (lab.name && !lab.name.startsWith('Fork of') && !lab.is_private) {
           updateRecentLabs(event, data, delta);
         }
       })

@@ -12,4 +12,5 @@ export interface Lab {
   modified_at: number;
   hidden: boolean;
   fork_of?: string;
+  is_private: boolean;
 }

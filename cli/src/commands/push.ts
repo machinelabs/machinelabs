@@ -61,7 +61,8 @@ program
                                       tags: [],
                                       created_at: Date.now(),
                                       modified_at: Date.now(),
-                                      hidden: false
+                                      hidden: false,
+                                      is_private: false
                                     };
                                   } else if (lab.user_id !== res.uid) {
                                     console.error(`Can't write to lab from another user`);
