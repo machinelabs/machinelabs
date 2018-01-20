@@ -36,7 +36,9 @@ dockerImageId: keras_v2-0-x_python_3-1
 #   url: https://s3.amazonaws.com/img-datasets/mnist.npz
 `;
 
+export const ML_YAML_FILENAME = 'ml.yaml';
+
 export const ML_YAML_FILE = {
-  name: 'ml.yaml',
+  name: ML_YAML_FILENAME,
   content: ML_YAML
 };
