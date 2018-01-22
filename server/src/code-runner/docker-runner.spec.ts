@@ -27,7 +27,7 @@ describe('.run(lab)', () => {
       fetch: jest.fn().mockReturnValue(stdout('downloader output'))
     };
 
-    let runner = new DockerRunner(DockerExecutable.Docker, spawn, spawnShell, uploader, downloader);
+    let runner = new DockerRunner(DockerExecutable.Docker, 1024, spawn, spawnShell, uploader, downloader);
 
 
     let inv: Invocation = {
@@ -72,7 +72,7 @@ describe('.run(lab)', () => {
          expect(outgoingMessages[1]).toEqual(stdoutMsg('execution output'));
          expect(outgoingMessages[2]).toEqual(stdoutMsg('uploader output'));
          // tslint:disable-next-line
-         expect(spawn.mock.calls[0]).toEqual(['docker', ['create', '--cap-drop=ALL', '--security-opt=no-new-privileges', '-t', '--read-only', '--tmpfs', '/run:rw,size=5g,mode=1777', '--tmpfs', '/tmp:rw,size=1g,mode=1777', '--name', '4711', 'bar', '/bin/bash']]);
+         expect(spawn.mock.calls[0]).toEqual(['docker', ['create', '--cap-drop=ALL', '--kernel-memory=1024k', '--security-opt=no-new-privileges', '-t', '--read-only', '--tmpfs', '/run:rw,size=5g,mode=1777', '--tmpfs', '/tmp:rw,size=1g,mode=1777', '--name', '4711', 'bar', '/bin/bash']]);
          // tslint:disable-next-line
          expect(spawn.mock.calls[1]).toEqual(['docker', ['exec', '-t', containerId, '/bin/bash', '-c', `mkdir /run/outputs && cd /run && ({ cat <<'EOL' > foo.py
 foo
