@@ -6,7 +6,7 @@ import { timer } from 'rxjs/observable/timer';
 import { takeUntil } from 'rxjs/operators';
 
 @Injectable()
-export class EditorSnackbarService {
+export class SnackbarService {
 
   constructor(private snackBar: MatSnackBar) {}
 

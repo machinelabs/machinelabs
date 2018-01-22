@@ -21,7 +21,7 @@ import {
 } from '../navigation-confirm-dialog/navigation-confirm-dialog.component';
 import { RejectionDialogComponent } from '../rejection-dialog/rejection-dialog.component';
 import { EditorService, TabIndex } from '../../editor/editor.service';
-import { EditorSnackbarService } from '../../editor/editor-snackbar.service';
+import { SnackbarService } from '../../snackbar.service';
 import { LabStorageService } from '../../lab-storage.service';
 import { UserService } from '../../user/user.service';
 import { Lab } from '../../models/lab';
@@ -110,7 +110,7 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
                private locationHelper: LocationHelper,
                private router: Router,
                public editorService: EditorService,
-               private editorSnackbar: EditorSnackbarService,
+               private snackbarService: SnackbarService,
                private userService: UserService,
                private slimLoadingBarService: SlimLoadingBarService) {
   }
@@ -209,7 +209,7 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
               this.editorService.removeLocalExecution(info.executionId);
               this.slimLoadingBarService.complete();
               if (info.rejection.reason === ExecutionRejectionReason.InvalidConfig) {
-                this.editorSnackbar.notifyInvalidConfig(info.rejection.message);
+                this.snackbarService.notifyInvalidConfig(info.rejection.message);
               } else {
                 this.openRejectionDialog(info.rejection.reason);
               }
@@ -219,13 +219,13 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
             this.editorService.removeLocalExecution(e.executionId);
             this.slimLoadingBarService.complete();
             if (e instanceof TimeoutError) {
-              this.editorSnackbar.notifyServerNotAvailable();
+              this.snackbarService.notifyServerNotAvailable();
             } else if (e instanceof RateLimitError) {
-              this.editorSnackbar.notifyExecutionRateLimitExceeded();
+              this.snackbarService.notifyExecutionRateLimitExceeded();
             }
           });
 
-          this.editorSnackbar.notifyLateExecutionUnless(runInfo$.pipe(skip(1)));
+          this.snackbarService.notifyLateExecutionUnless(runInfo$.pipe(skip(1)));
         }
       });
   }
@@ -357,7 +357,7 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
       this.outputPanel.reset();
       this.goToLab();
       this.initLab(lab);
-      this.editorSnackbar.notifyLabCreated();
+      this.snackbarService.notifyLabCreated();
     });
   }
 
@@ -406,7 +406,7 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
 
     setTimeout(() => {
       this.executionMetadataSidebar.close();
-      this.editorSnackbar.notifyLabRestored();
+      this.snackbarService.notifyLabRestored();
     }, METADATA_SIDEBAR_OPEN_TIMEOUT);
   }
 

@@ -8,7 +8,7 @@ import { EditorModule } from '../editor.module';
 import { MonacoEditorService } from 'ngx-monaco';
 
 import { EditorService } from '../editor.service';
-import { EditorSnackbarService } from '../editor-snackbar.service';
+import { SnackbarService } from '../../snackbar.service';
 import { RemoteLabExecService } from '../remote-code-execution/remote-lab-exec.service';
 import { DbRefBuilder } from '../../firebase/db-ref-builder';
 import { LocationHelper } from '../../util/location-helper';
@@ -39,7 +39,7 @@ import { AUTH_SERVICE_STUB } from '../../../test-helper/stubs/auth.service.stubs
     { provide: LabTemplateService, useClass: InMemoryLabTemplateService },
     WindowRef,
     EditorService,
-    EditorSnackbarService,
+    SnackbarService,
     RemoteLabExecService,
     LabExecutionService,
     { provide: AuthService, useValue: AUTH_SERVICE_STUB },

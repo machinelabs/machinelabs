@@ -24,6 +24,7 @@ import { LoginService } from './login.service';
 import { DockerImageService } from './docker-image.service';
 import { UserService } from 'app/user/user.service';
 import { AuthService, FirebaseAuthService, OfflineAuthService } from './auth';
+import { SnackbarService } from './snackbar.service';
 import { LocationHelper } from './util/location-helper';
 
 import { AppComponent } from './app.component';
@@ -77,6 +78,7 @@ const AnimationsModule = [environment.testing ? NoopAnimationsModule : BrowserAn
     { provide: LabTemplateService, useClass: InMemoryLabTemplateService },
     UserService,
     DockerImageService,
+    SnackbarService,
     DbRefBuilder,
     { provide: DATABASE, useFactory: databaseFactory },
     { provide: AuthService, useClass: environment.offline ? OfflineAuthService : FirebaseAuthService },
