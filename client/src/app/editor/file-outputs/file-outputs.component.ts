@@ -11,7 +11,7 @@ import { OutputFile } from '../../models/output-file';
 import { FilePreviewDialogService } from '../file-preview/file-preview-dialog.service';
 import { LocationHelper } from '../../util/location-helper';
 import { isImage } from '../../util/output';
-import { EditorSnackbarService } from '../editor-snackbar.service';
+import { SnackbarService } from '../../snackbar.service';
 
 import { environment } from '../../../environments/environment';
 
@@ -34,7 +34,7 @@ export class FileOutputsComponent implements OnChanges, OnInit {
 
   constructor(
     public outputFilesService: OutputFilesService,
-    private editorSnackbarService: EditorSnackbarService,
+    private snackbarService: SnackbarService,
     private filePreviewService: FilePreviewDialogService,
     private route: ActivatedRoute,
     private locationHelper: LocationHelper,
@@ -80,7 +80,7 @@ export class FileOutputsComponent implements OnChanges, OnInit {
 
   copyDone(error = false) {
     const message = error ? 'Could not copy link' : 'Link copied';
-    this.editorSnackbarService.notify(message);
+    this.snackbarService.notify(message);
   }
 }
 

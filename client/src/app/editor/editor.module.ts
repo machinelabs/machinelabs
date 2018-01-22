@@ -23,7 +23,6 @@ import { EditorService } from './editor.service';
 import { NameDialogService } from './name-dialog/name-dialog-service';
 
 import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.service';
-import { EditorSnackbarService } from './editor-snackbar.service';
 import { FilePreviewDialogService } from './file-preview/file-preview-dialog.service';
 
 import { FileTreeService } from './file-tree/file-tree.service';
@@ -59,7 +58,6 @@ import { ClipboardModule } from 'ngx-clipboard';
     EditorService,
     NameDialogService,
     RemoteLabExecService,
-    EditorSnackbarService,
     FilePreviewDialogService
   ],
   exports: [

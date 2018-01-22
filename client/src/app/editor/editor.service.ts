@@ -23,7 +23,7 @@ import { getFileFromPath } from '@machinelabs/core/dist/src/io/lab-fs/navigation
 
 import { LocationHelper } from '../util/location-helper';
 import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.service';
-import { EditorSnackbarService } from './editor-snackbar.service';
+import { SnackbarService } from '../snackbar.service';
 import { LabExecutionService } from 'app/lab-execution.service';
 import { LabStorageService } from '../lab-storage.service';
 import { createSkipTextHelper } from './util/skip-helper';
@@ -79,7 +79,7 @@ export class EditorService {
     private urlSerializer: UrlSerializer,
     private location: Location,
     private locationHelper: LocationHelper,
-    private editorSnackbar: EditorSnackbarService,
+    private snackbarService: SnackbarService,
     private labStorageService: LabStorageService,
     private rleService: RemoteLabExecService,
     private labExecutionService: LabExecutionService,
@@ -134,20 +134,20 @@ export class EditorService {
 
     let genSkipText = createSkipTextHelper('character');
 
-    this.editorSnackbar.notifyLateExecutionUnless(wrapper.controlMessages);
+    this.snackbarService.notifyLateExecutionUnless(wrapper.controlMessages);
 
     wrapper.controlMessages
            .subscribe(msg => {
             if (msg.kind === MessageKind.ExecutionFinished) {
-              this.editorSnackbar.notifyExecutionFinished();
+              this.snackbarService.notifyExecutionFinished();
             }
             if (options && options.inPauseMode()) {
               if (msg.kind === MessageKind.ExecutionStarted) {
-                this.editorSnackbar.notifyExecutionStartedPauseMode().onAction()
+                this.snackbarService.notifyExecutionStartedPauseMode().onAction()
                   .subscribe(_ => { options.pauseModeExecutionStartedAction() });
               }
               if (msg.kind === MessageKind.ExecutionFinished) {
-                this.editorSnackbar.notifyExecutionFinishedPauseMode().onAction()
+                this.snackbarService.notifyExecutionFinishedPauseMode().onAction()
                   .subscribe(_ => { options.pauseModeExecutionFinishedAction() });
               }
             }
@@ -235,7 +235,7 @@ export class EditorService {
             queryParams: this.locationHelper.getQueryParams(this.location.path())
           });
 
-          this.editorSnackbar.notify(msg);
+          this.snackbarService.notify(msg);
         }),
         map(_ => lab)
       );
@@ -244,7 +244,7 @@ export class EditorService {
   deleteLab(lab: Lab) {
     lab.hidden = true;
     return this.labStorageService
-      .saveLab(lab).pipe(tap(_ => this.editorSnackbar.notifyLabDeleted()));
+      .saveLab(lab).pipe(tap(_ => this.snackbarService.notifyLabDeleted()));
   }
 
   executeLab(lab: Lab) {

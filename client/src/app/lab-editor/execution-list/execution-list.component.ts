@@ -5,7 +5,7 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 import { UserService } from 'app/user/user.service';
 import { RemoteLabExecService } from '../../editor/remote-code-execution/remote-lab-exec.service';
 import { LabExecutionService } from '../../lab-execution.service';
-import { EditorSnackbarService } from '../../editor/editor-snackbar.service';
+import { SnackbarService } from '../../snackbar.service';
 
 import { User } from '../../models/user';
 import { Execution } from '../../models/execution';
@@ -39,7 +39,7 @@ export class ExecutionListComponent implements OnInit, OnDestroy {
 
   constructor(public userService: UserService,
               private labExecutionService: LabExecutionService,
-              private editorSnackbar: EditorSnackbarService,
+              private snackbarService: SnackbarService,
               private dialog: MatDialog,
               private rleService: RemoteLabExecService) {
   }
@@ -58,15 +58,15 @@ export class ExecutionListComponent implements OnInit, OnDestroy {
     this.labExecutionService
         .updateExecution(execution)
         .pipe(
-          switchMap(_ => this.editorSnackbar.notifyExecutionRemoved().onAction()),
+          switchMap(_ => this.snackbarService.notifyExecutionRemoved().onAction()),
           switchMap(_ => {
             execution.hidden = false;
             return this.labExecutionService.updateExecution(execution);
           })
         )
         .subscribe(
-          _ => this.editorSnackbar.notifyActionUndone(),
-          _ => this.editorSnackbar.notifyError()
+          _ => this.snackbarService.notifyActionUndone(),
+          _ => this.snackbarService.notifyError()
         );
   }
 
@@ -87,8 +87,8 @@ export class ExecutionListComponent implements OnInit, OnDestroy {
           })
         )
         .subscribe(
-          _ => this.editorSnackbar.notifyExecutionUpdated(),
-          _ => this.editorSnackbar.notifyError()
+          _ => this.snackbarService.notifyExecutionUpdated(),
+          _ => this.snackbarService.notifyError()
         );
   }
 
