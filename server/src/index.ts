@@ -29,6 +29,7 @@ import { DockerFileDownloader } from './code-runner/downloader/docker-file-downl
 import { spawn, spawnShell } from '@machinelabs/core';
 import { MountService } from './mounts/mount.service';
 import { DockerAvailabilityChecker, DockerExecutable } from './code-runner/docker-availability-checker';
+import { DockerMemoryLookup, MemoryStats } from './code-runner/docker-memory-lookup';
 
 const { version } = require('../package.json');
 
@@ -37,6 +38,7 @@ replaceConsole();
 console.log(`Starting MachineLabs server (${environment.serverId})`);
 
 const dockerAvailabilityChecker = new DockerAvailabilityChecker(spawn);
+const dockerMemoryLookup = new DockerMemoryLookup(spawnShell);
 const mountService = new MountService(environment.rootMountPath, dbRefBuilder);
 const dockerImageService = new DockerImageService(getDockerImages(), spawnShell);
 const labConfigService = new LabConfigService(dockerImageService, mountService);
@@ -54,21 +56,31 @@ const recycleService = new RecycleService({
 const uploader = new DockerFileUploader(150, 5);
 const downloader = new DockerFileDownloader(spawn);
 
-let initActions = [dockerImageService.init(), dockerAvailabilityChecker.getExecutable()];
+let initActions = [
+  dockerAvailabilityChecker.getExecutable(),
+  dockerMemoryLookup.getMemoryStats(),
+  dockerImageService.init()
+];
 
 if (environment['pullImages']) {
   console.log('Pulling docker images...hold on');
-  initActions = [dockerImageService.pullImages(), ...initActions];
+  initActions = [...initActions, dockerImageService.pullImages()];
 } else {
   console.log('Not pulling docker images');
 }
 
 Observable
   .forkJoin(initActions)
-  .map(results => results[results.length - 1])
-  .subscribe(dockerBinary => {
+  .subscribe(results => {
+    let dockerBinary: DockerExecutable = results[0];
+    let memoryStats: MemoryStats = results[1];
+
+    if (!memoryStats.maxKernelMemoryKb) {
+      console.error('Server appears to have insufficient memory');
+    }
+
     const DUMMY_RUNNER = process.argv.includes('--dummy-runner') || dockerBinary === DockerExecutable.None;
-    let runner = DUMMY_RUNNER ? new DummyRunner() : new DockerRunner(dockerBinary, spawn, spawnShell, uploader, downloader);
+    let runner = DUMMY_RUNNER ? new DummyRunner() : new DockerRunner(dockerBinary, memoryStats.maxKernelMemoryKb, spawn, spawnShell, uploader, downloader);
 
     const validationService = new ValidationService();
     validationService
@@ -93,4 +105,5 @@ Observable
 
     console.log(`Using runner: ${runner.constructor.name}`);
     console.log(`MachineLabs server running (${environment.serverId} on v${version})`);
+    console.log(`Total available RAM ${memoryStats.totalMemoryKb} Kb | max. available Kernel Memory ${memoryStats.maxKernelMemoryKb} kB`);
   });

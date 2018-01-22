@@ -26,6 +26,7 @@ const TMP_PARTITION_MODE = '1777';
 export class DockerRunner implements CodeRunner {
 
   constructor(private dockerBin: DockerExecutable,
+              private maxKernelMemoryKb: number,
               private spawn: SpawnFn,
               private spawnShell: SpawnShellFn,
               private uploader: DockerFileUploader,
@@ -50,6 +51,7 @@ export class DockerRunner implements CodeRunner {
     return this.spawn(this.dockerBin, [
       'create',
       '--cap-drop=ALL',
+      `--kernel-memory=${this.maxKernelMemoryKb}k`,
       '--security-opt=no-new-privileges',
       '-t',
       '--read-only',
