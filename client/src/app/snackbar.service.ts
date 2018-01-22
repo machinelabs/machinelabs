@@ -42,6 +42,14 @@ export class SnackbarService {
     this.notify('Lab stopped');
   }
 
+  notifyLabDoesntExist() {
+    this.notify('This lab doesn\'t exist anymore');
+  }
+
+  notifyUserDoesntExist() {
+    this.notify('The user doesn\'t exist');
+  }
+
   notifyExecutionStartedPauseMode() {
     return this.notify('Execution started', {
       actionLabel:  'Unpause to see output',
