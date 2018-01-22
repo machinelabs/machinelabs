@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
 import { tap } from 'rxjs/operators';
 import { Lab } from './models/lab';
 import { LabStorageService } from './lab-storage.service';
+import { SnackbarService } from './snackbar.service';
 import { BLANK_LAB_TPL_ID, DEFAULT_LAB_TPL_ID } from './lab-template.service';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class LabResolver implements Resolve<Lab> {
   constructor(
     private labStorageService: LabStorageService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: SnackbarService
   ) {}
 
   resolve(route: ActivatedRouteSnapshot) {
@@ -22,9 +22,7 @@ export class LabResolver implements Resolve<Lab> {
       return this.labStorageService.getLab(route.paramMap.get('id')).pipe(
         tap(lab => {
           if (!lab || lab.hidden) {
-            this.snackBar.open('This lab doesn\'t exist anymore', 'Dismiss', {
-              duration: 3000
-            });
+            this.snackBar.notifyLabDoesntExist();
             this.router.navigate(['/editor']);
           }
         })

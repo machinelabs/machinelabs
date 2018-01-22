@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
 import { tap } from 'rxjs/operators';
 
 import { LabStorageService } from '../lab-storage.service';
+import { SnackbarService } from '../snackbar.service';
 import { UserService } from 'app/user/user.service';
 import { User } from '../models/user';
 
@@ -13,14 +13,14 @@ export class UserResolver implements Resolve<User> {
   constructor(
       private userService: UserService,
       private router: Router,
-      private snackBar: MatSnackBar) {}
+      private snackBar: SnackbarService) {}
 
   resolve(route: ActivatedRouteSnapshot) {
     return this.userService
                .getUser(route.paramMap.get('userId')).pipe(
                 tap(user => {
                   if (!user) {
-                    this.snackBar.open('The user doesn\'t exist.', 'Dismiss', { duration: 3000 });
+                    this.snackBar.notifyUserDoesntExist();
                     this.router.navigate(['/editor']);
                   }
                   return user;

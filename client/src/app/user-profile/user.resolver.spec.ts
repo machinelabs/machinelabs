@@ -1,11 +1,12 @@
-import { MatSnackBarModule } from '@angular/material';
 import { TestBed } from '@angular/core/testing';
+import { MatSnackBarModule } from '@angular/material';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { of } from 'rxjs/observable/of';
 
 import { UserService } from '../user/user.service';
 import { LabStorageService } from '../lab-storage.service';
 import { UserResolver, UserLabsResolver } from './user.resolver';
+import { SnackbarService } from '../snackbar.service';
 
 describe('UserResolver', () => {
   let userResolver: UserResolver;
@@ -24,6 +25,7 @@ describe('UserResolver', () => {
     TestBed.configureTestingModule({
       providers: [
         UserResolver,
+        SnackbarService,
         { provide: UserService, useValue: userServiceStub },
         { provide: Router, useValue: routerStub }
       ],

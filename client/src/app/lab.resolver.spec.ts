@@ -1,13 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
+import { MatSnackBarModule } from '@angular/material';
+
 import { of } from 'rxjs/observable/of';
 
 import { LabResolver } from './lab.resolver';
 import { LabStorageService } from './lab-storage.service';
+import { SnackbarService } from './snackbar.service';
 import { BLANK_LAB_TPL_ID, DEFAULT_LAB_TPL_ID } from './lab-template.service';
 
 import { Lab } from './models/lab';
 import { ActivatedRouteSnapshot, UrlSegment, Router } from '@angular/router';
-import { MatSnackBarModule } from '@angular/material';
 import { ROUTER_STUB } from '../test-helper/stubs/router.stubs';
 
 describe('LabResolver', () => {
@@ -37,12 +39,13 @@ describe('LabResolver', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [MatSnackBarModule],
       providers: [
         LabResolver,
+        SnackbarService,
         { provide: LabStorageService, useValue: labStorageServiceStub },
         { provide: Router, useValue: ROUTER_STUB }
-      ]
+      ],
+      imports: [MatSnackBarModule]
     });
 
     labResolver = TestBed.get(LabResolver);
