@@ -1,4 +1,7 @@
-<div class="ml-execution-card-panel" *ngIf="execution" (click)="view.emit(execution)" [ngClass]="{
+<a class="ml-execution-card-panel" *ngIf="execution"
+  title="View execution"
+  [routerLink]="['/editor', execution.lab.id, execution.id]"
+  [ngClass]="{
     finished: execution.status == ExecutionStatus.Finished,
     executing: execution.status == ExecutionStatus.Executing,
     stopped: execution.status == ExecutionStatus.Stopped,
@@ -22,7 +25,5 @@
       </time>
     </div>
   </div>
-  <button class="ml-execution-card-cta-indicator" mat-icon-button>
-    <mat-icon>keyboard_arrow_right</mat-icon>
-  </button>
-</div>
+  <mat-icon class="ml-execution-card-cta-indicator">keyboard_arrow_right</mat-icon>
+</a>

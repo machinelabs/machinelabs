@@ -1,17 +1,21 @@
 <mat-card *ngIf="lab">
-  <header>
+  <a class="ml-lab-card-header" title="View lab {{ lab.name}}" [routerLink]="['/editor', lab.id]">
     <div class="ml-title-wrapper">
       <h3>{{ lab.name | words: 5 }}</h3>
-      <div class="ml-lab-card-user" *ngIf="user">
-        by <a title="{{ user.displayName }}'s profile" [routerLink]="['/user', user.id]">{{user.displayName}}</a>
+      <span class="ml-user-profile-lab-card-private-badge" *ngIf="lab.is_private">Private</span>
+      <div class="ml-lab-card-user" *ngIf="user && showUsername">
+        by <a class="ml-lab-card-username" title="{{ user.displayName }}'s profile" [routerLink]="['/user', user.id]">{{user.displayName}}</a>
+      </div>
+      <div class="ml-lab-card-description" *ngIf="lab.description && showDescription">
+        {{ lab.description }}
+      </div>
+      <div class="ml-lab-card-tags" *ngIf="lab.tags && showTags">
+        <ml-tag-list [tags]="lab.tags"></ml-tag-list>
       </div>
     </div>
-    <a class="ml-lab-card-cta" mat-icon-button [routerLink]="['/editor', lab.id]">
-      <mat-icon>keyboard_arrow_right</mat-icon>
-    </a>
-  </header>
+    <mat-icon class="ml-lab-card-cta">keyboard_arrow_right</mat-icon>
+  </a>
   <ml-execution-card *ngFor="let recentExecution of executions; trackBy: trackExecutionById"
-    [execution]="recentExecution.execution | async"
-    (view)="view.emit($event)">
+    [execution]="recentExecution.execution | async">
   </ml-execution-card>
 </mat-card>

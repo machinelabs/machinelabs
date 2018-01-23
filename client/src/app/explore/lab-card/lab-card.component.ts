@@ -16,8 +16,9 @@ export class LabCardComponent {
   @Input() lab: Lab;
   @Input() user: User;
   @Input() executions: Array<{ id: string, execution: Observable<Execution> }>;
-
-  @Output() view = new EventEmitter<Execution>();
+  @Input() showDescription = false;
+  @Input() showUsername = true;
+  @Input() showTags = false;
 
   trackExecutionById(index, execution) {
     return execution.id;

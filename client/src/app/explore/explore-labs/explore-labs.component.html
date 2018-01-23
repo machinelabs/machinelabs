@@ -4,8 +4,7 @@
       <ml-lab-card
         [lab]="recentLab.lab"
         [user]="recentLab.user | async"
-        [executions]="recentLab.executions | async"
-        (view)="viewExecution($event)">
+        [executions]="recentLab.executions | async">
       </ml-lab-card>
     </ml-masonry-item>
   </ml-masonry>

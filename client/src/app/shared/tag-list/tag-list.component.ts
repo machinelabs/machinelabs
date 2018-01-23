@@ -4,7 +4,7 @@ import { Component, Input } from '@angular/core';
   selector: 'ml-tag-list',
   template: `
     <mat-chip-list>
-      <mat-chip color="primary" selected="true" *ngFor="let tag of tags">{{tag}}</mat-chip>
+      <mat-chip color="primary" selected="true" disabled="true" *ngFor="let tag of tags">{{tag}}</mat-chip>
     </mat-chip-list>
   `,
   styleUrls: ['./tag-list.component.scss']

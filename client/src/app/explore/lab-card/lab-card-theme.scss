@@ -6,8 +6,12 @@
   $accent: map-get($theme, accent);
 
   ml-lab-card {
-    header {
+    .ml-lab-card-header {
       color: mat-color($primary) !important;
+    }
+
+    .ml-lab-card-description {
+      color: #626262;
     }
   }
 }
