@@ -85,6 +85,22 @@ export class SnackbarService {
     return this.notify('Execution rate limit exceeded, slow down a little.');
   }
 
+  notifyLogoutSuccessful() {
+    return this.notify('Logged out successfully');
+  }
+
+  notifyLoginFailed() {
+    return this.notify('Login failed, please try again');
+  }
+
+  notifyLoginSuccessful(username) {
+    return this.notify(`Logged in as ${username}`);
+  }
+
+  notifyProfileUpdated() {
+    return this.notify('Profile updated');
+  }
+
   notifyError() {
     this.notify('Request failed, please try again');
   }

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
 import { switchMap } from 'rxjs/operators';
+import { SnackbarService } from './snackbar.service';
 import { UserService, PLACEHOLDER_USERNAME } from './user/user.service';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class LoginService {
     private authService: AuthService,
     private userService: UserService,
     private router: Router,
-    private snackBar: MatSnackBar) {}
+    private snackBar: SnackbarService) {}
 
   loginWithGitHub() {
     this.authService.linkOrSignInWithGitHub()
@@ -23,13 +23,13 @@ export class LoginService {
           this.router.navigate(['/user', user.id], { queryParams: { editing: true }});
         }
 
-        this.snackBar.open(`Logged in as ${user.displayName}`, 'Dismiss', { duration: 3000 });
-      }, e => this.snackBar.open('Login failed, please try again.', 'Dismiss', { duration: 3000 }));
+        this.snackBar.notifyLoginSuccessful(user.displayName);
+      }, e => this.snackBar.notifyLoginFailed());
   }
 
   logout() {
     this.authService.signOut().subscribe(_ => {
-      this.snackBar.open('Logged out successfully', 'Dismiss', { duration: 3000 });
+      this.snackBar.notifyLogoutSuccessful();
     });
   }
 }

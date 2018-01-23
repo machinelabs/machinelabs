@@ -1,6 +1,6 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { map, filter, switchMap } from 'rxjs/operators';
 
@@ -9,6 +9,7 @@ import { Lab } from '../models/lab';
 import { Execution } from '../models/execution';
 import { ExecutionStatus } from '@machinelabs/models';
 
+import { SnackbarService } from '../snackbar.service';
 import { LabStorageService } from '../lab-storage.service';
 import { LabExecutionService } from '../lab-execution.service';
 import { UserService } from '../user/user.service';
@@ -39,7 +40,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute,
               private labStorage: LabStorageService,
               private dialog: MatDialog,
-              private snackBar: MatSnackBar,
+              private snackBar: SnackbarService,
               private labExecutionService: LabExecutionService,
               private userService: UserService) {}
 
@@ -69,7 +70,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.showEditDialog(this.user).pipe(
       filter(user => user),
       switchMap(user => this.userService.updateUser(user))
-    ).subscribe(_ => this.snackBar.open('Profile updated.', 'Dismiss', { duration: 3000 }));
+    ).subscribe(_ => this.snackBar.notifyProfileUpdated());
   }
 
   showEditDialog(user: User) {

@@ -13,6 +13,7 @@ import { DATABASE } from '../../app.tokens';
 import { FirebaseMock } from '../../../test-helper/firebase-mock';
 import { DbRefBuilder } from '../../firebase/db-ref-builder';
 import { LoginService } from '../../../app/login.service';
+import { SnackbarService } from '../../snackbar.service';
 
 let authServiceStub = {
   requireAuth: () => {},
@@ -46,6 +47,7 @@ describe('ToolbarMenuComponent', () => {
         UserService,
         LoginService,
         DbRefBuilder,
+        SnackbarService
       ],
       schemas: [NO_ERRORS_SCHEMA]
     });
