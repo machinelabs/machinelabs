@@ -13,9 +13,9 @@ import { loginFromCache } from '../lib/auth/auth';
 import { environment } from '../environments/environment';
 
 program
-.command('save')
-.description('Save current directory as a lab')
-.option('-i --id [id]', 'Specify lab id to save to')
+.command('push')
+.description('Push current directory as a lab ')
+.option('-i --id [id]', 'Specify lab id to push to an existing lab')
 .option('-d --description [description]', 'Specify lab description')
 .option('-n --name [name]', 'Specify lab name')
 .action(cmd => {
@@ -78,10 +78,10 @@ program
                                 }))
     .switchMap(lab => labApi.save(lab).map(_ => lab))
     .subscribe(lab => {
-      console.log(chalk.default.green.bold(`Directory saved to ${environment.mlDomain}/editor/${lab.id}`));
+      console.log(chalk.default.green.bold(`Pushed to ${environment.mlDomain}/editor/${lab.id}`));
       process.exit();
     }, e => {
-      console.error('Save failed. Try logging in again with `ml login`');
+      console.error('Push failed. Try logging in again with `ml login`');
       process.exit(1);
     });
 });
