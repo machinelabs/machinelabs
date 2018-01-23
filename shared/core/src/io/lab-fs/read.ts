@@ -2,7 +2,11 @@ import { readdirSync, statSync, readFileSync } from 'fs';
 import { basename, extname, join } from 'path';
 
 import { File, Directory, LabDirectory, instanceOfDirectory } from '@machinelabs/models';
+import isArray = require('lodash.isarray');
+
+const matcher = require('matcher');
 const isBinaryFile = require('isbinaryfile').sync;
+
 
 export interface ReadOptions {
   extensions: RegExp;
@@ -36,7 +40,7 @@ export const readDirectory = (path: string, options?: ReadOptions): Directory|Fi
   }
 
   // Skip if it matches the exclude regex
-  if (options && options.exclude && options.exclude.test(path)) {
+  if (options && isArray(options.exclude) && options.exclude.length && matcher([path], options.exclude).length) {
     return null;
   }
 
