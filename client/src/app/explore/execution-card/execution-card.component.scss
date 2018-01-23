@@ -9,6 +9,8 @@ $ml-execution-card-icon-margin: 5px;
 
 .ml-execution-card-panel {
   cursor: pointer;
+  text-decoration: none;
+  color: inherit;
   display: block;
   position: relative;
   overflow: hidden;
@@ -17,7 +19,7 @@ $ml-execution-card-icon-margin: 5px;
 
   &:hover {
     .ml-execution-card-cta-indicator {
-      transform: translate(-5px, -50%);
+      transform: translate(-13px, -50%);
       opacity: 1;
     }
   }

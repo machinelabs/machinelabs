@@ -15,6 +15,14 @@ import { LabExecutionService } from '../lab-execution.service';
 import { UserService } from '../user/user.service';
 
 import { EditUserProfileDialogComponent } from './edit-user-profile-dialog/edit-user-profile-dialog.component';
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import { tap } from 'rxjs/operators/tap';
+
+interface UserLab {
+  lab: Lab;
+  executions: Observable<Array<{ id: string, execution: Observable<Execution> }>>;
+  user: Observable<User>;
+}
 
 @Component({
   selector: 'ml-user-profile',
@@ -23,15 +31,13 @@ import { EditUserProfileDialogComponent } from './edit-user-profile-dialog/edit-
 })
 export class UserProfileComponent implements OnInit, OnDestroy {
 
-  labs: Array<Lab>;
+  userLabs$: Observable<Array<UserLab>>;
 
   user: User;
 
   isAuthUser = false;
 
   editUserProfileDialog: MatDialogRef<EditUserProfileDialogComponent>;
-
-  executions: Observable<Array<Observable<Execution>>>;
 
   ExecutionStatus = ExecutionStatus;
 
@@ -45,13 +51,15 @@ export class UserProfileComponent implements OnInit, OnDestroy {
               private userService: UserService) {}
 
   ngOnInit() {
-    this.route.data.pipe(map(data => data['user'])).subscribe(user => {
-      this.user = user;
-      this.executions = this.labExecutionService.observeExecutionsForUser(user);
-    });
+    this.route.data.pipe(map(data => data['user'])).subscribe(user => this.user = user);
 
-    this.route.data.pipe(map(data => data['labs']))
-      .subscribe(labs => this.labs = labs);
+    this.userLabs$ = this.route.data.pipe(map(data => data['labs'])).pipe(
+      map((labs => labs.map(lab => ({
+        lab,
+        user: this.user,
+        executions: this.observeRecentExecutionsForLab(lab)
+      }))))
+    );
 
     this.userChangesSubscription = this.userService.observeUserChanges()
       .pipe(switchMap(_ => this.userService.isLoggedInUser(this.user.id)))
@@ -83,5 +91,11 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.userChangesSubscription.unsubscribe();
+  }
+
+  private observeRecentExecutionsForLab(lab: Lab, limit = 3) {
+    return this.labExecutionService.observeExecutionsForLab(lab).pipe(
+      map(executions => executions.slice(0, limit))
+    );
   }
 }

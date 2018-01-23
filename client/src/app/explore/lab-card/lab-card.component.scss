@@ -2,11 +2,12 @@ mat-card {
   padding: 0;
 }
 
-header {
+.ml-lab-card-header {
+  text-decoration: none;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding: 20px 5px 20px 20px;
+  padding: 20px 50px 20px 20px;
 
   h3 {
     margin: 0 0 ;
@@ -16,7 +17,21 @@ header {
     flex: 1;
   }
 
-  a:not(.ml-lab-card-cta) {
+  .ml-user-profile-lab-card-private-badge {
+    display: inline-block;
+    margin-top: 0.5em;
+    font-weight: 400;
+    color: #586069;
+    background-color: cornsilk;
+    border: 1px solid rgba(27,31,35,0.15);
+    border-radius: 2px;
+    padding: 3px 4px;
+    font-size: 12px;
+    line-height: 1;
+    vertical-align: 25%;
+  }
+
+  .ml-lab-card-username {
     color: currentColor;
     text-decoration: none;
     border-bottom: 1px dotted currentColor;
@@ -28,8 +43,24 @@ header {
     }
   }
 
+  .ml-lab-card-cta {
+    position: absolute;
+    right: 13px;
+  }
+
   img {
     width: 1.4em;
     border-radius: 50%;
+  }
+}
+
+.ml-lab-card-description {
+  margin-top: 0.3em;
+}
+
+.ml-lab-card-tags {
+  ::ng-deep mat-chip {
+    font-size: 11px;
+    line-height: 12px;
   }
 }

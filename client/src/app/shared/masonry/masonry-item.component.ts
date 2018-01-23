@@ -12,6 +12,7 @@ import { Subject } from 'rxjs/Subject';
 import { scan } from 'rxjs/operators';
 
 import { MasonryComponent } from './masonry.component';
+import { WindowRef } from '../../window-ref.service';
 
 @Injectable()
 export class MutationObserverFactory {
@@ -40,7 +41,8 @@ export class MasonryItemComponent implements AfterContentInit, OnDestroy {
     private renderer: Renderer2,
     private ngZone: NgZone,
     private masonry: MasonryComponent,
-    private mutationObserverFactory: MutationObserverFactory) { }
+    private mutationObserverFactory: MutationObserverFactory,
+    private windowRef: WindowRef) { }
 
   ngAfterContentInit() {
     this.setItemWidth();
@@ -86,11 +88,27 @@ export class MasonryItemComponent implements AfterContentInit, OnDestroy {
   }
 
   private setItemWidth() {
-    const { offsetWidth: parentWidth } = this.renderer.parentNode(this.masonry.hostElement);
+    const parentNode = this.renderer.parentNode(this.masonry.hostElement);
+    const { paddingLeft, paddingRight } = this.getStylePropertyValue(parentNode, ['padding-left', 'padding-right']);
+    const parentWidth = parentNode.offsetWidth - paddingLeft - paddingRight;
     const itemWidth = this.calculateItemWidth(parentWidth);
 
     this.setWidth(itemWidth);
     this.masonry.pack();
+  }
+
+  private getStylePropertyValue(node: HTMLElement, props: string | Array<string>): { [key: string]: number } {
+    let elementStyles = this.windowRef.nativeWindow.getComputedStyle(node, null);
+
+    if (!(props instanceof Array)) {
+      props = [props];
+    }
+
+    return props.reduce((acc, prop) => {
+      let propertyName = prop.replace(/-([a-z])/g, (match) => match[1].toUpperCase());
+      acc[propertyName] = parseFloat(elementStyles.getPropertyValue(prop));
+      return acc;
+    }, {});
   }
 
   private calculateItemWidth(containerWidth: number) {

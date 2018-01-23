@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Router } from '@angular/router';
 
 import { LabExecutionService } from '../../lab-execution.service';
 import { LabStorageService } from '../../lab-storage.service';
@@ -9,8 +8,6 @@ import { UserService } from '../../user/user.service';
 import { Lab } from '../../models/lab';
 import { Execution } from '../../models/execution';
 import { User } from '../../models/user';
-
-import { MasonryComponent } from '../../shared/masonry/masonry.component';
 
 import { map } from 'rxjs/operators';
 
@@ -27,22 +24,15 @@ interface RecentLab {
 })
 export class ExploreLabsComponent implements OnInit {
 
-  @ViewChild(MasonryComponent) masonry: MasonryComponent;
-
   recentLabs$: Observable<Array<RecentLab>>;
 
   constructor(
     private labExecutionService: LabExecutionService,
     private labStorageService: LabStorageService,
-    private userService: UserService,
-    private router: Router) { }
+    private userService: UserService) { }
 
   ngOnInit() {
     this.recentLabs$ = this.getRecentLabs();
-  }
-
-  viewExecution(execution: Execution) {
-    this.router.navigate(['/editor', execution.lab.id, execution.id]);
   }
 
   private getRecentLabs() {

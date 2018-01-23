@@ -49,7 +49,18 @@
 .ml-user-profile-content {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 25px;
+  padding: 50px 25px;
+
+  .ml-explore-labs-spinner {
+    display: flex;
+    align-items: center;
+
+    mat-progress-spinner {
+      margin-right: 0.5em;
+      width: 24px !important;
+      height: 24px !important;
+    }
+  }
 }
 
 .ml-user-profile-no-data-message {
@@ -64,11 +75,18 @@
     padding: 0.5em;
   }
 
+  .robot {
+    max-width: 350px;
+    display: block;
+    margin: auto;
+    margin: 3em auto;
+  }
+
   a[mat-raised-button] {
     display: inline-block;
     font-size: 1.8em;
     padding: 0.3em 0.8em;
-    margin-top: 0.5em;
+    margin: 0.5em 0;
   }
 }
 

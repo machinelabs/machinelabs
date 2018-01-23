@@ -9,6 +9,7 @@
   $success: #39aa56;
   $failed: #db4545;
   $executing: mat-color($accent);
+  $stopped: #888;
 
   .ml-execution-card-panel {
     background: white;
@@ -23,6 +24,10 @@
 
     &.executing {
       border-left-color: $executing;
+    }
+
+    &.stopped {
+      border-left-color: $stopped;
     }
 
     .ml-execution-card-cta-indicator {
@@ -43,6 +48,10 @@
 
     .executing & {
       color: $executing;
+    }
+
+    .stopped & {
+      color: $stopped;
     }
   }
 
