@@ -13,7 +13,7 @@ import { getCurlForUpload } from '../util/file-upload';
 import { DockerFileUploader } from './uploader/docker-file-uploader';
 import { DockerFileDownloader } from './downloader/docker-file-downloader';
 import { flatMap } from 'lodash';
-import { DockerExecutable } from './docker-availability-checker';
+import { DockerExecutable } from './docker-availability-lookup';
 
 export class DockerRunnerConfig {
   runPartitionSize = '5g';

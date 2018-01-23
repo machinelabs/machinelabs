@@ -28,7 +28,7 @@ import { DockerFileUploader } from './code-runner/uploader/docker-file-uploader'
 import { DockerFileDownloader } from './code-runner/downloader/docker-file-downloader';
 import { spawn, spawnShell } from '@machinelabs/core';
 import { MountService } from './mounts/mount.service';
-import { DockerAvailabilityChecker, DockerExecutable } from './code-runner/docker-availability-checker';
+import { DockerAvailabilityLookup, DockerExecutable } from './code-runner/docker-availability-lookup';
 import { DockerMemoryLookup, MemoryStats } from './code-runner/docker-memory-lookup';
 
 const { version } = require('../package.json');
@@ -37,7 +37,7 @@ replaceConsole();
 
 console.log(`Starting MachineLabs server (${environment.serverId})`);
 
-const dockerAvailabilityChecker = new DockerAvailabilityChecker(spawn);
+const dockerAvailabilityChecker = new DockerAvailabilityLookup(spawn);
 const dockerMemoryLookup = new DockerMemoryLookup(spawnShell);
 const mountService = new MountService(environment.rootMountPath, dbRefBuilder);
 const dockerImageService = new DockerImageService(getDockerImages(), spawnShell);
