@@ -1,6 +1,6 @@
 import 'jest';
 import { Observable } from '@reactivex/rxjs';
-import { DockerAvailabilityChecker, DockerExecutable } from './docker-availability-checker';
+import { DockerAvailabilityLookup, DockerExecutable } from './docker-availability-lookup';
 import { spawn } from '@machinelabs/core';
 import { stdout, stderr } from '@machinelabs/core';
 
@@ -10,9 +10,9 @@ describe('.hasDocker', () => {
 
     let spawnFn = jest.fn(arg => arg === DockerExecutable.Docker ? stdout('y') : stderr('meh'));
 
-    let checker = new DockerAvailabilityChecker(spawnFn);
+    let lookup = new DockerAvailabilityLookup(spawnFn);
     expect.assertions(1);
-    checker.hasDocker()
+    lookup.hasDocker()
            .subscribe(exists => expect(exists).toBeTruthy(),
                       null,
                      () => done());
@@ -22,9 +22,9 @@ describe('.hasDocker', () => {
 
     let spawnFn = jest.fn(arg => stderr('meh'));
 
-    let checker = new DockerAvailabilityChecker(spawnFn);
+    let lookup = new DockerAvailabilityLookup(spawnFn);
     expect.assertions(1);
-    checker.hasDocker()
+    lookup.hasDocker()
            .subscribe(exists => expect(exists).toBeFalsy(),
                       null,
                       () => done());
@@ -37,9 +37,9 @@ describe('.hasNvidiaDocker', () => {
 
     let spawnFn = jest.fn(arg => arg === DockerExecutable.NvidiaDocker ? stdout('y') : stderr('meh'));
 
-    let checker = new DockerAvailabilityChecker(spawnFn);
+    let lookup = new DockerAvailabilityLookup(spawnFn);
     expect.assertions(1);
-    checker.hasNvidiaDocker()
+    lookup.hasNvidiaDocker()
            .subscribe(exists => expect(exists).toBeTruthy(),
                       null,
                       () => done());
@@ -49,9 +49,9 @@ describe('.hasNvidiaDocker', () => {
 
     let spawnFn = jest.fn(arg => stderr('meh'));
 
-    let checker = new DockerAvailabilityChecker(spawnFn);
+    let lookup = new DockerAvailabilityLookup(spawnFn);
     expect.assertions(1);
-    checker.hasNvidiaDocker()
+    lookup.hasNvidiaDocker()
            .subscribe(exists => expect(exists).toBeFalsy(),
                       null,
                       () => done());
@@ -66,9 +66,9 @@ describe('.check', () => {
     let spawnFn = jest.fn(arg => arg === DockerExecutable.NvidiaDocker ? stdout('y') :
                                  arg === DockerExecutable.Docker ? stdout('y') : stderr('meh'));
 
-    let checker = new DockerAvailabilityChecker(spawnFn);
+    let lookup = new DockerAvailabilityLookup(spawnFn);
     expect.assertions(1);
-    checker.getExecutable()
+    lookup.getExecutable()
            .subscribe(executable => expect(executable).toBe(DockerExecutable.NvidiaDocker),
                       null,
                       () => done());
@@ -79,9 +79,9 @@ describe('.check', () => {
     let spawnFn = jest.fn(arg => arg === DockerExecutable.NvidiaDocker ? stderr('meh') :
                                   arg === DockerExecutable.Docker ? stdout('y') : stderr('meh'));
 
-    let checker = new DockerAvailabilityChecker(spawnFn);
+    let lookup = new DockerAvailabilityLookup(spawnFn);
     expect.assertions(1);
-    checker.getExecutable()
+    lookup.getExecutable()
             .subscribe(executable => expect(executable).toBe(DockerExecutable.Docker),
                       null,
                       () => done());
@@ -91,9 +91,9 @@ describe('.check', () => {
 
     let spawnFn = jest.fn(arg => stderr('meh'));
 
-    let checker = new DockerAvailabilityChecker(spawnFn);
+    let lookup = new DockerAvailabilityLookup(spawnFn);
     expect.assertions(1);
-    checker.getExecutable()
+    lookup.getExecutable()
             .subscribe(executable => expect(executable).toBe(DockerExecutable.None),
                       null,
                       () => done());

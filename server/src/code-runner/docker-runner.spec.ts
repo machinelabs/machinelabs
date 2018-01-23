@@ -5,7 +5,7 @@ import { stdout, ProcessStreamData, stdoutMsg } from '@machinelabs/core';
 import { Lab } from '@machinelabs/models';
 import { PublicLabConfiguration, InternalLabConfiguration } from '../models/lab-configuration';
 import { Invocation, InvocationType, HardwareType } from '@machinelabs/models';
-import { DockerExecutable } from './docker-availability-checker';
+import { DockerExecutable } from './docker-availability-lookup';
 
 describe('.run(lab)', () => {
 

@@ -7,7 +7,7 @@ export enum DockerExecutable {
   None = 'none'
 }
 
-export class DockerAvailabilityChecker {
+export class DockerAvailabilityLookup {
   constructor(private spawn: SpawnFn) {}
 
   hasDocker () {
