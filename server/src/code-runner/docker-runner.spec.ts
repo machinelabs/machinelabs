@@ -1,6 +1,6 @@
 import 'jest';
 import { Observable } from '@reactivex/rxjs';
-import { DockerRunner } from './docker-runner';
+import { DockerRunner, DockerRunnerConfig } from './docker-runner';
 import { stdout, ProcessStreamData, stdoutMsg } from '@machinelabs/core';
 import { Lab } from '@machinelabs/models';
 import { PublicLabConfiguration, InternalLabConfiguration } from '../models/lab-configuration';
@@ -27,7 +27,15 @@ describe('.run(lab)', () => {
       fetch: jest.fn().mockReturnValue(stdout('downloader output'))
     };
 
-    let runner = new DockerRunner(DockerExecutable.Docker, 1024, spawn, spawnShell, uploader, downloader);
+
+    let config = new DockerRunnerConfig();
+    config.dockerExecutable = DockerExecutable.Docker;
+    config.maxKernelMemoryKb = 1024;
+    config.spawn = spawn;
+    config.spawnShell = spawnShell;
+    config.uploader = uploader;
+    config.downloader = downloader;
+    let runner = new DockerRunner(config);
 
 
     let inv: Invocation = {

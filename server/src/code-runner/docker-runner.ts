@@ -15,22 +15,25 @@ import { DockerFileDownloader } from './downloader/docker-file-downloader';
 import { flatMap } from 'lodash';
 import { DockerExecutable } from './docker-availability-checker';
 
-const RUN_PARTITION_SIZE = '5g';
-const RUN_PARTITION_MODE = '1777';
-const TMP_PARTITION_SIZE = '1g';
-const TMP_PARTITION_MODE = '1777';
+export class DockerRunnerConfig {
+  runPartitionSize = '5g';
+  runPartitionMode = '1777';
+  tmpPartitionSize = '1g';
+  tmpPartitionMode = '1777';
+  dockerExecutable: DockerExecutable;
+  maxKernelMemoryKb: number;
+  spawn: SpawnFn;
+  spawnShell: SpawnShellFn;
+  uploader: DockerFileUploader;
+  downloader: DockerFileDownloader;
+}
 
 /**
  * This is the Docker Runner that takes the code and runs it on a isolated docker container
  */
 export class DockerRunner implements CodeRunner {
 
-  constructor(private dockerBin: DockerExecutable,
-              private maxKernelMemoryKb: number,
-              private spawn: SpawnFn,
-              private spawnShell: SpawnShellFn,
-              private uploader: DockerFileUploader,
-              private downloader: DockerFileDownloader) {}
+  constructor(private config: DockerRunnerConfig) {}
 
   private processCount = 0;
 
@@ -48,17 +51,17 @@ export class DockerRunner implements CodeRunner {
 
     let mounts = flatMap(configuration.mountPoints, mp => ['-v', `${mp.source}:${mp.destination}:ro`]);
 
-    return this.spawn(this.dockerBin, [
+    return this.config.spawn(this.config.dockerExecutable, [
       'create',
       '--cap-drop=ALL',
-      `--kernel-memory=${this.maxKernelMemoryKb}k`,
+      `--kernel-memory=${this.config.maxKernelMemoryKb}k`,
       '--security-opt=no-new-privileges',
       '-t',
       '--read-only',
       '--tmpfs',
-      `/run:rw,size=${RUN_PARTITION_SIZE},mode=${RUN_PARTITION_MODE}`,
+      `/run:rw,size=${this.config.runPartitionSize},mode=${this.config.runPartitionMode}`,
       '--tmpfs',
-      `/tmp:rw,size=${TMP_PARTITION_SIZE},mode=${TMP_PARTITION_MODE}`,
+      `/tmp:rw,size=${this.config.tmpPartitionSize},mode=${this.config.tmpPartitionMode}`,
       ...mounts,
       `--name`,
       invocation.id,
@@ -67,9 +70,9 @@ export class DockerRunner implements CodeRunner {
     ])
     .map(msg => trimNewLines(msg.str))
     .flatMap(containerId =>
-      this.spawnShell(`docker start ${containerId}`).let(mute)
-          .concat(this.downloader.fetch(containerId, configuration.inputs))
-          .concat(this.spawn(this.dockerBin, [
+      this.config.spawnShell(`docker start ${containerId}`).let(mute)
+          .concat(this.config.downloader.fetch(containerId, configuration.inputs))
+          .concat(this.config.spawn(this.config.dockerExecutable, [
             'exec',
             '-t',
             containerId,
@@ -77,8 +80,8 @@ export class DockerRunner implements CodeRunner {
             '-c',
             `mkdir /run/outputs && cd /run && (${writeCommand}) && python main.py ${args}`
           ]))
-          .concat(this.uploader.handleUpload(invocation, containerId))
-          .concat(this.spawnShell(`docker rm -f ${containerId}`).let(mute))
+          .concat(this.config.uploader.handleUpload(invocation, containerId))
+          .concat(this.config.spawnShell(`docker rm -f ${containerId}`).let(mute))
     )
     .finally(() => this.processCount--);
   }

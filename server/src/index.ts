@@ -1,6 +1,6 @@
 import { Observable } from '@reactivex/rxjs';
 import { DummyRunner } from './code-runner/dummy-runner.js';
-import { DockerRunner } from './code-runner/docker-runner.js';
+import { DockerRunner, DockerRunnerConfig } from './code-runner/docker-runner.js';
 import { MessagingService } from './messaging/messaging.service';
 import { RecycleService } from './messaging/recycling/recycle.service';
 import { MessageRepository } from './messaging/message-repository';
@@ -80,7 +80,16 @@ Observable
     }
 
     const DUMMY_RUNNER = process.argv.includes('--dummy-runner') || dockerBinary === DockerExecutable.None;
-    let runner = DUMMY_RUNNER ? new DummyRunner() : new DockerRunner(dockerBinary, memoryStats.maxKernelMemoryKb, spawn, spawnShell, uploader, downloader);
+
+    const dockerRunnerConfig = new DockerRunnerConfig();
+    dockerRunnerConfig.dockerExecutable = dockerBinary;
+    dockerRunnerConfig.maxKernelMemoryKb = memoryStats.maxKernelMemoryKb;
+    dockerRunnerConfig.spawn = spawn;
+    dockerRunnerConfig.spawnShell = spawnShell;
+    dockerRunnerConfig.uploader = uploader;
+    dockerRunnerConfig.downloader = downloader;
+
+    let runner = DUMMY_RUNNER ? new DummyRunner() : new DockerRunner(dockerRunnerConfig);
 
     const validationService = new ValidationService();
     validationService
