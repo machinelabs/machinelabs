@@ -1,0 +1,41 @@
+{
+  "name": "@machinelabs/firebase-rules",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "firebase-bolt ./database.rules.bolt",
+    "lint:base": "tslint -c ./tslint.json '{matchers,tests}/**/*.ts'",
+    "lint:check": "npm run lint:base",
+    "lint:fix": "npm run lint:base -- --fix",
+    "format:base": "prettier --config ../../.prettierrc --ignore-path ../../.prettierignore '**/*{.ts,.js,.json}'",
+    "format:check": "npm run format:base -- --list-different",
+    "format:fix": "npm run format:base -- --write",
+    "test": "jest",
+    "ci": "npm run lint:check && npm run format:check && npm run build && npm run test"
+  },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testMatch": ["**/tests/**/*.(test|spec)\\.(ts|tsx|js)"],
+    "moduleFileExtensions": ["ts", "tsx", "js", "json"]
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/core-js": "^0.9.34",
+    "@types/jest": "^22.1.0",
+    "@types/node": "^9.3.0",
+    "firebase-bolt": "^0.8.2",
+    "jest": "^20.0.4",
+    "prettier": "^1.11.1",
+    "targaryen": "^3.0.5",
+    "ts-jest": "^20.0.10",
+    "tslint": "^5.5.0",
+    "typescript": "2.4.0"
+  }
+}
