@@ -1,0 +1,25 @@
+{
+  "rules": {
+    "no-inferrable-types": true,
+    "class-name": true,
+    "no-duplicate-variable": true,
+    "no-eval": true,
+    "no-arg": true,
+    "no-var-keyword": true,
+    "no-internal-module": true,
+    "no-bitwise": false,
+    "no-shadowed-variable": true,
+    "no-unused-expression": true,
+    "no-unused-variable": [
+      true,
+      {
+        "ignore-pattern": "^(_.*)$"
+      }
+    ],
+    "no-trailing-whitespace": true,
+    "prefer-const": true,
+    "jsdoc-format": true,
+    "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore", "allow-pascal-case"],
+    "whitespace": [true, "check-branch", "check-decl", "check-operator", "check-separator", "check-type"]
+  }
+}
