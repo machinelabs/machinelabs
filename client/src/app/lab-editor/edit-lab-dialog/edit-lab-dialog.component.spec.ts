@@ -1,7 +1,7 @@
 import { NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
-import { MatDialogModule, MatDialog } from '@angular/material';
+import { MatDialogModule, MatDialog, MatSnackBarModule } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
@@ -14,6 +14,7 @@ import { DbRefBuilder } from '../../firebase/db-ref-builder';
 import { FirebaseMock } from '../../../test-helper/firebase-mock';
 import { LabTemplateService, InMemoryLabTemplateService } from '../../lab-template.service';
 import { AuthService } from '../../auth';
+import { UserService } from '../../user/user.service';
 
 let loginUser = {
   uid: 'some-id',
@@ -47,13 +48,14 @@ describe('EditLabDialogComponent', () => {
     fbMock = new FirebaseMock();
 
     TestBed.configureTestingModule({
-      imports: [MatDialogModule, DialogTestModule],
+      imports: [MatSnackBarModule, MatDialogModule, DialogTestModule],
       providers: [
         LabStorageService,
         { provide: LabTemplateService, useClass: InMemoryLabTemplateService },
         { provide: AuthService, useValue: authServiceStub },
         { provide: DATABASE, useValue: fbMock.mockDb() },
-        DbRefBuilder
+        DbRefBuilder,
+        UserService
       ],
       schemas: [NO_ERRORS_SCHEMA]
     });

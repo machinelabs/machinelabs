@@ -29,6 +29,7 @@ export class LoginService {
 
   logout() {
     this.authService.signOut().subscribe(_ => {
+      this.router.navigate(['/']);
       this.snackBar.notifyLogoutSuccessful();
     });
   }

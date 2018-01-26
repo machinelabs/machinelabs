@@ -11,6 +11,7 @@ import { BLANK_LAB_TPL_ID, DEFAULT_LAB_TPL_ID } from './lab-template.service';
 import { Lab } from './models/lab';
 import { ActivatedRouteSnapshot, UrlSegment, Router } from '@angular/router';
 import { ROUTER_STUB } from '../test-helper/stubs/router.stubs';
+import { LAB_STUB } from '../test-helper/stubs/lab.stubs';
 
 describe('LabResolver', () => {
 
@@ -22,19 +23,6 @@ describe('LabResolver', () => {
     createLab: () => {},
     createLabFromTemplate: (arg) => {},
     getLab: (id) => {}
-  };
-
-  let testLab: Lab = {
-    id: 'new-lab',
-    user_id: 'user-id',
-    name: 'New Lab',
-    description: 'this is a new lab',
-    tags: [],
-    directory: [],
-    has_cached_run: false,
-    created_at: Date.now(),
-    modified_at: Date.now(),
-    hidden: false
   };
 
   beforeEach(() => {
@@ -57,7 +45,7 @@ describe('LabResolver', () => {
 
     it('should resolve with new lab from default template if no route param id is given', () => {
 
-      let newLab = Object.assign({}, testLab);
+      let newLab = Object.assign({}, LAB_STUB);
 
       let activatedRouteSnapshotStub =  new ActivatedRouteSnapshot();
       activatedRouteSnapshotStub.params = {};
@@ -72,7 +60,7 @@ describe('LabResolver', () => {
 
     it('should resolve with blank lab, if template param for blank is given', () => {
 
-      let newLab = Object.assign({}, testLab);
+      let newLab = Object.assign({}, LAB_STUB);
 
       let activatedRouteSnapshotStub = new ActivatedRouteSnapshot();
       activatedRouteSnapshotStub.params = {};
@@ -88,7 +76,7 @@ describe('LabResolver', () => {
 
     it('should resolve with lab from template, if template param is given', () => {
 
-      let newLab = Object.assign({}, testLab);
+      let newLab = Object.assign({}, LAB_STUB);
 
       let activatedRouteSnapshotStub = new ActivatedRouteSnapshot();
       activatedRouteSnapshotStub.params = {};
@@ -104,7 +92,7 @@ describe('LabResolver', () => {
 
     it('should resolve with existing lab if id is given', () => {
 
-      let existingLab = Object.assign({}, testLab);
+      let existingLab = Object.assign({}, LAB_STUB);
 
       let activatedRouteSnapshotStub = new ActivatedRouteSnapshot();
       activatedRouteSnapshotStub.params = { id: 'some-id' };

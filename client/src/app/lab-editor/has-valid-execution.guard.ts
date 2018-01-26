@@ -6,9 +6,10 @@ import {
   Router,
   ActivatedRoute
 } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
 
 import { of } from 'rxjs/observable/of';
-import { map, tap, switchMap } from 'rxjs/operators';
+import { map, tap, switchMap, catchError } from 'rxjs/operators';
 
 import { LabExecutionService } from '../lab-execution.service';
 import { LocationHelper } from '../util/location-helper';
@@ -20,6 +21,7 @@ export class HasValidExecutionGuard implements CanActivate {
     private router: Router,
     private labExecutionService: LabExecutionService,
     private locationHelper: LocationHelper,
+    private snackBar: MatSnackBar,
     private route: ActivatedRoute
   ) {}
 
@@ -57,7 +59,17 @@ export class HasValidExecutionGuard implements CanActivate {
 
     return !executionId ?
       checkForLatestExecution$ :
-      this.labExecutionService.executionExistsAndVisible(executionId)
-        .pipe(switchMap(exists => exists ? of(true) : checkForLatestExecution$));
+      this.labExecutionService.executionExistsAndVisible(executionId).pipe(
+        switchMap(exists => exists ? of(true) : checkForLatestExecution$),
+        catchError(_ => {
+          // TODO(pascal): Refactor this to use EditorSnackbarService once moved
+          // into root module.
+          this.snackBar.open('This lab doesn\'t exist anymore', 'Dismiss', {
+            duration: 3000
+          });
+          this.router.navigate(['/editor']);
+          return of(false);
+        })
+      );
   }
 }

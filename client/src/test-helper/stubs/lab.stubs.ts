@@ -18,5 +18,6 @@ export const LAB_STUB: Lab = {
   ],
   created_at: Date.now(),
   modified_at: Date.now(),
-  hidden: false
+  hidden: false,
+  is_private: false
 };

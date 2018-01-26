@@ -6,7 +6,7 @@ import { Injectable, Inject } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { of } from 'rxjs/observable/of';
-import { map, switchMap, mergeMap } from 'rxjs/operators';
+import { map, switchMap, mergeMap, catchError } from 'rxjs/operators';
 import { snapshotToValue } from './rx/snapshotToValue';
 
 import { Lab, LabTemplate } from './models/lab';
@@ -39,7 +39,8 @@ export class LabStorageService {
             hidden: false,
             created_at: Date.now(),
             modified_at: Date.now(),
-            fork_of: lab && (<Lab>lab).id ? (<Lab>lab).id : null
+            fork_of: lab && (<Lab>lab).id ? (<Lab>lab).id : null,
+            is_private: false
           };
         })
       );
@@ -60,6 +61,9 @@ export class LabStorageService {
         // are strings in the database
         if (value) {
           value.directory = parseLabDirectory(value.directory);
+          // Private labs have been introduced much later which is why we
+          // need to ensure that `is_private` is set
+          value.is_private = !!value.is_private;
         }
         return value;
       })
@@ -85,7 +89,7 @@ export class LabStorageService {
           return labs;
         }),
         map(labs => labs.map(lab => this.getLab(lab.lab_id))),
-        mergeMap(labs => forkJoin(labs))
+        mergeMap(labs => labs.length ? forkJoin(labs) : of([]))
       );
   }
 
@@ -96,24 +100,25 @@ export class LabStorageService {
   saveLab(lab: Lab): Observable<any> {
     return this.authService.requireAuthOnce().pipe(
       switchMap((login: any) => this.db.labRef(lab.id).set({
-          id: lab.id,
-          user_id: login.uid,
-          name: lab.name,
-          description: lab.description,
-          // `lab.tags` can be undefined when editing an existing lab that
-          // doesn't have any tags yet.
-          tags: lab.tags || [],
-          directory: stringifyDirectory(lab.directory),
-          // We typecast `hidden` to boolean to ensure exsting labs that haven't
-          // migrated yet (and therefore don't have a `hidden` property) don't
-          // make this code break.
-          //
-          // TODO(pascal): This can be removed once all labs have been migrated.
-          hidden: !!lab.hidden,
-          created_at: lab.created_at,
-          modified_at: firebase.database.ServerValue.TIMESTAMP,
-          fork_of: lab.fork_of || null
-        }))
+        id: lab.id,
+        user_id: login.uid,
+        name: lab.name,
+        description: lab.description,
+        // `lab.tags` can be undefined when editing an existing lab that
+        // doesn't have any tags yet.
+        tags: lab.tags || [],
+        directory: stringifyDirectory(lab.directory),
+        // We typecast `hidden` to boolean to ensure exsting labs that haven't
+        // migrated yet (and therefore don't have a `hidden` property) don't
+        // make this code break.
+        //
+        // TODO(pascal): This can be removed once all labs have been migrated.
+        hidden: !!lab.hidden,
+        created_at: lab.created_at,
+        modified_at: firebase.database.ServerValue.TIMESTAMP,
+        fork_of: lab.fork_of || null,
+        is_private: lab.is_private
+      }))
     );
   }
 
@@ -121,11 +126,13 @@ export class LabStorageService {
     return this.db.userVisibleLabsRef(userId).onceValue().pipe(
       snapshotToValue,
       map(labIds => Object.keys(labIds || {})),
-      map(labIds => labIds.map(labId => this.getLab(labId))),
+      // Note that we're swallowing errors caused by single getLab()
+      // calls, to not cause the following forkJoin() to break. This
+      // lets us show only a subset of the available labs (e.g. only public labs)
+      // of a user.
+      map(labIds => labIds.map(labId => this.getLab(labId).pipe(catchError(_ => of(null))))),
       switchMap(labRefs => labRefs.length ? forkJoin(labRefs) : of([])),
-      // This shouldn't happen, but in case we fetch labs
-      // that don't exist anymore, resuling in `null` fields, we need
-      // to filter them out.
+      // Chances are that some labs resulted in `null` so we filter those out
       map(labs => labs.filter(lab => lab)),
       map(labs => labs.sort((a, b) => b.modified_at - a.modified_at))
     );

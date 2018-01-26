@@ -36,6 +36,10 @@
         <mat-form-field fxFlex>
           <input matInput placeholder="Tags" formControlName="tags">
         </mat-form-field>
+        <div class="checkbox-field">
+          <mat-checkbox formControlName="isPrivate">Make private</mat-checkbox>
+          <mat-hint *ngIf="!hasPrivateLabs">Support us on <a title="MachineLabs on Patreon" target="_blank" href="https://patreon.com/machinelabs">Patreon</a> to enable private labs</mat-hint>
+        </div>
       </div>
     </ml-dialog-content>
     <ml-dialog-cta-bar>

@@ -1,5 +1,1 @@
-export enum SpecialUser {
-  ExecutionServer = 'execution-server',
-  CfAssignServer = 'cloud-fn-assign-server',
-  System = 'system'
-}
+export const SYSTEM_USER = 'SYSTEM_USER';

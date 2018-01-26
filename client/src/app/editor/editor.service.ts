@@ -1,6 +1,16 @@
 import { Subject } from 'rxjs/Subject';
 import { of } from 'rxjs/observable/of';
-import { combineLatest, filter, map, share, startWith, skip, switchMap, tap } from 'rxjs/operators';
+import {
+  combineLatest,
+  filter,
+  map,
+  share,
+  startWith,
+  skip,
+  switchMap,
+  tap,
+  catchError
+} from 'rxjs/operators';
 
 import { Injectable, EventEmitter } from '@angular/core';
 import { UrlSerializer, ActivatedRoute } from '@angular/router';
@@ -237,7 +247,11 @@ export class EditorService {
 
           this.snackbarService.notify(msg);
         }),
-        map(_ => lab)
+        map(_ => lab),
+        catchError(_ => {
+          this.snackbarService.notifySaveLabFailed()
+          return of(null);
+        })
       );
   }
 

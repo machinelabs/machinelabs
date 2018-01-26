@@ -1,9 +1,5 @@
-isExecutionServer() {
-  return auth.uid === 'execution-server';
-}
-
-isAssignServerFn() {
-  return auth.uid === 'cloud-fn-assign-server';
+isSystem() {
+  return auth.uid === 'SYSTEM_USER';
 }
 
 isCurrentUser(uid) { auth != null && auth.uid == uid }
@@ -12,12 +8,34 @@ isAnonymous() {
   return auth.provider === 'anonymous';
 }
 
-isOwningUserOrExecutionServerOrAssignFn(ref) {
-  return prior(ref) !== null ? (isCurrentUser(data.child('user_id').val()) && isCurrentUser(newData.child('user_id').val())) || isExecutionServer() || isAssignServerFn() : isCurrentUser(newData.child('user_id').val())
+isOwningUserOrSystem(ref) {
+  return prior(ref) !== null ? (isCurrentUser(data.child('user_id').val()) && isCurrentUser(newData.child('user_id').val())) || isSystem() : isCurrentUser(newData.child('user_id').val())
 }
 
 isOwningUser(ref, uidFieldName) {
   return prior(ref) !== null ? (isCurrentUser(data.child(uidFieldName).val()) && isCurrentUser(newData.child(uidFieldName).val())) : isCurrentUser(newData.child(uidFieldName).val())
+}
+
+hasPlan() {
+  return !!root.child('/users/'+ auth.uid).val() && !!root.child('/users/'+ auth.uid +'/plan').val();
+}
+
+hasBetaPlan() {
+  return root.child('/users/' + auth.uid + '/plan/plan_id').val() === 'beta'
+}
+
+validateReadLabPrivacy(lab) {
+  return lab.child('is_private').val() ? isSystem() || (!isAnonymous() && isCurrentUser(lab.child('user_id').val()) && !hasBetaPlan()) : true
+}
+
+validateWriteLabPrivacy(lab) {
+  return hasPlan() ?
+    isOwningUser(lab, 'user_id') && !lab.child('is_private').val() :
+    isOwningUser(lab, 'user_id') && (!lab.child('is_private').val() || !hasBetaPlan())
+}
+
+validateReadExecutionPrivacy(execution) {
+  return !root.child('labs').child(execution.child('lab/id').val()).child('common/is_private').val() || ((isCurrentUser(execution.child('user_id').val()) && !hasBetaPlan()) || isSystem());
 }
 
 isInvocationRateProofKey(userId, key) {
@@ -46,7 +64,8 @@ type Lab {
   hidden: Boolean,
   created_at: Number,
   modified_at: Number,
-  fork_of: String | Null
+  fork_of: String | Null,
+  is_private: Boolean
 }
 
 type File {
@@ -76,11 +95,11 @@ type Invocation {
 }
 
 type ServerWritableString extends String {
-  validate() { isExecutionServer() }
+  validate() { isSystem() }
 }
 
 type ServerWritableNumber extends Number {
-  validate() { isExecutionServer() }
+  validate() { isSystem() }
 }
 
 type Execution {
@@ -162,13 +181,13 @@ path /idx/invocation_rate_proof/{userId} is RateProof {
 }
 
 path / {
-  read() { isExecutionServer() }
+  read() { isSystem() }
   write() { false }
 }
 
 path /labs/{id}/common is Lab {
-  read() { true }
-  write() { isOwningUserOrExecutionServerOrAssignFn(this) }
+  read() { validateReadLabPrivacy(prior(this)) }
+  write() { isOwningUser(this, 'user_id') && validateWriteLabPrivacy(this) || isSystem() }
 }
 
 path /labs {
@@ -176,13 +195,13 @@ path /labs {
 }
 
 path /invocations/{id}/common is Invocation {
-  read() { isCurrentUser(data.child('user_id').val()) || isAssignServerFn() }
-  write() { isOwningUser(this, 'user_id') && isInvocationRateProofKey(auth.uid, $id) || isExecutionServer() || isAssignServerFn() }
+  read() { isCurrentUser(data.child('user_id').val()) || isSystem() }
+  write() { isOwningUser(this, 'user_id') && isInvocationRateProofKey(auth.uid, $id) || isSystem() }
 }
 
 path /invocations/{id} {
-  read() { isAssignServerFn() || isExecutionServer() }
-  write() { isAssignServerFn() }
+  read() { isSystem() }
+  write() { isSystem() }
 }
 
 path /invocations {
@@ -196,8 +215,8 @@ path /invocations {
 }
 
 path /executions/{id}/common is Execution {
-  read() { true }
-  write() { isOwningUser(this, 'user_id') || isExecutionServer() }
+  read() { validateReadExecutionPrivacy(prior(this)) }
+  write() { isOwningUser(this, 'user_id') || isSystem() }
 }
 
 path /executions/{id}/outputs {
@@ -210,13 +229,13 @@ path /executions {
 
 path /executions/{id}/messages {
   read() { true }
-  write() { isExecutionServer() }
+  write() { isSystem() }
   index() { ['index', 'virtual_index', 'kind']}
 }
 
 path /executions/{id}/messages/{mid} is ExecutionMessage {
   read() { true }
-  write() { isExecutionServer() }
+  write() { isSystem() }
 }
 
 path /users/{id}/common is User {
@@ -225,11 +244,11 @@ path /users/{id}/common is User {
 }
 
 path /users/{id}/plan {
-  read() { true }
+  read() { isCurrentUser(id) || isSystem() }
 }
 
 path /servers {
-  read() { isExecutionServer() || isAssignServerFn() }
+  read() { isSystem() }
   write() { false }
 }
 
@@ -277,7 +296,7 @@ path /idx/lab_visible_executions/{id} {
 }
 
 path /idx/user_executions/{id} {
-  read() { isExecutionServer() }
+  read() { isSystem() }
   write() { false }
 }
 

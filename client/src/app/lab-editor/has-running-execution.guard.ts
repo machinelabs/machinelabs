@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material';
 
 import { of } from 'rxjs/observable/of';
 import { forkJoin } from 'rxjs/observable/forkJoin';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, catchError } from 'rxjs/operators';
 
 import { UserService } from '../user/user.service';
 import { LabStorageService } from '../lab-storage.service';
@@ -57,6 +57,12 @@ export class HasRunningExecutionGuard implements CanDeactivate<EditorViewCompone
         }
         return this.labExecutionService.labHasRunningExecutions(labId)
           .pipe(switchMap(val => val ? this.showDialog() : of(true)));
+      }),
+      catchError(_ => {
+        // We might run into a firebase permission error when the user has logged
+        // out before navigating away. For that case we swallow the error and let
+        // the user move on.
+        return of(true);
       })
     );
   }

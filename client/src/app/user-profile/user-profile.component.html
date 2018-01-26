@@ -21,7 +21,10 @@
 
           <div fxLayout class="ml-user-profile-lab-list">
             <mat-card *ngFor="let lab of labs" class="ml-user-profile-lab-card">
-              <mat-card-title>{{lab.name | words: 10}}</mat-card-title>
+              <mat-card-title>
+                {{lab.name | words: 10}}
+                <span class="ml-user-profile-lab-card-private-badge" *ngIf="lab.is_private">Private</span>
+              </mat-card-title>
               <mat-card-content>{{lab.description || 'This lab has no description.' | words:30}}</mat-card-content>
               <ml-tag-list [tags]="lab.tags"></ml-tag-list>
               <mat-card-actions class="ml-user-profile-lab-actions">

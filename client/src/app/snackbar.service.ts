@@ -105,6 +105,14 @@ export class SnackbarService {
     this.notify('Request failed, please try again');
   }
 
+  notifySaveLabFailed() {
+    this.notify('Saving Lab failed, please try again');
+  }
+
+  notifyLoadingUserLabsFailed() {
+    return this.notify('Couldn\'t load labs from user');
+  }
+
   notifyActionUndone() {
     this.notify('Undone');
   }

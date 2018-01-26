@@ -10,19 +10,7 @@ import { DATABASE } from './app.tokens';
 import { DbRefBuilder } from './firebase/db-ref-builder';
 import { LAB_TEMPLATES } from './data/lab-templates';
 import { FirebaseMock } from '../test-helper/firebase-mock';
-
-let testLab = {
-  id: 'some-id',
-  user_id: 'user id',
-  name: 'Existing lab',
-  description: '',
-  tags: ['existing'],
-  directory: [],
-  has_cached_run: false,
-  created_at: Date.now(),
-  modified_at: Date.now(),
-  hidden: false
-};
+import { LAB_STUB } from '../test-helper/stubs/lab.stubs';
 
 let authServiceStub = {
   requireAuthOnce: () => { }
@@ -83,7 +71,7 @@ describe('LabStorageService', () => {
 
     it('should create new lab from existing lab (forking)', () => {
 
-      let existingLab = Object.assign({}, testLab);
+      let existingLab = Object.assign({}, LAB_STUB, { directory: [] });
 
       labStorageService.createLab(existingLab).subscribe(lab => {
         expect(lab).toBeDefined();
@@ -119,11 +107,11 @@ describe('LabStorageService', () => {
 
     it('should return lab by given id', (done) => {
 
-      fbMock.data[`labs/${testLab.id}/common`] = testLab;
+      fbMock.data[`labs/${LAB_STUB.id}/common`] = LAB_STUB;
 
-      labStorageService.getLab(testLab.id)
+      labStorageService.getLab(LAB_STUB.id)
         .subscribe(lab => {
-          expect(lab).toEqual(testLab);
+          expect(lab).toEqual(LAB_STUB);
           done();
         });
     });
@@ -133,14 +121,14 @@ describe('LabStorageService', () => {
 
     it('should save lab using firebase.database.set()', (done) => {
 
-      let expectedLab = Object.assign({}, testLab, { user_id: 'some-id' });
+      let expectedLab = Object.assign({}, LAB_STUB, { user_id: 'some-id', directory: [] });
       // Since `has_cached_run` is only written by the server, the
       // returned lab should actually not have this property
       delete expectedLab.has_cached_run;
 
-      labStorageService.saveLab(testLab).subscribe(lab => {
+      labStorageService.saveLab(expectedLab).subscribe(lab => {
 
-        labStorageService.getLab(testLab.id)
+        labStorageService.getLab(LAB_STUB.id)
           .subscribe(_lab => {
             // The returned lab should have its user_id changed
             expect(_lab.id).toEqual(expectedLab.id);
