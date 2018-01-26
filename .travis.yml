@@ -29,6 +29,12 @@ matrix:
         - cd ./firebase/functions
         - npm install -g yarn typescript
       script: npm run test
+    - stage: "firebase security rules"
+      node_js: "8"
+      before_install:
+        - cd ./firebase/rules
+        - npm install -g yarn typescript firebase-bolt
+      script: npm run test
     - stage: "@machinelabs/core"
       node_js: "8"
       before_install:
@@ -66,8 +72,8 @@ matrix:
       before_script:
         - npm install -g @angular/cli
       script: npm run test:e2e:production
-      
-      
+
+
 
 
 

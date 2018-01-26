@@ -1,0 +1,41 @@
+{
+  "name": "firebase",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "tslint": "tslint -c tslint.json **/*.ts",
+    "build": "firebase-bolt ./database.rules.bolt",
+    "test": "npm run tslint && npm run build && jest"
+  },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testMatch": [
+      "**/tests/**/*.(test|spec)\\.(ts|tsx|js)"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ]
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/core-js": "^0.9.34",
+    "@types/jest": "^22.1.0",
+    "@types/node": "^9.3.0",
+    "firebase-bolt": "^0.8.2",
+    "jest": "^20.0.4",
+    "targaryen": "^3.0.5",
+    "ts-jest": "^20.0.10",
+    "tslint": "^5.5.0",
+    "typescript": "2.4.0"
+  }
+}
