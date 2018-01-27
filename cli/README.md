@@ -26,3 +26,4 @@ You'll also have to redeploy firebase for that to take into effect
 
 4. Build the project with `yarn run build:personal`
 
+5. In order to make the `ml` command globally available, run `yarn global add /absolute/path/to/cli`. Here it's important that the path is absolute because a relative path like `./` doesn't work.
