@@ -6,6 +6,7 @@ import './firebase/fb';
 import './commands/login'
 import './commands/push';
 import './commands/init';
+import './commands/pull';
 
 program
   .version(pgk.version);
