@@ -35,7 +35,7 @@
     "@machinelabs/models": "link:../models",
     "@types/js-yaml": "^3.10.1",
     "@types/lodash.isarray": "^4.0.3",
-    "@types/node": "^8.0.19",
+    "@types/node": "^9.4.0",
     "@types/shortid": "^0.0.29",
     "isbinaryfile": "^3.0.2",
     "js-yaml": "^3.10.0",
@@ -46,6 +46,8 @@
   },
   "devDependencies": {
     "firebase": "^4.2.0",
+    "@types/jest": "^22.1.0",
+    "@types/rimraf": "^2.0.2",
     "jest": "^20.0.4",
     "rimraf": "^2.6.2",
     "rxjs": "^5.5.6",
