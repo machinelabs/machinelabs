@@ -3,10 +3,12 @@ import { existsSync, rmdirSync, readFileSync } from 'fs';
 import * as rimraf from 'rimraf';
 import { finalize, tap } from 'rxjs/operators';
 
-import { writeDirectory, writeLabDirectory } from './fs';
+import { writeDirectoryInShell, writeLabDirectory, writeDirectory } from './fs';
 import { spawnShell } from '../reactive-process';
 
-describe('.writeDirectory()', () => {
+import { Directory } from '@machinelabs/models';
+
+describe('.writeDirectoryInShell()', () => {
 
   it('should write directory with nested files and directories', (done) => {
     let dir = {
@@ -28,7 +30,7 @@ describe('.writeDirectory()', () => {
       ]
     };
 
-    writeDirectory(dir)
+    writeDirectoryInShell(dir)
       .pipe(
         finalize(() => {
           expect(existsSync('foo/foo')).toBe(true);
@@ -44,6 +46,7 @@ describe('.writeDirectory()', () => {
 
   it('should not create root directory', (done) => {
     let dir = {
+      name: '',
       contents: [
         {
           name: 'foo',
@@ -61,7 +64,7 @@ describe('.writeDirectory()', () => {
       ]
     };
 
-    writeDirectory(dir, true)
+    writeDirectoryInShell(dir, true)
       .pipe(
         finalize(() => {
           expect(existsSync('foo')).toBe(true);
@@ -77,7 +80,6 @@ describe('.writeDirectory()', () => {
       )
       .subscribe();
   });
-
 
   it('should write LabDirectory with nested files and folders', (done) => {
     let labDirectory = [
@@ -211,7 +213,7 @@ describe('.writeDirectory()', () => {
   });
 
   it('should allow empty directories', (done) => {
-    let labDirectory = [
+    let labDirectory: Array<Directory> = [
       {
         name: 'foo',
         contents: []
@@ -236,5 +238,135 @@ describe('.writeDirectory()', () => {
       )
       .subscribe();
   });
+});
 
+describe('.writeDirectory', () => {
+
+  it('should write directory with nested files and directories', (done) => {
+    let dir = {
+      name: 'foo',
+      contents: [
+        {
+          name: 'foo',
+          content: 'foo'
+        },
+        {
+          name: 'bar',
+          contents: [
+            {
+              name: 'bar',
+              content: 'bar'
+            }
+          ]
+        }
+      ]
+    };
+
+    writeDirectory(dir)
+      .pipe(
+        finalize(() => {
+          expect(existsSync('foo')).toBe(true);
+          expect(existsSync('foo/foo')).toBe(true);
+          expect(existsSync('foo/bar')).toBe(true);
+
+          // cleanup test files
+          rimraf.sync('foo');
+          expect(existsSync('foo')).toBe(false);
+          done();
+        })
+      )
+      .subscribe();
+  });
+
+  it('should skip the root folder', (done) => {
+    let dir = {
+      name: 'foo',
+      contents: [
+        {
+          name: 'foo',
+          content: 'foo'
+        },
+        {
+          name: 'bar',
+          content: 'bar'
+        }
+      ]
+    };
+
+    writeDirectory(dir, true)
+      .pipe(
+        finalize(() => {
+          expect(existsSync('foo')).toBe(true);
+          expect(existsSync('bar')).toBe(true);
+
+          // cleanup test files
+          rimraf.sync('foo');
+          rimraf.sync('bar');
+          expect(existsSync('foo')).toBe(false);
+          expect(existsSync('bar')).toBe(false);
+          done();
+        })
+      )
+      .subscribe();
+  });
+
+  it('should allow empty directories', (done) => {
+    let dir: Directory = {
+      name: 'foo',
+      contents: [
+        {
+          name: 'foo',
+          contents: []
+        },
+        {
+          name: 'bar',
+          contents: []
+        }
+      ]
+    };
+
+    writeDirectory(dir)
+      .pipe(
+        finalize(() => {
+          expect(existsSync('foo/foo')).toBe(true);
+          expect(existsSync('foo/bar')).toBe(true);
+
+          // cleanup test files
+          rimraf.sync('foo');
+          expect(existsSync('foo')).toBe(false);
+          done();
+        })
+      )
+      .subscribe();
+  });
+
+  it('should override existing files (last one wins)', (done) => {
+    let dir: Directory = {
+      name: 'foo',
+      contents: [
+        {
+          name: 'foo',
+          content: 'foo'
+        },
+        {
+          name: 'foo',
+          content: 'bar'
+        }
+      ]
+    };
+
+    writeDirectory(dir)
+      .pipe(
+        finalize(() => {
+          expect(existsSync('foo/foo')).toBe(true);
+          expect(readFileSync('foo/foo').toString()).toBe('bar');
+
+          // cleanup test files
+          rimraf.sync('foo');
+          expect(existsSync('foo')).toBe(false);
+          done();
+        })
+      )
+      .subscribe();
+  });
 });
