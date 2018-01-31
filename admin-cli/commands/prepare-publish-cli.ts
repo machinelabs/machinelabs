@@ -2,13 +2,12 @@ import * as chalk from 'chalk';
 import * as jsonfile from 'jsonfile';
 import { isTag } from '../lib/is-tag';
 import { pinMachineLabsDependencies } from '../lib/pin-dependencies';
+import { publishPackage } from '../lib/publish-package'
 
-const CLI_DEPS = [
-  '/shared/core/package.json',
-  // models doesn't have any @machinelabs dependencies but we can
-  // still add it to be prepared.
-  '/shared/models/package.json',
-  '/cli/package.json'
+const CLI_PACKAGES = [
+  '/shared/core',
+  '/shared/models',
+  '/cli'
 ]
 
 const preparePublishCliCmd = (argv) => {
@@ -16,9 +15,20 @@ const preparePublishCliCmd = (argv) => {
   console.log(chalk.green('Pinning dependencies as a preparation for npm publishing the CLI'));
   console.log(chalk.green('Do NOT commit this into a stable development branch'));
 
-  CLI_DEPS.forEach(pathToPackageJson => pinMachineLabsDependencies(pathToPackageJson));
+  CLI_PACKAGES
+    .map(path => `${path}/package.json`)
+    .forEach(pathToPackageJson => pinMachineLabsDependencies(pathToPackageJson));
 
   console.log(chalk.green('Pinned. Run `git diff` and check the changes. Run `yarn mla publish-cli` if everything looks good.'));
+
+  if (argv.publishOnly){
+    return;
+  }
+
+  CLI_PACKAGES
+    .forEach(path => publishPackage(path));
+
+  console.log(chalk.green('Published CLI and dependend package to npm registry.'));
 }
 
 const check = argv => {
