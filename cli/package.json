@@ -13,8 +13,8 @@
     "build:personal": "ncp ./src/environments/environment.personal.ts ./src/environments/environment.ts && tsc"
   },
   "dependencies": {
-    "@machinelabs/core": "link:../shared/core",
-    "@machinelabs/models": "link:../shared/models",
+    "@machinelabs/core": "0.21.3+utc.2017.Nov.24-15.07.59",
+    "@machinelabs/models": "0.21.3+utc.2017.Nov.24-15.07.59",
     "@types/chalk": "^2.2.0",
     "@types/commander": "^2.11.0",
     "@types/lodash.isstring": "^4.0.3",
