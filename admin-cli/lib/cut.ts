@@ -55,6 +55,7 @@ export function cut (versionOrType, dryRun) {
            (cd ./client && ${yarnVersionCmd}) &&
            (cd ./firebase/functions && ${yarnVersionCmd}) &&
            (cd ./rest-api && ${yarnVersionCmd}) &&
+           (cd ./cli && ${yarnVersionCmd}) &&
            (cd ./admin-cli && ${yarnVersionCmd})`);
 
 
