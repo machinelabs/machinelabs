@@ -13,7 +13,86 @@
   background:white;
 }
 
-.ml-handshake-content {
-  border: 1px solid grey; 
-  padding: 22px
+mat-card {
+  padding: 0;
+  max-width: 630px;
+  width: 90%;
+}
+
+mat-card,
+mat-card-title,
+mat-card-content,
+mat-card-actions {
+  margin: 0 !important;
+}
+
+mat-card-title {
+  padding: 15px 20px;
+}
+
+mat-card-content {
+  padding: 20px 20px 0;
+}
+
+mat-card-actions {
+  padding: 20px !important;
+}
+
+button + button {
+  margin-left: 10px;
+}
+
+.ml-console {
+  background: #151718;
+  padding: 10px 15px;
+  border-radius: 5px;
+
+  .cmd {
+    display: inline-block;
+  }
+}
+
+.ml-console-content {
+  color: white;
+  padding: 20px 15px;
+
+  .cmd + .cmd {
+    margin-top: 5px;
+  }
+
+  .cmd {
+    &--info {
+      color: #e6cd69;
+    }
+
+    &--current::after {
+      content: '';
+      display: block;
+      width: 10px;
+      height: 18px;
+      background: #929292;
+      animation: blink 1s step-end infinite;
+    }
+  }
+
+  .auth-hash {
+    color: #33bd26;
+    font-weight: bold;
+  }
+}
+
+.ml-hint {
+  background: #f8f8f8;
+  margin: 20px 0;
+  padding: 10px 25px;
+  border-left: 4px solid #f66;
+}
+
+@keyframes blink {
+  0%, 100% {
+    background: transparent;
+  }
+  50% {
+    background: #929292;
+  }
 }

@@ -1,0 +1,12 @@
+@import '../../../node_modules/@angular/material/theming';
+
+@mixin ml-handshake-theme($theme) {
+
+  $primary: map-get($theme, primary);
+  $foreground: map-get($theme, foreground);
+
+  mat-card-title {
+    background: mat-color($primary);
+    color: mat-color($primary, default-contrast);
+  }
+}

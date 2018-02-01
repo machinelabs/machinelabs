@@ -15,6 +15,7 @@
 @import 'app/explore/execution-card/execution-card-theme.scss';
 @import 'app/explore/explore-labs/explore-labs-theme.scss';
 @import 'app/explore/lab-card/lab-card-theme.scss';
+@import 'app/handshake/handshake-theme.scss';
 
 @include mat-core();
 
@@ -41,6 +42,7 @@ $ml-app-theme: mat-light-theme($ml-app-primary, $ml-app-accent, $ml-app-warn);
   @include ml-execution-card-theme($theme);
   @include ml-lab-card-theme($theme);
   @include ml-landing-page-theme($theme);
+  @include ml-handshake-theme($theme);
 }
 
 @include angular-material-theme($ml-app-theme);
