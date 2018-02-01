@@ -1,4 +1,8 @@
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import { merge } from 'rxjs/observable/merge';
+import { from } from 'rxjs/observable/from';
+import { map, mergeMap, filter } from 'rxjs/operators';
 import { ObservableDbRef, DbRefBuilder, DateUtil } from '@machinelabs/core';
 import { ShortMonth, toShortMonth, HardwareType, PlanId, PlanCredits } from '@machinelabs/models';
 import { CostCalculator } from '../costs/cost-calculator';
@@ -20,16 +24,20 @@ export class UsageStatisticService {
     return this.liveMetricsService
     .getLiveExecutionsRef()
     .onceValue()
-    .map(snapshot => snapshot.val())
-    .filter(val => !!val)
-    .flatMap(val => Object.keys(val))
-    .flatMap(userId => {
-      return Observable.forkJoin(
-        this.db.userRef(userId).onceValue().map(snapshot => snapshot.val()),
-        this.getCostReportForCurrentMonth(userId)
-      )
-      .map(([fullUser, costReport]) => this.calculateStatisticForPlan(fullUser.common.id, fullUser.plan.plan_id, costReport));
-    });
+    .pipe(
+      map(snapshot => snapshot.val()),
+      filter(val => !!val),
+      mergeMap(val => Object.keys(val)),
+      mergeMap(userId => {
+        return forkJoin(
+          this.db.userRef(userId).onceValue().pipe(map(snapshot => snapshot.val())),
+          this.getCostReportForCurrentMonth(userId)
+        )
+        .pipe(
+          map(([fullUser, costReport]) => this.calculateStatisticForPlan(fullUser.common.id, fullUser.plan.plan_id, costReport))
+        );
+      })
+    );
   }
 
   getUsageStatisticForCurrentMonth(userId: string, planId: PlanId): Observable<UsageStatistic> {
@@ -47,22 +55,27 @@ export class UsageStatisticService {
   }
 
   getCostReport(userId: string, year: number, month: ShortMonth): Observable<CostReport> {
-        let executions$ = Observable.merge(
+        let executions$ = merge(
           this.db.userExecutionsByMonthRef(userId, year, month).onceValue(),
           this.db.userExecutionsLiveRef(userId).onceValue()
-          )
-          .map(snapshot => snapshot.val())
-          .map(val => val ? Object.keys(val) : [])
-          .flatMap(executionIds => Observable.from(executionIds)
-                                             .flatMap(id => this.db.executionRef(id).onceValue()))
-          .map(snapshot => snapshot.val())
-          .filter(execution => execution !== null);
+        )
+        .pipe(
+          map(snapshot => snapshot.val()),
+          map(val => val ? Object.keys(val) : []),
+          mergeMap(executionIds => from(executionIds)
+            .pipe(
+              mergeMap(id => this.db.executionRef(id).onceValue())
+            )
+          ),
+          map(snapshot => snapshot.val()),
+          filter(execution => execution !== null)
+        );
 
         return this.costCalculator.calc(executions$);
       }
 
   calculateStatistic(userId: string, planId: PlanId, costReport: Observable<CostReport>) {
-    return costReport.map(report => this.calculateStatisticForPlan(userId, planId, report));
+    return costReport.pipe(map(report => this.calculateStatisticForPlan(userId, planId, report)));
   }
 
   calculateStatisticForPlan(userId: string, planId: PlanId, report: CostReport): UsageStatistic {

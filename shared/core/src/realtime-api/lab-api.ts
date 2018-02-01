@@ -1,5 +1,5 @@
 import { Lab } from '@machinelabs/models';
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
 import * as firebase from 'firebase';
 
 import { DbRefBuilder } from '../firebase/db-ref-builder';

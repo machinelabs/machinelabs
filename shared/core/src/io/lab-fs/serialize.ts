@@ -1,4 +1,3 @@
-import { Observable } from '@reactivex/rxjs';
 import { LabDirectory, Directory, File } from '@machinelabs/models';
 
 export const stringifyDirectory = (dir: LabDirectory) =>

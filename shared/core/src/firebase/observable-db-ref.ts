@@ -1,4 +1,6 @@
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { fromPromise } from 'rxjs/observable/fromPromise';
+import { fromEventPattern } from 'rxjs/observable/fromEventPattern';
 import * as firebase from 'firebase';
 
 export class ObservableDbRef {
@@ -30,7 +32,7 @@ export class ObservableDbRef {
   }
 
   once(eventType: string): Observable<firebase.database.DataSnapshot> {
-    return Observable.fromPromise(this.ref.once(eventType));
+    return fromPromise(this.ref.once(eventType));
   }
 
   onceValue(): Observable<firebase.database.DataSnapshot> {
@@ -38,11 +40,11 @@ export class ObservableDbRef {
   }
 
   set(data: any): Observable<firebase.database.DataSnapshot> {
-    return Observable.fromPromise(this.ref.set(data));
+    return fromPromise(this.ref.set(data));
   }
 
   update(data: any): Observable<firebase.database.DataSnapshot> {
-    return Observable.fromPromise(this.ref.update(data));
+    return fromPromise(this.ref.update(data));
   }
 
   childAdded(): Observable<firebase.database.DataSnapshot> {
@@ -58,8 +60,8 @@ export class ObservableDbRef {
   }
 
   on(eventName: string): Observable<firebase.database.DataSnapshot> {
-    return Observable.fromEventPattern(handler => this.ref.on(eventName, handler),
-                                       handler => this.ref.off(eventName, handler));
+    return fromEventPattern(handler => this.ref.on(eventName, handler),
+                            handler => this.ref.off(eventName, handler));
   }
 }
 

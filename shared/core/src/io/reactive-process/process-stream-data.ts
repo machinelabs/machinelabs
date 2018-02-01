@@ -1,4 +1,5 @@
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 
 export enum OutputType {
   Stdout = 'stdout',
@@ -18,5 +19,5 @@ export const toProcessStreamData = (type: OutputType, str: string) => (<ProcessS
 
 export const stdoutMsg = (text: string) => toProcessStreamData(OutputType.Stdout, text);
 export const stderrMsg = (text: string) => toProcessStreamData(OutputType.Stderr, text);
-export const stdout = (text: string) => Observable.of(stdoutMsg(text));
-export const stderr = (text: string) => Observable.of(stderrMsg(text));
+export const stdout = (text: string) => of(stdoutMsg(text));
+export const stderr = (text: string) => of(stderrMsg(text));
