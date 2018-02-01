@@ -1,5 +1,4 @@
 <ml-toolbar>
-  <ml-toolbar-logo></ml-toolbar-logo>
   <ml-toolbar-content>
     <div class="ml-toolbar-lab-info">
       <span [matTooltip]="lab.name" class="ml-toolbar-lab-name">{{lab.name | words: 10}}</span>
@@ -52,6 +51,9 @@
       <button mat-menu-item (click)="emitAction(EditorToolbarActionTypes.Create, 'mnist')">MNIST</button>
     </mat-menu>
   </ml-toolbar-cta-bar>
+
+
+
   <ml-toolbar-menu></ml-toolbar-menu>
 
 </ml-toolbar>

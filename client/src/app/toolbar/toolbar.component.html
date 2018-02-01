@@ -1,17 +1,21 @@
-<mat-toolbar color="primary" class="ml-toolbar">
-  <div fxLayout fxLayoutAlign="space-between center" fxFlex class="ml-toolbar-layout">
-    <ng-content select="ml-toolbar-logo, [ml-toolbar-logo]"></ng-content>
-
-    <div fxFlex>
+<mat-toolbar color="primary">
+  <mat-toolbar-row class="ml-toolbar-layout">
+    <div class="ml-toolbar-logo">
+      <a title="MachineLabs Startpage" routerLink="/">
+        <picture>
+          <source srcset="/assets/images/machinelabs_logo_white.svg" media="(min-width: 768px)">
+          <img src="/assets/images/machinelabs_icon_white.svg" alt="MachineLabs, Inc.">
+        </picture>
+      </a>
+    </div>
+    <div class="ml-toolbar-content">
       <ng-content select="ml-toolbar-content"></ng-content>
     </div>
-
-    <div fxFlex fxLayoutAlign="end" class="ml-toolbar-cta-bar">
+    <div class="ml-toolbar-cta-bar">
       <ng-content select="ml-toolbar-cta-bar"></ng-content>
     </div>
-
-    <div fxLayoutAlign="end" class="ml-toolbar-menu">
+    <div class="ml-toolbar-menu">
       <ng-content select="ml-toolbar-menu, [ml-toolbar-menu]"></ng-content>
     </div>
-  </div>
+  </mat-toolbar-row>
 </mat-toolbar>

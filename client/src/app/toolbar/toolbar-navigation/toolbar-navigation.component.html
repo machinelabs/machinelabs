@@ -1,0 +1,13 @@
+<div class="ml-toolbar-navigation-overlay" [ngClass]="{ 'active': opened }">
+  <button mat-icon-button class="ml-toolbar-navigation-overlay-close-button" (click)="opened = false">
+    <mat-icon>clear</mat-icon>
+  </button>
+  <nav class="ml-toolbar-navigation-overlay-nav">
+    <ng-content></ng-content>
+  </nav>
+</div>
+<button type="button" mat-button class="ml-toolbar-navigation-button" (click)="opened = true">
+  <mat-icon>menu</mat-icon>
+</button>
+
+

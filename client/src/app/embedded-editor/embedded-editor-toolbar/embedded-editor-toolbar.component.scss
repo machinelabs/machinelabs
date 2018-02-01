@@ -1,24 +1,17 @@
+@import '../../../mixins';
+
 ml-toolbar {
   box-shadow: none;
 }
 
-ml-toolbar-logo {
-  padding-left: 0.2em;
-
-  ::ng-deep {
-    img {
-      height: 18px;
-    }
+ml-toolbar {
+  ::ng-deep .ml-toolbar-logo img {
+    height: 24px!important;
   }
 }
 
 ml-toolbar {
   ::ng-deep {
-    .ml-toolbar-layout {
-      padding-left: 0;
-      padding-right: 0;
-    }
-
     .mat-toolbar {
       min-height: initial;
 
@@ -30,10 +23,17 @@ ml-toolbar {
 }
 
 .ml-toolbar-lab-info {
-  margin-left: 0.5em;
+  margin-left: 1em;
 }
 
 .ml-toolbar-lab-name {
   font-size: 0.8em;
 }
 
+@include tablet {
+  ml-toolbar {
+    ::ng-deep .ml-toolbar-logo img {
+      height: 18px!important;
+    }
+  }
+}

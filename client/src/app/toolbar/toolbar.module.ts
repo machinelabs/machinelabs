@@ -6,16 +6,17 @@ import { MachineLabsMaterialModule } from '../ml-material.module';
 
 import {
   ToolbarComponent,
-  ToolbarLogoComponent,
   ToolbarContentDirective,
   ToolbarCtaBarDirective
 } from './toolbar.component';
+
 import { ToolbarMenuComponent } from './toolbar-menu/toolbar-menu.component';
+import { ToolbarNavigationComponent } from './toolbar-navigation/toolbar-navigation.component';
 
 const TOOLBAR_DIRECTIVES = [
   ToolbarComponent,
-  ToolbarLogoComponent,
   ToolbarMenuComponent,
+  ToolbarNavigationComponent,
   ToolbarContentDirective,
   ToolbarCtaBarDirective
 ];
