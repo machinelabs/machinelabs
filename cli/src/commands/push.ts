@@ -4,6 +4,7 @@ import * as firebase from 'firebase';
 import * as shortid from 'shortid';
 import isString = require('lodash.isstring');
 import { existsSync } from 'fs';
+import { switchMap, map } from 'rxjs/operators';
 
 import { refBuilder } from '../firebase/fb';
 import { Lab, LabDirectory, instanceOfFile } from '@machinelabs/models';
@@ -47,38 +48,45 @@ program
   let labApi = new LabApi(refBuilder);
 
   loginFromCache()
-    .switchMap(res => refBuilder.labRef(id).onceValue()
-                                .map(snapshot => snapshot.val())
-                                .map(lab => {
+    .pipe(
+      switchMap((res: any) => refBuilder
+        .labRef(id)
+        .onceValue()
+        .pipe(
+          map((snapshot: any) => snapshot.val()),
+          map((lab: any) => {
 
-                                  if (!lab) {
-                                    lab = {
-                                      id: id,
-                                      directory: dir,
-                                      user_id: res.uid,
-                                      name: isString(cmd.name) ? cmd.name : 'Untitled',
-                                      description: isString(cmd.description) ? cmd.description : '',
-                                      tags: [],
-                                      created_at: Date.now(),
-                                      modified_at: Date.now(),
-                                      hidden: false,
-                                      is_private: false
-                                    };
-                                  } else if (lab.user_id !== res.uid) {
-                                    console.error(`Can't write to lab from another user`);
-                                    process.exit(1);
-                                  }
+            if (!lab) {
+              lab = {
+                id: id,
+                directory: dir,
+                user_id: res.uid,
+                name: isString(cmd.name) ? cmd.name : 'Untitled',
+                description: isString(cmd.description) ? cmd.description : '',
+                tags: [],
+                created_at: Date.now(),
+                modified_at: Date.now(),
+                hidden: false,
+                is_private: false
+              };
+            } else if (lab.user_id !== res.uid) {
+              console.error(`Can't write to lab from another user`);
+              process.exit(1);
+            }
 
-                                  // We can't use `cmd.something || 'something'` here because of the way commander
-                                  // handles these flags.
-                                  lab.name = isString(cmd.name) ? cmd.name : lab.name;
-                                  lab.description = isString(cmd.description) ? cmd.description : lab.description;
-                                  lab.directory = dir;
+            // We can't use `cmd.something || 'something'` here because of the way commander
+            // handles these flags.
+            lab.name = isString(cmd.name) ? cmd.name : lab.name;
+            lab.description = isString(cmd.description) ? cmd.description : lab.description;
+            lab.directory = dir;
 
-                                  return lab;
-                                }))
-    .switchMap(lab => labApi.save(lab).map(_ => lab))
-    .subscribe(lab => {
+            return lab;
+          })
+        )
+      ),
+      switchMap(lab => labApi.save(lab).pipe(map(_ => lab)))
+    )
+    .subscribe((lab: any) => {
       console.log(chalk.default.green.bold(`Pushed to ${environment.mlDomain}/editor/${lab.id}`));
       process.exit();
     }, e => {
