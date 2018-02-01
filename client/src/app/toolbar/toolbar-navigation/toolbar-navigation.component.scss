@@ -1,0 +1,89 @@
+@import '../../../mixins';
+
+.ml-toolbar-navigation-button {
+  padding: 0;
+  min-width: initial;
+  width: 40px;
+}
+
+.ml-toolbar-navigation-overlay {
+  visibility: hidden;
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #03a9f4;
+  opacity: 0;
+  transition: opacity 200ms cubic-bezier(.25,.8,.25,1);
+
+  &.active {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.ml-toolbar-navigation-overlay-close-button {
+  position: absolute;
+  z-index: 1;
+  top: 1em;
+  right: 1em;
+
+  mat-icon {
+    font-size: 2rem;
+    width: initial;
+    height: initial;
+  }
+}
+
+.ml-toolbar-navigation-overlay-nav {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  transform: translateX(-50%) translateY(-50%);
+  perspective: 1200px;
+
+  ::ng-deep a {
+    display: block;
+    font-size: 1.5em;
+    line-height: 1;
+    padding: 0.5em;
+  }
+}
+
+
+@include tablet {
+
+  .ml-toolbar-navigation-button {
+    display: none;
+  }
+
+  .ml-toolbar-navigation-overlay {
+    visibility: visible;
+    opacity: 1;
+    z-index: 1;
+    position: static;
+    background-color: transparent;
+    transition: none;
+    text-align: right;
+  }
+
+  .ml-toolbar-navigation-overlay-close-button {
+    display: none;
+  }
+
+  .ml-toolbar-navigation-overlay-nav {
+    position: static;
+    transform: none;
+    display: flex;
+    justify-content: flex-end;
+
+    ::ng-deep a {
+      font-size: 14px;
+      padding: 0 16px;
+      line-height: 36px;
+    }
+  }
+}

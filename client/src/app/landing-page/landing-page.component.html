@@ -1,8 +1,9 @@
 <ml-toolbar>
-  <ml-toolbar-logo></ml-toolbar-logo>
   <ml-toolbar-cta-bar>
-    <a mat-button title="Documentation" href="https://docs.machinelabs.ai">Documentation</a>
-    <a mat-button title="Blog" href="https://blog.machinelabs.ai">Blog</a>
+    <ml-toolbar-navigation>
+      <a mat-button title="Documentation" href="https://docs.machinelabs.ai">Documentation</a>
+      <a mat-button title="Blog" href="https://blog.machinelabs.ai">Blog</a>
+    </ml-toolbar-navigation>
   </ml-toolbar-cta-bar>
   <ml-toolbar-menu [menuTrigger]="MenuTriggerType.LoginButton"></ml-toolbar-menu>
 </ml-toolbar>

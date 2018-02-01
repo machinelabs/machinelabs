@@ -1,3 +1,5 @@
+@import '../../mixins';
+
 :host {
   display: block;
   z-index: 5;
@@ -5,23 +7,34 @@
   box-shadow: 0 -1px 12px rgba(0,0,0,.5);
 }
 
-.ml-toolbar-layout {
-  padding-right: 20px;
-  padding-left: 20px;
+.ml-toolbar-logo {
+  padding-bottom: 0.2em;
+  img {
+    height: 28px;
+  }
 }
 
-.ml-login-avatar {
-  border-radius: 50%;
-  width: 2.5em;
+.ml-toolbar-content {
+  flex: 1;
 }
 
 .ml-toolbar-cta-bar {
-  ::ng-deep [mat-button],
-  ::ng-deep [mat-icon-button] {
-    margin-left: 0.2em;
+  flex: 1;
+  text-align: right;
+}
 
-    &:first-child {
-      margin-left: 0;
+@include tablet {
+
+  .ml-toolbar-logo {
+    img {
+      height: 22px;
     }
   }
 }
+
+@include desktop {
+  .ml-toolbar-layout {
+    padding: 0 28px;
+  }
+}
+

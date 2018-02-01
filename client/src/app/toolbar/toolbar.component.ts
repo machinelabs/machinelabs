@@ -23,17 +23,6 @@ export class ToolbarComponent implements OnInit {
   }
 }
 
-@Component({
-  selector: 'ml-toolbar-logo',
-  template: `
-    <a title="MachineLabs Startpage" routerLink="/">
-      <img src="/assets/images/machinelabs_logo_white.svg" alt="MachineLabs, Inc.">
-    </a>
-  `,
-  styleUrls: ['./toolbar-logo.component.scss']
-})
-export class ToolbarLogoComponent {}
-
 /* tslint:disable:directive-selector */
 @Directive({
   selector: 'ml-toolbar-content, [ml-toolbar-content]'
