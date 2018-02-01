@@ -1,24 +1,33 @@
 <ml-toolbar>
   <ml-toolbar-logo></ml-toolbar-logo>
   <ml-toolbar-cta-bar>
-    <a routerLink="/editor" title="Launch Editor" mat-button><mat-icon>exit_to_app</mat-icon> Launch Editor</a>
+    <a routerLink="/editor" title="Launch Editor" mat-button>
+      <mat-icon>exit_to_app</mat-icon> Launch Editor</a>
   </ml-toolbar-cta-bar>
   <ml-toolbar-menu></ml-toolbar-menu>
 </ml-toolbar>
 <div class="ml-handshake-main">
-  <div class="ml-handshake-content">
-      <ml-dialog-header>MachineLabs CLI wants to login as you</ml-dialog-header>
-      <ml-dialog-content>
-        <p>The MachineLabs CLI wants to login as you. Please do only accept this if:</p>
-        <ul>
-          <li>You initiated this by running <strong>ml login</strong> on your command line</li>
-          <li>You can see the code <strong>{{handshakeId}}</strong> printed on your command line</li>
-        </ul>
-      </ml-dialog-content>
-      <ml-dialog-cta-bar>
-        <button mat-raised-button mat-button (click)="confirm(handshakeId)">Yes, that's me</button>
-        <button mat-raised-button mat-button (click)="reject(handshakeId)">No, reject this</button>
-      </ml-dialog-cta-bar>
-  </div>
+  <mat-card>
+    <mat-card-content>
+      <h4>You are about to login to the MachineLabs command-line interface.</h4>
+      <div class="ml-hint">
+          Please only accept this if have initiated the login and make sure the code matches the one in your terminal.
+      </div>
+      <div class="ml-console">
+        <img src="../../assets/images/window_controls.svg" alt="Window controls">
+        <div class="ml-console-content">
+          <span class="cmd">ml login</span>
+          <span class="cmd cmd--info">
+            Opening default browser to login. Please accept request only if the ID shown in the browser matches: <span class="auth-hash">{{ handshakeId }}</span>
+          </span>
+          <span class="cmd cmd--current"></span>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-raised-button color="primary" mat-button (click)="confirm(handshakeId)">Login</button>
+      <button mat-raised-button mat-button (click)="reject(handshakeId)">Cancel</button>
+    </mat-card-actions>
+  </mat-card>
 </div>
 <ml-page-footer></ml-page-footer>
