@@ -3,7 +3,8 @@ let pgk = require('../package.json');
 
 import './firebase/fb';
 
-import './commands/login'
+import './commands/login';
+import './commands/logout';
 import './commands/push';
 import './commands/init';
 import './commands/pull';
