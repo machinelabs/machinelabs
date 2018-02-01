@@ -3,7 +3,10 @@ import { Crypto } from '../util/crypto';
 import { environment } from '../environments/environment';
 import { db, dbRefBuilder } from '../ml-firebase/db';
 import { CodeRunner } from '../code-runner/code-runner';
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+import { empty } from 'rxjs/observable/empty';
+import { map, share, filter, mergeMap, switchMap, startWith, concat, tap } from 'rxjs/operators';
 import { Invocation, InvocationType } from '@machinelabs/models';
 import { Execution, ExecutionStatus, Server, MessageKind } from '@machinelabs/models';
 import { ProcessStreamData, parseLabDirectory } from '@machinelabs/core';
@@ -29,48 +32,58 @@ export class MessagingService {
   init() {
 
     dbRefBuilder.serverRef(environment.serverId).onceValue()
-        .map(snapshot => snapshot.val())
-        .subscribe(server => {
-          this.server = server;
-          this.initMessaging();
-        });
+      .pipe(
+        map(snapshot => snapshot.val())
+      )
+      .subscribe(server => {
+        this.server = server;
+        this.initMessaging();
+      });
   }
 
   initMessaging () {
 
     // Share one subscription to all incoming messages
     let newInvocations$ = dbRefBuilder.newInvocationsForServerRef(this.server.id)
-                                 .childAdded()
-                                 .map(snapshot => snapshot.val().common)
-                                 .share();
+                                .childAdded()
+                                .pipe(
+                                  map(snapshot => snapshot.val().common),
+                                  share()
+                                );
 
     // Invoke new processes for incoming StartExecution Invocations
     newInvocations$
-    .filter((invocation: Invocation) => invocation.type === InvocationType.StartExecution)
-    .map(invocation => {
-      invocation.data.directory = parseLabDirectory(invocation.data.directory);
-      return invocation;
-    })
-    .subscribe((invocation: Invocation) => {
+      .pipe(
+        filter((invocation: Invocation) => invocation.type === InvocationType.StartExecution),
+        map(invocation => {
+          invocation.data.directory = parseLabDirectory(invocation.data.directory);
+          return invocation;
+        })
+      )
+      .subscribe((invocation: Invocation) => {
 
-      this.getOutputAsObservable(invocation)
-          .flatMap(data => this.handleOutput(data.message, data.invocation))
-          .subscribe(null, (error) => {
-            console.error(`Message processing of execution ${invocation.id} ended unexpectedly at ${Date.now()}`);
-            console.error(error);
-            console.log(`Stopping execution ${invocation.id} now`);
-            this.codeRunner.stop(invocation.id);
-            this.completeExecution(invocation.id, ExecutionStatus.Failed);
-          }, () => {
-            console.log(`Message stream completed for execution ${invocation.id} at ${Date.now()}`);
-          });
-    });
+        this.getOutputAsObservable(invocation)
+            .pipe(
+              mergeMap(data => this.handleOutput(data.message, data.invocation))
+            )
+            .subscribe(null, (error) => {
+              console.error(`Message processing of execution ${invocation.id} ended unexpectedly at ${Date.now()}`);
+              console.error(error);
+              console.log(`Stopping execution ${invocation.id} now`);
+              this.codeRunner.stop(invocation.id);
+              this.completeExecution(invocation.id, ExecutionStatus.Failed);
+            }, () => {
+              console.log(`Message stream completed for execution ${invocation.id} at ${Date.now()}`);
+            });
+      });
 
 
     newInvocations$
-      .filter((invocation: Invocation) => invocation.type === InvocationType.StopExecution)
-      .flatMap(invocation => this.stopValidationService.validate(invocation))
-      .subscribe(validationContext => {
+      .pipe(
+        filter((invocation: Invocation) => invocation.type === InvocationType.StopExecution),
+        mergeMap(invocation => this.stopValidationService.validate(invocation))
+      )
+      .subscribe((validationContext: any) => {
           let execution: Execution = validationContext.resolved.get(ExecutionResolver);
           if (validationContext.isApproved() && execution) {
             this.completeExecution(execution.id, ExecutionStatus.Stopped);
@@ -78,7 +91,7 @@ export class MessagingService {
           } else {
             console.log('Request to stop invocation was invalid');
           }
-        });
+      });
   }
 
   /**
@@ -93,45 +106,49 @@ export class MessagingService {
     // otherwise, try to get approval
     return this.startValidationService
       .validate(invocation)
-      .switchMap(validationContext => {
-        if (validationContext.isApproved() && validationContext.resolved.get(LabConfigResolver)) {
-          // if we get the approval, create the meta data
-          this.createExecutionAndUpdateLabs(invocation, hash);
-          // and execute the code
-          let config = validationContext.resolved.get(LabConfigResolver);
+      .pipe(
+        switchMap((validationContext: any) => {
+          if (validationContext.isApproved() && validationContext.resolved.get(LabConfigResolver)) {
+            // if we get the approval, create the meta data
+            this.createExecutionAndUpdateLabs(invocation, hash);
+            // and execute the code
+            let config = validationContext.resolved.get(LabConfigResolver);
 
-          return this.codeRunner
-            .run(invocation, config)
-            .map(data => this.processStreamDataToExecutionMessage(data))
-            .startWith(<ExecutionMessage>{
-              kind: MessageKind.ExecutionStarted,
-              data: '\r\nExecution started... (this might take a little while)\r\n'
-            })
-            .concat(Observable.of(<ExecutionMessage>{
-              kind: MessageKind.ExecutionFinished,
-              data: ''
-            }))
-            .do(msg => {
-              if (msg.kind === MessageKind.ExecutionFinished) {
-                this.completeExecution(invocation.id);
-              }
-            })
-            .let(msgs => this.recycleService.watch(invocation.id, msgs));
-        }
+            return this.codeRunner
+              .run(invocation, config)
+              .pipe(
+                map(data => this.processStreamDataToExecutionMessage(data)),
+                startWith(<ExecutionMessage>{
+                  kind: MessageKind.ExecutionStarted,
+                  data: '\r\nExecution started... (this might take a little while)\r\n'
+                }),
+                concat(of(<ExecutionMessage>{
+                  kind: MessageKind.ExecutionFinished,
+                  data: ''
+                })),
+                tap(msg => {
+                  if (msg.kind === MessageKind.ExecutionFinished) {
+                    this.completeExecution(invocation.id);
+                  }
+                }),
+                msgs => this.recycleService.watch(invocation.id, msgs)
+              );
+          }
 
-        // if we don't get an approval, reject it
-        return Observable.of(<ExecutionMessage>{
-          kind: MessageKind.ExecutionRejected,
-          data: validationContext.validationResult,
-          index: 0,
-          virtual_index: 0
-        });
-      })
-      .map(msg => {
-        msg.terminal_mode = true;
-        return msg;
-      })
-      .map(message => ({ message, invocation }));
+          // if we don't get an approval, reject it
+          return of(<ExecutionMessage>{
+            kind: MessageKind.ExecutionRejected,
+            data: validationContext.validationResult,
+            index: 0,
+            virtual_index: 0
+          });
+        }),
+        map((msg: any) => {
+          msg.terminal_mode = true;
+          return msg;
+        }),
+        map(message => ({ message, invocation }))
+      );
   }
 
   handleOutput(message: ExecutionMessage, invocation: Invocation) {
@@ -147,7 +164,7 @@ export class MessagingService {
       return this.writeExecutionMessage(message, invocation);
     }
 
-    return  Observable.empty();
+    return empty();
   }
 
   createExecutionAndUpdateLabs(invocation: Invocation, hash: string) {
@@ -174,32 +191,34 @@ export class MessagingService {
   completeExecution(executionId: string, status = ExecutionStatus.Finished) {
 
     dbRefBuilder.executionRef(executionId).onceValue()
-                .map(snapshot => snapshot.val())
-                .switchMap(execution => {
-                  let executing = execution && execution.status === ExecutionStatus.Executing;
+                .pipe(
+                  map(snapshot => snapshot.val()),
+                  switchMap(execution => {
+                    let executing = execution && execution.status === ExecutionStatus.Executing;
 
-                  let delta = {};
+                    let delta = {};
 
-                  if (status === ExecutionStatus.Finished) {
-                    delta['finished_at'] = firebase.database.ServerValue.TIMESTAMP;
-                  }
+                    if (status === ExecutionStatus.Finished) {
+                      delta['finished_at'] = firebase.database.ServerValue.TIMESTAMP;
+                    }
 
-                  if (status === ExecutionStatus.Failed) {
-                    delta['failed_at'] = firebase.database.ServerValue.TIMESTAMP;
-                  }
+                    if (status === ExecutionStatus.Failed) {
+                      delta['failed_at'] = firebase.database.ServerValue.TIMESTAMP;
+                    }
 
-                  if (status === ExecutionStatus.Stopped) {
-                    delta['stopped_at'] = firebase.database.ServerValue.TIMESTAMP;
-                  }
+                    if (status === ExecutionStatus.Stopped) {
+                      delta['stopped_at'] = firebase.database.ServerValue.TIMESTAMP;
+                    }
 
-                  // We want to change the status only if it is still `executing`.
-                  // If not, it is finalized already and the state shouldn't change.
-                  if (executing) {
-                    delta['status'] = status;
-                  }
+                    // We want to change the status only if it is still `executing`.
+                    // If not, it is finalized already and the state shouldn't change.
+                    if (executing) {
+                      delta['status'] = status;
+                    }
 
-                  return dbRefBuilder.executionRef(executionId).update(delta);
-                })
+                    return dbRefBuilder.executionRef(executionId).update(delta);
+                  })
+                )
                 .subscribe();
   }
 

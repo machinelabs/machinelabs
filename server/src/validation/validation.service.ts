@@ -1,4 +1,6 @@
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { from } from 'rxjs/observable/from';
+import { tap, share, filter, mergeMap, takeUntil, merge, last, take, map } from 'rxjs/operators';
 import { Invocation, ExecutionRejectionInfo } from '@machinelabs/models';
 import { ValidationRule } from './rules/rule';
 import { ValidationContext } from './validation-context';
@@ -27,20 +29,25 @@ export class ValidationService {
 
     this.resolver.forEach((val, key) => {
       resolves.set(key, val.resolve(invocation)
-                           .do(data => resolved.set(key, data))
-                           .share());
+                           .pipe(
+                            tap(data => resolved.set(key, data)),
+                            share()
+                           ));
     });
 
-    let results$ = Observable
-                      .from(this.rules)
-                      .flatMap(rule => rule.check(invocation, resolves))
-                      .share();
+    let results$ = from(this.rules)
+                    .pipe(
+                      mergeMap(rule => rule.check(invocation, resolves)),
+                      share()
+                    );
 
-    let fails$ = results$.filter(result => result instanceof ExecutionRejectionInfo);
+    let fails$ = results$.pipe(filter(result => result instanceof ExecutionRejectionInfo));
 
-    return results$.takeUntil(fails$)
-            .merge(fails$.take(1))
-            .last()
-            .map((result: ValidationResult) => new ValidationContext(result, resolved));
+    return results$.pipe(
+      takeUntil(fails$),
+      merge(fails$.pipe(take(1))),
+      last(),
+      map((result: ValidationResult) => new ValidationContext(result, resolved))
+    );
   }
 }

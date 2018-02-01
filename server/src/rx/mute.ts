@@ -1,3 +1,4 @@
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { filter } from 'rxjs/operators';
 
-export const mute = (obs: Observable<any>) => obs.filter(() => false);
+export const mute = <T>(obs: Observable<T>) => obs.pipe(filter(() => false));

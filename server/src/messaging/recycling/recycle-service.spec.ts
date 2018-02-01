@@ -1,6 +1,10 @@
 import 'jest';
 
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { from } from 'rxjs/observable/from';
+import { of } from 'rxjs/observable/of';
+import { _throw } from 'rxjs/observable/throw';
+import { delay, tap } from 'rxjs/operators';
 import { RecycleAccumulator } from './recycle-accumulator';
 import { ExecutionMessage } from '../../models/execution';
 import { recycleCmdFactory } from './recycle-cmd-factory';
@@ -10,11 +14,11 @@ import { MessageKind } from '@machinelabs/models';
 
 let toSnapshot = (v: any) => ({ val: () => v});
 
-const createGetMessages = (msgs: Array<ExecutionMessage>, delay = 0) => (executionId: string, fromVirtualIndex: number, toVirtualIndex: number) => {
-  let msgs$ = Observable.of(msgs.filter(msg => msg.virtual_index >= fromVirtualIndex && msg.virtual_index <= toVirtualIndex)
+const createGetMessages = (msgs: Array<ExecutionMessage>, ms = 0) => (executionId: string, fromVirtualIndex: number, toVirtualIndex: number) => {
+  let msgs$ = of(msgs.filter(msg => msg.virtual_index >= fromVirtualIndex && msg.virtual_index <= toVirtualIndex)
                            .map(toSnapshot));
 
-  return delay > 0 ? msgs$.delay(delay) : msgs$;
+  return ms > 0 ? msgs$.pipe(delay(ms)) : msgs$;
 };
 
 describe('createRecycleCommand()', () => {
@@ -35,7 +39,7 @@ describe('createRecycleCommand()', () => {
 
     const getMessages = jest.fn(createGetMessages(msgs));
 
-    const bulkUpdate = jest.fn().mockReturnValue(Observable.of({}));
+    const bulkUpdate = jest.fn().mockReturnValue(of({}));
 
     let mockRepository = { getMessages, bulkUpdate };
 
@@ -50,10 +54,11 @@ describe('createRecycleCommand()', () => {
       deleteCount: 2
     });
 
-    return Observable
-      .from(msgs)
-      .let(msgs$ => recycleService.watch('1', msgs$))
-      .do(val => outboundMsgs.push(val))
+    return from(msgs)
+      .pipe(
+        msgs$ => recycleService.watch('1', msgs$),
+        tap((val: ExecutionMessage) => outboundMsgs.push(val))
+      )
       .toPromise()
       .then(() => {
         expect(outboundMsgs[0].index).toBe(0);
@@ -104,10 +109,10 @@ describe('createRecycleCommand()', () => {
 
     const getMessages = jest.fn((executionId: string, fromVirtualIndex: number, toVirtualIndex: number) => {
       // Here we mock that the database is not returning the expected number of messages
-      return Observable.of([msgs[2], msgs[3]].map(toSnapshot));
+      return of([msgs[2], msgs[3]].map(toSnapshot));
     });
 
-    const bulkUpdate = jest.fn().mockReturnValue(Observable.of({}));
+    const bulkUpdate = jest.fn().mockReturnValue(of({}));
 
     let mockRepository = { getMessages, bulkUpdate };
 
@@ -122,10 +127,11 @@ describe('createRecycleCommand()', () => {
 
     let outboundMsgs: Array<ExecutionMessage> = [];
 
-    return Observable
-      .from(msgs)
-      .let(msgs$ => recycleService.watch('1', msgs$))
-      .do(val => outboundMsgs.push(val))
+    return from(msgs)
+      .pipe(
+        msgs$ => recycleService.watch('1', msgs$),
+        tap((val: ExecutionMessage) => outboundMsgs.push(val))
+      )
       .toPromise()
       .then(() => {
 
@@ -173,7 +179,7 @@ describe('createRecycleCommand()', () => {
     const getMessages = jest.fn(createGetMessages(msgs));
 
     const bulkUpdate = jest.fn()
-                            .mockReturnValueOnce(Observable.of({}).delay(1500));
+                            .mockReturnValueOnce(of({}).pipe(delay(1500)));
 
 
     let mockRepository = { getMessages, bulkUpdate };
@@ -189,10 +195,11 @@ describe('createRecycleCommand()', () => {
 
     let outboundMsgs: Array<ExecutionMessage> = [];
 
-    return Observable
-      .from(msgs)
-      .let(msgs$ => recycleService.watch('1', msgs$))
-      .do(val => outboundMsgs.push(val))
+    return from(msgs)
+      .pipe(
+        msgs$ => recycleService.watch('1', msgs$),
+        tap((val: ExecutionMessage) => outboundMsgs.push(val))
+      )
       .toPromise()
       .then(() => {
 
@@ -244,9 +251,9 @@ describe('createRecycleCommand()', () => {
 
     // First call fails, second works
     const getMessages = jest.fn(createGetMessages(msgs))
-                            .mockImplementationOnce(() => Observable.throw('no internet'));
+                            .mockImplementationOnce(() => _throw('no internet'));
 
-    const bulkUpdate = jest.fn().mockReturnValue(Observable.of({}));
+    const bulkUpdate = jest.fn().mockReturnValue(of({}));
 
     let mockRepository = { getMessages, bulkUpdate };
 
@@ -261,10 +268,11 @@ describe('createRecycleCommand()', () => {
 
     let outboundMsgs: Array<ExecutionMessage> = [];
 
-    return Observable
-      .from(msgs)
-      .let(msgs$ => recycleService.watch('1', msgs$))
-      .do(val => outboundMsgs.push(val))
+    return from(msgs)
+      .pipe(
+        msgs$ => recycleService.watch('1', msgs$),
+        tap((val: ExecutionMessage) => outboundMsgs.push(val))
+      )
       .toPromise()
       .then(() => {
 
@@ -316,9 +324,9 @@ describe('createRecycleCommand()', () => {
 
     // First call fails, second works
     const getMessages = jest.fn(createGetMessages(msgs))
-                            .mockImplementationOnce(() => Observable.of().delay(1500));
+                            .mockImplementationOnce(() => of().pipe(delay(1500)));
 
-    const bulkUpdate = jest.fn().mockReturnValue(Observable.of({}));
+    const bulkUpdate = jest.fn().mockReturnValue(of({}));
 
     let mockRepository = { getMessages, bulkUpdate };
 
@@ -333,10 +341,11 @@ describe('createRecycleCommand()', () => {
 
     let outboundMsgs: Array<ExecutionMessage> = [];
 
-    return Observable
-      .from(msgs)
-      .let(msgs$ => recycleService.watch('1', msgs$))
-      .do(val => outboundMsgs.push(val))
+    return from(msgs)
+      .pipe(
+        msgs$ => recycleService.watch('1', msgs$),
+        tap((val: ExecutionMessage) => outboundMsgs.push(val))
+      )
       .toPromise()
       .then(() => {
 
@@ -393,7 +402,7 @@ describe('createRecycleCommand()', () => {
         let bulkUpdateDelay = 500;
         // The bulk update takes another half second to execute. But we aren't waiting on it
         // We are expecting outgoing messages to be delayed by a total of 500ms
-        const bulkUpdate = jest.fn().mockReturnValue(Observable.of({}).delay(bulkUpdateDelay));
+        const bulkUpdate = jest.fn().mockReturnValue(of({}).pipe(delay(bulkUpdateDelay)));
 
         let mockRepository = { getMessages, bulkUpdate };
 
@@ -408,16 +417,17 @@ describe('createRecycleCommand()', () => {
 
         let outboundMsgs: Array<ExecutionMessage> = [];
 
-        return Observable
-          .from(msgs)
-          .let(msgs$ => recycleService.watch('1', msgs$))
-          .do(val => {
-            // We are getting a timestamp at the moment where the messages
-            // come out of the recycleService. Therefore we can compare if
-            // messages actually come out defered.
-            val['received_at'] = Date.now();
-            outboundMsgs.push(val);
-          })
+        return from(msgs)
+          .pipe(
+            msgs$ => recycleService.watch('1', msgs$),
+            tap((val: ExecutionMessage) => {
+              // We are getting a timestamp at the moment where the messages
+              // come out of the recycleService. Therefore we can compare if
+              // messages actually come out defered.
+              val['received_at'] = Date.now();
+              outboundMsgs.push(val);
+            })
+          )
           .toPromise()
           .then(() => {
             expect(outboundMsgs[0].index).toBe(0);

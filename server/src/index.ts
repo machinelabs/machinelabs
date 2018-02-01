@@ -1,4 +1,4 @@
-import { Observable } from '@reactivex/rxjs';
+import { forkJoin } from 'rxjs/observable/forkJoin';
 import { DummyRunner } from './code-runner/dummy-runner.js';
 import { DockerRunner, DockerRunnerConfig } from './code-runner/docker-runner.js';
 import { MessagingService } from './messaging/messaging.service';
@@ -69,8 +69,7 @@ if (environment['pullImages']) {
   console.log('Not pulling docker images');
 }
 
-Observable
-  .forkJoin(initActions)
+forkJoin(initActions)
   .subscribe(results => {
     let dockerBinary: DockerExecutable = results[0];
     let memoryStats: MemoryStats = results[1];

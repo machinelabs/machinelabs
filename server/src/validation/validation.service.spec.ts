@@ -2,7 +2,9 @@ import 'jest';
 
 import { ValidationService } from './validation.service';
 import { ValidationRule } from './rules/rule';
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+import { delay } from 'rxjs/operators';
 import { Invocation, InvocationType, ExecutionRejectionInfo, ExecutionRejectionReason } from '@machinelabs/models';
 
 let dummyInvocation: Invocation = {
@@ -17,9 +19,9 @@ class FailedRule implements ValidationRule {
   constructor(private resolveAfter = 0) {}
 
   check(context: Invocation, resolves: Map<Function, Observable<any>>) {
-    let obs = Observable.of(new ExecutionRejectionInfo(ExecutionRejectionReason.NoAnonymous, ''));
+    let obs = of(new ExecutionRejectionInfo(ExecutionRejectionReason.NoAnonymous, ''));
 
-    return this.resolveAfter === 0 ? obs : obs.delay(this.resolveAfter);
+    return this.resolveAfter === 0 ? obs : obs.pipe(delay(this.resolveAfter));
   }
 }
 
@@ -27,9 +29,9 @@ class ApprovedRule implements ValidationRule {
   constructor(private resolveAfter = 0) {}
 
   check(context: Invocation, resolves: Map<Function, Observable<any>>) {
-    let obs = Observable.of(true);
+    let obs = of(true);
 
-    return this.resolveAfter === 0 ? obs : obs.delay(this.resolveAfter);
+    return this.resolveAfter === 0 ? obs : obs.pipe(delay(this.resolveAfter));
   }
 }
 
@@ -41,7 +43,7 @@ describe('.validate()', () => {
        .addRule(new ApprovedRule());
 
     svc.validate(dummyInvocation)
-       .subscribe(validationContext => {
+       .subscribe((validationContext: any) => {
          expect(validationContext.validationResult).toBeInstanceOf(ExecutionRejectionInfo);
       });
   });
@@ -52,7 +54,7 @@ describe('.validate()', () => {
     svc.addRule(new ApprovedRule());
 
     svc.validate(dummyInvocation)
-       .subscribe(validationContext => {
+       .subscribe((validationContext: any) => {
          expect(validationContext.validationResult).toBeTruthy();
       });
   });
@@ -65,7 +67,7 @@ describe('.validate()', () => {
 
     let backThen = Date.now();
     svc.validate(dummyInvocation)
-       .subscribe(validationContext => {
+       .subscribe((validationContext: any) => {
          let elapsedTime = Date.now() - backThen;
          expect(validationContext.validationResult).toBeInstanceOf(ExecutionRejectionInfo);
          expect(elapsedTime < 500).toBeTruthy();
@@ -81,7 +83,7 @@ describe('.validate()', () => {
 
     let backThen = Date.now();
     svc.validate(dummyInvocation)
-       .subscribe(validationContext => {
+       .subscribe((validationContext: any) => {
          let elapsedTime = Date.now() - backThen;
          expect(validationContext.validationResult).toBeInstanceOf(ExecutionRejectionInfo);
          expect(elapsedTime >= 1000).toBeTruthy();

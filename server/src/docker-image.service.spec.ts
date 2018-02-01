@@ -1,7 +1,8 @@
 import 'jest';
 
 import { DockerImageService } from './docker-image.service';
-import { Observable } from '@reactivex/rxjs';
+import { empty } from 'rxjs/observable/empty';
+import { of } from 'rxjs/observable/of';
 
 let dockerImages = {
   'common': {
@@ -22,7 +23,7 @@ let dockerImages = {
 describe('.getImageInfo()', () => {
   it('should raise exception if no image info available', () => {
 
-    let svc = new DockerImageService(Observable.empty(), null);
+    let svc = new DockerImageService(empty(), null);
 
     expect(() => {
       svc.getImageInfo('some-id');
@@ -32,7 +33,7 @@ describe('.getImageInfo()', () => {
 
   it('should return null for non existent ids', () => {
 
-    let svc = new DockerImageService(Observable.of(dockerImages), null);
+    let svc = new DockerImageService(of(dockerImages), null);
     svc.init().subscribe();
     expect(svc.getImageInfo('some-id')).toBeNull();
   });

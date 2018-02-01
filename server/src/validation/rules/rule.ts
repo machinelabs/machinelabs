@@ -1,4 +1,4 @@
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
 import { ValidationResult } from '../validation-result';
 import { Invocation } from '@machinelabs/models';
 

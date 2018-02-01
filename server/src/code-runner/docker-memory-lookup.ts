@@ -1,4 +1,5 @@
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 import { ProcessStreamData, OutputType, SpawnShellFn } from '@machinelabs/core';
 import isNumber = require('lodash.isnumber');
 
@@ -15,16 +16,20 @@ export class DockerMemoryLookup {
 
   getTotalMemory() {
     return this.spawnShell(`awk '/MemTotal/ {print $2}' /proc/meminfo`)
-               .map(val => val.origin === OutputType.Stderr || isNaN(+val.str) ? 0 : +val.str);
+      .pipe(
+        map(val => val.origin === OutputType.Stderr || isNaN(+val.str) ? 0 : +val.str)
+      );
   }
 
   getMemoryStats(): Observable<MemoryStats> {
     return this.getTotalMemory()
-               .map(totalMemory => ({
-                 totalMemoryKb: totalMemory,
-                 reservedKernelMemoryKb: RESERVED_KERNEL_MEMORY,
-                 maxKernelMemoryKb: totalMemory > RESERVED_KERNEL_MEMORY ? totalMemory - RESERVED_KERNEL_MEMORY : 0
-               }));
+      .pipe(
+        map(totalMemory => ({
+          totalMemoryKb: totalMemory,
+          reservedKernelMemoryKb: RESERVED_KERNEL_MEMORY,
+          maxKernelMemoryKb: totalMemory > RESERVED_KERNEL_MEMORY ? totalMemory - RESERVED_KERNEL_MEMORY : 0
+        }))
+      );
   }
 
 }

@@ -18,7 +18,7 @@
     "stripInternal": true,
     "paths": {
       "firebase": ["./node_modules/firebase"],
-      "@reactivex/*": ["./node_modules/@machinelabs/core/node_modules/@reactivex/*"]
+      "rxjs/*": ["./node_modules/rxjs/*"]
     },
     "baseUrl": "",
     "typeRoots": [
