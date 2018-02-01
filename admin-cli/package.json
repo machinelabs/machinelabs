@@ -15,7 +15,6 @@
     "@machinelabs/core": "link:../shared/core",
     "@machinelabs/metrics": "link:../shared/metrics",
     "@machinelabs/supervisor": "link:../shared/supervisor",
-    "@reactivex/rxjs": "^5.4.3",
     "chalk": "^2.0.1",
     "firebase-admin": "^5.1.0",
     "lodash.isstring": "^4.0.1",
@@ -23,6 +22,7 @@
     "moment": "^2.18.1",
     "node-pty": "^0.7.0",
     "pretty-ms": "^3.1.0",
+    "rxjs": "^5.5.6",
     "semver": "^5.4.1",
     "yargs": "^8.0.2"
   },

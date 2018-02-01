@@ -1,5 +1,5 @@
 import * as chalk from 'chalk';
-import { Observable } from '@reactivex/rxjs';
+import { concat } from 'rxjs/observable/concat';
 import { OutputType, stdout, spawnShell } from '@machinelabs/core';
 import { factory } from './execute';
 import * as fs from 'fs';
@@ -14,7 +14,7 @@ export function deployRestApi(project, env) {
     failWith('Command needs to be run from root dir');
   }
 
-  return Observable.concat(
+  return concat(
     stdout(chalk.green('Deploying REST API')),
 
     spawnShell(`(cd ./rest-api && npm run node_modules && npm run build -- --env=${env})`),

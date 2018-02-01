@@ -1,8 +1,8 @@
 import { stdout } from "@machinelabs/core";
-import { Observable } from '@reactivex/rxjs';
+import { defer } from 'rxjs/observable/defer';
 
 export const processify = (fn: any) => {
-  return Observable.defer(() => {
+  return defer(() => {
     fn();
     return stdout("");
   });

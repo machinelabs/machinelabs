@@ -6,7 +6,8 @@ import { createDb } from '../lib/create-db';
 import { getEnv } from '../lib/get-env';
 import { printStatistic } from '../lib/print-statistic';
 import { UsageStatisticService, CostCalculator, LiveMetricsService } from '@machinelabs/metrics';
-import { Observable } from '@reactivex/rxjs';
+import { empty } from 'rxjs/observable/empty';
+import { filter, tap, mergeMap, finalize } from 'rxjs/operators';
 
 const hasArgsForTakedown = argv => argv.cfg &&
                                    argv.cfg.firebase.privateKeyEnv &&
@@ -49,23 +50,25 @@ export const takedown = (argv) => {
     let takeDownMsg = (id:string) => console.log(chalk.yellow.bold(`Taking down execution ${id}`));
 
     svc.getUsageStatisticForAllCurrentlyActiveUsers()
-      .filter(statistic => !!statistic)
-      .do(statistic => printStatistic(statistic))
-      .flatMap(statistic => {
-        if (statistic.cpuSecondsLeft <= 0 && statistic.gpuSecondsLeft <= 0) {
-          console.log(chalk.red.bold(`\n${dryRunPrefix}Taking down all executions from user ${statistic.userId}...`));
-          return isDryRun ? Observable.empty() : takedownService.takedownByUser(statistic.userId).do(takeDownMsg);
-        } else if (statistic.cpuSecondsLeft <= 0) {
-          console.log(chalk.red.bold(`\n${dryRunPrefix}Taking down all CPU executions from user ${statistic.userId}...`));
-          return isDryRun ? Observable.empty() : takedownService.takedownByUser(statistic.userId, [HardwareType.CPU]).do(takeDownMsg);
-        } else if (statistic.gpuSecondsLeft <= 0) {
-          console.log(chalk.red.bold(`\n${dryRunPrefix}Taking down all GPU executions from user ${statistic.userId}...`));
-          return isDryRun ? Observable.empty() : takedownService.takedownByUser(statistic.userId, [HardwareType.GPU]).do(takeDownMsg);
-        }
+      .pipe(
+        filter(statistic => !!statistic),
+        tap(statistic => printStatistic(statistic)),
+        mergeMap(statistic => {
+          if (statistic.cpuSecondsLeft <= 0 && statistic.gpuSecondsLeft <= 0) {
+            console.log(chalk.red.bold(`\n${dryRunPrefix}Taking down all executions from user ${statistic.userId}...`));
+            return isDryRun ? empty() : takedownService.takedownByUser(statistic.userId).pipe(tap(takeDownMsg));
+          } else if (statistic.cpuSecondsLeft <= 0) {
+            console.log(chalk.red.bold(`\n${dryRunPrefix}Taking down all CPU executions from user ${statistic.userId}...`));
+            return isDryRun ? empty() : takedownService.takedownByUser(statistic.userId, [HardwareType.CPU]).pipe(tap(takeDownMsg));
+          } else if (statistic.gpuSecondsLeft <= 0) {
+            console.log(chalk.red.bold(`\n${dryRunPrefix}Taking down all GPU executions from user ${statistic.userId}...`));
+            return isDryRun ? empty() : takedownService.takedownByUser(statistic.userId, [HardwareType.GPU]).pipe(tap(takeDownMsg));
+          }
 
-        return Observable.empty();
-      })
-      .finally(() => console.log('\nDone...'))
+          return empty();
+        }),
+        finalize(() => console.log('\nDone...'))
+      )
       .subscribe();
   }
 }
