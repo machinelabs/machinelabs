@@ -80,17 +80,7 @@ ml-toolbar {
   }
 }
 
-@include phablet {
-  [ml-toolbar-sub-row] {
-    justify-content: flex-end;
-
-    [mat-button] {
-      flex: none;
-    }
-  }
-}
-
-@include tablet {
+@include TabletPortraitUp {
 
   .ml-editor-toolbar-lab-info {
     font-size: 1em;
@@ -121,11 +111,12 @@ ml-toolbar {
     [mat-button] {
       padding: 0 16px;
       min-width: 100px;
+      flex: none;
     }
   }
 }
 
-@include desktop {
+@include TabletLandscapeUp {
   .ml-editor-toolbar-cta-bar {
     display: block;
   }

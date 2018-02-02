@@ -28,7 +28,7 @@
   padding: 0;
 }
 
-@include tablet {
+@include TabletPortraitUp {
 
   .ml-toolbar-logo {
     img {
@@ -37,7 +37,7 @@
   }
 }
 
-@include desktop {
+@include TabletLandscapeUp {
   .ml-toolbar-layout {
     padding: 0 28px;
   }

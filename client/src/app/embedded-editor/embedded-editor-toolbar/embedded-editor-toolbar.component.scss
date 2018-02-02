@@ -30,7 +30,7 @@ ml-toolbar {
   font-size: 0.8em;
 }
 
-@include tablet {
+@include TabletPortraitUp {
   ml-toolbar {
     ::ng-deep .ml-toolbar-logo img {
       height: 18px!important;

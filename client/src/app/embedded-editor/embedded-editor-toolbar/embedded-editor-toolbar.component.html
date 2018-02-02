@@ -1,7 +1,7 @@
 <ml-toolbar>
   <ml-toolbar-content>
     <div class="ml-toolbar-lab-info">
-      <span [matTooltip]="lab?.name" class="ml-toolbar-lab-name">{{lab?.name | words: 10}}</span>
+      <span [matTooltip]="lab?.name" class="ml-toolbar-lab-name">{{lab?.name | words: truncateLabNameWordCount}}</span>
     </div>
   </ml-toolbar-content>
 

@@ -1,4 +1,5 @@
 import { Component, Output, Input, EventEmitter } from '@angular/core';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Lab } from '../../models/lab';
 
 @Component({
@@ -14,4 +15,13 @@ export class EmbeddedEditorToolbarComponent {
 
   @Output() open = new EventEmitter<void>();
 
+  truncateLabNameWordCount = 4;
+
+  constructor(private breakpointObserver: BreakpointObserver) {}
+
+  ngOnInit() {
+    this.breakpointObserver.observe([Breakpoints.Tablet, Breakpoints.Web]).subscribe(state => {
+      this.truncateLabNameWordCount = state.matches ? 10 : 4;
+    });
+  }
 }
