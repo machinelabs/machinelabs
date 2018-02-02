@@ -21,7 +21,7 @@
     </ng-container>
   </ng-container>
 
-  <mat-menu #menu="matMenu">
+  <mat-menu #menu="matMenu" xPosition="before">
     <button mat-menu-item *ngIf="user?.isAnonymous" (click)="loginWithGitHub()"><mat-icon>perm_identity</mat-icon>Login with GitHub</button>
     <a mat-menu-item title="Your MachineLabs profile" *ngIf="user && !user.isAnonymous"
       [routerLink]="['/user', user.id]">

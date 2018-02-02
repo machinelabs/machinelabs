@@ -1,22 +1,22 @@
 <ml-toolbar>
   <ml-toolbar-content>
-    <div class="ml-toolbar-lab-info">
-      <span [matTooltip]="lab.name" class="ml-toolbar-lab-name">{{lab.name | words: 10}}</span>
+    <div class="ml-editor-toolbar-lab-info">
+      <span [matTooltip]="lab.name" class="ml-editor-toolbar-lab-name">{{lab.name | words: truncateLabNameWordCount}}</span>
 
       <ng-container *ngIf="userService.userOwnsLab(user, lab); else userInfo">
         <button
           mat-icon-button
           type="button"
           (click)="emitAction(EditorToolbarActionTypes.Edit, lab)"
-          class="ml-toolbar-edit-button">
+          class="ml-editor-toolbar-edit-button">
           <mat-icon>settings</mat-icon>
         </button>
       </ng-container>
 
       <ng-template #userInfo>
-        <span class="ml-toolbar-user-info">
+        <span class="ml-editor-toolbar-user-info">
           <ng-container *ngIf="forkedLab && forkOwner">
-            forked from <a title="Go to fork" [routerLink]="['/editor', forkedLab.id]">{{forkOwner.displayName + '/' + forkedLab.name | words: 10}}</a>
+            <span class="ml-editor-toolbar-fork-of-info">forked from <a title="Go to fork" [routerLink]="['/editor', forkedLab.id]">{{forkOwner.displayName + '/' + forkedLab.name | words: 3}}</a></span>
           </ng-container>
 
           <ng-container *ngIf="(labOwner | async); else anonymousUser; let user;">
@@ -32,28 +32,33 @@
   </ml-toolbar-content>
 
   <ml-toolbar-cta-bar>
-    <ng-container *ngIf="userService.userOwnsLab(user, lab); else forkAndRunButton">
-      <button mat-button (click)="emitAction(EditorToolbarActionTypes.Run, lab)"><mat-icon>play_arrow</mat-icon> Run</button>
-    </ng-container>
-    <ng-template #forkAndRunButton>
-      <button mat-button (click)="emitAction(EditorToolbarActionTypes.ForkAndRun, lab)"><mat-icon>play_arrow</mat-icon> Fork & Run</button>
-    </ng-template>
-    <button mat-button (click)="emitAction(EditorToolbarActionTypes.Save, lab)" *ngIf="userService.userOwnsLab(user, lab)"><mat-icon>save</mat-icon> Save</button>
-    <button mat-button (click)="emitAction(EditorToolbarActionTypes.Fork, lab)"><mat-icon>share</mat-icon> Fork</button>
-    <button mat-button [matMenuTriggerFor]="menu"><mat-icon>keyboard_arrow_down</mat-icon> New</button>
-
-    <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
-      <button mat-menu-item (click)="emitAction(EditorToolbarActionTypes.Create, 'blank')">Blank Lab</button>
-      <button mat-menu-item [matMenuTriggerFor]="templates">Templates</button>
-    </mat-menu>
-
-    <mat-menu #templates="matMenu">
-      <button mat-menu-item (click)="emitAction(EditorToolbarActionTypes.Create, 'mnist')">MNIST</button>
-    </mat-menu>
+    <div class="ml-editor-toolbar-cta-bar">
+      <ng-container [ngTemplateOutlet]="editorCallToActions"></ng-container>
+    </div>
   </ml-toolbar-cta-bar>
-
-
-
   <ml-toolbar-menu></ml-toolbar-menu>
-
+  <div ml-toolbar-sub-row>
+    <ng-container [ngTemplateOutlet]="editorCallToActions"></ng-container>
+  </div>
 </ml-toolbar>
+
+
+<ng-template #editorCallToActions>
+  <ng-container *ngIf="userService.userOwnsLab(user, lab); else forkAndRunButton">
+    <button mat-button (click)="emitAction(EditorToolbarActionTypes.Run, lab)"><mat-icon>play_arrow</mat-icon> Run</button>
+  </ng-container>
+  <ng-template #forkAndRunButton>
+    <button mat-button (click)="emitAction(EditorToolbarActionTypes.ForkAndRun, lab)"><mat-icon>play_arrow</mat-icon> Fork & Run</button>
+  </ng-template>
+  <button mat-button (click)="emitAction(EditorToolbarActionTypes.Save, lab)" *ngIf="userService.userOwnsLab(user, lab)"><mat-icon>save</mat-icon> Save</button>
+  <button mat-button (click)="emitAction(EditorToolbarActionTypes.Fork, lab)"><mat-icon>share</mat-icon> Fork</button>
+  <button mat-button [matMenuTriggerFor]="menu"><mat-icon>keyboard_arrow_down</mat-icon> New</button>
+
+  <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
+    <button mat-menu-item (click)="emitAction(EditorToolbarActionTypes.Create, 'blank')">Blank Lab</button>
+    <button mat-menu-item [matMenuTriggerFor]="templates">Templates</button>
+  </mat-menu>
+  <mat-menu #templates="matMenu">
+    <button mat-menu-item (click)="emitAction(EditorToolbarActionTypes.Create, 'mnist')">MNIST</button>
+  </mat-menu>
+</ng-template>
