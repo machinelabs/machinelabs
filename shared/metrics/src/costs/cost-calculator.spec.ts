@@ -2,7 +2,8 @@ import 'jest';
 
 import { CostCalculator } from './cost-calculator';
 import { Execution, HardwareType } from '@machinelabs/models';
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { from } from 'rxjs/observable/from';
 import { CostReport } from './cost-report';
 import { COST_PER_SECOND_PER_TYPE } from './costs';
 
@@ -44,7 +45,7 @@ describe('.calc()', () => {
   it('should calculate CostReport', (done) => {
     expect.assertions(6);
 
-    let executions$ = Observable.from(generateExecutions());
+    let executions$ = from(generateExecutions());
 
     let calculator = new CostCalculator();
 

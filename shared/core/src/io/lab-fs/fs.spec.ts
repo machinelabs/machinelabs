@@ -1,6 +1,7 @@
 import 'jest';
 import { existsSync, rmdirSync, readFileSync } from 'fs';
 import * as rimraf from 'rimraf';
+import { finalize, tap } from 'rxjs/operators';
 
 import { writeDirectory, writeLabDirectory } from './fs';
 import { spawnShell } from '../reactive-process';
@@ -28,14 +29,16 @@ describe('.writeDirectory()', () => {
     };
 
     writeDirectory(dir)
-      .finally(() => {
-        expect(existsSync('foo/foo')).toBe(true);
+      .pipe(
+        finalize(() => {
+          expect(existsSync('foo/foo')).toBe(true);
 
-        // cleanup test files
-        rimraf.sync('foo');
-        expect(existsSync('foo')).toBe(false);
-        done();
-      })
+          // cleanup test files
+          rimraf.sync('foo');
+          expect(existsSync('foo')).toBe(false);
+          done();
+        })
+      )
       .subscribe();
   });
 
@@ -59,17 +62,19 @@ describe('.writeDirectory()', () => {
     };
 
     writeDirectory(dir, true)
-      .finally(() => {
-        expect(existsSync('foo')).toBe(true);
-        expect(existsSync('bar/bar')).toBe(true);
+      .pipe(
+        finalize(() => {
+          expect(existsSync('foo')).toBe(true);
+          expect(existsSync('bar/bar')).toBe(true);
 
-        // cleanup test files
-        rimraf.sync('foo');
-        rimraf.sync('bar');
-        expect(existsSync('foo')).toBe(false);
-        expect(existsSync('bar')).toBe(false);
-        done();
-      })
+          // cleanup test files
+          rimraf.sync('foo');
+          rimraf.sync('bar');
+          expect(existsSync('foo')).toBe(false);
+          expect(existsSync('bar')).toBe(false);
+          done();
+        })
+      )
       .subscribe();
   });
 
@@ -113,22 +118,24 @@ describe('.writeDirectory()', () => {
     ];
 
     writeLabDirectory(labDirectory)
-      .finally(() => {
-        expect(existsSync('foo')).toBe(true);
-        expect(existsSync('foobar')).toBe(true);
-        expect(existsSync('bar/bar')).toBe(true);
-        expect(existsSync('bar/foobar')).toBe(true);
-        expect(existsSync('bar/bar2/bar')).toBe(true);
-        expect(existsSync('bar/bar2/foobar')).toBe(true);
+      .pipe(
+        finalize(() => {
+          expect(existsSync('foo')).toBe(true);
+          expect(existsSync('foobar')).toBe(true);
+          expect(existsSync('bar/bar')).toBe(true);
+          expect(existsSync('bar/foobar')).toBe(true);
+          expect(existsSync('bar/bar2/bar')).toBe(true);
+          expect(existsSync('bar/bar2/foobar')).toBe(true);
 
-        // cleanup test files
-        rimraf.sync('foo');
-        rimraf.sync('foobar');
-        rimraf.sync('bar');
-        expect(existsSync('foo')).toBe(false);
-        expect(existsSync('bar')).toBe(false);
-        done();
-      })
+          // cleanup test files
+          rimraf.sync('foo');
+          rimraf.sync('foobar');
+          rimraf.sync('bar');
+          expect(existsSync('foo')).toBe(false);
+          expect(existsSync('bar')).toBe(false);
+          done();
+        })
+      )
       .subscribe();
   });
 
@@ -145,16 +152,18 @@ describe('.writeDirectory()', () => {
     ];
 
     writeLabDirectory(labDirectory)
-      .do(x => console.log(x))
-      .finally(() => {
-        expect(existsSync('foo')).toBe(true);
-        expect(readFileSync('foo').toString()).toBe('bar\n');
+      .pipe(
+        tap(x => console.log(x)),
+        finalize(() => {
+          expect(existsSync('foo')).toBe(true);
+          expect(readFileSync('foo').toString()).toBe('bar\n');
 
-        // cleanup test files
-        rimraf.sync('foo');
-        expect(existsSync('foo')).toBe(false);
-        done();
-      })
+          // cleanup test files
+          rimraf.sync('foo');
+          expect(existsSync('foo')).toBe(false);
+          done();
+        })
+      )
       .subscribe();
   });
 
@@ -185,17 +194,19 @@ describe('.writeDirectory()', () => {
     ];
 
     writeLabDirectory(labDirectory)
-      .do(x => console.log(x))
-      .finally(() => {
-        expect(existsSync('foo/foo')).toBe(true);
-        expect(existsSync('foo/bar')).toBe(true);
-        expect(readFileSync('foo/foo').toString()).toBe('bar\n');
+      .pipe(
+        tap(x => console.log(x)),
+        finalize(() => {
+          expect(existsSync('foo/foo')).toBe(true);
+          expect(existsSync('foo/bar')).toBe(true);
+          expect(readFileSync('foo/foo').toString()).toBe('bar\n');
 
-        // cleanup test files
-        rimraf.sync('foo');
-        expect(existsSync('foo')).toBe(false);
-        done();
-      })
+          // cleanup test files
+          rimraf.sync('foo');
+          expect(existsSync('foo')).toBe(false);
+          done();
+        })
+      )
       .subscribe();
   });
 
@@ -212,15 +223,17 @@ describe('.writeDirectory()', () => {
     ];
 
     writeLabDirectory(labDirectory)
-      .do(x => console.log(x))
-      .finally(() => {
-        expect(existsSync('foo')).toBe(true);
+      .pipe(
+        tap(x => console.log(x)),
+        finalize(() => {
+          expect(existsSync('foo')).toBe(true);
 
-        // cleanup test files
-        rimraf.sync('foo');
-        expect(existsSync('foo')).toBe(false);
-        done();
-      })
+          // cleanup test files
+          rimraf.sync('foo');
+          expect(existsSync('foo')).toBe(false);
+          done();
+        })
+      )
       .subscribe();
   });
 

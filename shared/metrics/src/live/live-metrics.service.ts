@@ -1,5 +1,5 @@
-import { Observable } from '@reactivex/rxjs';
 import { ObservableDbRef, DbRefBuilder } from '@machinelabs/core';
+import { Observable } from 'rxjs/Observable';
 
 export class LiveMetricsService {
 

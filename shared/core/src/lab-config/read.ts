@@ -1,10 +1,8 @@
 import { Lab, File, instanceOfFile, LabDirectory, Directory } from '@machinelabs/models';
-import { readLabDirectory, ReadOptions } from '../io/lab-fs/read';
-
-export const CONFIG_FILE_NAME = 'ml.yaml';
+import { ML_YAML_FILENAME } from './ml.yaml';
 
 export const getMlYamlFromLabDirectory = (dir: LabDirectory) => {
-  let file = dir.find(f => f.name.toLowerCase() === CONFIG_FILE_NAME);
+  let file = dir.find(f => f.name.toLowerCase() === ML_YAML_FILENAME);
 
   return instanceOfFile(file) ? file : null;
 };
