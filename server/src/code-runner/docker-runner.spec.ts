@@ -1,5 +1,6 @@
 import 'jest';
-import { Observable } from '@reactivex/rxjs';
+import { of } from 'rxjs/observable/of';
+import { tap, concat } from 'rxjs/operators';
 import { DockerRunner, DockerRunnerConfig } from './docker-runner';
 import { stdout, ProcessStreamData, stdoutMsg } from '@machinelabs/core';
 import { Lab } from '@machinelabs/models';
@@ -68,27 +69,29 @@ describe('.run(lab)', () => {
     let outgoingMessages: Array<ProcessStreamData> = [];
 
     runner.run(inv, conf)
-       .do(msg => outgoingMessages.push(msg))
-       .do(_ => expect(runner.count()).toBe(1))
-       // The concat ensures that all expectations will run after the finally block
-       // of the Observable that is being returned from run
-       .concat(Observable.of())
-       .subscribe(null, null, () => {
-         expect(runner.count()).toBe(0);
-         expect(outgoingMessages.length).toBe(3);
-         expect(outgoingMessages[0]).toEqual(stdoutMsg('downloader output'));
-         expect(outgoingMessages[1]).toEqual(stdoutMsg('execution output'));
-         expect(outgoingMessages[2]).toEqual(stdoutMsg('uploader output'));
-         // tslint:disable-next-line
-         expect(spawn.mock.calls[0]).toEqual(['docker', ['create', '--cap-drop=ALL', '--kernel-memory=1024k', '--security-opt=no-new-privileges', '-t', '--read-only', '--tmpfs', '/run:rw,size=5g,mode=1777', '--tmpfs', '/tmp:rw,size=1g,mode=1777', '--name', '4711', 'bar', '/bin/bash']]);
-         // tslint:disable-next-line
-         expect(spawn.mock.calls[1]).toEqual(['docker', ['exec', '-t', containerId, '/bin/bash', '-c', `mkdir /run/outputs && cd /run && ({ cat <<'EOL' > foo.py
+      .pipe(
+        tap(msg => outgoingMessages.push(msg)),
+        tap(_ => expect(runner.count()).toBe(1)),
+        // The concat ensures that all expectations will run after the finally block
+        // of the Observable that is being returned from run
+        concat(of())
+      )
+      .subscribe(null, null, () => {
+        expect(runner.count()).toBe(0);
+        expect(outgoingMessages.length).toBe(3);
+        expect(outgoingMessages[0]).toEqual(stdoutMsg('downloader output'));
+        expect(outgoingMessages[1]).toEqual(stdoutMsg('execution output'));
+        expect(outgoingMessages[2]).toEqual(stdoutMsg('uploader output'));
+        // tslint:disable-next-line
+        expect(spawn.mock.calls[0]).toEqual(['docker', ['create', '--cap-drop=ALL', '--kernel-memory=1024k', '--security-opt=no-new-privileges', '-t', '--read-only', '--tmpfs', '/run:rw,size=5g,mode=1777', '--tmpfs', '/tmp:rw,size=1g,mode=1777', '--name', '4711', 'bar', '/bin/bash']]);
+        // tslint:disable-next-line
+        expect(spawn.mock.calls[1]).toEqual(['docker', ['exec', '-t', containerId, '/bin/bash', '-c', `mkdir /run/outputs && cd /run && ({ cat <<'EOL' > foo.py
 foo
 EOL
 }) && python main.py --learning_rate=5 --max_steps=200`]]);
-         expect(uploader.handleUpload.mock.calls.length).toBe(1);
-         done();
-       });
+        expect(uploader.handleUpload.mock.calls.length).toBe(1);
+        done();
+      });
   });
 
 });

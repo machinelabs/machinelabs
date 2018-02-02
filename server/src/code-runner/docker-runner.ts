@@ -1,5 +1,6 @@
 import { exec } from 'child_process';
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { map, mergeMap, finalize, concat } from 'rxjs/operators';
 import { CodeRunner } from './code-runner';
 import { File } from '@machinelabs/models';
 import { createWriteLabDirectoryCmd } from '@machinelabs/core';
@@ -68,22 +69,27 @@ export class DockerRunner implements CodeRunner {
       configuration.imageWithDigest,
       '/bin/bash'
     ])
-    .map(msg => trimNewLines(msg.str))
-    .flatMap(containerId =>
-      this.config.spawnShell(`docker start ${containerId}`).let(mute)
-          .concat(this.config.downloader.fetch(containerId, configuration.inputs))
-          .concat(this.config.spawn(this.config.dockerExecutable, [
-            'exec',
-            '-t',
-            containerId,
-            '/bin/bash',
-            '-c',
-            `mkdir /run/outputs && cd /run && (${writeCommand}) && python main.py ${args}`
-          ]))
-          .concat(this.config.uploader.handleUpload(invocation, containerId))
-          .concat(this.config.spawnShell(`docker rm -f ${containerId}`).let(mute))
-    )
-    .finally(() => this.processCount--);
+    .pipe(
+      map(msg => trimNewLines(msg.str)),
+      mergeMap((containerId: string) =>
+        this.config.spawnShell(`docker start ${containerId}`)
+          .pipe(
+            mute,
+            concat(this.config.downloader.fetch(containerId, configuration.inputs)),
+            concat(this.config.spawn(this.config.dockerExecutable, [
+              'exec',
+              '-t',
+              containerId,
+              '/bin/bash',
+              '-c',
+              `mkdir /run/outputs && cd /run && (${writeCommand}) && python main.py ${args}`
+            ])),
+            concat(this.config.uploader.handleUpload(invocation, containerId)),
+            concat(this.config.spawnShell(`docker rm -f ${containerId}`).pipe(mute))
+          )
+      ),
+      finalize(() => this.processCount--)
+    );
   }
 
   stop (id: string, attempt = 0) {

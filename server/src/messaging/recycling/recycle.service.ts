@@ -1,4 +1,5 @@
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { mergeScan, map } from 'rxjs/operators';
 import { ExecutionMessage } from '../../models/execution';
 import { RecycleAccumulator } from './recycle-accumulator';
 import { MessageRepository } from '../message-repository';
@@ -17,7 +18,9 @@ export class RecycleService {
 
   watch(executionId: string, messages: Observable<ExecutionMessage>) {
     return messages
-      .mergeScan((acc: RecycleAccumulator, message: ExecutionMessage) => acc.pass(acc, message), new RecycleAccumulator(executionId, this.config), 1)
-      .map(val => val.message);
+      .pipe(
+        mergeScan((acc: RecycleAccumulator, message: ExecutionMessage) => acc.pass(acc, message), new RecycleAccumulator(executionId, this.config), 1),
+        map(val => val.message)
+      );
   }
 }

@@ -1,4 +1,5 @@
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 import { ValidationRule } from './rule';
 import { Invocation, SYSTEM_USER } from '@machinelabs/models';
 import { ValidationResult } from '../validation-result';
@@ -18,6 +19,8 @@ export class OwnsExecutionRule implements ValidationRule {
 
     return resolves
       .get(ExecutionResolver)
-      .map((execution: Execution) => isOwnerOrSystem(execution.user_id, invocation.user_id));
+      .pipe(
+        map((execution: Execution) => isOwnerOrSystem(execution.user_id, invocation.user_id))
+      );
   }
 }

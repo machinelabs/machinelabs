@@ -1,4 +1,7 @@
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import { map } from 'rxjs/operators';
 import * as validFilename from 'valid-filename';
 import { flatMap, isString, trimStart } from 'lodash';
 
@@ -42,12 +45,14 @@ export class MountService {
   getMount(userId: string, mount: string): Observable<Mount> {
     return this.db.mountRef(userId, mount)
                   .onceValue()
-                  .map(snapshot => snapshot.val());
+                  .pipe(
+                    map(snapshot => snapshot.val())
+                  );
   }
 
   getMountFromOption(mountOption: ParsedMountOption): Observable<Mount> {
     return mountOption ? this.getMount(mountOption.fragments.user, mountOption.fragments.mount) :
-                         Observable.of(null);
+                         of(null);
   }
 
 
@@ -95,7 +100,7 @@ export class MountService {
     let parsedMounts = requestedMounts.map(mount => this.parseMountOption(mount));
 
     if (!requestedMounts.length) {
-      return Observable.of({
+      return of({
         validated: [],
         mountPoints: [],
         errors: [],
@@ -105,22 +110,24 @@ export class MountService {
 
     let mounts$ = parsedMounts.map(parsedOption => this.getMountFromOption(parsedOption));
 
-    return Observable.forkJoin(mounts$)
-                     .map(mounts => {
+    return forkJoin(mounts$)
+      .pipe(
+        map(mounts => {
 
-                       let validated = mounts.map((mount, index) => this.toValidatedMount(userId, requestedMounts[index], parsedMounts[index], mount));
-                       let mountPoints = validated.map(val => val.mountPoint);
-                       let parsed = parsedMounts;
-                       let errors = flatMap(validated, val => val.errors);
-                       let hasErrors = errors.length === 0;
+            let validated = mounts.map((mount, index) => this.toValidatedMount(userId, requestedMounts[index], parsedMounts[index], mount));
+            let mountPoints = validated.map(val => val.mountPoint);
+            let parsed = parsedMounts;
+            let errors = flatMap(validated, val => val.errors);
+            let hasErrors = errors.length === 0;
 
-                       return {
-                         validated: validated,
-                         mountPoints: mountPoints,
-                         errors: errors,
-                         hasErrors: hasErrors
-                       };
-                     });
+            return {
+              validated: validated,
+              mountPoints: mountPoints,
+              errors: errors,
+              hasErrors: hasErrors
+            };
+          })
+        );
   }
 
   toValidatedMount(userId: string, requested: MountOption, parsed: ParsedMountOption, mount: Mount): ValidatedMount {

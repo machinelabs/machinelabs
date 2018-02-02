@@ -1,4 +1,6 @@
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import { map } from 'rxjs/operators';
 import { ValidationRule } from './rule';
 import { Invocation, HardwareType, ExecutionRejectionInfo, ExecutionRejectionReason, PlanId } from '@machinelabs/models';
 import { ValidationResult } from '../validation-result';
@@ -18,32 +20,34 @@ export class HasCreditsLeftRule implements ValidationRule {
       throw new Error('Missing resoler: CostReportResolver');
     }
 
-    return Observable.forkJoin(resolves.get(CostReportResolver),
-                               resolves.get(UserResolver),
-                               resolves.get(LabConfigResolver))
-      .map(([costReport, user, config]) => {
-        const isAdmin = user.plan.plan_id === PlanId.Admin;
-        const hardwareType = config.hardwareType;
-        const statistic: UsageStatistic = this.usageStatisticService.calculateStatisticForPlan(user.common.id, user.plan.plan_id, costReport);
+    return forkJoin(resolves.get(CostReportResolver),
+                    resolves.get(UserResolver),
+                    resolves.get(LabConfigResolver))
+      .pipe(
+        map(([costReport, user, config]) => {
+          const isAdmin = user.plan.plan_id === PlanId.Admin;
+          const hardwareType = config.hardwareType;
+          const statistic: UsageStatistic = this.usageStatisticService.calculateStatisticForPlan(user.common.id, user.plan.plan_id, costReport);
 
-        if (isAdmin) {
+          if (isAdmin) {
+            return true;
+          }
+
+          if (!statistic) {
+            return new ExecutionRejectionInfo(ExecutionRejectionReason.InternalError, 'Internal Error');
+          }
+
+          if ((hardwareType === HardwareType.CPU && statistic.cpuSecondsLeft <= 0)) {
+            return new ExecutionRejectionInfo(ExecutionRejectionReason.OutOfCpuCredits, 'User is out of CPU credits');
+          }
+
+
+          if (hardwareType === HardwareType.GPU && statistic.gpuSecondsLeft <= 0) {
+            return new ExecutionRejectionInfo(ExecutionRejectionReason.OutOfGpuCredits, 'User is out of GPU credits');
+          }
+
           return true;
-        }
-
-        if (!statistic) {
-          return new ExecutionRejectionInfo(ExecutionRejectionReason.InternalError, 'Internal Error');
-        }
-
-        if ((hardwareType === HardwareType.CPU && statistic.cpuSecondsLeft <= 0)) {
-          return new ExecutionRejectionInfo(ExecutionRejectionReason.OutOfCpuCredits, 'User is out of CPU credits');
-        }
-
-
-        if (hardwareType === HardwareType.GPU && statistic.gpuSecondsLeft <= 0) {
-          return new ExecutionRejectionInfo(ExecutionRejectionReason.OutOfGpuCredits, 'User is out of GPU credits');
-        }
-
-        return true;
-      });
+        })
+      );
   }
 }
