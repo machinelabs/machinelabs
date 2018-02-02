@@ -6,7 +6,7 @@ import { CodeRunner } from '../code-runner/code-runner';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { empty } from 'rxjs/observable/empty';
-import { map, share, filter, mergeMap, switchMap, startWith, concat, tap } from 'rxjs/operators';
+import { map, share, filter, mergeMap, switchMap, startWith, concat, tap, catchError } from 'rxjs/operators';
 import { Invocation, InvocationType } from '@machinelabs/models';
 import { Execution, ExecutionStatus, Server, MessageKind } from '@machinelabs/models';
 import { ProcessStreamData, parseLabDirectory } from '@machinelabs/core';
@@ -185,6 +185,12 @@ export class MessagingService {
         user_id: invocation.user_id,
         status: ExecutionStatus.Executing
       })
+      .pipe(
+        catchError(err => {
+          console.error(`Failed to update execution ${invocation.id} of lab ${invocation.data.id}`);
+          return empty();
+        })
+      )
       .subscribe();
   }
 
@@ -217,6 +223,10 @@ export class MessagingService {
                     }
 
                     return dbRefBuilder.executionRef(executionId).update(delta);
+                  }),
+                  catchError(err => {
+                    console.error(`Failed to complete execution ${executionId} to state ${status}`);
+                    return empty();
                   })
                 )
                 .subscribe();
@@ -234,6 +244,14 @@ export class MessagingService {
     let id = db.ref().push().key;
     data.id = id;
     data.timestamp = firebase.database.ServerValue.TIMESTAMP;
-    return dbRefBuilder.executionMessageRef(run.id, id).set(data);
+    return dbRefBuilder
+      .executionMessageRef(run.id, id)
+      .set(data)
+      .pipe(
+        catchError(err => {
+          console.error(`Failed to write message for execution ${run.id} of lab ${run.data.id}`);
+          return empty();
+        })
+      );
   }
 }
