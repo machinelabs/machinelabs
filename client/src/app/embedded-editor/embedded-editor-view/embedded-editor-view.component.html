@@ -7,7 +7,7 @@
     </ml-embedded-editor-toolbar>
   </ml-editor-layout-header>
   <ml-editor-layout-nav-bar>
-    <div mat-tab-nav-bar>
+    <div mat-tab-nav-bar class="ml-embedded-editor-view-nav-bar">
       <a matTabLink (click)="editorService.selectEditorTab()" [active]="editorService.editorTabActive()">Editor</a>
       <a matTabLink (click)="editorService.selectConsoleTab()" [active]="editorService.consoleTabActive()">Console</a>
       <a matTabLink (click)="editorService.selectOutputsTab()" [active]="editorService.outputsTabActive()">Outputs</a>

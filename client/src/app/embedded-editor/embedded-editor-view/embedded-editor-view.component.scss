@@ -1,13 +1,24 @@
+@import '../../../mixins';
+
 :host {
   display: block;
   background: #fafafa;
 }
 
-[matTabLink] {
-  height: 40px;
-  min-width: 100px;
-  line-height: 40px;
+.ml-embedded-editor-view-nav-bar {
+
+  ::ng-deep .mat-tab-links {
+    display: flex;
+  }
+
+  [matTabLink] {
+    height: 40px;
+    min-width: 100px;
+    line-height: 40px;
+    flex: 1;
+  }
 }
+
 
 mat-drawer {
   width: 350px;
@@ -30,4 +41,12 @@ monaco-editor {
 .ml-editor-panel-cta-bar {
   background: red;
   width: 40px;
+}
+
+@include WebPortraitUp {
+  .ml-embedded-editor-view-nav-bar {
+    [matTabLink] {
+      flex: none;
+    }
+  }
 }
