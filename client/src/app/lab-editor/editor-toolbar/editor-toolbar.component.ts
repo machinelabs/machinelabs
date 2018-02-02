@@ -78,7 +78,7 @@ export class EditorToolbarComponent implements OnInit, OnChanges, OnDestroy {
                     .subscribe(user => this.user = user);
 
 
-    this.breakpointObserver.observe([Breakpoints.Tablet).subscribe(state => {
+    this.breakpointObserver.observe([Breakpoints.Tablet, Breakpoints.Web]).subscribe(state => {
       this.truncateLabNameWordCount = state.matches ? 10 : 4;
     });
   }

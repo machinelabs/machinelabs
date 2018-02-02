@@ -1,15 +1,97 @@
-$phablet-width: 524px;
-$tablet-width: 768px;
+$xsmall-width: 599px;
+$small-min-width: 600px;
+$small-max-width: 959px;
+$medium-min-width: 960px;
+$medium-max-width: 1279px;
+$large-min-width: 1280px;
+$large-max-width: 1919px;
+$xlarge-min-width: 1920px;
+
+$handset-portrait-max-width: 599px;
+$handset-landscape-max-width: 959px;
+
+$tablet-portrait-min-width: 600px;
+$tablet-portrait-max-width: 839px;
+
+$tablet-landscape-min-width: 960px;
+$tablet-landscape-max-width: 1279px;
+
+$web-portrait-min-width: 840px;
+$web-landscape-min-width: 1280px;
+
 $desktop-width: 1024px;
 
-@mixin phablet {
-  @media (min-width: #{$phablet-width}) {
+@mixin XSmall {
+  @media (max-width: #{$small-width}) {
     @content;
   }
 }
 
-@mixin tablet {
-  @media (min-width: #{$tablet-width}) {
+@mixin Small {
+  @media (min-width: #{$small-min-width}) and (max-width: #{$small-max-width}) {
+    @content;
+  }
+}
+
+@mixin Medium {
+  @media (min-width: #{$medium-min-width}) and (max-width: #{$medium-max-width}) {
+    @content;
+  }
+}
+
+@mixin Large {
+  @media (min-width: #{$large-min-width}) and (max-width: #{$large-max-width}) {
+    @content;
+  }
+}
+
+@mixin XLarge {
+  @media (min-width: #{$xlarge-min-width}) {
+    @content;
+  }
+}
+
+@mixin Handset {
+  @media (min-width: #{$handset-portrait-max-width}) and (orientation: portrait),
+  (max-width: #{$handset-landscape-max-width}) and (orientation: landscape) {
+    @content;
+  }
+}
+
+@mixin Tablet {
+  @media (min-width: #{$tablet-portrait-min-width}) and (max-width: #{$tablet-portrait-max-width}) and (orientation: portrait),
+  (max-width: #{$tablet-landscape-min-width}) and (max-width: #{$tablet-landscape-max-width}) and (orientation: landscape) {
+    @content;
+  }
+}
+
+@mixin TabletPortraitUp {
+  @media (min-width: #{$tablet-portrait-min-width}) {
+    @content;
+  }
+}
+
+@mixin TabletLandscapeUp {
+  @media (min-width: #{$tablet-landscape-min-width}) {
+    @content;
+  }
+}
+
+@mixin Web {
+  @media (min-width: #{$web-portrait-min-width}) and (orientation: portrait),
+  (max-width: #{$web-landscape-min-width}) and (orientation: landscape) {
+    @content;
+  }
+}
+
+@mixin WebPortraitUp {
+  @media (min-width: #{$web-portrait-min-width}) {
+    @content;
+  }
+}
+
+@mixin WebLandscapeUp {
+  @media (min-width: #{$web-landscape-min-width}) {
     @content;
   }
 }

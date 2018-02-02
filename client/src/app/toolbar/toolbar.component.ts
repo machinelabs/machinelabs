@@ -1,4 +1,4 @@
-import { Directive, Component, OnInit } from '@angular/core';
+import { Directive, Component, OnInit, Input } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { AuthService } from '../auth/auth.service';
 import { UserService } from '../user/user.service';
@@ -12,6 +12,8 @@ import { User } from '../models/user';
 export class ToolbarComponent implements OnInit {
 
   private user: User;
+
+  @Input() hasSubRow = false;
 
   constructor(private authService: AuthService,
               private userService: UserService,
