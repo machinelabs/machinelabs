@@ -23,6 +23,11 @@
   text-align: right;
 }
 
+.ml-toolbar-sub-row {
+  height: 40px;
+  padding: 0;
+}
+
 @include tablet {
 
   .ml-toolbar-logo {
@@ -35,6 +40,10 @@
 @include desktop {
   .ml-toolbar-layout {
     padding: 0 28px;
+  }
+
+  .ml-toolbar-sub-row {
+    display: none;
   }
 }
 

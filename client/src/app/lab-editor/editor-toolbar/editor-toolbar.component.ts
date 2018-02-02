@@ -8,6 +8,7 @@ import {
   OnChanges
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 import { Observable } from 'rxjs/Observable';
 import { filter, tap, switchMap } from 'rxjs/operators';
@@ -47,11 +48,14 @@ export class EditorToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
   private userSubscription;
 
+  truncateLabNameWordCount = 4;
+
   EditorToolbarActionTypes = EditorToolbarActionTypes;
 
   constructor(public userService: UserService,
               private router: Router,
               private labStorageService: LabStorageService,
+              private breakpointObserver: BreakpointObserver,
               private route: ActivatedRoute) {}
 
   ngOnChanges() {
@@ -72,6 +76,11 @@ export class EditorToolbarComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     this.userSubscription = this.userService.observeUserChanges()
                     .subscribe(user => this.user = user);
+
+
+    this.breakpointObserver.observe([Breakpoints.Tablet).subscribe(state => {
+      this.truncateLabNameWordCount = state.matches ? 10 : 4;
+    });
   }
 
   emitAction(action: EditorToolbarActionTypes, data?: any) {

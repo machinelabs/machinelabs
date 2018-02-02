@@ -1,27 +1,34 @@
+@import '../../../mixins';
+
 :host { z-index: 1; }
 
 ml-toolbar {
   box-shadow: none;
 }
 
-.ml-toolbar-lab-info { margin-left: 3.5em; }
-
-.ml-toolbar-lab-name {
-  display: inline-block;
-  vertical-align: -10%;
-  font-size: 1em;
+.ml-editor-toolbar-lab-info {
+  font-size: 0.8em;
+  margin-left: 1em;
 }
 
-.ml-toolbar-edit-button {
+.ml-editor-toolbar-lab-name {
+  display: inline-block;
+  vertical-align: -10%;
+}
+
+.ml-editor-toolbar-edit-button {
+  height: 35px;
+  width: 35px;
+  line-height: 35px;
   mat-icon {
-    font-size: 1.4em;
+    font-size: 1.2em;
   }
 }
 
-.ml-toolbar-user-info {
+.ml-editor-toolbar-user-info {
   font-size: 0.7em;
   display: block;
-  margin-top: -0.5em;
+  margin-top: -1.2em;
 
   a {
     color: currentColor;
@@ -47,3 +54,79 @@ ml-toolbar {
   }
 }
 
+.ml-editor-toolbar-fork-of-info {
+  display: none;
+}
+
+.ml-editor-toolbar-cta-bar {
+  display: none;
+}
+
+[ml-toolbar-sub-row] {
+  display: flex;
+  height: 40px;
+  background-color: #038ac7;
+  width: 100%;
+  justify-content: space-around;
+
+  [mat-button] {
+    padding: 0;
+    flex: 1;
+    mat-icon {
+      font-size: 1.4em;
+      height: 20px;
+      width: 20px;
+    }
+  }
+}
+
+@include phablet {
+  [ml-toolbar-sub-row] {
+    justify-content: flex-end;
+
+    [mat-button] {
+      flex: none;
+    }
+  }
+}
+
+@include tablet {
+
+  .ml-editor-toolbar-lab-info {
+    font-size: 1em;
+    margin-left: 3.5em;
+  }
+
+  .ml-editor-toolbar-edit-button {
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+    mat-icon {
+      font-size: 1.4em;
+    }
+  }
+
+  .ml-editor-toolbar-fork-of-info {
+    display: inline-block;
+  }
+
+  .ml-editor-toolbar-user-info {
+    margin-top: -0.5em;
+    font-size: 0.7em;
+  }
+
+  [ml-toolbar-sub-row] {
+    justify-content: flex-end;
+
+    [mat-button] {
+      padding: 0 16px;
+      min-width: 100px;
+    }
+  }
+}
+
+@include desktop {
+  .ml-editor-toolbar-cta-bar {
+    display: block;
+  }
+}
