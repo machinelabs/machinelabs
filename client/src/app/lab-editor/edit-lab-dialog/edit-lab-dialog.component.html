@@ -7,12 +7,10 @@
     <mat-tab label="Advanced">
       <ml-dialog-content>
         <p>Once you delete a lab, there is no going back.</p>
-        <div fxLayout="column">
-          <mat-form-field fxFlex>
-            <input matInput #deleteInput>
-            <mat-hint>Enter the name of the lab</mat-hint>
-          </mat-form-field>
-        </div>
+        <mat-form-field>
+          <input matInput #deleteInput>
+          <mat-hint>Enter the name of the lab</mat-hint>
+        </mat-form-field>
       </ml-dialog-content>
       <ml-dialog-cta-bar>
         <button mat-raised-button color="warn" [disabled]="deleteInput.value != lab.name" type="button" (click)="close(lab, EditLabDialogActions.Delete)">I understand the consequences, delete this lab</button>
@@ -24,22 +22,20 @@
 <ng-template #infoForm>
   <form [formGroup]="form" (ngSubmit)="submit(form.value)">
     <ml-dialog-content>
-      <div fxLayout="column">
-        <mat-form-field fxFlex>
-          <input matInput placeholder="Name" formControlName="name">
-          <mat-hint *ngIf="!form.valid && !form.pristine && !!form.get('name').errors">This field is required.</mat-hint>
-        </mat-form-field>
-        <mat-form-field fxFlex>
-            <textarea matInput placeholder="Description" formControlName="description">
-            </textarea>
-        </mat-form-field>
-        <mat-form-field fxFlex>
-          <input matInput placeholder="Tags" formControlName="tags">
-        </mat-form-field>
-        <div class="checkbox-field">
-          <mat-checkbox formControlName="isPrivate">Make private</mat-checkbox>
-          <mat-hint *ngIf="!hasPrivateLabs">Support us on <a title="MachineLabs on Patreon" target="_blank" href="https://patreon.com/machinelabs">Patreon</a> to enable private labs</mat-hint>
-        </div>
+      <mat-form-field>
+        <input matInput placeholder="Name" formControlName="name">
+        <mat-hint *ngIf="!form.valid && !form.pristine && !!form.get('name').errors">This field is required.</mat-hint>
+      </mat-form-field>
+      <mat-form-field>
+        <textarea matInput placeholder="Description" formControlName="description">
+        </textarea>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Tags" formControlName="tags">
+      </mat-form-field>
+      <div class="checkbox-field">
+        <mat-checkbox formControlName="isPrivate">Make private</mat-checkbox>
+        <mat-hint *ngIf="!hasPrivateLabs">Support us on <a title="MachineLabs on Patreon" target="_blank" href="https://patreon.com/machinelabs">Patreon</a> to enable private labs</mat-hint>
       </div>
     </ml-dialog-content>
     <ml-dialog-cta-bar>
