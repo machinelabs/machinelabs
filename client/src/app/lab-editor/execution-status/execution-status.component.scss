@@ -1,3 +1,22 @@
+:host {
+  display: block;
+}
+
+.ml-execution-status-layout {
+  display: flex;
+}
+
+.ml-execution-status-text {
+  flex: none;
+  width: 120px;
+  padding-left: 4em;
+}
+
+.ml-execution-status-progress-bar {
+  flex: 1;
+  padding: 0 40px;
+}
+
 .ml-status-message {
   display: inline-block;
   line-height: 1.5em;
@@ -25,6 +44,7 @@
 mat-progress-bar {
   height: 3px;
   margin-top: 0.7em;
+  max-width: 400px;
 }
 
 

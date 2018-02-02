@@ -1,11 +1,11 @@
-<div *ngIf="execution | async as execution" fxLayout>
-  <div fxFlex [ngSwitch]="execution.status">
+<div *ngIf="execution | async as execution" class="ml-execution-status-layout">
+  <div [ngSwitch]="execution.status" class="ml-execution-status-text">
     <span *ngSwitchCase="ExecutionStatus.Executing" class="ml-status-message">Running...</span>
     <span *ngSwitchCase="ExecutionStatus.Finished" class="ml-status-message done"><mat-icon>done</mat-icon> Done</span>
     <span *ngSwitchCase="ExecutionStatus.Stopped" class="ml-status-message stopped"><mat-icon>info</mat-icon> Stopped</span>
     <span *ngSwitchCase="ExecutionStatus.Failed" class="ml-status-message errored"><mat-icon>highlight_off</mat-icon> Errored</span>
   </div>
-  <div fxFlex>
+  <div class="ml-execution-status-progress-bar">
     <mat-progress-bar
       *ngIf="execution.status === ExecutionStatus.Executing"
       color="accent"

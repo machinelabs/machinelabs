@@ -32,6 +32,7 @@ monaco-editor {
 }
 
 .ml-editor-restore-message {
+  display: none;
   position: absolute;
   right: 1em;
   top: 0.5em;
@@ -72,5 +73,9 @@ monaco-editor {
     [matTabLink] {
       flex: none;
     }
+  }
+
+  .ml-editor-restore-message {
+     display: block;
   }
 }
