@@ -1,5 +1,4 @@
 import 'jest';
-import { Observable } from '@reactivex/rxjs';
 import { DockerAvailabilityLookup, DockerExecutable } from './docker-availability-lookup';
 import { spawn } from '@machinelabs/core';
 import { stdout, stderr } from '@machinelabs/core';

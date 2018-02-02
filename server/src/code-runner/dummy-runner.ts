@@ -1,4 +1,4 @@
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
 import { CodeRunner } from './code-runner';
 import { Invocation } from '@machinelabs/models';
 import { InternalLabConfiguration } from '../models/lab-configuration';

@@ -1,4 +1,6 @@
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import { map } from 'rxjs/operators';
 import { ValidationRule } from './rule';
 import { Invocation, HardwareType, ExecutionRejectionInfo, ExecutionRejectionReason, PlanId } from '@machinelabs/models';
 import { ValidationResult } from '../validation-result';
@@ -17,18 +19,20 @@ export class CanUseHardwareType implements ValidationRule {
       throw new Error('Missing resolver: UserResolver');
     }
 
-    return Observable.forkJoin(resolves.get(UserResolver), resolves.get(LabConfigResolver))
-      .map(([user, config]) => {
+    return forkJoin(resolves.get(UserResolver), resolves.get(LabConfigResolver))
+      .pipe(
+        map(([user, config]) => {
 
-        let isAdminOrBacker = [PlanId.Admin, PlanId.BetaBacker].includes(user.plan.plan_id);
+          let isAdminOrBacker = [PlanId.Admin, PlanId.BetaBacker].includes(user.plan.plan_id);
 
-        let reject = config.hardwareType === HardwareType.GPU && !isAdminOrBacker;
+          let reject = config.hardwareType === HardwareType.GPU && !isAdminOrBacker;
 
-        if (reject) {
-          return new ExecutionRejectionInfo(ExecutionRejectionReason.HardwareTypeNotPermitted, `Plan does not allow GPU usage`);
-        }
+          if (reject) {
+            return new ExecutionRejectionInfo(ExecutionRejectionReason.HardwareTypeNotPermitted, `Plan does not allow GPU usage`);
+          }
 
-        return true;
-      });
+          return true;
+        })
+      );
   }
 }

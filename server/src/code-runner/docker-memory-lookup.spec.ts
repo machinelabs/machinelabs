@@ -1,5 +1,4 @@
 import 'jest';
-import { Observable } from '@reactivex/rxjs';
 import { DockerMemoryLookup, RESERVED_KERNEL_MEMORY } from './docker-memory-lookup';
 import { spawnShell } from '@machinelabs/core';
 import { stdout, stderr } from '@machinelabs/core';

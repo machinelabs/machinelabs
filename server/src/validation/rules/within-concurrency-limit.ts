@@ -1,4 +1,5 @@
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 import { ValidationRule } from './rule';
 import { Invocation, ExecutionRejectionInfo, ExecutionRejectionReason } from '@machinelabs/models';
 import { ValidationResult } from '../validation-result';
@@ -14,9 +15,11 @@ export class WithinConcurrencyLimit implements ValidationRule {
     return dbRefBuilder
             .userExecutionsLiveRef(invocation.user_id)
             .onceValue()
-            .map(snapshot => snapshot.val())
-            .map(entries => Object.keys(entries || {}).length >= this.maxConcurrentExecutions ?
-              new ExecutionRejectionInfo(ExecutionRejectionReason.ExceedsMaximumConcurrency, 'User has too many parallel executions') :
-              true);
+            .pipe(
+              map(snapshot => snapshot.val()),
+              map(entries => Object.keys(entries || {}).length >= this.maxConcurrentExecutions ?
+                new ExecutionRejectionInfo(ExecutionRejectionReason.ExceedsMaximumConcurrency, 'User has too many parallel executions') :
+                true)
+            );
   }
 }

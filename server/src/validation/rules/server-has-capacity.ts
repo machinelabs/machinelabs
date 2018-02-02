@@ -1,4 +1,5 @@
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { ValidationRule } from './rule';
 import { Invocation, ExecutionRejectionInfo, ExecutionRejectionReason } from '@machinelabs/models';
 import { ValidationResult } from '../validation-result';
@@ -12,7 +13,7 @@ export class ServerHasCapacityRule implements ValidationRule {
   check(validationContext: Invocation, resolves: Map<Function, Observable<any>>): Observable<ValidationResult> {
 
     return this.codeRunner.count() > this.maxServerExecutions ?
-      Observable.of(new ExecutionRejectionInfo(ExecutionRejectionReason.OverCapacity, 'Server is over capacity')) :
-      Observable.of(true);
+      of(new ExecutionRejectionInfo(ExecutionRejectionReason.OverCapacity, 'Server is over capacity')) :
+      of(true);
   }
 }

@@ -1,4 +1,5 @@
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 import { ValidationRule } from './rule';
 import { Invocation, ExecutionRejectionInfo, ExecutionRejectionReason } from '@machinelabs/models';
 import { ValidationResult } from '../validation-result';
@@ -18,13 +19,15 @@ export class HasValidConfigRule implements ValidationRule {
 
     return resolves
       .get(LabConfigResolver)
-      .map((config: InternalLabConfiguration) => {
+      .pipe(
+        map((config: InternalLabConfiguration) => {
 
-        if (config.errors.length > 0) {
-          return new ExecutionRejectionInfo(ExecutionRejectionReason.InvalidConfig, config.errors[0]);
-        }
+          if (config.errors.length > 0) {
+            return new ExecutionRejectionInfo(ExecutionRejectionReason.InvalidConfig, config.errors[0]);
+          }
 
-        return true;
-      });
+          return true;
+        })
+      );
   }
 }

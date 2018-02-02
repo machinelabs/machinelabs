@@ -1,4 +1,6 @@
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+import { map, tap } from 'rxjs/operators';
 import { Lab, File, instanceOfFile, MountOption, HardwareType } from '@machinelabs/models';
 import { PublicLabConfiguration, InternalLabConfiguration, ScriptParameter } from '../models/lab-configuration';
 import { getMlYamlFromLab, parseMlYaml } from '@machinelabs/core';
@@ -37,7 +39,7 @@ export class LabConfigService {
 
     if (!publicConfig) {
       config.errors.push('Could not parse file');
-      return Observable.of(config);
+      return of(config);
     }
 
     config.inputs = publicConfig.inputs;
@@ -54,12 +56,14 @@ export class LabConfigService {
     }
 
     return this.mountService.validateMounts(userId, publicConfig.mounts)
-    .do(validated => config.errors.push(...validated.errors))
-    .do(validated => config.mountPoints = validated.mountPoints)
-    .map(_ => config)
-    .map(this.reportError('Invalid parameters', this.hasValidParameters))
-    .map(this.reportError('Unknown dockerImageId', this.isValidImage))
-    .map(this.reportError('Invalid inputs', this.hasValidInputs));
+      .pipe(
+        tap(validated => config.errors.push(...validated.errors)),
+        tap(validated => config.mountPoints = validated.mountPoints),
+        map(_ => config),
+        map(this.reportError('Invalid parameters', this.hasValidParameters)),
+        map(this.reportError('Unknown dockerImageId', this.isValidImage)),
+        map(this.reportError('Invalid inputs', this.hasValidInputs))
+      );
   }
 
   private reportError(error: string, validate: (config: InternalLabConfiguration) => boolean) {

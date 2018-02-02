@@ -1,4 +1,6 @@
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import { map } from 'rxjs/operators';
 import { ProcessStreamData, OutputType, SpawnFn } from '@machinelabs/core';
 
 export enum DockerExecutable {
@@ -19,14 +21,17 @@ export class DockerAvailabilityLookup {
   }
 
   getExecutable() {
-    return Observable
-            .forkJoin(this.hasDocker(), this.hasNvidiaDocker())
-            .map(([hasDocker, hasNvidiaDocker]) => (hasNvidiaDocker && hasDocker) ? DockerExecutable.NvidiaDocker :
-                                                     hasDocker ? DockerExecutable.Docker : DockerExecutable.None);
+    return forkJoin(this.hasDocker(), this.hasNvidiaDocker())
+      .pipe(
+        map(([hasDocker, hasNvidiaDocker]) => (hasNvidiaDocker && hasDocker) ? DockerExecutable.NvidiaDocker :
+                                              hasDocker ? DockerExecutable.Docker : DockerExecutable.None)
+      );
   }
 
   private doesNotFail (cmd: string) {
     return this.spawn(cmd, ['-v'])
-                .map(val => val.origin === OutputType.Stderr ? false : true);
+      .pipe(
+        map(val => val.origin === OutputType.Stderr ? false : true)
+      );
   }
 }

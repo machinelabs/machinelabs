@@ -1,4 +1,5 @@
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 import { ValidationRule } from './rule';
 import { ExtendedUser } from '../../models/user';
 import { Invocation, ExecutionRejectionInfo, ExecutionRejectionReason, PlanId } from '@machinelabs/models';
@@ -15,7 +16,9 @@ export class HasPlanRule implements ValidationRule {
 
     return resolves
       .get(UserResolver)
-      .map(user => (user && user.plan && Object.values(PlanId).includes(user.plan.plan_id)) ||
-        new ExecutionRejectionInfo(ExecutionRejectionReason.NoPlan, 'Missing plan that allows executions'));
+      .pipe(
+        map(user => (user && user.plan && Object.values(PlanId).includes(user.plan.plan_id)) ||
+          new ExecutionRejectionInfo(ExecutionRejectionReason.NoPlan, 'Missing plan that allows executions'))
+      );
   }
 }

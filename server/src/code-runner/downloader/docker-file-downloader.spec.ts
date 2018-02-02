@@ -1,5 +1,6 @@
 import 'jest';
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { tap } from 'rxjs/operators';
 import { DockerFileDownloader } from './docker-file-downloader';
 import { stdout, ProcessStreamData, stdoutMsg } from '@machinelabs/core';
 import { newLine, bold } from '../../util/shellart';
@@ -27,7 +28,9 @@ describe('.fetch(...)', () => {
 
     downloader
       .fetch(containerId, inputs)
-      .do(msg => outgoingMessages.push(msg))
+      .pipe(
+        tap(msg => outgoingMessages.push(msg))
+      )
       .subscribe(null, null, () => {
         expect(outgoingMessages.length).toBe(8);
         expect(outgoingMessages[0]).toEqual(stdoutMsg(`Downloading inputs. Hold on.${newLine()}`));

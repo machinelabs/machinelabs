@@ -1,4 +1,5 @@
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 import { ValidationRule } from './rule';
 import { ExtendedUser } from '../../models/user';
 import { Invocation, ExecutionRejectionInfo, ExecutionRejectionReason } from '@machinelabs/models';
@@ -15,9 +16,11 @@ export class NoAnonymousRule implements ValidationRule {
 
     return resolves
       .get(UserResolver)
-      .map(user => (!user || user.common.isAnonymous) ?
-        new ExecutionRejectionInfo(ExecutionRejectionReason.NoAnonymous, 'Anonymous users can not start executions') :
-        true
+      .pipe(
+        map(user => (!user || user.common.isAnonymous) ?
+          new ExecutionRejectionInfo(ExecutionRejectionReason.NoAnonymous, 'Anonymous users can not start executions') :
+          true
+        )
       );
   }
 }
