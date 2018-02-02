@@ -1,7 +1,9 @@
 import { createDb } from '../lib/create-db';
 import { getEnv } from '../lib/get-env';
 import { ObservableDbRef } from '@machinelabs/core';
-import { Observable } from '@reactivex/rxjs';
+import { of } from 'rxjs/observable/of';
+import { empty } from 'rxjs/observable/empty';
+import { map, mergeMap } from 'rxjs/operators';
 
 const hasArgsForOnboard = argv => argv.cfg &&
                                   argv.cfg.firebase.privateKeyEnv &&
@@ -24,26 +26,31 @@ const onboard = (argv) => {
 
     new ObservableDbRef(db.ref('/users'))
       .childAdded()
-      .flatMap(snapshot => {
-        let val = snapshot.val();
+      .pipe(
+        mergeMap(snapshot => {
+          let val = snapshot.val();
 
-        if (val && !val.plan){
+          if (val && !val.plan){
 
-          if (argv['dry-run']){
-            return Observable.of(snapshot.val())
+            if (argv['dry-run']){
+              return of(snapshot.val())
+            }
+
+            return new ObservableDbRef(snapshot.ref)
+              .update({
+                plan: {
+                  plan_id: 'beta',
+                  created_at: Date.now()
+                }
+              })
+              .pipe(
+                map(_ => snapshot.val())
+              );
           }
 
-          return new ObservableDbRef(snapshot.ref).update({
-            plan: {
-              plan_id: 'beta',
-              created_at: Date.now()
-            }
-          })
-          .map(_ => snapshot.val())
-        }
-
-        return Observable.empty();
-      })
+          return empty();
+        })
+      )
       .subscribe(val => {
         console.log(`Onboarded user ${val.common.id} / ${val.common.email}`);
       }, e => {

@@ -1,5 +1,5 @@
 import * as chalk from 'chalk';
-import { Observable } from '@reactivex/rxjs';
+import { concat } from 'rxjs/observable/concat';
 import { factory } from './execute';
 
 import { isRootDir} from './is-root-dir';
@@ -11,7 +11,7 @@ export function deployFirebase(project) {
     failWith('Command needs to be run from root dir');
   }
 
-  return Observable.concat(
+  return concat(
     stdout(chalk.green(`Deploying firebase project ${project}`)),
     spawnShell(`(cd ./firebase/functions; firebase use ${project} && npm run deploy)`),
     stdout(chalk.green('Firebase functions and rules successfully deployed'))

@@ -1,6 +1,5 @@
 import { createDb } from '../lib/create-db';
 import { getEnv } from '../lib/get-env';
-import { Observable } from '@reactivex/rxjs';
 import { factory } from '../lib/execute';
 
 let execute = factory({displayErrors: true});

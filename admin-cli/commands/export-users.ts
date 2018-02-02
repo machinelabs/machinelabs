@@ -1,7 +1,7 @@
 import { createDb } from '../lib/create-db';
 import { getEnv } from '../lib/get-env';
 import { ObservableDbRef } from '@machinelabs/core';
-import { Observable } from '@reactivex/rxjs';
+import { map, filter } from 'rxjs/operators';
 import { factory } from '../lib/execute';
 
 let execute = factory({displayErrors: true});
@@ -25,8 +25,10 @@ const exportUsers = (argv) => {
 
     new ObservableDbRef(db.ref('/users'))
       .childAdded()
-      .map(snapshot => snapshot.val())
-      .filter(val => !!val && val.plan)
+      .pipe(
+        map(snapshot => snapshot.val()),
+        filter(val => !!val && val.plan)
+      )
       .subscribe(val => {
         console.log(`Exporting ${val.common.displayName}\t${val.common.email}`)
         execute(`echo "${val.common.displayName}\t${val.common.email}" >> user_export.csv`);

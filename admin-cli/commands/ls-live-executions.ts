@@ -3,7 +3,8 @@ import { DbRefBuilder } from '@machinelabs/core';
 import { createDb } from '../lib/create-db';
 import { getEnv } from '../lib/get-env';
 import { LiveMetricsService } from '@machinelabs/metrics';
-import { Observable } from '@reactivex/rxjs';
+import { from } from 'rxjs/observable/from';
+import { map, filter, mergeMap } from 'rxjs/operators';
 import { printExecutionHeader, printExecution } from '../lib/print-execution';
 
 const hasArgsForCmd = argv => argv.cfg &&
@@ -28,7 +29,7 @@ export const lsLiveExecutions = (argv) => {
 
     let liveMetricsService = new LiveMetricsService(<any>refBuilder);
 
-    const getExecution = id => refBuilder.executionRef(id).onceValue().map(s => s.val());
+    const getExecution = id => refBuilder.executionRef(id).onceValue().pipe(map(s => s.val()));
 
     console.log(chalk.green.bold('Listing live executions...abort at any time.'))
     
@@ -37,11 +38,12 @@ export const lsLiveExecutions = (argv) => {
     liveMetricsService
       .getLiveExecutionsRef()
       .childAdded()
-      .map(snapshot => snapshot.val())
-
-      .filter(val => !!val && !!val.live)
-      .flatMap(data => Observable.from(Object.keys(data.live))
-                                 .flatMap(id => getExecution(id)))
+      .pipe(
+        map(snapshot => snapshot.val()),
+        filter(val => !!val && !!val.live),
+        mergeMap(data => from(Object.keys(data.live))
+                            .pipe(mergeMap(id => getExecution(id))))
+      )
       .subscribe(val => printExecution(val));
   }
 }
