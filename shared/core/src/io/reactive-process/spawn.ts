@@ -1,5 +1,6 @@
 import { SpawnOptions, spawn as _spawn } from 'child_process';
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { defer } from 'rxjs/observable/defer';
 import { toObservableProcess } from './observable-process';
 import { OutputType, ProcessStreamData } from './process-stream-data';
 
@@ -7,7 +8,7 @@ export type SpawnFn = (command: string, args?: Array<string>, options?: SpawnOpt
 export type SpawnShellFn = (command: string, args?: Array<string>) => Observable<ProcessStreamData>;
 
 export const spawn = (command: string, args?: Array<string>, options?: SpawnOptions) => {
-  return Observable.defer(() => {
+  return defer(() => {
     let ps = _spawn(command, args, options);
 
     return toObservableProcess(ps);

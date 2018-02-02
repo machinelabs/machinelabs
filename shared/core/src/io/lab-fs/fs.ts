@@ -1,5 +1,5 @@
 import { spawnShell, OutputType } from '../reactive-process';
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
 
 import { Directory, LabDirectory, File } from '@machinelabs/models';
 import { createWriteDirectoryCmd, createWriteLabDirectoryCmd } from './fs-commands';

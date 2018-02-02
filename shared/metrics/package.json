@@ -32,14 +32,18 @@
   "dependencies": {
     "@machinelabs/core": "link:../core",
     "@machinelabs/models": "link:../models",
-    "@reactivex/rxjs": "^5.4.2",
-    "@types/node": "^8.0.19",
-    "firebase": "^4.2.0",
-    "jest": "^20.0.4"
+    "@types/node": "^8.0.19"
   },
   "devDependencies": {
+    "firebase": "^4.2.0",
+    "jest": "^22.1.4",
+    "rxjs": "^5.5.6",
     "ts-jest": "^20.0.10",
     "tslint": "^5.6.0",
     "typescript": "^2.6.1"
+  },
+  "peerDependencies": {
+    "firebase": "^4.2.0",
+    "rxjs": "^5.5.6"
   }
 }

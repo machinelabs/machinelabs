@@ -16,13 +16,16 @@
     "suppressImplicitAnyIndexErrors": true,
     "inlineSources": true,
     "stripInternal": true,
-    "paths": {  },
+    "paths": {
+      "rxjs/*": ["./node_modules/@machinelabs/core/node_modules/rxjs/*"],
+      "firebase": ["./node_modules/firebase"]
+    },
     "baseUrl": "",
     "typeRoots": [  "./node_modules/@types" ],
     "types": [  "node"  ]
   },
-  "include": [
-    "src/**/*.ts"
+  "files": [
+    "src/index.ts"
   ]
 }
 
