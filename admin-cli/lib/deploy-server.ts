@@ -1,5 +1,8 @@
 import * as chalk from 'chalk';
-import { Observable } from '@reactivex/rxjs';
+import { concat } from 'rxjs/observable/concat';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { defer } from 'rxjs/observable/defer';
+import { takeWhile, mergeMap } from 'rxjs/operators';
 import { OutputType, stdout, spawnShell } from '@machinelabs/core';
 import { factory } from './execute';
 import * as fs from 'fs';
@@ -14,7 +17,7 @@ export function deployServer(project, serverName, zone, env) {
     failWith('Command needs to be run from root dir');
   }
 
-  return Observable.concat(
+  return concat(
     stdout(chalk.green('Deploying server')),
 
     spawnShell(`(cd ./server && npm run node_modules && npm run build -- --env=${env})`),
@@ -66,7 +69,7 @@ const copyServer = (serverName: string, project:string, zone:string) => {
   // scan for its appearance
   let endOfProcessIndicator = 'a1c80580-1505-4555-814c-301b1c5fff98';
 
-  return Observable.defer(() => {
+  return defer(() => {
     var term = pty.spawn(`/bin/bash`, ['-c', `gcloud compute copy-files ./machinelabs-server.tar.gz root@${serverName}:/var/machinelabs-server.tar.gz --project "${project}" --zone "${zone}"; echo ${endOfProcessIndicator}`], {
       name: 'xterm-color',
       cols: 80,
@@ -75,8 +78,10 @@ const copyServer = (serverName: string, project:string, zone:string) => {
       env: process.env
     });
 
-    return Observable.fromEvent(term, 'data')
-              .takeWhile((data:string) => !data.trim().endsWith(endOfProcessIndicator))
-              .flatMap((data:string) => stdout(data))
+    return fromEvent(term, 'data')
+      .pipe(
+        takeWhile((data:string) => !data.trim().endsWith(endOfProcessIndicator)),
+        mergeMap((data:string) => stdout(data))
+      );
   });
 }

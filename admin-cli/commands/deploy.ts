@@ -1,6 +1,7 @@
 import * as chalk from 'chalk';
 import * as process from 'process';
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
+import { concat } from 'rxjs/observable/concat';
 
 import { factory } from '../lib/execute';
 import { deployServer } from '../lib/deploy-server';
@@ -51,19 +52,19 @@ const deploy = (argv) => {
     tasks.push(deployRestApi(argv.cfg.googleProjectId, argv.cfg.rest.env));
   }
 
-  Observable.concat(...tasks)
-            .subscribe(val => {
-              if (val.origin === OutputType.Stdout) {
-                console.log(val.str);
-              } else {
-                console.error(chalk.red(val.str));
-              }
-            }, 
-            e => console.error(e), 
-            () => {
-              console.log(chalk.red('Uploading tags'));
-              execute('git push --tags');
-            });
+  concat(...tasks)
+    .subscribe(val => {
+      if (val.origin === OutputType.Stdout) {
+        console.log(val.str);
+      } else {
+        console.error(chalk.red(val.str));
+      }
+    }, 
+    e => console.error(e), 
+    () => {
+      console.log(chalk.red('Uploading tags'));
+      execute('git push --tags');
+    });
 }
 
 const check = argv => {
