@@ -1,3 +1,5 @@
+@import '../../../mixins';
+
 :host {
   display: block;
   position: relative;
@@ -12,17 +14,16 @@
 }
 
 .ml-editor-footer-layout {
-  padding-left: 36px;
-  padding-right: 36px;
-}
-
-.ml-editor-footer-content {
-  width: 500px;
-  height: 20px;
-  margin-right: 12em;
+  padding-left: 16px;
+  padding-right: 16px;
+  height: 48px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .ml-editor-footer-cta-bar {
+  display: none;
+  flex: 1;
   [mat-button] {
     margin: 0.8em 0.5em;
     &:first-child {
@@ -35,5 +36,36 @@
   line-height: 12px;
   padding: 0.5em;
   vertical-align: middle;
+}
+
+.ml-editor-footer-content {
+  display: none;
+  flex: 1;
+  height: 48px;
+}
+
+ml-execution-status {
+  margin-top: 1.2em;
+}
+
+mat-slide-toggle {
+  margin-top: 1em;
+}
+
+@include TabletPortraitUp {
+  .ml-editor-footer-cta-bar {
+    display: block;
+  }
+}
+
+@include TabletLandscapeUp {
+  .ml-editor-footer-cta-bar {
+    flex: none;
+  }
+
+  .ml-editor-footer-content {
+    display: block;
+    flex: 1;
+  }
 }
 
