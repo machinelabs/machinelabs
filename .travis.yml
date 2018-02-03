@@ -13,34 +13,34 @@ addons:
       - google-chrome-stable
 matrix:
   include:
-    - stage: "server"
+    - env: "server"
       node_js: "8"
       before_install:
         - (cd ./shared && node build.js --install)
         - cd ./server
         - npm install -g yarn typescript
       script: npm run ci
-    - stage: "firebase functions"
+    - env: "firebase functions"
       node_js: "8"
       before_install:
         - cd ./firebase/functions
         - npm install -g yarn typescript
       script: npm run test
-    - stage: "@machinelabs/core"
+    - env: "@machinelabs/core"
       node_js: "8"
       before_install:
         - (cd ./shared && node build.js --install)
         - cd ./shared/core
         - npm install -g yarn typescript
       script: npm run ci
-    - stage: "@machinelabs/metrics"
+    - env: "@machinelabs/metrics"
       node_js: "8"
       before_install:
         - (cd ./shared && node build.js --install)
         - cd ./shared/metrics
         - npm install -g yarn typescript
       script: npm run ci
-    - stage: "client"
+    - env: "client:dev"
       node_js: "8"
       before_install:
         - (cd ./shared && node build.js --install)
@@ -51,7 +51,7 @@ matrix:
         - npm install -g yarn@1.0.0 typescript
       before_script:
         - npm install -g @angular/cli
-    - stage: "client"
+    - env: "client:production"
       node_js: "8"
       before_install:
         - (cd ./shared && node build.js --install)
