@@ -7,10 +7,13 @@ import { ValidationContext } from './validation-context';
 import { Resolver } from './resolver/resolver';
 import { ValidationResult } from './validation-result';
 
+export type ResolvedMap = Map<Function, any>;
+
 export class ValidationService {
 
   private rules: Array<ValidationRule> = [];
   private resolver = new Map<Function, Resolver>();
+  private transformers: Array<(val: ResolvedMap) => void> = [];
 
   addResolver(resolverType: Function, resolver: Resolver) {
     this.resolver.set(resolverType, resolver);
@@ -19,6 +22,11 @@ export class ValidationService {
 
   addRule(rule: ValidationRule) {
     this.rules.push(rule);
+    return this;
+  }
+
+  addTransformer(transformer: (val: ResolvedMap) => void) {
+    this.transformers.push(transformer);
     return this;
   }
 
@@ -31,6 +39,12 @@ export class ValidationService {
       resolves.set(key, val.resolve(invocation)
                            .pipe(
                             tap(data => resolved.set(key, data)),
+                            tap(() => this.transformers.forEach(fn => fn(resolved))),
+                            // Ensure we map to the value from the `resolved` map.
+                            // Otherwise if a resolver resolves to some primitive
+                            // there would be no way for a transformer to actually
+                            // transform it.
+                            map(() => resolved.get(key)),
                             share()
                            ));
     });
