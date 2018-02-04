@@ -84,7 +84,7 @@ export class DockerRunner implements CodeRunner {
               '-c',
               `mkdir /run/outputs && cd /run && (${writeCommand}) && python main.py ${args}`
             ])),
-            concat(this.config.uploader.handleUpload(invocation, containerId)),
+            concat(this.config.uploader.handleUpload(invocation, containerId, configuration)),
             concat(this.config.spawnShell(`docker rm -f ${containerId}`).pipe(mute))
           )
       ),

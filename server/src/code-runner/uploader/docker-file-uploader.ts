@@ -1,39 +1,45 @@
 import { Observable } from 'rxjs/Observable';
 import { from } from 'rxjs/observable/from';
 import { filter, take, share, map, mergeMap, merge, catchError, distinctUntilChanged, startWith } from 'rxjs/operators';
-import { Invocation } from '@machinelabs/models';
+import { Invocation, PlanCredits, PlanId } from '@machinelabs/models';
 import { getAccessToken } from '../../util/gcloud';
 import { mute } from '../../rx/mute';
 import { getCurlForUpload } from '../../util/file-upload';
 import { environment } from '../../environments/environment';
 import { ProcessStreamData, spawn, stdoutMsg, stderrMsg, stdout, OutputType } from '@machinelabs/core';
+import { InternalLabConfiguration } from '../../models/lab-configuration';
+import { bold } from '../../util/shellart';
 
 class FileInfo {
   name: string;
   sizeBytes: number;
 }
 
+const BACKER_PLAN = PlanCredits.get(PlanId.BetaBacker);
+
+const PATREON_URL = 'https://patreon.com/machinelabs';
+
 export class DockerFileUploader {
   maxFileSize: number;
 
-  constructor(private maxFileSizeMb: number, private maxFileCount: number) {
+  constructor(private maxFileSizeMb: number) {
     this.maxFileSize = this.maxFileSizeMb * 1024 * 1024;
   }
 
-  handleUpload(invocation: Invocation, containerId: string) {
+  handleUpload(invocation: Invocation, containerId: string, config: InternalLabConfiguration) {
 
     let fileInfos$ = this.getFileList(containerId).pipe(share());
-    let visibleOutput$ = this.generateUserVisibleOutput(fileInfos$);
-    let uploadFiles$ = this.uploadFiles(fileInfos$, containerId, invocation);
+    let visibleOutput$ = this.generateUserVisibleOutput(fileInfos$, config);
+    let uploadFiles$ = this.uploadFiles(fileInfos$, containerId, invocation, config);
 
     return uploadFiles$.pipe(merge(visibleOutput$));
   }
 
-  private uploadFiles(files: Observable<FileInfo>, containerId: string, invocation: Invocation) {
+  private uploadFiles(files: Observable<FileInfo>, containerId: string, invocation: Invocation, config: InternalLabConfiguration) {
     let uploadFiles$ = files
       .pipe(
         filter(fileInfo => fileInfo.sizeBytes <= this.maxFileSize),
-        take(this.maxFileCount)
+        take(config.maxFileUploads)
       );
 
     let genericError = 'An error occured during the upload';
@@ -70,21 +76,24 @@ export class DockerFileUploader {
       );
   }
 
-  private generateUserVisibleOutput(files: Observable<FileInfo>) {
+  private generateUserVisibleOutput(files: Observable<FileInfo>, config: InternalLabConfiguration) {
     return files
       .pipe(
         map((info, index) => {
-          if (index < this.maxFileCount) {
+          if (index < config.maxFileUploads) {
             if (info.sizeBytes > this.maxFileSize) {
               return stdoutMsg(`Skipping file ${info.name}. File exceeds maximum size of ${this.maxFileSizeMb} Mb.\r\n`);
             } else {
               return stdoutMsg(`Uploading file ${info.name} (${info.sizeBytes / 1024} kB)\r\n`);
             }
           } else {
-            return stdoutMsg(`Skipping ${info.name} and any further files. Only ${this.maxFileCount} files allowed per execution.\r\n`);
+            return stdoutMsg(`
+Skipping ${info.name} and any further files.\r
+Your plan does not allow more than ${config.maxFileUploads} output files per execution.\r
+Backers on ${bold(PATREON_URL)} can upload ${BACKER_PLAN.maxFileUploads} files per execution\r\n`);
           }
         }),
-        take(this.maxFileCount + 1),
+        take(config.maxFileUploads + 1),
         startWith(stdoutMsg('Uploading files from ./outputs (if any)...hold tight\r\n'))
       );
   }
