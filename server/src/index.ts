@@ -54,7 +54,7 @@ const recycleService = new RecycleService({
   deleteCount: 3000
 });
 
-const uploader = new DockerFileUploader(150);
+const uploader = new DockerFileUploader();
 const downloader = new DockerFileDownloader(spawn);
 
 let initActions = [

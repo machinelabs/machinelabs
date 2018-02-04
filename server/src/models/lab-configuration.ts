@@ -25,7 +25,8 @@ export class PublicLabConfiguration {
 export class InternalLabConfiguration {
   // e.g. 'floydhub/tensorflow:latest-py3@sha256:d0bf867c1924b4448f3eec833013e1fdd1a22f28a478479094945cccee4fda46'
   imageWithDigest = '';
-  maxFileUploads = 5;
+  maxFileUploads = 0;
+  maxUploadFileSizeMb = 0;
   hardwareType = HardwareType.CPU;
   inputs: Array<LabInput> = [];
   parameters: Array<ScriptParameter> = [];
