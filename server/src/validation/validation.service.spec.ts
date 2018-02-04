@@ -10,7 +10,6 @@ import { Resolver } from 'src/validation/resolver/resolver';
 import isBoolean = require('lodash.isboolean');
 import { ValidationError } from 'src/validation/validation-result';
 
-
 let dummyInvocation: Invocation = {
   id: 'dummy',
   timestamp: Date.now(),
@@ -88,6 +87,23 @@ describe('.validate()', () => {
     svc.validate(dummyInvocation)
        .subscribe(validationContext => {
          expect(validationContext.validationResult).toBe(true);
+         expect(dummyResolver.calls).toBe(1);
+      });
+  });
+
+  it('should transform the resolved value', () => {
+    expect.assertions(2);
+    let svc = new ValidationService();
+    let dummyResolver = new TrueResolver();
+    svc.addResolver(TrueResolver, dummyResolver)
+       .addTransformer(resolved => resolved.set(TrueResolver, false))
+       .addRule(new IsTrueRule());
+
+    svc.validate(dummyInvocation)
+       .subscribe(validationContext => {
+         console.log('validationcontext');
+         console.log(validationContext);
+         expect(validationContext.validationResult).not.toBe(true);
          expect(dummyResolver.calls).toBe(1);
       });
   });
