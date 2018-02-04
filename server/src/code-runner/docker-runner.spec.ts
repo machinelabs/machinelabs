@@ -55,6 +55,7 @@ describe('.run(lab)', () => {
     };
 
     let conf: InternalLabConfiguration = {
+      maxFileUploads: 5,
       imageWithDigest: 'bar',
       hardwareType: HardwareType.CPU,
       inputs: [],

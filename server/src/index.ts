@@ -8,6 +8,7 @@ import { ValidationService } from './validation/validation.service';
 import { UsageStatisticService, LiveMetricsService } from '@machinelabs/metrics';
 import { environment } from './environments/environment';
 import { DockerImageService, getDockerImages } from './docker-image.service';
+import { LAB_CONFIG_TRANSFORMER } from './validation/transformers/lab-config-transformer';
 import { HasPlanRule } from './validation/rules/has-plan';
 import { NoAnonymousRule } from './validation/rules/no-anonymous';
 import { HasValidConfigRule } from './validation/rules/has-valid-config';
@@ -53,7 +54,7 @@ const recycleService = new RecycleService({
   deleteCount: 3000
 });
 
-const uploader = new DockerFileUploader(150, 5);
+const uploader = new DockerFileUploader(150);
 const downloader = new DockerFileDownloader(spawn);
 
 let initActions = [
@@ -92,6 +93,7 @@ forkJoin(initActions)
 
     const validationService = new ValidationService();
     validationService
+      .addTransformer(LAB_CONFIG_TRANSFORMER)
       .addRule(new NoAnonymousRule())
       .addRule(new HasPlanRule())
       .addRule(new HasValidConfigRule(labConfigService))
