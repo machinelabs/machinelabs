@@ -19,12 +19,10 @@ const BACKER_PLAN = PlanCredits.get(PlanId.BetaBacker);
 
 const PATREON_URL = 'https://patreon.com/machinelabs';
 
-export class DockerFileUploader {
-  maxFileSize: number;
+const mBtoB = (mb: number) => mb * 1024 * 1024;
 
-  constructor(private maxFileSizeMb: number) {
-    this.maxFileSize = this.maxFileSizeMb * 1024 * 1024;
-  }
+
+export class DockerFileUploader {
 
   handleUpload(invocation: Invocation, containerId: string, config: InternalLabConfiguration) {
 
@@ -38,7 +36,7 @@ export class DockerFileUploader {
   private uploadFiles(files: Observable<FileInfo>, containerId: string, invocation: Invocation, config: InternalLabConfiguration) {
     let uploadFiles$ = files
       .pipe(
-        filter(fileInfo => fileInfo.sizeBytes <= this.maxFileSize),
+        filter(fileInfo => fileInfo.sizeBytes <= mBtoB(config.maxUploadFileSizeMb)),
         take(config.maxFileUploads)
       );
 
@@ -81,8 +79,10 @@ export class DockerFileUploader {
       .pipe(
         map((info, index) => {
           if (index < config.maxFileUploads) {
-            if (info.sizeBytes > this.maxFileSize) {
-              return stdoutMsg(`Skipping file ${info.name}. File exceeds maximum size of ${this.maxFileSizeMb} Mb.\r\n`);
+            if (info.sizeBytes > mBtoB(config.maxUploadFileSizeMb)) {
+              return stdoutMsg(`
+Skipping file ${info.name}. File exceeds maximum size of ${config.maxUploadFileSizeMb} MB.\r
+Backers on ${bold(PATREON_URL)} can upload files with up to ${BACKER_PLAN.maxUploadFileSizeMb} MB each\r\n\r\n`);
             } else {
               return stdoutMsg(`Uploading file ${info.name} (${info.sizeBytes / 1024} kB)\r\n`);
             }
@@ -94,7 +94,7 @@ Backers on ${bold(PATREON_URL)} can upload ${BACKER_PLAN.maxFileUploads} files p
           }
         }),
         take(config.maxFileUploads + 1),
-        startWith(stdoutMsg('Uploading files from ./outputs (if any)...hold tight\r\n'))
+        startWith(stdoutMsg('Uploading files from ./outputs (if any)...hold tight\r\n\r\n'))
       );
   }
 

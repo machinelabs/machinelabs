@@ -13,6 +13,7 @@ export const LAB_CONFIG_TRANSFORMER = (resolved: ResolvedMap) => {
 
     if (userCredits) {
       config.maxFileUploads = userCredits.maxFileUploads;
+      config.maxUploadFileSizeMb = userCredits.maxUploadFileSizeMb;
     }
   }
 };
