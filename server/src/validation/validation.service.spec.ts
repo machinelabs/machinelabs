@@ -87,7 +87,7 @@ describe('.validate()', () => {
 
     svc.validate(dummyInvocation)
        .subscribe(validationContext => {
-         expect(validationContext.validationResult).toBeTruthy();
+         expect(validationContext.validationResult).toBe(true);
          expect(dummyResolver.calls).toBe(1);
       });
   });
@@ -111,7 +111,7 @@ describe('.validate()', () => {
 
     svc.validate(dummyInvocation)
        .subscribe(validationContext => {
-         expect(validationContext.validationResult).toBeTruthy();
+         expect(validationContext.validationResult).toBe(true);
       });
   });
 
@@ -126,7 +126,7 @@ describe('.validate()', () => {
        .subscribe(validationContext => {
          let elapsedTime = Date.now() - backThen;
          expect(validationContext.validationResult).toBeInstanceOf(ExecutionRejectionInfo);
-         expect(elapsedTime < 500).toBeTruthy();
+         expect(elapsedTime < 500).toBe(true);
          done();
       });
   });
@@ -142,7 +142,7 @@ describe('.validate()', () => {
        .subscribe(validationContext => {
          let elapsedTime = Date.now() - backThen;
          expect(validationContext.validationResult).toBeInstanceOf(ExecutionRejectionInfo);
-         expect(elapsedTime >= 1000).toBeTruthy();
+         expect(elapsedTime >= 1000).toBe(true);
          done();
       });
   });
