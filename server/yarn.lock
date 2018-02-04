@@ -287,6 +287,12 @@
   dependencies:
     "@types/lodash" "*"
 
+"@types/lodash.isboolean@^3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@types/lodash.isboolean/-/lodash.isboolean-3.0.3.tgz#a5738ed34dca926cb4f982b57a76f483ae25f344"
+  dependencies:
+    "@types/lodash" "*"
+
 "@types/lodash.isnumber@^3.0.3":
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@types/lodash.isnumber/-/lodash.isnumber-3.0.3.tgz#86c37551c1762af42eba550f0917f9cda935b0a7"
