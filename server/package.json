@@ -11,6 +11,7 @@
     "@machinelabs/models": "link:../shared/models",
     "@types/js-yaml": "^3.5.30",
     "@types/lodash.flatmap": "^4.5.3",
+    "@types/lodash.isboolean": "^3.0.3",
     "@types/lodash.isnumber": "^3.0.3",
     "@types/lodash.isobject": "^3.0.3",
     "@types/lodash.isstring": "^4.0.3",
