@@ -75,7 +75,7 @@ describe('EditorToolbarComponent', () => {
     component.lab = lab;
     fixture.detectChanges();
 
-    let nameSpan = fixture.debugElement.query(By.css('.ml-toolbar-lab-name'));
+    let nameSpan = fixture.debugElement.query(By.css('.ml-editor-toolbar-lab-name'));
 
     expect(nameSpan).toBeDefined();
     expect(nameSpan.nativeElement.textContent).toEqual(lab.name);
