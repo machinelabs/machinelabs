@@ -9,6 +9,7 @@ import { Invocation, InvocationType, ExecutionRejectionInfo, ExecutionRejectionR
 import { Resolver } from 'src/validation/resolver/resolver';
 import isBoolean = require('lodash.isboolean');
 import { ValidationError } from 'src/validation/validation-result';
+import { Observer } from 'rxjs/Observer';
 
 let dummyInvocation: Invocation = {
   id: 'dummy',
@@ -43,9 +44,11 @@ class TrueResolver implements Resolver {
   calls = 0;
 
   resolve(invocation: Invocation): Observable<boolean> {
-    this.calls++;
-
-    return of(true);
+    return Observable.create((obs: Observer<boolean>) => {
+      this.calls++;
+      obs.next(true);
+      obs.complete();
+    });
   }
 }
 
@@ -82,7 +85,6 @@ describe('.validate()', () => {
     svc.addResolver(TrueResolver, dummyResolver)
        .addRule(new IsTrueRule())
        .addRule(new IsBooleanRule());
-
 
     svc.validate(dummyInvocation)
        .subscribe(validationContext => {
