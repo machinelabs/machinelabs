@@ -17,6 +17,7 @@ import { Lab } from '../../models/lab';
 import { User } from '../../models/user';
 import { UserService } from '../../user/user.service';
 import { LabStorageService } from '../../lab-storage.service';
+import { LabNameTruncationWordCount } from '../../editor/editor.service';
 
 export enum EditorToolbarActionTypes {
   Run, Save, Fork, Create, Edit, ForkAndRun
@@ -48,7 +49,7 @@ export class EditorToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
   private userSubscription;
 
-  truncateLabNameWordCount = 4;
+  truncateLabNameWordCount = LabNameTruncationWordCount.Mobile;
 
   EditorToolbarActionTypes = EditorToolbarActionTypes;
 
@@ -79,7 +80,7 @@ export class EditorToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
 
     this.breakpointObserver.observe([Breakpoints.Tablet, Breakpoints.Web]).subscribe(state => {
-      this.truncateLabNameWordCount = state.matches ? 10 : 4;
+      this.truncateLabNameWordCount = state.matches ? LabNameTruncationWordCount.Tablet : LabNameTruncationWordCount.Mobile;
     });
   }
 

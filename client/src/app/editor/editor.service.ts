@@ -52,6 +52,12 @@ export enum TabIndex {
   Outputs = 'outputs'
 }
 
+export enum LabNameTruncationWordCount {
+  Mobile = 4,
+  Tablet = 10,
+  Web = 10
+}
+
 import { getMainFile } from 'app/util/directory';
 
 export interface ListenAndNotifyOptions {
