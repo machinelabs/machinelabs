@@ -10,11 +10,25 @@
   version "0.0.0"
   uid ""
 
+"@types/js-yaml@^3.10.1":
+  version "3.10.1"
+  resolved "https://registry.yarnpkg.com/@types/js-yaml/-/js-yaml-3.10.1.tgz#a4ddaf67fec34151e620cdbdd22e40b64217f577"
+
 "@types/jsonwebtoken@^7.1.33":
   version "7.2.3"
   resolved "https://registry.yarnpkg.com/@types/jsonwebtoken/-/jsonwebtoken-7.2.3.tgz#483c8f39945e1e6d308dcc51fd4aeca5208d4dca"
   dependencies:
     "@types/node" "*"
+
+"@types/lodash.isarray@^4.0.3":
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/@types/lodash.isarray/-/lodash.isarray-4.0.3.tgz#7c4a7596ccd685b219ab9f506a8f27c519e27db2"
+  dependencies:
+    "@types/lodash" "*"
+
+"@types/lodash@*":
+  version "4.14.101"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.101.tgz#512f6c9e1749890f4d024e98cb995a63f562d458"
 
 "@types/node@*", "@types/node@^8.0.19":
   version "8.0.26"
@@ -587,7 +601,7 @@ error-ex@^1.2.0:
   dependencies:
     is-arrayish "^0.2.1"
 
-escape-string-regexp@^1.0.2:
+escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.4:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
 
@@ -1321,7 +1335,7 @@ js-tokens@^3.0.0, js-tokens@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
 
-js-yaml@^3.7.0:
+js-yaml@^3.10.0, js-yaml@^3.7.0:
   version "3.10.0"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.10.0.tgz#2e78441646bd4682e963f22b6e92823c309c62dc"
   dependencies:
@@ -1483,6 +1497,10 @@ locate-path@^2.0.0:
     p-locate "^2.0.0"
     path-exists "^3.0.0"
 
+lodash.isarray@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/lodash.isarray/-/lodash.isarray-4.0.0.tgz#2aca496b28c4ca6d726715313590c02e6ea34403"
+
 lodash.once@^4.0.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.once/-/lodash.once-4.1.1.tgz#0dd3971213c7c56df880977d504c88fb471a97ac"
@@ -1513,6 +1531,12 @@ makeerror@1.0.x:
   resolved "https://registry.yarnpkg.com/makeerror/-/makeerror-1.0.11.tgz#e01a5c9109f2af79660e4e8b9587790184f5a96c"
   dependencies:
     tmpl "1.0.x"
+
+matcher@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/matcher/-/matcher-1.0.0.tgz#aaf0c4816eb69b92094674175625f3466b0e3e19"
+  dependencies:
+    escape-string-regexp "^1.0.4"
 
 mem@^1.1.0:
   version "1.1.0"
