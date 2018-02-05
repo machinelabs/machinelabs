@@ -29,7 +29,7 @@ import {
   MessageKind
 } from '@machinelabs/models';
 
-import { getFileFromPath } from '@machinelabs/core/dist/src/io/lab-fs/navigation';
+import { getFileFromPath } from '@machinelabs/core';
 
 import { LocationHelper } from '../util/location-helper';
 import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.service';

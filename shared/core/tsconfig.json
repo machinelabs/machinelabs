@@ -22,6 +22,7 @@
     "types": [  "node"  ]
   },
   "files": [
-    "src/index.ts"
+    "src/index.ts",
+    "src/index.browser.ts"
   ]
 }

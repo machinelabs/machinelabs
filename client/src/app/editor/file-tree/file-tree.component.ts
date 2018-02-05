@@ -8,7 +8,7 @@ import {
   instanceOfDirectory
 } from '@machinelabs/models';
 
-import { deleteFromDirectory } from '@machinelabs/core/dist/src/io/lab-fs/manipulation';
+import { deleteFromDirectory } from '@machinelabs/core';
 
 
 import { NameDialogService } from '../name-dialog/name-dialog-service';

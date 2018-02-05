@@ -39,7 +39,7 @@ import * as firebase from 'firebase';
 import { DbRefBuilder } from '../../firebase/db-ref-builder';
 import { AuthService } from '../../auth';
 
-import { parseLabDirectory } from '@machinelabs/core/dist/src/io/lab-fs/parse';
+import { parseLabDirectory } from '@machinelabs/core';
 import { stringifyDirectory } from '../../util/directory';
 import { ExecutionStatus, MessageKind } from '@machinelabs/models';
 
