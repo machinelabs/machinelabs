@@ -4,7 +4,7 @@ import { filter, map } from 'rxjs/operators';
 import { NameDialogComponent, NameDialogType } from 'app/editor/name-dialog/name-dialog.component';
 import { FileTreeService } from 'app/editor/file-tree/file-tree.service';
 import { File, Directory } from '@machinelabs/models';
-import { updateFileInDirectory } from '@machinelabs/core/dist/src/io/lab-fs/manipulation';
+import { updateFileInDirectory } from '@machinelabs/core';
 
 @Injectable()
 export class NameDialogService {

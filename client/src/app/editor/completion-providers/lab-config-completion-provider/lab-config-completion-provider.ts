@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CompletionItemProvider } from 'ngx-monaco';
 import CompletionHelper from 'yaml-completion-helper';
 import { map } from 'rxjs/operators';
-import { ML_YAML_FILENAME } from '@machinelabs/core/dist/src/lab-config/ml.yaml';
+import { ML_YAML_FILENAME } from '@machinelabs/core';
 
 import { DockerImageService } from '../../../docker-image.service';
 import { WindowRef } from '../../../window-ref.service';

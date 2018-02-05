@@ -1,9 +1,19 @@
-export * from './firebase/db-ref-builder';
-export * from './firebase/observable-db-ref';
-export * from './util/unique-id';
-export * from './util/date';
-export * from './util/string';
+/**
+ * Entrypoint for Node
+ */
+
+// Expose everything that we expose in the browser as well
+export * from './index.browser';
+
+// IO - Reactive Process
 export * from './io/reactive-process/index';
-export * from './io/lab-fs/index';
-export * from './lab-config/index';
-export * from './realtime-api/lab-api';
+
+// IO - Lab FileSystem
+export * from './io/lab-fs/fs-commands';
+export * from './io/lab-fs/fs';
+export * from './io/lab-fs/read';
+
+// Lab Config
+export * from './lab-config/read-fs';
+export * from './lab-config/parse';
+export * from './lab-config/parse-fs';
