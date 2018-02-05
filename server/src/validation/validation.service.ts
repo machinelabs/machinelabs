@@ -6,6 +6,7 @@ import { ValidationRule } from './rules/rule';
 import { ValidationContext } from './validation-context';
 import { Resolver } from './resolver/resolver';
 import { ValidationResult } from './validation-result';
+import { shareReplay } from 'rxjs/operators/shareReplay';
 
 export type ResolvedMap = Map<Function, any>;
 
@@ -45,7 +46,7 @@ export class ValidationService {
                             // there would be no way for a transformer to actually
                             // transform it.
                             map(() => resolved.get(key)),
-                            share()
+                            shareReplay(1)
                            ));
     });
 
