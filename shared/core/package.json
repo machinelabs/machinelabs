@@ -1,7 +1,8 @@
 {
   "name": "@machinelabs/core",
   "version": "0.25.0+utc.2018.Jan.29-9.22.00",
-  "description": "Fundamentals that can be shared across various projects",
+  "description": "Core libraries shared across the @machinelabs ecosystem",
+  "license": "MIT",
   "main": "dist/src/index.js",
   "browser": "dist/src/index.browser.js",
   "types": "dist/src/index.d.ts",
