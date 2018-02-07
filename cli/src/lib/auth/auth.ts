@@ -1,9 +1,9 @@
 import * as firebase from 'firebase';
 import * as chalk from 'chalk';
 import { Observable } from 'rxjs/Observable';
-import { defer } from 'rxjs/Observable/defer';
-import { _throw } from 'rxjs/Observable/throw';
-import { fromPromise } from 'rxjs/Observable/fromPromise';
+import { defer } from 'rxjs/observable/defer';
+import { _throw } from 'rxjs/observable/throw';
+import { fromPromise } from 'rxjs/observable/fromPromise';
 import { catchError } from 'rxjs/operators/catchError';
 import { configstore } from '../../configstore';
 
