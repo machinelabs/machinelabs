@@ -8,6 +8,7 @@ import './commands/logout';
 import './commands/push';
 import './commands/init';
 import './commands/pull';
+import './commands/catch-all'
 
 program
   .version(pgk.version);
