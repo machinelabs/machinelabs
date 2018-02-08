@@ -34,6 +34,13 @@ dockerImageId: keras_v2-0-x_python_3-1
 # inputs:
 # - name: mnist.npz
 #   url: https://s3.amazonaws.com/img-datasets/mnist.npz
+#
+# Everything on the "cli" node configures how the CLI interacts with the MachineLabs platform
+cli:
+  exclude:
+    - '.vscode'
+    - '__pycache__'
+    - '.git'
 `;
 
 export const ML_YAML_FILENAME = 'ml.yaml';
