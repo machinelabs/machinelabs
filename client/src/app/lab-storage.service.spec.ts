@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { Inject } from '@angular/core';
 import { File } from '@machinelabs/models';
+import { ML_YAML_FILENAME } from '@machinelabs/core';
 import { of } from 'rxjs/observable/of';
 
 import { LabStorageService } from './lab-storage.service';
@@ -64,7 +65,7 @@ describe('LabStorageService', () => {
         expect(lab).toBeDefined();
         expect(lab.directory.length).toBe(2);
         expect(lab.directory[0].name).toEqual('main.py');
-        expect(lab.directory[1].name).toEqual('ml.yaml');
+        expect(lab.directory[1].name).toEqual(ML_YAML_FILENAME);
         expect((<File>lab.directory[0]).content).toEqual('');
       });
     });

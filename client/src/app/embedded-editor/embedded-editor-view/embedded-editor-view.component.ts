@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { File } from '@machinelabs/models';
+import { ML_YAML_FILENAME } from '@machinelabs/core';
 
 import { Observable } from 'rxjs/Observable';
 import { take, map } from 'rxjs/operators';
@@ -39,6 +40,8 @@ export class EmbeddedEditorViewComponent implements OnInit {
   noExecutionDialogRef: MatDialogRef<NoExecutionDialogComponent>;
 
   MonacoFileTypeAdapter = MonacoFileTypeAdapter;
+
+  mandatoryFiles = ['main.py', ML_YAML_FILENAME];
 
   constructor(
     private route: ActivatedRoute,

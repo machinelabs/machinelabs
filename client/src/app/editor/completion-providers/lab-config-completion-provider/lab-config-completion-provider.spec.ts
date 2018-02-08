@@ -1,3 +1,4 @@
+import { ML_YAML_FILENAME } from '@machinelabs/core';
 import { LabConfigCompletionProvider } from './lab-config-completion-provider';
 import { DockerImageService } from '../../../docker-image.service';
 import { DOCKER_IMAGE_SERVICE_STUB, WINDOW_SERVICE_STUB } from '../../../../test-helper/stubs';
@@ -67,7 +68,7 @@ describe('LabConfigCompletionProvider', () => {
     });
 
     it('should return all the values', async () => {
-      const model = createModel('ml.yaml', [
+      const model = createModel(ML_YAML_FILENAME, [
         ''
       ]);
 
@@ -77,7 +78,7 @@ describe('LabConfigCompletionProvider', () => {
     });
 
     it('should return all the values when some text is provided', async () => {
-      const model = createModel('ml.yaml', [
+      const model = createModel(ML_YAML_FILENAME, [
         'hard'
       ]);
 
@@ -87,7 +88,7 @@ describe('LabConfigCompletionProvider', () => {
     });
 
     it('should not return already used properties', async () => {
-      const model = createModel('ml.yaml', [
+      const model = createModel(ML_YAML_FILENAME, [
         'hardwareType: cpu',
         ''
       ]);
@@ -98,7 +99,7 @@ describe('LabConfigCompletionProvider', () => {
     });
 
     it('should return the values of the hardwareType', async () => {
-      const model = createModel('ml.yaml', [
+      const model = createModel(ML_YAML_FILENAME, [
         'hardwareType: '
       ]);
 
@@ -121,7 +122,7 @@ describe('LabConfigCompletionProvider', () => {
     });
 
     it('should return the values of the dockerImageId', async () => {
-      const model = createModel('ml.yaml', [
+      const model = createModel(ML_YAML_FILENAME, [
         'dockerImageId: '
       ]);
 

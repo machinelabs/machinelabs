@@ -1,4 +1,5 @@
 import { browser, protractor, element, by } from 'protractor';
+import { ML_YAML_FILENAME } from '@machinelabs/core';
 
 import { waitForContentReady } from './../utils';
 import { EditorViewPageObject } from './editor-view.page-object';
@@ -23,7 +24,7 @@ describe('Editor-View Component', function() {
     it('should display the current lab file structure', () => {
       expect(editorView.fileTree.count()).toEqual(2);
       expect(editorView.getFileName(0)).toContain('main.py');
-      expect(editorView.getFileName(1)).toContain('ml.yaml');
+      expect(editorView.getFileName(1)).toContain(ML_YAML_FILENAME);
     });
 
     it('should not allow users to edit mandatory file names', () => {

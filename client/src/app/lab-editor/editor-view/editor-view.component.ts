@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { filter, tap, map, skip, switchMap, take, share } from 'rxjs/operators';
 
 import { File, ExecutionRejectionReason } from '@machinelabs/models';
+import { ML_YAML_FILENAME } from '@machinelabs/core';
 import { XtermComponent } from '../../editor/xterm/xterm.component';
 import {
   EditLabDialogComponent,
@@ -103,6 +104,8 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
   MonacoFileTypeAdapter = MonacoFileTypeAdapter;
 
   pauseModeControl = new FormControl(false);
+
+  mandatoryFiles = ['main.py', ML_YAML_FILENAME];
 
   constructor (private labStorageService: LabStorageService,
                private route: ActivatedRoute,

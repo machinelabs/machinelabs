@@ -6,12 +6,12 @@ import { readLabDirectory, getMlYamlFromPath, ML_YAML, ML_YAML_FILENAME } from '
 program
 .command('init')
 .description('Initialize current directory as lab')
-.option('-f --force', 'Overwrite ml.yaml if it already exists')
+.option(`-f --force', 'Overwrite ${ML_YAML_FILENAME} if it already exists`)
 .action(cmd => {
   let configExists = existsSync(ML_YAML_FILENAME);
 
   if (configExists && !cmd.force) {
-    console.error(chalk.default.red('ml.yaml already exists. Run `ml init --force` if you intend to overwrite ml.yaml with default settings'));
+    console.error(chalk.default.red(`${ML_YAML_FILENAME} already exists. Run \`ml init --force\` if you intend to overwrite ${ML_YAML_FILENAME} with default settings`));
     process.exit(1);
   }
 

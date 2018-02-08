@@ -8,7 +8,7 @@ import { switchMap, map } from 'rxjs/operators';
 
 import { refBuilder } from '../firebase/fb';
 import { Lab, LabDirectory, instanceOfFile } from '@machinelabs/models';
-import { LabApi, readLabDirectory, parseMlYamlFromPath } from '@machinelabs/core';
+import { LabApi, readLabDirectory, parseMlYamlFromPath, ML_YAML_FILENAME } from '@machinelabs/core';
 import { configstore } from '../configstore';
 import { loginFromCache } from '../lib/auth/auth';
 import { environment } from '../environments/environment';
@@ -24,14 +24,14 @@ program
   let parsedMlYaml = parseMlYamlFromPath('.');
 
   if (!parsedMlYaml) {
-    console.error(chalk.default.red('No ml.yaml found. Run `ml init` to create one with default settings'));
+    console.error(chalk.default.red(`No ${ML_YAML_FILENAME} found. Run \`ml init\` to create one with default settings`));
     process.exit(1);;
   }
 
   let cliOptions = parsedMlYaml.cli || {};
   let excludeRegex = cliOptions.exclude && cliOptions.exclude.length ? cliOptions.exclude : [];
   let id = cmd.id || cliOptions.id || shortid.generate();
-  
+
   let readOptions = {
     exclude: excludeRegex,
     excludeBinaries: true,

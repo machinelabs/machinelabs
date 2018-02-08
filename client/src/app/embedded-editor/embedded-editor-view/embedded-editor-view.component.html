@@ -24,7 +24,7 @@
             <ml-file-tree
               (selectFile)="editorService.openFile($event.target, $event.path)"
               [directory]="{ name: '', contents: editorService.lab.directory }"
-              [mandatoryFiles]="['main.py', 'ml.yaml']"
+              [mandatoryFiles]="mandatoryFiles"
               [showActionButtons]="false"></ml-file-tree>
           </mat-drawer>
           <monaco-editor [file]="MonacoFileTypeAdapter.labFileToMonacoFile(activeFile)"></monaco-editor>
