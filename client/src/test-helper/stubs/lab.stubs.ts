@@ -1,3 +1,4 @@
+import { ML_YAML_FILENAME } from '@machinelabs/core';
 import { Lab } from '../../app/models/lab';
 
 export const LAB_STUB: Lab = {
@@ -12,7 +13,7 @@ export const LAB_STUB: Lab = {
       content: ''
     },
     {
-      name: 'ml.yaml',
+      name: ML_YAML_FILENAME,
       content: ''
     }
   ],

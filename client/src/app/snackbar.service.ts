@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
+import { ML_YAML_FILENAME } from '@machinelabs/core';
 
 import { Observable } from 'rxjs/Observable';
 import { timer } from 'rxjs/observable/timer';
@@ -14,7 +15,7 @@ export class SnackbarService {
     return this.snackBar.open(text, config.actionLabel, { duration: config.duration });
   }
 
-  notifyInvalidConfig(msg = 'Please check your ml.yaml') {
+  notifyInvalidConfig(msg = `Please check your ${ML_YAML_FILENAME}`) {
     this.notify(`Execution Rejected. ${msg}`);
   }
 

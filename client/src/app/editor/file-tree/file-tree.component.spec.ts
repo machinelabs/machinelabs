@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, } from '@angular/core';
 import { MatDialogModule } from '@angular/material';
 import { File } from '@machinelabs/models';
+import { ML_YAML_FILENAME } from '@machinelabs/core';
 import { LAB_STUB, EDITOR_SERVICE_STUB } from '../../../test-helper/stubs';
 import { FileTreeComponent } from './file-tree.component';
 import { EditorService } from '../editor.service';
@@ -127,7 +128,7 @@ describe('FileTreeComponent', () => {
     let items = fixture.debugElement.queryAll(By.css('li'));
     expect(items.length).toEqual(2);
     expect(items[0].nativeElement.textContent).toContain('main.py');
-    expect(items[1].nativeElement.textContent).toContain('ml.yaml');
+    expect(items[1].nativeElement.textContent).toContain(ML_YAML_FILENAME);
   });
 
   it('should render a nested list of files', () => {

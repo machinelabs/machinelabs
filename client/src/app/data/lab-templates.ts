@@ -1,6 +1,6 @@
 import { SIMPLE_XOR_LAB_CODE } from './xor-lab-code';
 import { SIMPLE_MNIST_CODE } from './mnist-lab-code';
-import { ML_YAML } from '@machinelabs/core';
+import { ML_YAML, ML_YAML_FILENAME } from '@machinelabs/core';
 
 export const LAB_TEMPLATES = {
   'xor': {
@@ -11,7 +11,7 @@ export const LAB_TEMPLATES = {
       name: 'main.py',
       content: SIMPLE_XOR_LAB_CODE
     }, {
-      name: 'ml.yaml',
+      name: ML_YAML_FILENAME,
       content: ML_YAML
     }]
   },
@@ -25,7 +25,7 @@ export const LAB_TEMPLATES = {
       content: SIMPLE_MNIST_CODE
     },
     {
-      name: 'ml.yaml',
+      name: ML_YAML_FILENAME,
       content: ML_YAML
     }]
   }
