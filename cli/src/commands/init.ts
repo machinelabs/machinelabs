@@ -25,13 +25,15 @@ program
       if (!cmd.dry) {
         writeFileSync(file.path, file.data);
       }
-      output += `  ${chalk.default.green('create')} ${file.path}\n`;
+      output += `  ${chalk.default.green('created')} ${file.path}\n`;
     });
 
     console.log(output);
 
     if (cmd.dry) {
       console.log(chalk.default.yellow('NOTE: Run with "dry run" no changes were made.'));
+    } else {
+      console.log(chalk.default.green.bold('Lab successfully created.'));
     }
 
     process.exit();
