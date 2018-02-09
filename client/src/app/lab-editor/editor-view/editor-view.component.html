@@ -33,14 +33,14 @@
       <ml-editor-layout-panels>
         <ml-editor-layout-panel [class.hidden]="!editorService.editorTabActive()">
           <ml-editor-layout-panel-cta-bar>
-          <button mat-icon-button matTooltip="Toogle file tree" matTooltipPosition="right" (click)="fileTreeSidebar.toggle()"><mat-icon>description</mat-icon></button>
+          <button mat-icon-button matTooltip="Toogle file tree" matTooltipPosition="right" (click)="fileTreeSidebar.toggle()" class="ml-editor-view-file-drawer-toggle"><mat-icon>description</mat-icon></button>
         </ml-editor-layout-panel-cta-bar>
           <mat-drawer-container>
-            <mat-drawer mode="side" #fileTreeSidebar>
+            <mat-drawer [mode]="fileTreeDrawerMode" #fileTreeSidebar>
               <ml-file-tree
                 (remove)="editorService.openMainFile()"
                 (addFile)="editorService.openFile($event.target, $event.path)"
-                (selectFile)="editorService.openFile($event.target, $event.path)"
+                (selectFile)="openFile($event.target, $event.path)"
                 [directory]="{ name: '', contents: editorService.lab.directory }"
                 [mandatoryFiles]="mandatoryFiles">
               </ml-file-tree>
