@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogRef, MatSnackBar, MatTabGroup, MatDrawer } from '@angular/material';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { FormControl } from '@angular/forms';
 import { MonacoFile } from 'ngx-monaco';
 
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 import { filter, tap, map, skip, switchMap, take, share } from 'rxjs/operators';
 
 import { File, ExecutionRejectionReason } from '@machinelabs/models';
@@ -89,11 +91,13 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
 
   navigationConfirmDialogRef: MatDialogRef<NavigationConfirmDialogComponent>;
 
-  executionMetadataSidebarToggled = false;
-
   @ViewChild('executionMetadataSidebar') executionMetadataSidebar: MatDrawer;
 
+  executionMetadataSidebarToggled = false;
+
   fileTreeSidebarOpened = false;
+
+  shouldOpenExecutionListOnInit = false;
 
   @ViewChild('fileTreeSidebar') fileTreeSidebar: MatDrawer;
 
@@ -115,6 +119,7 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
                public editorService: EditorService,
                private snackbarService: SnackbarService,
                private userService: UserService,
+               private breakpointObserver: BreakpointObserver,
                private slimLoadingBarService: SlimLoadingBarService) {
   }
 
@@ -123,6 +128,15 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
     this.editorService.selectedTabChange
                       .subscribe(tabIndex => this.outputPanel.enabled = tabIndex === TabIndex.Console);
 
+    combineLatest(
+      this.breakpointObserver.observe(Breakpoints.Tablet),
+      this.breakpointObserver.observe(Breakpoints.Web)
+    ).subscribe(values => {
+      const isTablet = values[0];
+      const isWeb = values[1];
+
+      this.shouldOpenExecutionListOnInit = isTablet.matches || isWeb.matches;
+    });
     // Since editorServicec is stateful, we need to reinitialize it
     // every time we want a fresh use. Pretty much the same behavior
     // one would get when all the state would live in the component.
@@ -136,7 +150,7 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
     ).subscribe(lab => this.initLab(lab));
 
     if (this.activeExecutionId) {
-      this.listen(this.activeExecutionId);
+      this.listen(this.activeExecutionId, true, true);
     }
   }
 
@@ -241,7 +255,7 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
     this.listen(this.activeExecutionId);
   }
 
-  listen(executionId: string, initLabDirectory = true) {
+  listen(executionId: string, initLabDirectory = true, isInitialization = false) {
     this.slimLoadingBarService.progress = INITIAL_LOADING_INDICATOR_PROGRESS;
     this.outputPanel.reset();
 
@@ -278,7 +292,9 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
 
     this.output = wrapper.messages;
 
-    this.openExecutionList();
+    if (!isInitialization || this.shouldOpenExecutionListOnInit) {
+      this.openExecutionList();
+    }
   }
 
   fork(lab: Lab) {
@@ -391,7 +407,9 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
       take(1),
       filter(executions => !!executions.length)
     ).subscribe(_ => {
-      this.openExecutionList()
+      if (this.shouldOpenExecutionListOnInit) {
+        this.openExecutionList()
+      }
       if (this.activeExecutionId && !this.route.snapshot.queryParamMap.get('tab')) {
         this.editorService.selectConsoleTab();
       }
