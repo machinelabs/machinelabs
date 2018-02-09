@@ -22,7 +22,10 @@ export const postExecutionWrite = functions.database.ref('/executions/{id}/commo
       .once('value')
       .then(snapshot => snapshot.val())
       .then(lab => {
-        if (lab.name && !lab.name.startsWith('Fork of') && !lab.is_private) {
+        if (lab.name &&
+            !lab.name.toLowerCase().startsWith('fork of') &&
+            !lab.name.toLowerCase().startsWith('untitled') &&
+            !lab.is_private) {
           updateRecentLabs(event, data, delta);
         }
       })
