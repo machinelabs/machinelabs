@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogRef, MatSnackBar, MatTabGroup, MatDrawer } from '@angular/material';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -37,13 +37,15 @@ import { MonacoFileTypeAdapter } from '../../editor/monaco-file-type-adapter';
 
 const METADATA_SIDEBAR_OPEN_TIMEOUT = 600;
 const INITIAL_LOADING_INDICATOR_PROGRESS = 10;
+const FILE_TREE_DRAWER_MODE_MOBILE = 'over';
+const FILE_TREE_DRAWER_MODE_WEB = 'side';
 
 @Component({
   selector: 'ml-editor-view',
   templateUrl: './editor-view.component.html',
   styleUrls: ['./editor-view.component.scss']
 })
-export class EditorViewComponent implements OnInit, AfterViewInit {
+export class EditorViewComponent implements OnInit {
 
   output: Observable<string>;
 
@@ -97,6 +99,8 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
 
   fileTreeSidebarOpened = false;
 
+  fileTreeDrawerMode = FILE_TREE_DRAWER_MODE_MOBILE;
+
   shouldOpenExecutionListOnInit = false;
 
   @ViewChild('fileTreeSidebar') fileTreeSidebar: MatDrawer;
@@ -134,8 +138,9 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
     ).subscribe(values => {
       const isTablet = values[0];
       const isWeb = values[1];
-
       this.shouldOpenExecutionListOnInit = isTablet.matches || isWeb.matches;
+      this.fileTreeDrawerMode = isTablet.matches || isWeb.matches ?
+        FILE_TREE_DRAWER_MODE_WEB : FILE_TREE_DRAWER_MODE_MOBILE;
     });
     // Since editorServicec is stateful, we need to reinitialize it
     // every time we want a fresh use. Pretty much the same behavior
@@ -151,12 +156,6 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
 
     if (this.activeExecutionId) {
       this.listen(this.activeExecutionId, true, true);
-    }
-  }
-
-  ngAfterViewInit() {
-    if (!this.fileTreeSidebar.opened && this.editorService.editorTabActive()) {
-      this.openFileTreeSidebar();
     }
   }
 
@@ -177,9 +176,7 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
 
   selectTab(tabIndex: TabIndex) {
     this.editorService.selectTab(tabIndex);
-    if (this.editorService.editorTabActive() && !this.fileTreeSidebarOpened) {
-      this.openFileTreeSidebar();
-    } else if (this.editorService.consoleTabActive() && this.outputPanel) {
+    if (this.editorService.consoleTabActive() && this.outputPanel) {
       setTimeout(_ => this.outputPanel.resize(), 0);
     }
   }
@@ -435,6 +432,13 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
     this.activeFile.content = file.content;
   }
 
+  openFile(file: File, path?: string) {
+    this.editorService.openFile(file, path);
+    if (this.fileTreeDrawerMode === FILE_TREE_DRAWER_MODE_MOBILE) {
+      this.fileTreeSidebar.close();
+    }
+  }
+
   private goToLab(lab?: Lab, queryParams?) {
     this.locationHelper.updateUrl(['/editor', `${lab ? lab.id : ''}`], {
       queryParamsHandling: 'merge',
@@ -446,19 +450,5 @@ export class EditorViewComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.executionMetadataSidebar.open();
     }, METADATA_SIDEBAR_OPEN_TIMEOUT);
-  }
-
-  private openFileTreeSidebar() {
-    // The file tree sidebar is closed by default. We want to open it
-    // manually at runtime so the sidebar container can calculate its margins
-    // properly. This is because when entering a lab with any other tab than
-    // the editor, the sidebar container content will be display none,
-    // making it impossible to calculate the margins.
-    //
-    // https://github.com/machinelabs/machinelabs/issues/525
-    setTimeout(_ => {
-      this.fileTreeSidebar.open();
-      this.fileTreeSidebarOpened = true;
-    });
   }
 }

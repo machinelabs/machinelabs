@@ -22,6 +22,7 @@ describe('Editor-View Component', function() {
 
   describe('in EDIT mode', () => {
     it('should display the current lab file structure', () => {
+      editorView.toggleFileTreeDrawer();
       expect(editorView.fileTree.count()).toEqual(2);
       expect(editorView.getFileName(0)).toContain('main.py');
       expect(editorView.getFileName(1)).toContain(ML_YAML_FILENAME);
@@ -34,6 +35,7 @@ describe('Editor-View Component', function() {
     });
 
     it('should allow users to add new files', () => {
+      editorView.toggleFileTreeDrawer();
       editorView.addFile('ml-main-2.py');
       expect(editorView.fileTree.count()).toEqual(3);
     });
@@ -41,6 +43,7 @@ describe('Editor-View Component', function() {
     it('should allow users to edit file names', () => {
       let fileIndex = 2;
 
+      editorView.toggleFileTreeDrawer();
       editorView.addFile('ml-main-2.py');
       editorView.changeFileName(fileIndex, 'changed.py');
       expect(editorView.getFileName(fileIndex)).toContain('changed.py');

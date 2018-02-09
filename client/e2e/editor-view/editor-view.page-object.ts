@@ -67,4 +67,8 @@ export class EditorViewPageObject {
       this.fileNameDialog.okBtn.click();
     }
   }
+
+  toggleFileTreeDrawer() {
+    element(by.css('.ml-editor-view-file-drawer-toggle')).click();
+  }
 }
