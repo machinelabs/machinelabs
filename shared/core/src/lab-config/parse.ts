@@ -1,4 +1,4 @@
-import { safeLoad} from 'js-yaml';
+import { safeLoad } from 'js-yaml';
 import { File } from '@machinelabs/models';
 
 export const parseMlYaml = (configFile: File) => {
@@ -8,5 +8,3 @@ export const parseMlYaml = (configFile: File) => {
     return null;
   }
 };
-
-
