@@ -48,7 +48,7 @@ export class FilePreviewDialogRef {
     return this._beforeClose.asObservable();
   }
 
-  backdropClick(): Observable<void> {
+  backdropClick(): Observable<MouseEvent> {
     return this.overlayRef.backdropClick();
   }
 }
