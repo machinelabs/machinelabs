@@ -84,7 +84,6 @@ ml-toolbar {
 
   .ml-editor-toolbar-lab-info {
     font-size: 1em;
-    margin-left: 3.5em;
   }
 
   .ml-editor-toolbar-edit-button {
@@ -119,5 +118,9 @@ ml-toolbar {
 @include TabletLandscapeUp {
   .ml-editor-toolbar-cta-bar {
     display: block;
+  }
+
+  .ml-editor-toolbar-lab-info {
+    margin-left: 3.5em;
   }
 }
