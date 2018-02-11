@@ -14,6 +14,7 @@ const CLI_PACKAGES = [
 const publishCliCmd = (argv) => {
 
   console.log(chalk.green('Bulding CLI for production'));
+  execSync('(cd shared && node build.js)', { stdio: 'pipe' });
   execSync('(cd cli && yarn build:production)', { stdio: 'pipe' });
 
   console.log(chalk.green('Pinning dependencies as a preparation for npm publishing the CLI'));
