@@ -1,6 +1,6 @@
 {
   "name": "@machinelabs/core",
-  "version": "0.27.0+utc.2018.Feb.09-17.43.05",
+  "version": "0.27.1+utc.2018.Feb.11-10.05.32",
   "description": "Core libraries shared across the @machinelabs ecosystem",
   "license": "MIT",
   "main": "dist/src/index.js",
