@@ -16,7 +16,8 @@ const ANIMATION_TIMINGS = '400ms cubic-bezier(0.25, 0.8, 0.25, 1)';
     trigger('fade', [
       state('fadeOut', style({ opacity: 0 })),
       state('fadeIn', style({ opacity: 1 })),
-      transition('* => *', animate(ANIMATION_TIMINGS))
+      transition('fadeOut => fadeIn', animate(ANIMATION_TIMINGS)),
+      transition('fadeIn => fadeOut', animate(ANIMATION_TIMINGS))
     ]),
     trigger('slideContent', [
       state('void', style({ transform: 'translate3d(0, 25%, 0) scale(0.9)', opacity: 0 })),
