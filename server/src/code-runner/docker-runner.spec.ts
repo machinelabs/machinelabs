@@ -84,13 +84,40 @@ describe('.run(lab)', () => {
         expect(outgoingMessages[0]).toEqual(stdoutMsg('downloader output'));
         expect(outgoingMessages[1]).toEqual(stdoutMsg('execution output'));
         expect(outgoingMessages[2]).toEqual(stdoutMsg('uploader output'));
-        // tslint:disable-next-line
-        expect(spawn.mock.calls[0]).toEqual(['docker', ['create', '--cap-drop=ALL', '--kernel-memory=1024k', '--security-opt=no-new-privileges', '-t', '--read-only', '--tmpfs', '/run:rw,size=5g,mode=1777', '--tmpfs', '/tmp:rw,size=1g,mode=1777', '--name', '4711', 'bar', '/bin/bash']]);
-        // tslint:disable-next-line
-        expect(spawn.mock.calls[1]).toEqual(['docker', ['exec', '-t', containerId, '/bin/bash', '-c', `mkdir /run/outputs && cd /run && ({ cat <<'EOL' > foo.py
-foo
-EOL
-}) && python main.py --learning_rate=5 --max_steps=200`]]);
+        expect(spawn.mock.calls[0]).toEqual(['docker', [
+          'create',
+          '--cap-drop=ALL',
+          '--kernel-memory=1024k',
+          '--security-opt=no-new-privileges',
+          '-t',
+          '--read-only',
+          '--tmpfs',
+          '/run:rw,size=5g,mode=1777',
+          '--tmpfs',
+          '/tmp:rw,size=1g,mode=1777',
+          '-v',
+          '/tmp/4711:/lab:ro',
+          '--name',
+          '4711',
+          'bar',
+          '/bin/bash']
+        ]);
+        expect(spawn.mock.calls[1]).toEqual(['docker', [
+          'exec',
+          '-t',
+          'awesome-id',
+          '/bin/bash',
+          '-c',
+          'cp -R /lab/* /run']
+        ]);
+        expect(spawn.mock.calls[2]).toEqual(['docker', [
+          'exec',
+          '-t',
+          containerId,
+          '/bin/bash',
+          '-c',
+          `mkdir /run/outputs && cd /run && python main.py --learning_rate=5 --max_steps=200`]
+        ]);
         expect(uploader.handleUpload.mock.calls.length).toBe(1);
         done();
       });
