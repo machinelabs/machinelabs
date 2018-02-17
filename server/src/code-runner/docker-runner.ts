@@ -1,9 +1,10 @@
 import { exec } from 'child_process';
+import * as rimraf from 'rimraf';
 import { Observable } from 'rxjs/Observable';
 import { map, mergeMap, finalize, concat } from 'rxjs/operators';
 import { CodeRunner } from './code-runner';
 import { File } from '@machinelabs/models';
-import { createWriteLabDirectoryCmd } from '@machinelabs/core';
+import { writeDirectory } from '@machinelabs/core';
 import { Invocation } from '@machinelabs/models';
 import { InternalLabConfiguration } from '../models/lab-configuration';
 import { trimNewLines, ProcessStreamData, stdoutMsg, SpawnShellFn, SpawnFn } from '@machinelabs/core';
@@ -40,11 +41,8 @@ export class DockerRunner implements CodeRunner {
 
   run(invocation: Invocation, configuration: InternalLabConfiguration): Observable<ProcessStreamData> {
 
-    // construct a shell command to create all files.
-    // File creation happens inside the docker container. That means we don't have to map
-    // any directory from the host into container. And if anything bad happens to the container there
-    // is no way we could leave cruft behind on the host system.
-    let writeCommand = createWriteLabDirectoryCmd(invocation.data.directory);
+    let tmpExecutionDir = `/tmp/${invocation.id}`;
+    writeDirectory({ name: tmpExecutionDir, contents: invocation.data.directory }).subscribe();
 
     this.processCount++;
 
@@ -64,6 +62,8 @@ export class DockerRunner implements CodeRunner {
       '--tmpfs',
       `/tmp:rw,size=${this.config.tmpPartitionSize},mode=${this.config.tmpPartitionMode}`,
       ...mounts,
+      '-v',
+      `${tmpExecutionDir}:/lab:ro`,
       `--name`,
       invocation.id,
       configuration.imageWithDigest,
@@ -74,7 +74,20 @@ export class DockerRunner implements CodeRunner {
       mergeMap((containerId: string) =>
         this.config.spawnShell(`docker start ${containerId}`)
           .pipe(
+            concat(this.config.spawn(this.config.dockerExecutable, [
+              'exec',
+              '-t',
+              containerId,
+              '/bin/bash',
+              '-c',
+              `cp -R /lab/* /run`
+            ])),
             mute,
+            finalize(() => rimraf(tmpExecutionDir, (err) => {
+              if (err) {
+                console.error(`Could not clean up ${tmpExecutionDir}`);
+              }
+            })),
             concat(this.config.downloader.fetch(containerId, configuration.inputs)),
             concat(this.config.spawn(this.config.dockerExecutable, [
               'exec',
@@ -82,7 +95,7 @@ export class DockerRunner implements CodeRunner {
               containerId,
               '/bin/bash',
               '-c',
-              `mkdir /run/outputs && cd /run && (${writeCommand}) && python main.py ${args}`
+              `mkdir /run/outputs && cd /run && python main.py ${args}`
             ])),
             concat(this.config.uploader.handleUpload(invocation, containerId, configuration)),
             concat(this.config.spawnShell(`docker rm -f ${containerId}`).pipe(mute))
