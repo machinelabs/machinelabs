@@ -6,7 +6,6 @@ import { _throw } from 'rxjs/observable/throw';
 import { of } from 'rxjs/observable/of';
 
 import { Directory, LabDirectory, File, instanceOfFile, instanceOfDirectory } from '@machinelabs/models';
-import { createWriteDirectoryCmd, createWriteLabDirectoryCmd } from './fs-commands';
 
 export const writeDirectory = (directory: Directory, skipRoot?: boolean) => {
   if (!skipRoot && !directory.name) {
@@ -15,14 +14,6 @@ export const writeDirectory = (directory: Directory, skipRoot?: boolean) => {
 
   directory.name = skipRoot ? '' : directory.name;
   return defer(() => of(writeFileOrDirectorySync(directory, skipRoot)));
-};
-
-export const writeDirectoryInShell = (directory: Directory, skipRoot?: boolean) => {
-  return spawnShell(createWriteDirectoryCmd(directory, skipRoot));
-};
-
-export const writeLabDirectory = (labDirectory: LabDirectory) => {
-  return spawnShell(createWriteLabDirectoryCmd(labDirectory));
 };
 
 const writeFileOrDirectorySync = (fileOrDirectory: File | Directory, skipRoot = false, path = '') => {

@@ -9,7 +9,6 @@ export * from './index.browser';
 export * from './io/reactive-process/index';
 
 // IO - Lab FileSystem
-export * from './io/lab-fs/fs-commands';
 export * from './io/lab-fs/fs';
 export * from './io/lab-fs/read';
 
