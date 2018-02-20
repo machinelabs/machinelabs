@@ -1,3 +1,4 @@
+import * as firebase from 'firebase';
 import { SYSTEM_USER, InvocationType, HardwareType } from '@machinelabs/models';
 import { ObservableDbRef, DbRefBuilder, uniqueId } from '@machinelabs/core';
 import { Observable } from 'rxjs/Observable';
