@@ -57,6 +57,23 @@ export class LabConfigCompletionProvider implements CompletionItemProvider {
           type: 'keyword'
         }
       ]
+    },
+    {
+      name: 'cli',
+      type: 'object',
+      description: 'Specifies the configuration when using the MachineLabs CLI.',
+      values: [
+        {
+          name: 'id',
+          type: 'keyword',
+          description: 'ID of the lab.'
+        },
+        {
+          name: 'exclude',
+          type: 'array',
+          description: 'List of globbing patterns that should be excluded when pushing the lab.'
+        }
+      ]
     }
   ];
 
