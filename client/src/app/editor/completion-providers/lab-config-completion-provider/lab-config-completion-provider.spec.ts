@@ -43,6 +43,12 @@ const completions = [
     kind: 9,
     insertText: 'parameters: ',
     documentation: 'A list of parameters that will be passed to our entry file (e.g. main.py) in the same order they are specified.'
+  },
+  {
+    label: 'cli',
+    kind: 9,
+    insertText: 'cli: ',
+    documentation: 'Specifies the configuration when using the MachineLabs CLI.'
   }
 ];
 
