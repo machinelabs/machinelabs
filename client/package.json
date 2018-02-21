@@ -44,7 +44,7 @@
     "rxjs": "5.5.2",
     "shortid": "2.2.6",
     "xterm": "^2.9.2",
-    "yaml-completion-helper": "^0.2.1",
+    "yaml-completion-helper": "^0.2.2",
     "zone.js": "0.8.16"
   },
   "devDependencies": {
