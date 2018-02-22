@@ -8,3 +8,4 @@ export * from './mountoption';
 export * from './invocation';
 export * from './special-user';
 export * from './plans';
+export * from './lab-config';
