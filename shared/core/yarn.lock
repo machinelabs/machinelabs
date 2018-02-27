@@ -86,12 +86,6 @@
   version "0.0.0"
   uid ""
 
-"@reactivex/rxjs@^5.4.2":
-  version "5.4.2"
-  resolved "https://registry.yarnpkg.com/@reactivex/rxjs/-/rxjs-5.4.2.tgz#ab530dbbdab71071369828ef11c8d7ae558d5116"
-  dependencies:
-    symbol-observable "^1.0.1"
-
 "@types/events@*":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@types/events/-/events-1.1.0.tgz#93b1be91f63c184450385272c47b6496fd028e02"
@@ -1743,10 +1737,6 @@ locate-path@^2.0.0:
   dependencies:
     p-locate "^2.0.0"
     path-exists "^3.0.0"
-
-lodash.isarray@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/lodash.isarray/-/lodash.isarray-4.0.0.tgz#2aca496b28c4ca6d726715313590c02e6ea34403"
 
 lodash@^4.14.0, lodash@^4.15.0, lodash@^4.17.4:
   version "4.17.4"
