@@ -39,7 +39,6 @@
     "@types/shortid": "^0.0.29",
     "isbinaryfile": "^3.0.2",
     "js-yaml": "^3.10.0",
-    "lodash.isarray": "^4.0.0",
     "matcher": "^1.0.0",
     "moment": "^2.18.1",
     "shortid": "^2.2.8"
