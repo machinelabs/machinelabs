@@ -62,6 +62,12 @@ export class LabExecutionService {
     );
   }
 
+  observeRecentExecutionsForLab(lab: Lab, limit = 3) {
+    return this.observeExecutionsForLab(lab).pipe(
+      map(executions => executions.slice(0, limit))
+    );
+  }
+
   observeExecutionsForUser(user: User): Observable<Array<Observable<Execution>>> {
     return this.authService.requireAuthOnce().pipe(
       switchMap(_ => this.db.userVisibleExecutionsRef(user.id).childAdded()),
