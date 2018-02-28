@@ -7,34 +7,22 @@
   box-shadow: 0 -1px 12px rgba(0,0,0,.5);
 }
 
-.ml-toolbar-logo {
+.ml-toolbar-logo-slot {
   padding-bottom: 0.2em;
-  img {
-    height: 28px;
-  }
 }
 
-.ml-toolbar-content {
+.ml-toolbar-content-slot {
   flex: 1;
 }
 
-.ml-toolbar-cta-bar {
+.ml-toolbar-cta-bar-slot {
   flex: 1;
   text-align: right;
 }
 
-.ml-toolbar-sub-row {
+.ml-toolbar-sub-row-slot {
   height: 40px;
   padding: 0;
-}
-
-@include TabletPortraitUp {
-
-  .ml-toolbar-logo {
-    img {
-      height: 22px;
-    }
-  }
 }
 
 @include TabletLandscapeUp {
@@ -42,7 +30,7 @@
     padding: 0 28px;
   }
 
-  .ml-toolbar-sub-row {
+  .ml-toolbar-sub-row-slot {
     display: none;
   }
 }

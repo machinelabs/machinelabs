@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../auth/auth.service';
 import { LoginService } from '../../login.service';
@@ -13,7 +13,8 @@ export enum MenuTriggerType {
 @Component({
   selector: 'ml-toolbar-menu',
   templateUrl: './toolbar-menu.component.html',
-  styleUrls: ['./toolbar-menu.component.scss']
+  styleUrls: ['./toolbar-menu.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ToolbarMenuComponent implements OnInit {
 

@@ -1,6 +1,6 @@
 @import '../../../mixins';
 
-.ml-toolbar-navigation-button {
+[mat-button].ml-toolbar-navigation-button {
   padding: 0;
   min-width: initial;
   width: 40px;
@@ -45,18 +45,31 @@
   transform: translateX(-50%) translateY(-50%);
   perspective: 1200px;
 
-  ::ng-deep a {
+  a {
     display: block;
     font-size: 1.5em;
     line-height: 1;
     padding: 0.5em;
+    font-weight: normal;
   }
 }
 
+.ml-toolbar-navigation-robot {
+  position: absolute;
+  bottom: -1em;
+  left: 1em;
+  height: 120px;
+  width: auto;
+  content: '';
+}
 
 @include TabletPortraitUp {
 
-  .ml-toolbar-navigation-button {
+  [mat-button].ml-toolbar-navigation-button {
+    display: none;
+  }
+
+  .ml-toolbar-navigation-robot {
     display: none;
   }
 
@@ -68,10 +81,10 @@
     background-color: transparent;
     transition: none;
     text-align: right;
-  }
 
-  .ml-toolbar-navigation-overlay-close-button {
-    display: none;
+    .ml-toolbar-navigation-overlay-close-button {
+      display: none;
+    }
   }
 
   .ml-toolbar-navigation-overlay-nav {
@@ -80,10 +93,11 @@
     display: flex;
     justify-content: flex-end;
 
-    ::ng-deep a {
+    a {
       font-size: 14px;
       padding: 0 16px;
       line-height: 36px;
+      font-weight: 500;
     }
   }
 }
