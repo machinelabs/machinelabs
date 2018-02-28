@@ -10,5 +10,6 @@ export const environment = {
     projectId: 'machinelabs-database-testing',
     storageBucket: 'machinelabs-database-testing.appspot.com',
     messagingSenderId: '121012318422'
-  }
+  },
+  topPicksLabIds: []
 };

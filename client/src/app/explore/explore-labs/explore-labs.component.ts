@@ -39,15 +39,9 @@ export class ExploreLabsComponent implements OnInit {
     return this.labStorageService.getRecentLabs().pipe(
       map(labs => labs.map(lab => ({
         lab,
-        executions: this.observeRecentExecutionsForLab(lab),
+        executions: this.labExecutionService.observeRecentExecutionsForLab(lab),
         user: this.userService.getUser(lab.user_id)
       })))
-    );
-  }
-
-  private observeRecentExecutionsForLab(lab: Lab, limit = 3) {
-    return this.labExecutionService.observeExecutionsForLab(lab).pipe(
-      map(executions => executions.slice(0, limit))
     );
   }
 }

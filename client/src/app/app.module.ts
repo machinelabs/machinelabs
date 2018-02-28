@@ -33,7 +33,7 @@ import { AppComponent } from './app.component';
 import { APP_ROUTES } from './app.routes';
 
 import { environment } from '../environments/environment';
-import { DATABASE } from './app.tokens';
+import { DATABASE, TOP_PICKS } from './app.tokens';
 import { DbRefBuilder } from './firebase/db-ref-builder';
 
 // We need to export this factory function to make AoT happy
@@ -85,7 +85,8 @@ const AnimationsModule = [environment.testing ? NoopAnimationsModule : BrowserAn
     { provide: DATABASE, useFactory: databaseFactory },
     { provide: AuthService, useClass: environment.offline ? OfflineAuthService : FirebaseAuthService },
     LocationHelper,
-    WindowRef
+    WindowRef,
+    { provide: TOP_PICKS, useValue: environment.topPicksLabIds || [] }
   ],
   bootstrap: [AppComponent]
 })
