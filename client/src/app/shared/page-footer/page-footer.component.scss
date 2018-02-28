@@ -1,0 +1,88 @@
+@import '../../../mixins';
+
+:host {
+  display: block;
+}
+
+.ml-page-footer {
+  font-size: 0.9em;
+  padding: 1em 0;
+  position: relative;
+}
+
+.ml-page-footer-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.ml-page-footer-sections {
+  display: flex;
+  flex-direction: column;
+  padding: 1em 16px;
+
+  h4 {
+    font-size: 1.1em;
+  }
+
+  ul {
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    margin-top: 0.8em;
+  }
+
+  a {
+    text-decoration: none;
+    line-height: 1.2;
+  }
+}
+
+.ml-page-footer-robot {
+  display: none;
+}
+
+.ml-page-footer-copyright {
+  text-align: center;
+  margin-top: 1em;
+  line-height: 1.4;
+  font-size: 0.9em;
+}
+
+
+@include TabletPortraitUp {
+
+  .ml-page-footer-sections {
+    padding: 2em 0;
+    flex-direction: row;
+
+    li {
+      margin-top: 0.5em;
+    }
+  }
+
+  .ml-page-footer-section {
+    flex: 1;
+  }
+
+  .ml-page-footer-copyright {
+    font-size: 1em;
+    margin-top: 2em;
+  }
+}
+
+@include TabletLandscapeUp {
+  .ml-page-footer-container {
+    margin: 0 auto;
+    width: 90%;
+    max-width: 1200px;
+  }
+
+  .ml-page-footer-robot {
+    display: block;
+    margin: 0 auto;
+    margin-top: 2.5em;
+    width: 100px;
+  }
+}

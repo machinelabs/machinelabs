@@ -1,0 +1,16 @@
+@import '../../../../node_modules/@angular/material/theming';
+
+@mixin ml-page-footer-theme($theme) {
+
+  .ml-page-footer {
+    background-color: #172432;
+    color: #fff;
+  }
+
+  .ml-page-footer-sections {
+    a {
+      color: #b2b4b6;
+      text-decoration: none;
+    }
+  }
+}
