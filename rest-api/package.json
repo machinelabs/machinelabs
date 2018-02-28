@@ -1,6 +1,6 @@
 {
   "name": "@machinelabs/rest-api",
-  "version": "0.28.1+utc.2018.Feb.20-19.44.11",
+  "version": "0.28.1-dev+utc.2018.Feb.28-20.59.38",
   "description": "REST API for MachineLabs",
   "main": "index.js",
   "author": "MachineLabs, Inc <hello@machinelabs.ai> (https://machinelabs.ai)",
