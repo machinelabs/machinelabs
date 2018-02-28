@@ -14,7 +14,6 @@ const { version } = require('../../package.json');
   styles: [`
     :host {
       display: block;
-      background: linear-gradient(145deg, #0d47a1, #42a5f5);
     }
 
     ng2-slim-loading-bar {

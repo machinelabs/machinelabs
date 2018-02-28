@@ -16,5 +16,6 @@ export const environment = {
     databaseURL: 'https://machinelabs-a73cd.firebaseio.com',
     storageBucket: 'machinelabs-a73cd.appspot.com',
     messagingSenderId: '351438476852'
-  }
+  },
+  topPicksLabIds: []
 };

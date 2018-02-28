@@ -8,6 +8,7 @@ export const environment = {
     databaseURL: 'https://machinelabs-test.firebaseio.com',
     storageBucket: 'machinelabs-test.appspot.com',
     messagingSenderId: '219672978749'
-  }
+  },
+  topPicksLabIds: []
 };
 

@@ -8,53 +8,173 @@
   </ml-toolbar-cta-bar>
   <ml-toolbar-menu [menuTrigger]="MenuTriggerType.LoginButton"></ml-toolbar-menu>
 </ml-toolbar>
-<div class="ml-landing-page-banner">
-  <div class="ml-landing-page-promo-text">
-    <h1>
-      <strong>MachineLabs</strong> is a platform making Machine Learning <strong>explorable, sharable</strong> and <strong>accessible</strong> for everyone.
-    </h1>
-    <div class="ml-landing-page-cta-bar">
-      <a title="Launch Editor" mat-raised-button color="primary" routerLink="/editor">Launch editor</a>
-      <a href="https://docs.machinelabs.ai/guide/quickstart.html" color="primary" title="Quickstart" mat-raised-button>Learn more</a>
+<div class="ml-landing-page-head">
+  <div class="ml-landing-page-head-container">
+    <h1 class="ml-landing-page-tagline">The <span>Machine Learning</span> platform you've been looking for.</h1>
+    <h2 class="ml-landing-page-byline">Fast and easy Machine Learning without leaving the browser.</h2>
+    <div class="ml-landing-page-head-buttons">
+      <a mat-raised-button color="primary" routerLink="/editor" title="Launch app">Launch app</a>
+      <a mat-raised-button routerLink="/editor" title="Launch app">Getting started</a>
     </div>
   </div>
-  <div class="ml-promo-image">
-    <img src="/assets/images/machinelabs_ai.png" alt="MachineLabs Editor">
-  </div>
-</div>
-<div class="patron">
-  <p>Support us on our mission and become a Patron!</p>
-  <a href="https://www.patreon.com/machinelabs">
-    <img src="/assets/images/become_a_patron_button@2x.png" alt="Become a Patron">
-  </a>
+  <img class="ml-landing-page-promo" src="/assets/images/ml-app.png" alt="MachineLabs Editor">
+  <img class="ml-landing-page-head-robot" alt="Robot" src="/assets/images/robot_4_black.svg">
 </div>
 <main role="main" class="ml-landing-page-main">
-  <div class="ml-landing-page-main-content">
-    <div class="ml-explore-view-content">
-      <header class="ml-explore-labs-header">
-        <h1>Recent Labs</h1>
-      </header>
-      <ml-explore-labs></ml-explore-labs>
+  <section class="ml-landing-page-section slide dark-blue">
+    <div class="ml-landing-page-section-container">
+      <h3 class="ml-landing-page-section-headline">A complete Machine Learning toolset.</h3>
+      <p class="ml-landing-page-section-text">MachineLabs is the easiest way to get started with Machine Learning. <strong>No installation required</strong>. Everything can be done right in the browser.</p>
+
+      <div class="ml-landing-page-item-list">
+        <div class="ml-landing-page-item">
+          <div class="ml-landing-page-feature">
+            <mat-icon>code</mat-icon>
+            <h4 class="ml-landing-page-feature-name">Online Editor</h4>
+            <p class="ml-landing-page-feature-text">Use our online editor to create your Machine Learning experiments and <span>get started in no-time</span>.</p>
+          </div>
+        </div>
+        <div class="ml-landing-page-item">
+          <div class="ml-landing-page-feature">
+            <mat-icon>cloud_circle</mat-icon>
+            <h4 class="ml-landing-page-feature-name">Train in real-time</h4>
+            <p class="ml-landing-page-feature-text">Train your models on our high-performance servers and observe your executions in <span>real-time</span>.</p>
+          </div>
+        </div>
+        <div class="ml-landing-page-item">
+          <div class="ml-landing-page-feature">
+            <mat-icon>share</mat-icon>
+            <h4 class="ml-landing-page-feature-name">Share and collaborate</h4>
+            <p class="ml-landing-page-feature-text">Share your labs with friends to let them tweak your code, or <span>embed them into your website</span> for your readers.</p>
+          </div>
+        </div>
+      </div>
+      <div class="ml-landing-page-cta-bar">
+        <a mat-raised-button href="https://docs.machinelabs.ai/guide/quickstart.html" title="Learn more about our editor">Learn more</a>
+      </div>
     </div>
-    <div class="ml-supporters">
-      <header class="ml-supporters-header">
-        <h1 class="ml-supporters-headline">We are proudly supported by</h1>
-      </header>
-      <div class="ml-supporters-list">
-        <div class="ml-supporters-list-item">
+  </section>
+  <ng-container *ngIf="topPicks | async as topPicks">
+    <section class="ml-landing-page-section slide gray slide-direction-alternative" *ngIf="topPicks.length">
+      <div class="ml-landing-page-section-container">
+        <h3 class="ml-landing-page-section-headline">Top picks</h3>
+        <p class="ml-landing-page-section-text">Take a look at some of our users most exciting labs.</p>
+        <div class="ml-landing-page-top-picks">
+          <ml-lab-card
+            *ngFor="let topPick of topPicks"
+            [lab]="topPick.lab"
+            [user]="topPick.user | async"
+            [executions]="topPick.executions | async">
+          </ml-lab-card>
+        </div>
+      </div>
+    </section>
+  </ng-container>
+  <section class="ml-landing-page-section dark-blue slide">
+    <div class="ml-landing-page-section-container">
+      <h3 class="ml-landing-page-section-headline">What makes MachineLabs stand out?</h3>
+      <div class="ml-landing-page-properties-container">
+        <ul class="ml-landing-page-properties-list">
+          <li>
+            <mat-icon>explore</mat-icon>
+            <div class="ml-landing-page-property">
+              <h5 class="ml-landing-page-property-name">Available to everyone</h5>
+              <p class="ml-landing-page-property-description"><strong>No login required</strong> to view public labs, their source code and executions, making it easier to explore the Machine Learning space than ever before.</p>
+            </div>
+          </li>
+          <li>
+            <mat-icon>import_export</mat-icon>
+            <div class="ml-landing-page-property">
+              <h5 class="ml-landing-page-property-name">Reuse pre-trained models</h5>
+              <p class="ml-landing-page-property-description">Import any pre-trained models hosted on the MachineLabs platform into your own labs, <strong>using our REST API</strong>.</p>
+            </div>
+          </li>
+          <li>
+            <mat-icon>computer</mat-icon>
+            <div class="ml-landing-page-property">
+              <h5 class="ml-landing-page-property-name">Your environment</h5>
+              <p class="ml-landing-page-property-description">Choose from our provided environments or <strong>configure your own custom environments</strong> to run your code on as you need it.</p>
+              <span class="ml-landing-page-property-coming-soon-badge">Coming Soon</span>
+            </div>
+          </li>
+        </ul>
+        <ul class="ml-landing-page-properties-list">
+          <li>
+            <mat-icon>update</mat-icon>
+            <div class="ml-landing-page-property">
+              <h5 class="ml-landing-page-property-name">Real-time user interface</h5>
+              <p class="ml-landing-page-property-description">Lab <strong>executions can be viewed in real-time at any time</strong>, infinitely, from right within the browser.</p>
+            </div>
+          </li>
+          <li>
+            <mat-icon>list</mat-icon>
+            <div class="ml-landing-page-property">
+              <h5 class="ml-landing-page-property-name">Parallel executions</h5>
+              <p class="ml-landing-page-property-description">No longer wait for your training to be done, just to start the next one. MachineLabs lets you <strong>run multiple executions at the same time</strong>.</p>
+            </div>
+          </li>
+          <li>
+            <mat-icon>library_books</mat-icon>
+            <div class="ml-landing-page-property">
+              <h5 class="ml-landing-page-property-name">Datasets you need</h5>
+              <p class="ml-landing-page-property-description"><strong>Choose from a variaty of datasets</strong> or upload your own for reusability on the MachineLabs platform.</p>
+              <span class="ml-landing-page-property-coming-soon-badge">Coming Soon</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <p class="ml-landing-page-section-text">Don't know where to start? Get the most out of our platform and <strong>join our Machine Learning Jump Start course</strong>!</p>
+      <a href="https://course.machinelabs.ai" title="Machine Learning Jump Start course"><img class="ml-landing-page-ad-banner" alt="Machine Learning Jump Start course banner" src="/assets/images/ml-course-ad.png"></a>
+    </div>
+  </section>
+  <section class="ml-landing-page-section slide slide-direction-alternative">
+    <div class="ml-landing-page-section-container">
+      <h3 class="ml-landing-page-section-headline">Works on your machine™</h3>
+      <p class="ml-landing-page-section-text">Prefer your local environment? Use our CLI and fiddle with your labs locally until you're ready to push them to the cloud.</p>
+      <div class="ml-landing-page-console-container">
+        <ml-console>
+          <span ml-console-cmd>$ npm install -g @machinelabs/cli<br>
+          $ ml run --locally
+          $ Using Tensorflow Backend.</span>
+        </ml-console>
+        <div class="ml-landing-page-console-text">
+          <p>The MachineLabs command line interface lets you <span>import existing projects</span>, <span>clone labs</span> from the platform and <span>run them</span> either locally or in our high performance cloud.</p>
+          <div>
+            <a mat-raised-button href="https://docs.machinelabs.ai/guide/using-the-cli.html" title="Learn more about our CLI">Learn more</a>
+          </div>
+        </div>
+      </div>
+      <div class="ml-landing-page-cta-bar console">
+        <a mat-raised-button href="https://docs.machinelabs.ai/guide/using-the-cli.html" title="Learn more about our CLI">Learn more</a>
+      </div>
+    </div>
+  </section>
+  <section class="ml-landing-page-section gray">
+    <div class="ml-landing-page-section-container">
+      <h3 class="ml-landing-page-section-headline">Proudly supported by these companies</h3>
+      <p class="ml-landing-page-section-text">MachineLabs is a self bootstrapped company that is proud to be trusted and supported by the companies listed below.</p>
+
+      <div class="ml-landing-page-supporters-list">
+        <div class="ml-landing-page-supporters-list-item">
           <img class="shopware-logo" src="/assets/images/shopware_logo.svg" alt="Shopware Logo">
         </div>
-        <div class="ml-supporters-list-item">
+        <div class="ml-landing-page-supporters-list-item">
           <img class="thoughtram-logo" src="/assets/images/thoughtram_logo.svg" alt="thoughtram Logo">
         </div>
-        <div class="ml-supporters-list-item">
+        <div class="ml-landing-page-supporters-list-item">
           <img class="google-logo" src="/assets/images/google_logo.svg" alt="Google Logo">
         </div>
-        <div class="ml-supporters-list-item">
+        <div class="ml-landing-page-supporters-list-item">
           <img class="webtrix-logo" src="/assets/images/webtrix_logo.svg" alt="Webtrix Logo">
         </div>
       </div>
     </div>
+  </section>
+  <div class="ml-landing-page-patreon-banner">
+    <p>Support our mission on Patreon!</p>
+    <a href="https://www.patreon.com/machinelabs">
+      <img src="/assets/images/become_a_patron_button@2x.png" alt="Become a Patron">
+    </a>
   </div>
 </main>
 <ml-page-footer></ml-page-footer>
