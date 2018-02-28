@@ -42,43 +42,13 @@ button + button {
   margin-left: 10px;
 }
 
-.ml-console {
-  background: #151718;
-  padding: 10px 15px;
-  border-radius: 5px;
-
-  .cmd {
-    display: inline-block;
-  }
+.cmd-info {
+  color: #e6cd69;
 }
 
-.ml-console-content {
-  color: white;
-  padding: 20px 15px;
-
-  .cmd + .cmd {
-    margin-top: 5px;
-  }
-
-  .cmd {
-    &--info {
-      color: #e6cd69;
-    }
-
-    &--current::after {
-      content: '';
-      display: block;
-      width: 10px;
-      height: 18px;
-      background: #929292;
-      animation: blink 1s step-end infinite;
-    }
-  }
-
-  .auth-hash {
-    color: #33bd26;
-    font-weight: bold;
-  }
+.auth-hash {
+  color: #33bd26;
+  font-weight: bold;
 }
 
 .ml-hint {

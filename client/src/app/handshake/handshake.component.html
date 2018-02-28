@@ -13,16 +13,11 @@
       <div class="ml-hint">
           Please only accept this if you have initiated the login request and make sure the code matches the one in your terminal.
       </div>
-      <div class="ml-console">
-        <img src="../../assets/images/window_controls.svg" alt="Window controls">
-        <div class="ml-console-content">
-          <span class="cmd">ml login</span>
-          <span class="cmd cmd--info">
-            Opening the default browser to login. Please only accept the request if the ID shown in the browser matches: <span class="auth-hash">{{ handshakeId }}</span>
-          </span>
-          <span class="cmd cmd--current"></span>
-        </div>
-      </div>
+      <ml-console>
+        <span ml-console-cmd>ml login<br>
+          <span class="cmd-info">Opening default browser to login. Please only accept the request if the ID shown in the browser matches:</span> <span class="auth-hash">{{ handshakeId }}</span>
+        </span>
+      </ml-console>
     </mat-card-content>
     <mat-card-actions align="end">
       <button mat-raised-button color="primary" mat-button (click)="confirm(handshakeId)">Login</button>
