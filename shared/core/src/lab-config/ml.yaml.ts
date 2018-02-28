@@ -38,9 +38,8 @@ dockerImageId: keras_v2-0-x_python_3-1
 # Everything on the "cli" node configures how the CLI interacts with the MachineLabs platform
 cli:
   exclude:
-    - '.vscode'
+    - '.*'
     - '__pycache__'
-    - '.git'
 `;
 
 export const ML_YAML_FILENAME = 'ml.yaml';
