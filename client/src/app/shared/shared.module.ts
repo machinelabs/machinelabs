@@ -13,6 +13,7 @@ import { DistanceInWordsStrictPipe } from './distance-in-words-strict.pipe';
 import { DistanceInWordsToNowPipe } from './distance-in-words-to-now.pipe';
 import { DigitalFormatUnitPipe } from './digital-format-unit.pipe';
 import { ZippyComponent } from './zippy/zippy.component';
+import { ConsoleComponent } from './console/console.component';
 import { MasonryComponent } from './masonry/masonry.component';
 import { MasonryItemComponent, MutationObserverFactory } from './masonry/masonry-item.component';
 import { PageFooterComponent } from './page-footer/page-footer.component';
@@ -31,6 +32,7 @@ import { DurationTrackerComponent } from './duration-tracker/duration-tracker.co
     DistanceInWordsToNowPipe,
     DigitalFormatUnitPipe,
     ZippyComponent,
+    ConsoleComponent,
     MasonryComponent,
     MasonryItemComponent,
     PageFooterComponent,
@@ -50,6 +52,7 @@ import { DurationTrackerComponent } from './duration-tracker/duration-tracker.co
     DistanceInWordsToNowPipe,
     DigitalFormatUnitPipe,
     ZippyComponent,
+    ConsoleComponent,
     MasonryComponent,
     MasonryItemComponent,
     PageFooterComponent,

@@ -1,0 +1,60 @@
+:host {
+  display: block;
+}
+
+.ml-console {
+  background: #151718;
+  padding: 10px 16px;
+  border-radius: 5px;
+
+  .cmd {
+    line-height: 1.4;
+  }
+
+  ::ng-deep {
+    [ml-console-cmd] {
+      display: block;
+    }
+  }
+}
+
+.ml-console-content {
+  color: white;
+  padding: 20px 15px;
+
+  .cmd + .cmd {
+    margin-top: 5px;
+  }
+
+  .cmd {
+    &--info {
+      color: #e6cd69;
+    }
+
+    &--current {
+      display: inline-block;
+      &::after {
+        content: '';
+        display: block;
+        width: 10px;
+        height: 18px;
+        background: #929292;
+        animation: blink 1s step-end infinite;
+      }
+    }
+  }
+
+  .auth-hash {
+    color: #33bd26;
+    font-weight: bold;
+  }
+}
+
+@keyframes blink {
+  0%, 100% {
+    background: transparent;
+  }
+  50% {
+    background: #929292;
+  }
+}
