@@ -1,24 +1,19 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row class="ml-toolbar-layout">
-    <div class="ml-toolbar-logo">
-      <a title="MachineLabs Startpage" routerLink="/">
-        <picture>
-          <source srcset="/assets/images/machinelabs_logo_white.svg" media="(min-width: 600px)">
-          <img src="/assets/images/machinelabs_icon_white.svg" alt="MachineLabs, Inc.">
-        </picture>
-      </a>
+    <div class="ml-toolbar-logo-slot">
+      <ng-content select="ml-toolbar-logo"></ng-content>
     </div>
-    <div class="ml-toolbar-content">
+    <div class="ml-toolbar-content-slot">
       <ng-content select="ml-toolbar-content"></ng-content>
     </div>
-    <div class="ml-toolbar-cta-bar">
+    <div class="ml-toolbar-cta-bar-slot">
       <ng-content select="ml-toolbar-cta-bar"></ng-content>
     </div>
-    <div class="ml-toolbar-menu">
+    <div class="ml-toolbar-menu-slot">
       <ng-content select="ml-toolbar-menu, [ml-toolbar-menu]"></ng-content>
     </div>
   </mat-toolbar-row>
-  <mat-toolbar-row class="ml-toolbar-sub-row" *ngIf="hasSubRow">
+  <mat-toolbar-row class="ml-toolbar-sub-row-slot" *ngIf="hasSubRow">
     <ng-content select="ml-toolbar-sub-row, [ml-toolbar-sub-row]"></ng-content>
   </mat-toolbar-row>
 </mat-toolbar>

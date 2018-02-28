@@ -1,13 +1,16 @@
+@import '../../mixins';
+
 :host {
-  font-size: 1.2em;
-  font-weight: 400;
-  margin: 0;
-  padding: 0.8em;
-  padding-top: 0.6em;
-  text-align: center;
+  display: block;
 }
 
 img {
-  height: 20px;
+  height: 26px;
 }
 
+@include TabletPortraitUp {
+
+  img {
+    height: 24px;
+  }
+}

@@ -1,4 +1,4 @@
-import { Directive, Component, OnInit, Input } from '@angular/core';
+import { Directive, Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { AuthService } from '../auth/auth.service';
 import { UserService } from '../user/user.service';
