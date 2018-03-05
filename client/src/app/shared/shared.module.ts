@@ -1,5 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { MachineLabsMaterialModule } from '../ml-material.module';
 import { TagListComponent } from './tag-list/tag-list.component';
 import {
@@ -18,6 +19,8 @@ import { MasonryComponent } from './masonry/masonry.component';
 import { MasonryItemComponent, MutationObserverFactory } from './masonry/masonry-item.component';
 import { PageFooterComponent } from './page-footer/page-footer.component';
 import { DurationTrackerComponent } from './duration-tracker/duration-tracker.component';
+import { ExecutionCardComponent } from './execution-card/execution-card.component';
+import { LabCardComponent } from './lab-card/lab-card.component';
 
 
 @NgModule({
@@ -36,9 +39,11 @@ import { DurationTrackerComponent } from './duration-tracker/duration-tracker.co
     MasonryComponent,
     MasonryItemComponent,
     PageFooterComponent,
-    DurationTrackerComponent
+    DurationTrackerComponent,
+    ExecutionCardComponent,
+    LabCardComponent
   ],
-  imports: [MachineLabsMaterialModule, CommonModule],
+  imports: [MachineLabsMaterialModule, CommonModule, RouterModule],
   exports: [
     CommonModule,
     MachineLabsMaterialModule,
@@ -56,7 +61,9 @@ import { DurationTrackerComponent } from './duration-tracker/duration-tracker.co
     MasonryComponent,
     MasonryItemComponent,
     PageFooterComponent,
-    DurationTrackerComponent
+    DurationTrackerComponent,
+    ExecutionCardComponent,
+    LabCardComponent
   ]
 })
 export class SharedModule {

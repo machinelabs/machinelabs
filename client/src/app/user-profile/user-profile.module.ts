@@ -13,7 +13,6 @@ import { UserResolver, UserLabsResolver } from './user.resolver';
 import { USER_PROFILE_ROUTES } from './user-profile.routes';
 
 import { EditUserProfileDialogComponent } from './edit-user-profile-dialog/edit-user-profile-dialog.component';
-import { ExploreModule } from '../explore/explore.module';
 
 @NgModule({
   declarations: [
@@ -32,7 +31,6 @@ import { ExploreModule } from '../explore/explore.module';
     FlexLayoutModule,
     RouterModule.forChild(USER_PROFILE_ROUTES),
     ToolbarModule,
-    ExploreModule
   ],
   entryComponents: [
     EditUserProfileDialogComponent
