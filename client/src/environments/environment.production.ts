@@ -11,6 +11,6 @@ export const environment = {
     storageBucket: 'machinelabs-production.appspot.com',
     messagingSenderId: '273257478502'
   },
-  topPicksLabIds: []
+  topPicksLabIds: ['ryGF9Mxgz', 'ByCErAGlz', 'r1JhQGJDb']
 };
 
