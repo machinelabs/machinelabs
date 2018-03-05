@@ -1,0 +1,21 @@
+<ml-toolbar>
+  <ml-toolbar-logo></ml-toolbar-logo>
+  <ml-toolbar-cta-bar>
+    <ml-toolbar-navigation>
+      <a mat-button title="Explore MachineLabs" routerLink="/explore">Explore</a>
+      <a mat-button title="Documentation" href="https://docs.machinelabs.ai">Documentation</a>
+      <a mat-button title="Blog" href="https://blog.machinelabs.ai">Blog</a>
+    </ml-toolbar-navigation>
+  </ml-toolbar-cta-bar>
+  <ml-toolbar-menu [menuTrigger]="MenuTriggerType.LoginButton"></ml-toolbar-menu>
+</ml-toolbar>
+<main role="main" class="ml-explore-view-main">
+  <div class="ml-explore-view-header">
+    <h1>Explore Labs</h1>
+  </div>
+  <div class="ml-explore-view-container">
+    <h3 class="ml-explore-view-section-headline">Recent Labs</h3>
+    <ml-explore-labs></ml-explore-labs>
+  </div>
+</main>
+<ml-page-footer></ml-page-footer>

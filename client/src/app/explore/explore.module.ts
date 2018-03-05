@@ -1,27 +1,27 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
+import { ToolbarModule } from '../toolbar/toolbar.module';
 import { SharedModule } from '../shared/shared.module';
-import { ExecutionCardComponent } from './execution-card/execution-card.component';
-import { ExploreLabsComponent } from './explore-labs/explore-labs.component';
-import { LabCardComponent } from './lab-card/lab-card.component';
 
-const EXPLORE_COMPONENTS = [
-  ExecutionCardComponent,
-  ExploreLabsComponent,
-  LabCardComponent
-];
+import { ExploreViewComponent } from './explore-view/explore-view.component';
+import { ExploreLabsComponent } from './explore-labs/explore-labs.component';
 
 @NgModule({
   imports: [
     SharedModule,
-    RouterModule
+    RouterModule.forChild([
+      {
+        path: '',
+        pathMatch: 'full',
+        component: ExploreViewComponent
+      }
+    ]),
+    ToolbarModule
   ],
   declarations: [
-    ...EXPLORE_COMPONENTS
-  ],
-  exports: [
-    ...EXPLORE_COMPONENTS
+    ExploreViewComponent,
+    ExploreLabsComponent
   ]
 })
 export class ExploreModule { }

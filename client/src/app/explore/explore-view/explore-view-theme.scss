@@ -1,0 +1,15 @@
+@import '../../../../node_modules/@angular/material/theming';
+@import '../../../mixins';
+
+@mixin ml-explore-view-theme($theme) {
+
+  $primary: map-get($theme, primary);
+
+  ml-explore-view {
+    .ml-explore-view-header {
+      background: rgb(59, 59, 68);
+      background: rgb(100, 109, 141);
+      color: mat-color($primary, default-contrast);
+    }
+  }
+}

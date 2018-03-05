@@ -1,7 +1,12 @@
 <ml-toolbar>
   <ml-toolbar-logo></ml-toolbar-logo>
   <ml-toolbar-cta-bar>
-    <a routerLink="/editor" title="Launch Editor" mat-button><mat-icon>exit_to_app</mat-icon> Launch Editor</a>
+    <ml-toolbar-navigation>
+      <a routerLink="/explore" title="Explore MachineLabs" mat-button>Explore</a>
+      <a href="https://docs.machinelabs.ai" title="Official docs" mat-button>Documentation</a>
+      <a mat-button title="Blog" href="https://blog.machinelabs.ai">Blog</a>
+      <a routerLink="/editor" title="Launch Editor" mat-button><mat-icon>exit_to_app</mat-icon> Launch Editor</a>
+    </ml-toolbar-navigation>
   </ml-toolbar-cta-bar>
   <ml-toolbar-menu></ml-toolbar-menu>
 </ml-toolbar>

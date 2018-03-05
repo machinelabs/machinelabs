@@ -1,0 +1,64 @@
+@import '../../../mixins';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.ml-explore-view-main {
+  flex: 1;
+}
+
+.ml-explore-view-header {
+  text-align: center;
+
+  h1 {
+    padding: 120px 12px 120px;
+    margin: 0;
+    font-weight: 400;
+    font-size: 35px;
+    font-weight: 700;
+  }
+}
+
+.ml-explore-view-container {
+  padding: 4em 16px;
+}
+
+.ml-explore-view-section-headline {
+  margin: 0;
+  font-size: 1.7em;
+  text-align: center;
+  font-weight: normal;
+  position: relative;
+  margin-bottom: 1em;
+  padding: 0 16px;
+
+  &:after {
+    position: absolute;
+    height: 1px;
+    width: 130px;
+    padding: 0 2em;
+    content: '';
+    bottom: -0.8em;
+    left: 50%;
+    transform: translate(-50%);
+  }
+}
+
+@include TabletPortraitUp {
+  .ml-explore-view-container {
+    padding-left: 8em;
+    padding-right: 8em;
+  }
+}
+
+@include WebLandscapeUp {
+
+  .ml-explore-view-container {
+    margin: 0 auto;
+    width: 90%;
+    max-width: 1200px;
+  }
+}
