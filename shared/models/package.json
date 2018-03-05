@@ -1,6 +1,6 @@
 {
   "name": "@machinelabs/models",
-  "version": "0.29.0+utc.2018.Mar.05-11.55.36",
+  "version": "0.29.1+utc.2018.Mar.05-13.31.13",
   "description": "Models shared across the @machinelabs ecosystem",
   "license": "MIT",
   "main": "dist/src/index.js",
