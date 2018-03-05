@@ -17,6 +17,10 @@ export const APP_ROUTES: Routes = [
     loadChildren: './embedded-editor/embedded-editor.module#EmbeddedEditorModule'
   },
   {
+    path: 'explore',
+    loadChildren: './explore/explore.module#ExploreModule'
+  },
+  {
     path: 'user/:userId',
     loadChildren: './user-profile/user-profile.module#UserProfileModule'
   },
