@@ -3,7 +3,6 @@ import { RouterModule } from '@angular/router';
 
 import { SharedModule } from '../shared/shared.module';
 import { ToolbarModule } from '../toolbar/toolbar.module';
-import { ExploreModule } from '../explore/explore.module';
 
 import { LandingPageComponent } from './landing-page.component';
 
@@ -14,7 +13,6 @@ import { LandingPageComponent } from './landing-page.component';
       path: '',
       component: LandingPageComponent
     }]),
-    ExploreModule,
     ToolbarModule
   ],
   declarations: [LandingPageComponent]
