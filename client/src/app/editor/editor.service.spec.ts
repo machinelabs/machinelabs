@@ -67,7 +67,7 @@ describe('EditorService', () => {
 
     it('should activate first file in lab directory', () => {
       editorService.initLab(expectedLab);
-      expect(editorService.activeFile).toEqual(expectedLab.directory[0]);
+      expect(editorService.activeFile).toEqual(<File>expectedLab.directory[0]);
     });
 
     it('should update query param with first active file in lab directory', () => {
@@ -85,7 +85,7 @@ describe('EditorService', () => {
     it('should activate query param file', () => {
       location.go(`/?file=${expectedLab.directory[1].name}`);
       editorService.initLab(expectedLab);
-      expect(editorService.activeFile).toEqual(expectedLab.directory[1]);
+      expect(editorService.activeFile).toEqual(<File>expectedLab.directory[1]);
     });
 
     it('should activate query param file when full path is given', () => {
@@ -168,7 +168,7 @@ describe('EditorService', () => {
     it('should init active file', () => {
       editorService.initLab(expectedLab);
       editorService.initDirectory(expectedLab.directory);
-      expect(editorService.activeFile).toEqual(expectedLab.directory[0]);
+      expect(editorService.activeFile).toEqual(<File>expectedLab.directory[0]);
     });
   });
 
