@@ -37,13 +37,14 @@
     "@types/lodash.isarray": "^4.0.3",
     "@types/node": "^9.4.0",
     "@types/shortid": "^0.0.29",
+    "globby": "^8.0.1",
     "isbinaryfile": "^3.0.2",
     "js-yaml": "^3.10.0",
-    "matcher": "^1.0.0",
     "moment": "^2.18.1",
     "shortid": "^2.2.8"
   },
   "devDependencies": {
+    "@types/globby": "^6.1.0",
     "@types/jest": "^22.1.0",
     "@types/rimraf": "^2.0.2",
     "firebase": "^4.2.0",
