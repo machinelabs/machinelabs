@@ -67,7 +67,7 @@ export const readDirectory = (path: string, options: ReadOptions = {}): Director
     if (options &&
       (options.extensions && !options.extensions.test(extension) ||
       (options.excludeBinaries && isBinaryFile(path)))) {
-      return null;
+      continue;
     }
 
     if (directoryName === '.') {

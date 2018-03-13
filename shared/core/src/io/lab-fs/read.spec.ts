@@ -88,4 +88,20 @@ describe('readLabDirectory', () => {
       }
     ]);
   });
+
+  it('should only include files matching the extension', () => {
+    const result = readLabDirectory('foo', {extensions: /\.js/});
+
+    expect(result).toEqual([
+      {
+        name: 'bar',
+        contents: [
+          {
+            name: 'bar.js',
+            content: 'bar'
+          }
+        ]
+      }
+    ]);
+  });
 });
