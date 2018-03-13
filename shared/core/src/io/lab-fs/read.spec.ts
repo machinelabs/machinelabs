@@ -1,5 +1,6 @@
 import 'jest';
 import * as rimraf from 'rimraf';
+import { forkJoin } from 'rxjs/observable/forkJoin';
 
 import { writeDirectory } from './fs';
 import { readLabDirectory } from './read';
@@ -7,38 +8,70 @@ import { readLabDirectory } from './read';
 describe('readLabDirectory', () => {
 
   beforeAll(() => {
-    let dir = {
-        name: 'foo',
-        contents: [
-          {
-            name: 'foo.txt',
-            content: 'foo'
-          },
-          {
-            name: 'bar',
-            contents: [
-              {
-                name: 'bar.js',
-                content: 'bar'
-              },
-              {
-                name: '.foo',
-                content: 'foo dotfile'
-              },
-              {
-                name: 'readme.txt',
-                content: 'Readme file'
-              }
-            ]
-          }
-        ]
-      };
+    const foo = {
+      name: 'foo',
+      contents: [
+        {
+          name: 'foo.txt',
+          content: 'foo'
+        },
+        {
+          name: 'bar',
+          contents: [
+            {
+              name: 'bar.js',
+              content: 'bar'
+            },
+            {
+              name: '.foo',
+              content: 'foo dotfile'
+            },
+            {
+              name: 'readme.txt',
+              content: 'Readme file'
+            }
+          ]
+        }
+      ]
+    };
 
-      writeDirectory(dir).subscribe();
+    const folder = {
+      name: 'folder',
+      contents: [
+        {
+          name: 'folder-1',
+          contents: [
+            {
+              name: 'foo.js',
+              content: 'foo'
+            }
+          ]
+        },
+        {
+          name: 'folder-2',
+          contents: [
+            {
+              name: 'bar.js',
+              content: 'bar'
+            },
+            {
+              name: 'foo.py',
+              content: 'foo'
+            }
+          ]
+        }
+      ]
+    };
+
+    forkJoin(
+      writeDirectory(foo),
+      writeDirectory(folder)
+    ).subscribe();
   });
 
   afterAll(() => {
     rimraf.sync('foo');
+    rimraf.sync('folder');
   });
 
   it('should read entire directory', () => {
@@ -90,11 +123,30 @@ describe('readLabDirectory', () => {
   });
 
   it('should only include files matching the extension', () => {
-    const result = readLabDirectory('foo', {extensions: /\.js/});
-
-    expect(result).toEqual([
+    expect(readLabDirectory('foo', {extensions: /\.js/})).toEqual([
       {
         name: 'bar',
+        contents: [
+          {
+            name: 'bar.js',
+            content: 'bar'
+          }
+        ]
+      }
+    ]);
+
+    expect(readLabDirectory('folder', {extensions: /\.js/})).toEqual([
+      {
+        name: 'folder-1',
+        contents: [
+          {
+            name: 'foo.js',
+            content: 'foo'
+          }
+        ]
+      },
+      {
+        name: 'folder-2',
         contents: [
           {
             name: 'bar.js',
