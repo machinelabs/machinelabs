@@ -23,3 +23,6 @@ If you want to file a bug, contribute some code, or improve our documentation, r
 
 If you want to set up MachineLabs on your machine for development, head over to our [developers guide](developers_guide) and follow the described instructions.
 
+## License
+
+The MachineLabs project is [MIT licensed](LICENSE).
