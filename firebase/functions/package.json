@@ -1,5 +1,6 @@
 {
   "name": "functions",
+  "license": "MIT",
   "description": "Cloud Functions for Firebase",
   "scripts": {
     "cp__node_modules": "cp -R ./node_modules ./dist/node_modules",

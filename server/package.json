@@ -4,7 +4,7 @@
   "description": "Machinelabs Execution Server",
   "main": "index.js",
   "author": "Christoph Burgdorf <christoph.burgdorf@bvsn.org> (http://cburgdorf.wordpress.com/)",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@machinelabs/core": "link:../shared/core",
     "@machinelabs/metrics": "link:../shared/metrics",
