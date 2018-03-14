@@ -1,138 +1,25 @@
-## MachineLabs
+# MachineLabs
+[![Build Status](https://travis-ci.org/machinelabs/machinelabs.svg?branch=master)](https://travis-ci.org/machinelabs/machinelabs)
+[![Join the chat at https://gitter.im/machinelabs/machinelabs](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/machinelabs/machinelabs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-This is the mono repository holding the code for the entire machinelabs system.
+MachineLabs is a platform that aims to make the field of Machine Learning available to everyone by providing an easy to use web interface that enables users to run Machine Learning experiments right in the browser.
 
-### Repository layout
+Visit [machinelabs.ai](https://machinelabs.ai) to try it yourself.
 
-#### `/client`
+## Quickstart
 
-This holds the web app
+[Get started in 5 minutes](https://docs.machinelabs.ai/guide/quickstart.html)
 
-#### `/server`
+## Need help?
 
-This holds the actual server.
+If you need any help with using MachineLabs as a platform, or getting started developing MachineLabs, join our [Gitter chat](https://gitter.im/machinelabs/machinelabs) and talk to your peers!
 
-#### `/firebase`
+## Want to help?
 
-This holds the cloudfunctions and database security rules for firebase
+If you want to file a bug, contribute some code, or improve our documentation, read up on our [contributing guidelines](contributing) and [code of conduct](code_of_conduct), and check out one of our issues in the [First Timers](https://github.com/machinelabs/machinelabs/issues?q=is%3Aopen+is%3Aissue+label%3A%22hotlist%3A+first-timers%22) and [Community Help](https://github.com/machinelabs/machinelabs/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+label%3A%22hotlist%3A+community-help%22) list.
 
-#### `/admin-cli`
 
-This holds an alpha style version of an admin-cli to help with
-all maintenance tasks such as deployments or loging in remote servers
+## For developers
 
-### Working on the server
-
-#### Prerequisite
-
-**1. Get a firebase account**
-
-**2. Install the firebase tools**
-
-`npm install -g firebase-tools`
-
-Once installed login with `firebase login`
-
-**3. Create at least one server**
-
-Go into your firebase and add at least one server. Add as many as you like but keep in mind that they get assigned randomly so if you have multiple registered servers, you'll either need to have all of them running when you develop or use the `disabled` property in the server configuration to make sure only one server will get executions assigned.
-
-```
-{
-  ...,
-  "servers": {
-    "demo1": {
-      "id": "demo1",
-      "hardware_type": "cpu",
-      "name": "My demo server",
-      "disabled": false
-    }
-  }
-}
-```
-
-Then add a corresponding file `environment.demo1.ts` in `server/src/environments/personal`. It should look like this.
-
-```
-export const environment = {
-  firebaseConfig: {
-    apiKey: "<Your API Key>",
-    authDomain: "your-firebase.firebaseapp.com",
-    databaseURL: "https://your-firebase.firebaseio.com",
-    storageBucket: "your-firebase.appspot.com",
-    messagingSenderId: "<your-messaging-senderId>"
-  },
-  serverId: 'demo1'
-};
-```
-
-You get all the firebase relevant information from their console. The `serverId` should match the id that you created in the `/servers` node of your firebase. If you created multiple server, create multiple environment files.
-
-**3. Install docker**
-
-Install docker and pull down the `thoughtram/keras` images.
-
-```
-docker pull thoughtram/keras
-```
-
-**If you don't have docker you can start the server with the `--dummy-runner` flag.**
-
-#### Running the server locally
-
-**1. Deploy the firebase security rules and cloud functions**
-
-Switch into the `firebase` directory and deploy cloud functions and security rules with the following command. If you have privileges for `machinelabs-staging` or `machinelabs-production` make sure to always check that your are actually in your development firebase with `firebase use <my-firebase>`.
-
-**ATTENTION: Never deploy firebase to `machinelabs-staging` or `machinelabs-production` manually. (See Deployment)**
-
-```
-cd ./firebase/functions
-yarn install
-firebase use <my-dev-firebase>`
-yarn run deploy
-```
-
-**3. Install dependencies for each package in `shared`
-
-```
-cd shared/*
-yarn install
-```
-
-**3. Build and run the server**
-
-```
-cd ./server
-yarn install
-yarn run build -- --env=demo1 && node dist/index.js
-```
-
-If you have multiple servers, repeat this step to run them all in parallel.
-
-### Deployment
-
-#### Prerequisite
-
-1. Install and configure [`gcloud`](https://cloud.google.com/sdk/gcloud/)
-2. Install and configure [`firebase-tools`](https://firebase.google.com/docs/cli/)
-
-#### Deploying the whole system to staging
-
-```
-./admin-cli/index.js deploy --template=staging
-```
-
-#### Deploying only the server to the staging system
-
-```
-./admin-cli/index.js deploy --template=staging --noFb --noClient
-```
-
-#### Deploying only the cloudfunctions and security rules to the staging firebase
-
-```
-./admin-cli/index.js deploy --template=staging --noServer --noClient
-```
-
+If you want to set up MachineLabs on your machine for development, head over to our [developers guide](developers_guide) and follow the described instructions.
 
