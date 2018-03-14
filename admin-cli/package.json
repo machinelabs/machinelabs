@@ -1,5 +1,5 @@
 {
-  "name": "ml-cli",
+  "name": "@machinelabs/admin-cli",
   "version": "0.28.1+utc.2018.Feb.20-19.44.11",
   "description": "Admin CLI for Machine Labs",
   "main": "index.js",
