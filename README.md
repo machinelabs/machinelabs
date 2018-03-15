@@ -16,12 +16,12 @@ If you need any help with using MachineLabs as a platform, or getting started de
 
 ## Want to help?
 
-If you want to file a bug, contribute some code, or improve our documentation, read up on our [contributing guidelines](contributing) and [code of conduct](code_of_conduct), and check out one of our issues in the [First Timers](https://github.com/machinelabs/machinelabs/issues?q=is%3Aopen+is%3Aissue+label%3A%22hotlist%3A+first-timers%22) and [Community Help](https://github.com/machinelabs/machinelabs/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+label%3A%22hotlist%3A+community-help%22) list.
+If you want to file a bug, contribute some code, or improve our documentation, read up on our [contributing guidelines](CONTRIBUTING.md) and [code of conduct](CODE_OF_CONDUCT.md), and check out one of our issues in the [First Timers](https://github.com/machinelabs/machinelabs/issues?q=is%3Aopen+is%3Aissue+label%3A%22hotlist%3A+first-timers%22) and [Community Help](https://github.com/machinelabs/machinelabs/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+label%3A%22hotlist%3A+community-help%22) list.
 
 
 ## For developers
 
-If you want to set up MachineLabs on your machine for development, head over to our [developers guide](developers_guide) and follow the described instructions.
+If you want to set up MachineLabs on your machine for development, head over to our [developers guide](DEVELOPERS_GUIDE.md) and follow the described instructions.
 
 ## License
 
