@@ -8,6 +8,6 @@ export const DOCKER_IMAGE_SERVICE_STUB = {
         name: 'Keras 2.0.4 + Python 2.1',
         description: 'Keras 2.0.4 and Python 2.1'
       }
-    ])
+    ]);
   }
 };

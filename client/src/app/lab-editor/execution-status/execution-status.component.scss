@@ -31,13 +31,19 @@
   }
 
   &.done {
-    mat-icon { color: #39aa56; }
+    mat-icon {
+      color: #39aa56;
+    }
   }
   &.stopped {
-    mat-icon { color: #888; }
+    mat-icon {
+      color: #888;
+    }
   }
   &.errored {
-    mat-icon { color: #db4545; }
+    mat-icon {
+      color: #db4545;
+    }
   }
 }
 
@@ -46,5 +52,3 @@ mat-progress-bar {
   margin-top: 0.7em;
   max-width: 400px;
 }
-
-

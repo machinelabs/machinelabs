@@ -12,7 +12,6 @@ import { LocationHelper } from '../util/location-helper';
 import { NameDialogComponent } from './name-dialog/name-dialog.component';
 
 describe('EditorService', () => {
-
   let editorService: EditorService;
   let location: Location;
   let locationHelper: LocationHelper;
@@ -30,7 +29,6 @@ describe('EditorService', () => {
   });
 
   describe('.initialize()', () => {
-
     it('should select editor tab if no tab query param is given', () => {
       editorService.initialize();
       expect(editorService.selectedTab).toEqual(TabIndex.Editor);
@@ -56,7 +54,6 @@ describe('EditorService', () => {
   });
 
   describe('.initLab()', () => {
-
     const expectedLab = Object.assign({}, LAB_STUB);
 
     it('should initialze lab', () => {
@@ -72,14 +69,12 @@ describe('EditorService', () => {
 
     it('should update query param with first active file in lab directory', () => {
       editorService.initLab(expectedLab);
-      expect(urlSerializer.parse(location.path()).queryParams.file)
-        .toEqual(expectedLab.directory[0].name);
+      expect(urlSerializer.parse(location.path()).queryParams.file).toEqual(expectedLab.directory[0].name);
     });
 
-    it('should set tab query param to \'editor\' by default', () => {
+    it("should set tab query param to 'editor' by default", () => {
       editorService.initLab(expectedLab);
-      expect(urlSerializer.parse(location.path()).queryParams.tab)
-        .toEqual(TabIndex.Editor);
+      expect(urlSerializer.parse(location.path()).queryParams.tab).toEqual(TabIndex.Editor);
     });
 
     it('should activate query param file', () => {
@@ -89,13 +84,14 @@ describe('EditorService', () => {
     });
 
     it('should activate query param file when full path is given', () => {
-      let expectedFile = { name: 'util.py', content: '' };
+      const expectedFile = { name: 'util.py', content: '' };
 
       expectedLab.directory = [
         { name: 'main.py', content: '' },
-        { name: 'src', contents: [
-          { name: 'lib', contents: [ expectedFile ] }
-        ]}
+        {
+          name: 'src',
+          contents: [{ name: 'lib', contents: [expectedFile] }]
+        }
       ];
 
       location.go(`/?file=/src/lib/util.py`);
@@ -104,13 +100,14 @@ describe('EditorService', () => {
     });
 
     it('should activate main file if given path is broken', () => {
-      let expectedFile = { name: 'main.py', content: '', clientState: { collapsed: true, selected: true } };
+      const expectedFile = { name: 'main.py', content: '', clientState: { collapsed: true, selected: true } };
 
       expectedLab.directory = [
         { name: 'main.py', content: '' },
-        { name: 'src', contents: [
-          { name: 'lib', contents: [ { name: 'utils.py', content: '' } ] }
-        ]}
+        {
+          name: 'src',
+          contents: [{ name: 'lib', contents: [{ name: 'utils.py', content: '' }] }]
+        }
       ];
 
       location.go('/?file=foo/bar');
@@ -120,13 +117,14 @@ describe('EditorService', () => {
     });
 
     it('should update query params to fallback if given path is broken', () => {
-      let expectedFile = { name: 'main.py', content: '' };
+      const expectedFile = { name: 'main.py', content: '' };
 
       expectedLab.directory = [
         { name: 'main.py', content: '' },
-        { name: 'src', contents: [
-          { name: 'lib', contents: [ expectedFile ] }
-        ]}
+        {
+          name: 'src',
+          contents: [{ name: 'lib', contents: [expectedFile] }]
+        }
       ];
 
       location.go('/?file=foo/bar');
@@ -135,18 +133,17 @@ describe('EditorService', () => {
       expect(location.path()).toEqual('/?file=main.py');
     });
 
-
     it('should activate query param file, even if path segment is ambiguous', () => {
-
-      let expectedFile = { name: 'util.py', content: '' };
+      const expectedFile = { name: 'util.py', content: '' };
 
       expectedLab.directory = [
         { name: 'main.py', content: '' },
         // notice that we have a file and a directory called `src`
         { name: 'src', content: '' },
-        { name: 'src', contents: [
-          { name: 'lib', contents: [ expectedFile ] }
-        ]}
+        {
+          name: 'src',
+          contents: [{ name: 'lib', contents: [expectedFile] }]
+        }
       ];
 
       location.go(`/?file=/src/lib/util.py`);
@@ -156,7 +153,6 @@ describe('EditorService', () => {
   });
 
   describe('.initDirectory()', () => {
-
     const expectedLab = Object.assign({}, LAB_STUB);
 
     it('should init lab directory', () => {
@@ -172,11 +168,9 @@ describe('EditorService', () => {
     });
   });
 
-
   describe('.openFile()', () => {
-
     it('should update query parameter with name of given file', () => {
-      let file = { name: 'main.py', content: '' };
+      const file = { name: 'main.py', content: '' };
       spyOn(locationHelper, 'updateQueryParams');
 
       editorService.openFile(file);
@@ -186,8 +180,8 @@ describe('EditorService', () => {
     });
 
     it('should update query params with given file path', () => {
-      let file = { name: 'main.py', content: '' };
-      let filePath = 'foo/bar/' + file.name;
+      const file = { name: 'main.py', content: '' };
+      const filePath = 'foo/bar/' + file.name;
       spyOn(locationHelper, 'updateQueryParams');
 
       editorService.openFile(file, filePath);
@@ -198,22 +192,18 @@ describe('EditorService', () => {
   });
 
   describe('.selectTab()', () => {
-
     it('should update tab query param accordingly', () => {
       editorService.selectTab(TabIndex.Editor);
 
-      expect(urlSerializer.parse(location.path()).queryParams.tab)
-        .toEqual(TabIndex.Editor);
+      expect(urlSerializer.parse(location.path()).queryParams.tab).toEqual(TabIndex.Editor);
 
       editorService.selectTab(TabIndex.Console);
 
-      expect(urlSerializer.parse(location.path()).queryParams.tab)
-        .toEqual(TabIndex.Console);
+      expect(urlSerializer.parse(location.path()).queryParams.tab).toEqual(TabIndex.Console);
     });
   });
 
   describe('.selectEditorTab()', () => {
-
     it('should select TabIndex.Editor', () => {
       editorService.selectEditorTab();
       expect(editorService.selectedTab).toEqual(TabIndex.Editor);
@@ -221,7 +211,6 @@ describe('EditorService', () => {
   });
 
   describe('.selectConsoleTab()', () => {
-
     it('should select TabIndex.Console', () => {
       editorService.selectConsoleTab();
       expect(editorService.selectedTab).toEqual(TabIndex.Console);

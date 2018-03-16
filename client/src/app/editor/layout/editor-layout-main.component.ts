@@ -5,12 +5,14 @@ import { Component } from '@angular/core';
   template: `
     <ng-content></ng-content>
   `,
-  styles: [`
+  styles: [
+    `
     :host {
       display: flex;
       flex: 1;
       flex-direction: column;
     }
-  `]
+  `
+  ]
 })
 export class EditorLayoutMainComponent {}

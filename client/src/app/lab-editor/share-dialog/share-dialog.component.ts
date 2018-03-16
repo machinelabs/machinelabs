@@ -8,13 +8,9 @@ import { WindowRef } from '../../window-ref.service';
   styleUrls: ['./share-dialog.component.scss']
 })
 export class ShareDialogComponent {
-
   get href(): string {
     return this.windowRef.nativeWindow.location.href;
   }
 
-  constructor(
-    private dialogRef: MatDialogRef<ShareDialogComponent>,
-    private windowRef: WindowRef
-  ) {}
+  constructor(private dialogRef: MatDialogRef<ShareDialogComponent>, private windowRef: WindowRef) {}
 }

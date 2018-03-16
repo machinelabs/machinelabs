@@ -19,7 +19,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
       </ml-dialog-cta-bar>
     </form>
   `,
-  styles: [`
+  styles: [
+    `
     :host {
       display: block;
       width: 500px;
@@ -31,10 +32,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
       width: 100%;
       text-align: right;
     }
-  `]
+  `
+  ]
 })
 export class EditExecutionDialogComponent implements OnInit {
-
   name: string;
 
   form: FormGroup;
@@ -43,7 +44,7 @@ export class EditExecutionDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<EditExecutionDialogComponent>,
     private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) private data: any
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({

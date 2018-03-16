@@ -2,7 +2,7 @@ $ml-execution-card-icon-margin: 5px;
 
 :host {
   display: block;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
   font-size: 15px;
   font-weight: 400;
 }
@@ -43,7 +43,8 @@ $ml-execution-card-icon-margin: 5px;
   border-top-width: 1px;
   border-top-style: solid;
 
-  mat-icon, mat-progress-spinner {
+  mat-icon,
+  mat-progress-spinner {
     margin-right: $ml-execution-card-icon-margin;
   }
 

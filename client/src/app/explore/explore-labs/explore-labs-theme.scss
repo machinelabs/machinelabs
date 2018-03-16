@@ -1,8 +1,6 @@
 @import '../../../../node_modules/@angular/material/theming';
 
 @mixin ml-explore-view-theme($theme) {
-
   $primary: map-get($theme, primary);
   $accent: map-get($theme, accent);
-
 }

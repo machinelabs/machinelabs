@@ -6,12 +6,13 @@ describe('ZippyComponent', () => {
   let component: ZippyComponent;
   let fixture: ComponentFixture<ZippyComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ ZippyComponent ]
+  beforeEach(
+    async(() => {
+      TestBed.configureTestingModule({
+        declarations: [ZippyComponent]
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ZippyComponent);

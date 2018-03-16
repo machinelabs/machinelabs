@@ -42,13 +42,15 @@ img {
   // here but the only alternative is to make
   // the selector more specific by adding the
   // theme class e.g. `.ace-github .ace_cutter`
-  background-color: transparent!important;
+  background-color: transparent !important;
 }
 
-.ace-terminal-theme .ace_invalid { background-color: transparent!important; }
+.ace-terminal-theme .ace_invalid {
+  background-color: transparent !important;
+}
 
 .hidden {
-  display: none!important;
+  display: none !important;
 }
 
 ml-editor-view,
@@ -69,8 +71,8 @@ ml-embedded-editor-view {
 
 .ml-no-information-message-icon {
   font-size: 7em;
-  height: initial!important;
-  width: initial!important;
+  height: initial !important;
+  width: initial !important;
   margin-bottom: 0.2em;
 }
 

@@ -15,13 +15,26 @@ import { SnackbarService } from '../../snackbar.service';
 
 import { environment } from '../../../environments/environment';
 
+export class OutputFilesDataSource extends DataSource<any> {
+  constructor(private outputFilesService: OutputFilesService, private executionId: string) {
+    super();
+  }
+
+  connect(): Observable<OutputFile[]> {
+    return this.outputFilesService
+      .observeOutputFilesFromExecution(this.executionId)
+      .pipe(scan((acc: OutputFile[], val: OutputFile) => [val, ...acc], []));
+  }
+
+  disconnect() {}
+}
+
 @Component({
   selector: 'ml-file-outputs',
   templateUrl: './file-outputs.component.html',
   styleUrls: ['./file-outputs.component.scss']
 })
 export class FileOutputsComponent implements OnChanges, OnInit {
-
   @Input() executionId: string;
 
   displayedColumns = ['name', 'created', 'size', 'contentType', 'actions'];
@@ -38,20 +51,23 @@ export class FileOutputsComponent implements OnChanges, OnInit {
     private filePreviewService: FilePreviewDialogService,
     private route: ActivatedRoute,
     private locationHelper: LocationHelper,
-    private location: Location) { }
+    private location: Location
+  ) {}
 
   ngOnInit() {
     const outputFileId = this.route.snapshot.queryParamMap.get('preview');
 
     if (outputFileId) {
-      this.hasOutput.pipe(
-        filter(hasOutput => hasOutput),
-        mergeMap(() => this.dataSource.connect()),
-        mergeMap(outputFiles => outputFiles),
-        filter(outputFile => outputFile.id === outputFileId),
-        filter(outputFile => isImage(outputFile.name)),
-        take(1)
-      ).subscribe(outputFile => this.openPreview(outputFile));
+      this.hasOutput
+        .pipe(
+          filter(hasOutput => hasOutput),
+          mergeMap(() => this.dataSource.connect()),
+          mergeMap(outputFiles => outputFiles),
+          filter(outputFile => outputFile.id === outputFileId),
+          filter(outputFile => isImage(outputFile.name)),
+          take(1)
+        )
+        .subscribe(outputFile => this.openPreview(outputFile));
     }
   }
 
@@ -65,13 +81,16 @@ export class FileOutputsComponent implements OnChanges, OnInit {
       preview: outputFile.id
     });
 
-    this.filePreviewService.open({
-      data: {
-        outputFile
-      }
-    }).beforeClose().subscribe(() => {
-      this.locationHelper.removeQueryParams(this.location.path(), 'preview');
-    });
+    this.filePreviewService
+      .open({
+        data: {
+          outputFile
+        }
+      })
+      .beforeClose()
+      .subscribe(() => {
+        this.locationHelper.removeQueryParams(this.location.path(), 'preview');
+      });
   }
 
   getApiLink(outputFile: OutputFile) {
@@ -82,19 +101,4 @@ export class FileOutputsComponent implements OnChanges, OnInit {
     const message = error ? 'Could not copy link' : 'Link copied';
     this.snackbarService.notify(message);
   }
-}
-
-export class OutputFilesDataSource extends DataSource<any> {
-
-  constructor(private outputFilesService: OutputFilesService, private executionId: string) {
-    super();
-  }
-
-  connect(): Observable<OutputFile[]> {
-    return this.outputFilesService
-      .observeOutputFilesFromExecution(this.executionId)
-      .pipe(scan((acc: OutputFile[], val: OutputFile) => [val, ...acc], []));
-  }
-
-  disconnect() { }
 }

@@ -8,12 +8,12 @@ import { Component } from '@angular/core';
       <p><strong>Whoops!</strong> Looks like this lab doesn't seem to have a valid execution, or it has been removed.</p>
     </ml-dialog-content>
   `,
-  styles: [`
+  styles: [
+    `
     p {
       text-align: center;
     }
-  `]
+  `
+  ]
 })
-export class NoExecutionDialogComponent {
-
-}
+export class NoExecutionDialogComponent {}

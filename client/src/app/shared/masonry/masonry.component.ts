@@ -5,24 +5,23 @@ import Bricks from 'bricks.js';
 @Component({
   selector: 'ml-masonry',
   template: '<ng-content></ng-content>',
-  styles: [`
+  styles: [
+    `
     :host {
       display: block;
     }
-  `]
+  `
+  ]
 })
 export class MasonryComponent implements OnInit, AfterContentInit {
-
   @Input() public columns = 3;
   @Input() public gutter = 20;
 
-  @Input() public sizes = [
-    { columns: this.columns, gutter: this.gutter }
-  ];
+  @Input() public sizes = [{ columns: this.columns, gutter: this.gutter }];
 
   private instance;
 
-  constructor(private element: ElementRef) { }
+  constructor(private element: ElementRef) {}
 
   ngOnInit() {
     this.instance = new Bricks({

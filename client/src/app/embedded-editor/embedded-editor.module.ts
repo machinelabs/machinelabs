@@ -24,13 +24,7 @@ import { EMBEDDED_EDITOR_ROUTES } from './embedded-editor.routes';
     EditorModule,
     MonacoEditorModule
   ],
-  declarations: [
-    EmbeddedEditorToolbarComponent,
-    EmbeddedEditorViewComponent,
-    NoExecutionDialogComponent
-  ],
-  entryComponents: [
-    NoExecutionDialogComponent
-  ]
+  declarations: [EmbeddedEditorToolbarComponent, EmbeddedEditorViewComponent, NoExecutionDialogComponent],
+  entryComponents: [NoExecutionDialogComponent]
 })
 export class EmbeddedEditorModule {}

@@ -9,7 +9,6 @@ import { ExecutionStatus } from '@machinelabs/models';
   styleUrls: ['./execution-card.component.scss']
 })
 export class ExecutionCardComponent {
-
   @Input() execution;
 
   @Output() view = new EventEmitter<Execution>();

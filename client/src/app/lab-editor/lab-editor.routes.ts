@@ -4,7 +4,6 @@ import { LabResolver } from '../lab.resolver';
 import { HasValidExecutionGuard } from './has-valid-execution.guard';
 import { HasRunningExecutionGuard } from './has-running-execution.guard';
 
-
 export const ROUTES: Routes = [
   {
     path: '',

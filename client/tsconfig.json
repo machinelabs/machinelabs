@@ -8,17 +8,11 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2017",
-      "dom"
-    ],
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2017", "dom"],
     "paths": {
       "firebase": ["../node_modules/firebase"],
       "rxjs/*": ["../node_modules/rxjs/*"]
     }
   }
 }
-

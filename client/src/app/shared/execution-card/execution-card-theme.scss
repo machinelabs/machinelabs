@@ -1,7 +1,6 @@
 @import '../../../../node_modules/@angular/material/theming';
 
 @mixin ml-execution-card-theme($theme) {
-
   $background: map-get($theme, background);
   $foreground: map-get($theme, foreground);
   $accent: map-get($theme, accent);
@@ -36,7 +35,7 @@
   }
 
   .ml-execution-card-title {
-    border-top-color: #DCDCE9;
+    border-top-color: #dcdce9;
 
     .finished & {
       color: $success;

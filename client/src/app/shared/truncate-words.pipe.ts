@@ -10,7 +10,7 @@ export class TruncateWordsPipe implements PipeTransform {
     let result = value;
 
     if (value) {
-      let words = value.split(/\s+/);
+      const words = value.split(/\s+/);
       if (words.length > Math.abs(limit)) {
         if (limit < 0) {
           limit *= -1;

@@ -112,7 +112,6 @@ ml-toolbar {
   position: relative;
 
   &.slide {
-
     &:before {
       position: absolute;
       left: 0;
@@ -145,7 +144,6 @@ ml-toolbar {
         transform: skewY(5deg) translateY(-50%);
       }
     }
-
   }
 }
 
@@ -341,7 +339,6 @@ ml-console {
 }
 
 @include TabletPortraitUp {
-
   .ml-landing-page-head-container {
     padding: 8em 16px;
   }
@@ -374,7 +371,8 @@ ml-console {
     padding-bottom: 6em;
 
     &.slide {
-      &:after, &:before {
+      &:after,
+      &:before {
         height: 60px;
       }
 
@@ -443,7 +441,6 @@ ml-console {
 }
 
 @include WebPortraitUp {
-
   .ml-landing-page-console-container {
     flex-direction: row;
     margin-top: 2em;
@@ -475,11 +472,9 @@ ml-console {
       }
     }
   }
-
 }
 
 @include TabletLandscapeUp {
-
   .ml-landing-page-head-container {
     padding: 5em 16px;
   }
@@ -519,7 +514,8 @@ ml-console {
     padding-top: 10em;
 
     &.slide {
-      &:after, &:before {
+      &:after,
+      &:before {
         height: 80px;
       }
       &:after {
@@ -539,11 +535,9 @@ ml-console {
   .ml-landing-page-feature-text {
     padding: 0 2em;
   }
-
 }
 
 @include WebLandscapeUp {
-
   .ml-landing-page-head-container {
     padding: 6em 16px;
   }
@@ -598,12 +592,12 @@ ml-console {
 }
 
 @media (min-width: 1600px) {
-
   .ml-landing-page-section {
     padding-bottom: 10em;
 
     &.slide {
-      &:before, &:after {
+      &:before,
+      &:after {
         display: none;
       }
     }

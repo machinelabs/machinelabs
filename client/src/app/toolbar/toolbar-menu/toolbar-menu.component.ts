@@ -17,15 +17,13 @@ export enum MenuTriggerType {
   encapsulation: ViewEncapsulation.None
 })
 export class ToolbarMenuComponent implements OnInit {
-
-  @Input() menuTrigger = MenuTriggerType.MenuButton
+  @Input() menuTrigger = MenuTriggerType.MenuButton;
 
   user: Observable<User>;
 
   MenuTriggerType = MenuTriggerType;
 
-  constructor(private userService: UserService,
-              private loginService: LoginService) {}
+  constructor(private userService: UserService, private loginService: LoginService) {}
 
   ngOnInit() {
     this.user = this.userService.observeUserChanges();
@@ -39,4 +37,3 @@ export class ToolbarMenuComponent implements OnInit {
     this.loginService.logout();
   }
 }
-

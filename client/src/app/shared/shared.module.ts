@@ -22,7 +22,6 @@ import { DurationTrackerComponent } from './duration-tracker/duration-tracker.co
 import { ExecutionCardComponent } from './execution-card/execution-card.component';
 import { LabCardComponent } from './lab-card/lab-card.component';
 
-
 @NgModule({
   declarations: [
     TagListComponent,
@@ -71,6 +70,6 @@ export class SharedModule {
     return {
       ngModule: SharedModule,
       providers: [MutationObserverFactory]
-    }
+    };
   }
 }

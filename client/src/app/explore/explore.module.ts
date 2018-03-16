@@ -19,9 +19,6 @@ import { ExploreLabsComponent } from './explore-labs/explore-labs.component';
     ]),
     ToolbarModule
   ],
-  declarations: [
-    ExploreViewComponent,
-    ExploreLabsComponent
-  ]
+  declarations: [ExploreViewComponent, ExploreLabsComponent]
 })
-export class ExploreModule { }
+export class ExploreModule {}

@@ -13,11 +13,11 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./toolbar-logo.component.scss']
 })
 export class ToolbarLogoComponent {
-
   iconColor = 'white';
   logoColor = 'white';
 
-  @Input() set color(value) {
+  @Input()
+  set color(value) {
     if (value === 'primary') {
       this.iconColor = 'blue';
       this.logoColor = 'black';
@@ -27,5 +27,3 @@ export class ToolbarLogoComponent {
     }
   }
 }
-
-

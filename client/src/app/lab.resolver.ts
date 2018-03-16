@@ -9,7 +9,6 @@ import { BLANK_LAB_TPL_ID, DEFAULT_LAB_TPL_ID } from './lab-template.service';
 
 @Injectable()
 export class LabResolver implements Resolve<Lab> {
-
   constructor(
     private labStorageService: LabStorageService,
     private router: Router,
@@ -38,8 +37,8 @@ export class LabResolver implements Resolve<Lab> {
     // If a template id is specified, create a lab from that template,
     // unless it's the blank template id. Since `queryParams['tpl']` can
     // be undefined, we can easily fallback to default lab template.
-    return (route.queryParamMap.get('tpl') === BLANK_LAB_TPL_ID)
-            ? this.labStorageService.createLab()
-            : this.labStorageService.createLabFromTemplate(route.queryParamMap.get('tpl') || DEFAULT_LAB_TPL_ID);
+    return route.queryParamMap.get('tpl') === BLANK_LAB_TPL_ID
+      ? this.labStorageService.createLab()
+      : this.labStorageService.createLabFromTemplate(route.queryParamMap.get('tpl') || DEFAULT_LAB_TPL_ID);
   }
 }

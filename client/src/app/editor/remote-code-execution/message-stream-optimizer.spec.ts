@@ -13,19 +13,16 @@ import { MessageStreamOptimizer } from './message-stream-optimizer';
 import { createSkipText } from '../util/skip-helper';
 import { MessageKind } from '@machinelabs/models';
 
-
-
 let databaseStub;
 
 // it's important to recreate the stubs for every test to not
 // have one test cause side effects for another test
-function createStubs () {
-
+function createStubs() {
   databaseStub = {
-    ref: (arg) => {
+    ref: arg => {
       return {
-        once: (_arg) => {},
-        set: (_arg) => Promise.resolve(_arg),
+        once: _arg => {},
+        set: _arg => Promise.resolve(_arg),
         on: () => {}
       };
     }
@@ -33,40 +30,33 @@ function createStubs () {
 }
 
 describe('MessageStreamOptimizer', () => {
-
   let db;
   let messageStreamOptimizer: MessageStreamOptimizer;
-  let partitionSize = 2;
-  let fullFetchTreshold = 6;
+  const partitionSize = 2;
+  const fullFetchTreshold = 6;
 
   beforeEach(() => {
-
     createStubs();
 
     TestBed.configureTestingModule({
-      providers: [
-        { provide: DATABASE, useValue: databaseStub },
-        DbRefBuilder
-      ]
+      providers: [{ provide: DATABASE, useValue: databaseStub }, DbRefBuilder]
     });
 
     db = TestBed.get(DbRefBuilder);
     messageStreamOptimizer = new MessageStreamOptimizer(db, partitionSize, fullFetchTreshold);
-
   });
 
   describe('.listenForMessages()', () => {
     it('should fetch entire messages if message count is below treshold', () => {
+      const availableMessages = [
+        { kind: MessageKind.Stdout, data: 'some-text', index: 0 },
+        { kind: MessageKind.Stdout, data: 'other-text', index: 1 },
+        { kind: MessageKind.Stdout, data: 'other-text', index: 2 },
+        { kind: MessageKind.Stdout, data: 'other-text', index: 3 },
+        { kind: MessageKind.ExecutionFinished, data: '', index: 4 }
+      ];
 
-      let availableMessages = [
-          { kind: MessageKind.Stdout, data: 'some-text', index: 0 },
-          { kind: MessageKind.Stdout, data: 'other-text', index: 1 },
-          { kind: MessageKind.Stdout, data: 'other-text', index: 2 },
-          { kind: MessageKind.Stdout, data: 'other-text', index: 3 },
-          { kind: MessageKind.ExecutionFinished, data: '', index: 4 }
-        ];
-
-      let allMessages = fromStatic(availableMessages);
+      const allMessages = fromStatic(availableMessages);
 
       spyOn(messageStreamOptimizer, 'getAllMessages').and.returnValue(allMessages);
       spyOn(messageStreamOptimizer, 'getTailMessage').and.returnValue(allMessages.pipe(last()));
@@ -74,40 +64,41 @@ describe('MessageStreamOptimizer', () => {
       spyOn(messageStreamOptimizer, 'getTailMessages');
       spyOn(messageStreamOptimizer, 'getLiveMessages');
 
-      let seenMessages = []
-      messageStreamOptimizer.listenForMessages(1).pipe(
-        tap(message => seenMessages.push(message)),
-        finalize(() => {
-          expect(availableMessages).toEqual(seenMessages);
-          expect(messageStreamOptimizer.getTailMessage).toHaveBeenCalledTimes(1);
-          expect(messageStreamOptimizer.getAllMessages).toHaveBeenCalledTimes(1);
-          expect(messageStreamOptimizer.getHeadMessages).not.toHaveBeenCalled();
-          expect(messageStreamOptimizer.getTailMessages).not.toHaveBeenCalled();
-        })
-      ).subscribe();
+      const seenMessages = [];
+      messageStreamOptimizer
+        .listenForMessages(1)
+        .pipe(
+          tap(message => seenMessages.push(message)),
+          finalize(() => {
+            expect(availableMessages).toEqual(seenMessages);
+            expect(messageStreamOptimizer.getTailMessage).toHaveBeenCalledTimes(1);
+            expect(messageStreamOptimizer.getAllMessages).toHaveBeenCalledTimes(1);
+            expect(messageStreamOptimizer.getHeadMessages).not.toHaveBeenCalled();
+            expect(messageStreamOptimizer.getTailMessages).not.toHaveBeenCalled();
+          })
+        )
+        .subscribe();
     });
 
+    it('should fetch head, tail and live messages if message count is below treshold', done => {
+      const doneWhen = new DoneWhen(done).calledNTimes(1);
 
-    it('should fetch head, tail and live messages if message count is below treshold', (done) => {
+      const availableMessages = [
+        { kind: MessageKind.Stdout, data: 'some-text', index: 0 },
+        { kind: MessageKind.Stdout, data: 'other-text', index: 1 },
+        { kind: MessageKind.Stdout, data: 'other-text', index: 2 },
+        { kind: MessageKind.Stdout, data: 'other-text', index: 3 },
+        { kind: MessageKind.Stdout, data: 'other-text', index: 4 },
+        { kind: MessageKind.Stdout, data: 'other-text', index: 5 },
+        { kind: MessageKind.Stdout, data: 'other-text', index: 6 },
+        { kind: MessageKind.Stdout, data: 'other-text', index: 7 },
+        { kind: MessageKind.Stdout, data: 'other-text', index: 8 }
+      ];
 
-      let doneWhen = new DoneWhen(done).calledNTimes(1);
-
-      let availableMessages = [
-          { kind: MessageKind.Stdout, data: 'some-text', index: 0 },
-          { kind: MessageKind.Stdout, data: 'other-text', index: 1 },
-          { kind: MessageKind.Stdout, data: 'other-text', index: 2 },
-          { kind: MessageKind.Stdout, data: 'other-text', index: 3 },
-          { kind: MessageKind.Stdout, data: 'other-text', index: 4 },
-          { kind: MessageKind.Stdout, data: 'other-text', index: 5 },
-          { kind: MessageKind.Stdout, data: 'other-text', index: 6 },
-          { kind: MessageKind.Stdout, data: 'other-text', index: 7 },
-          { kind: MessageKind.Stdout, data: 'other-text', index: 8 },
-        ];
-
-      let allMessages = fromStatic(availableMessages);
+      const allMessages = fromStatic(availableMessages);
 
       // TODO: This isn't really simulating live messages since they aren't async.
-      let liveMessages = of(
+      const liveMessages = of(
         { kind: MessageKind.Stdout, data: 'other-text', index: 9 },
         { kind: MessageKind.ExecutionFinished, data: '', index: 10 }
       ).pipe(delay(1000));
@@ -118,9 +109,9 @@ describe('MessageStreamOptimizer', () => {
       spyOn(messageStreamOptimizer, 'getTailMessages').and.returnValue(allMessages.pipe(skip(8)));
       spyOn(messageStreamOptimizer, 'getLiveMessages').and.returnValue(liveMessages);
 
-      let seenMessages = [];
+      const seenMessages = [];
 
-      let expectedMessages = [
+      const expectedMessages = [
         { kind: MessageKind.Stdout, data: 'some-text', index: 0 },
         { kind: MessageKind.Stdout, data: 'other-text', index: 1 },
         { kind: MessageKind.Stdout, data: createSkipText(4) },
@@ -129,17 +120,20 @@ describe('MessageStreamOptimizer', () => {
         { kind: MessageKind.ExecutionFinished, data: '', index: 10 }
       ];
 
-      messageStreamOptimizer.listenForMessages(1).pipe(
-        tap(message => seenMessages.push(message)),
-        finalize(() => {
-          expect(expectedMessages).toEqual(seenMessages);
-          expect(messageStreamOptimizer.getTailMessage).toHaveBeenCalledTimes(1);
-          expect(messageStreamOptimizer.getAllMessages).not.toHaveBeenCalled();
-          expect(messageStreamOptimizer.getHeadMessages).toHaveBeenCalledTimes(1);
-          expect(messageStreamOptimizer.getTailMessages).toHaveBeenCalledTimes(1);
-          doneWhen.call();
-        })
-      ).subscribe();
+      messageStreamOptimizer
+        .listenForMessages(1)
+        .pipe(
+          tap(message => seenMessages.push(message)),
+          finalize(() => {
+            expect(expectedMessages).toEqual(seenMessages);
+            expect(messageStreamOptimizer.getTailMessage).toHaveBeenCalledTimes(1);
+            expect(messageStreamOptimizer.getAllMessages).not.toHaveBeenCalled();
+            expect(messageStreamOptimizer.getHeadMessages).toHaveBeenCalledTimes(1);
+            expect(messageStreamOptimizer.getTailMessages).toHaveBeenCalledTimes(1);
+            doneWhen.call();
+          })
+        )
+        .subscribe();
     });
   });
 });

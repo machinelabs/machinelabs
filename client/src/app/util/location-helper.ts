@@ -5,19 +5,16 @@ import { WindowRef } from '../window-ref.service';
 
 @Injectable()
 export class LocationHelper {
-
   constructor(
     private location: Location,
     private router: Router,
     private urlSerializer: UrlSerializer,
     private locationStrategy: LocationStrategy,
     private windowRef: WindowRef
-  ) { }
+  ) {}
 
   updateUrl(urlSegments: string[], options: NavigationExtras) {
-    this.location.go(this.urlSerializer.serialize(
-      this.router.createUrlTree(urlSegments, options)
-    ));
+    this.location.go(this.urlSerializer.serialize(this.router.createUrlTree(urlSegments, options)));
   }
 
   getQueryParams(path: string) {
@@ -35,7 +32,7 @@ export class LocationHelper {
   removeQueryParams(path: string, keys: Array<string> | string) {
     const currentUrlTree = this.router.parseUrl(path);
 
-    for (let key of [].concat(keys)) {
+    for (const key of [].concat(keys)) {
       delete currentUrlTree.queryParams[key];
     }
 

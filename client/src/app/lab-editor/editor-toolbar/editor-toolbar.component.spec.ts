@@ -22,24 +22,25 @@ import { AUTH_SERVICE_STUB } from '../../../test-helper/stubs/auth.service.stubs
 import { ROUTER_STUB, ACTIVATED_ROUTE_STUB } from '../../../test-helper/stubs/router.stubs';
 import { LAB_STUB } from '../../../test-helper/stubs/lab.stubs';
 
+@NgModule({
+  imports: [CommonModule],
+  declarations: [EditLabDialogComponent],
+  entryComponents: [EditLabDialogComponent],
+  schemas: [NO_ERRORS_SCHEMA]
+})
+class TestModule {}
+
 describe('EditorToolbarComponent', () => {
   let component: EditorToolbarComponent;
   let fixture: ComponentFixture<EditorToolbarComponent>;
   let authService: AuthService;
-  let userService: UserService;
   let fbMock: FirebaseMock;
 
   beforeEach(() => {
     fbMock = new FirebaseMock();
     TestBed.configureTestingModule({
       declarations: [EditorToolbarComponent],
-      imports: [
-        TestModule,
-        MachineLabsMaterialModule,
-        CommonModule,
-        FormsModule,
-        SharedModule
-      ],
+      imports: [TestModule, MachineLabsMaterialModule, CommonModule, FormsModule, SharedModule],
       providers: [
         { provide: AuthService, useValue: AUTH_SERVICE_STUB },
         { provide: LabTemplateService, useClass: InMemoryLabTemplateService },
@@ -57,7 +58,7 @@ describe('EditorToolbarComponent', () => {
     component = fixture.componentInstance;
     authService = TestBed.get(AuthService);
 
-    let lab = Object.assign({}, LAB_STUB);
+    const lab = Object.assign({}, LAB_STUB);
     component.lab = lab;
     spyOn(authService, 'requireAuth').and.returnValue(of(dummyUser));
     spyOn(authService, 'requireAuthOnce').and.returnValue(of(dummyUser));
@@ -70,22 +71,14 @@ describe('EditorToolbarComponent', () => {
 
   it('should render lab name', () => {
     // The user will be available in the next tick hence the setTimeout
-    let lab = Object.assign({}, LAB_STUB);
+    const lab = Object.assign({}, LAB_STUB);
 
     component.lab = lab;
     fixture.detectChanges();
 
-    let nameSpan = fixture.debugElement.query(By.css('.ml-editor-toolbar-lab-name'));
+    const nameSpan = fixture.debugElement.query(By.css('.ml-editor-toolbar-lab-name'));
 
     expect(nameSpan).toBeDefined();
     expect(nameSpan.nativeElement.textContent).toEqual(lab.name);
   });
 });
-
-@NgModule({
-  imports: [CommonModule],
-  declarations: [EditLabDialogComponent],
-  entryComponents: [EditLabDialogComponent],
-  schemas: [NO_ERRORS_SCHEMA]
-})
-class TestModule {}

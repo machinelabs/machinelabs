@@ -5,30 +5,32 @@ import { Component, OnInit } from '@angular/core';
   template: `<h4 class="ml-dialog-headline"><ng-content></ng-content></h4>`,
   styleUrls: ['./dialog-header.component.scss']
 })
-export class DialogHeaderComponent { }
+export class DialogHeaderComponent {}
 
 @Component({
   selector: 'ml-dialog-content',
   template: `<div class="ml-dialog-content"><ng-content></ng-content></div>`,
   styleUrls: ['./dialog-content.component.scss']
 })
-export class DialogContentComponent { }
+export class DialogContentComponent {}
 
 @Component({
   selector: 'ml-dialog-cta-bar',
   template: `<ng-content></ng-content>`,
   styleUrls: ['./dialog-cta-bar.component.scss']
 })
-export class DialogCtaBarComponent { }
+export class DialogCtaBarComponent {}
 
 @Component({
   selector: 'ml-dialog-error',
   template: `<ng-content></ng-content>`,
-  styles: [`
+  styles: [
+    `
     :host {
       display: flex;
       align-items: center;
     }
-  `]
+  `
+  ]
 })
-export class DialogErrorComponent { }
+export class DialogErrorComponent {}

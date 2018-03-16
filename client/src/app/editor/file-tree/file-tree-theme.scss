@@ -1,7 +1,6 @@
 @import '../../../../node_modules/@angular/material/theming';
 
 @mixin ml-file-tree-theme($theme) {
-
   $primary: map-get($theme, primary);
   $warn: map-get($theme, warn);
   $background: map-get($theme, background);
@@ -19,8 +18,9 @@
   }
 
   .ml-file-tree-item-title {
-
-    &:hover, &:active, &:focus {
+    &:hover,
+    &:active,
+    &:focus {
       &::before {
         background-color: mat-color($background, hover);
       }
@@ -43,7 +43,6 @@
   }
 
   .ml-file-tree-item-button {
-
     &.edit mat-icon {
       color: mat-color($foreground, text);
     }

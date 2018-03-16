@@ -10,33 +10,34 @@ import { switchMap } from 'rxjs/operators';
   styleUrls: ['./handshake.component.scss']
 })
 export class HandshakeComponent implements OnInit {
-
   handshakeId: string;
 
-  constructor(private route: ActivatedRoute,
-              private router: Router,
-              private refBuilder: DbRefBuilder,
-              private userService: UserService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private refBuilder: DbRefBuilder,
+    private userService: UserService
+  ) {}
 
   ngOnInit() {
     this.handshakeId = this.route.snapshot.paramMap.get('id');
   }
 
   confirm(handshakeId: string) {
-
-    this.userService.getCurrentUser()
-                    .pipe(switchMap(user => this.refBuilder.handshakeCommitRef(handshakeId)
-                      .update({
-                        id: handshakeId,
-                        user_id: user.id
-                      })
-                    ))
-                    .subscribe(() => this.router.navigateByUrl(''));
-
+    this.userService
+      .getCurrentUser()
+      .pipe(
+        switchMap(user =>
+          this.refBuilder.handshakeCommitRef(handshakeId).update({
+            id: handshakeId,
+            user_id: user.id
+          })
+        )
+      )
+      .subscribe(() => this.router.navigateByUrl(''));
   }
 
   reject(handshakeId: string) {
     this.router.navigateByUrl('');
   }
-
 }

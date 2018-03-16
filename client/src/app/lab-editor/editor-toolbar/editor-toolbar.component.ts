@@ -1,12 +1,4 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  OnInit,
-  OnDestroy,
-  OnChanges
-} from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, OnChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
@@ -20,7 +12,12 @@ import { LabStorageService } from '../../lab-storage.service';
 import { LabNameTruncationWordCount } from '../../editor/editor.service';
 
 export enum EditorToolbarActionTypes {
-  Run, Save, Fork, Create, Edit, ForkAndRun
+  Run,
+  Save,
+  Fork,
+  Create,
+  Edit,
+  ForkAndRun
 }
 
 export interface EditorToolbarAction {
@@ -34,7 +31,6 @@ export interface EditorToolbarAction {
   styleUrls: ['./editor-toolbar.component.scss']
 })
 export class EditorToolbarComponent implements OnInit, OnChanges, OnDestroy {
-
   @Input() lab = null as Lab;
 
   @Output() action = new EventEmitter<EditorToolbarAction>();
@@ -53,11 +49,13 @@ export class EditorToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
   EditorToolbarActionTypes = EditorToolbarActionTypes;
 
-  constructor(public userService: UserService,
-              private router: Router,
-              private labStorageService: LabStorageService,
-              private breakpointObserver: BreakpointObserver,
-              private route: ActivatedRoute) {}
+  constructor(
+    public userService: UserService,
+    private router: Router,
+    private labStorageService: LabStorageService,
+    private breakpointObserver: BreakpointObserver,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnChanges() {
     this.labOwner = this.userService.getUser(this.lab.user_id);
@@ -65,22 +63,24 @@ export class EditorToolbarComponent implements OnInit, OnChanges, OnDestroy {
     this.forkOwner = null;
     if (this.lab.fork_of) {
       this.labStorageService
-        .labExists(this.lab.fork_of).pipe(
+        .labExists(this.lab.fork_of)
+        .pipe(
           filter(exists => exists),
           switchMap(_ => this.labStorageService.getLab(this.lab.fork_of)),
-          tap(lab => this.forkedLab = lab),
+          tap(lab => (this.forkedLab = lab)),
           switchMap(lab => this.userService.getUser(lab.user_id))
-        ).subscribe(user => this.forkOwner = user);
+        )
+        .subscribe(user => (this.forkOwner = user));
     }
   }
 
   ngOnInit() {
-    this.userSubscription = this.userService.observeUserChanges()
-                    .subscribe(user => this.user = user);
-
+    this.userSubscription = this.userService.observeUserChanges().subscribe(user => (this.user = user));
 
     this.breakpointObserver.observe([Breakpoints.Tablet, Breakpoints.Web]).subscribe(state => {
-      this.truncateLabNameWordCount = state.matches ? LabNameTruncationWordCount.Tablet : LabNameTruncationWordCount.Mobile;
+      this.truncateLabNameWordCount = state.matches
+        ? LabNameTruncationWordCount.Tablet
+        : LabNameTruncationWordCount.Mobile;
     });
   }
 

@@ -16,7 +16,7 @@
   right: 0;
   background: #03a9f4;
   opacity: 0;
-  transition: opacity 200ms cubic-bezier(.25,.8,.25,1);
+  transition: opacity 200ms cubic-bezier(0.25, 0.8, 0.25, 1);
 
   &.active {
     visibility: visible;
@@ -64,7 +64,6 @@
 }
 
 @include TabletPortraitUp {
-
   [mat-button].ml-toolbar-navigation-button {
     display: none;
   }

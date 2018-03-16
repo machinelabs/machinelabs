@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanDeactivate, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
+import { CanDeactivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { MatDialog } from '@angular/material';
 
 import { of } from 'rxjs/observable/of';
@@ -17,11 +17,9 @@ import {
 import { LabExecutionService } from '../lab-execution.service';
 import { take } from 'rxjs/operators';
 
-
 @Injectable()
 export class HasRunningExecutionGuard implements CanDeactivate<EditorViewComponent> {
-
-  constructor (
+  constructor(
     private labExecutionService: LabExecutionService,
     private dialog: MatDialog,
     private userService: UserService,
@@ -44,19 +42,17 @@ export class HasRunningExecutionGuard implements CanDeactivate<EditorViewCompone
       return of(true);
     }
 
-    return forkJoin(
-      this.labStorageService.getLab(labId),
-      this.userService.getCurrentUser()
-    ).pipe(
-    // It might not be obvious why we're doing a forkJoin here, but we have to
-    // resolve the loggedin user first so we can access state in isLoggedInUser
+    return forkJoin(this.labStorageService.getLab(labId), this.userService.getCurrentUser()).pipe(
+      // It might not be obvious why we're doing a forkJoin here, but we have to
+      // resolve the loggedin user first so we can access state in isLoggedInUser
       switchMap(val => this.userService.isLoggedInUser(val[0].user_id)),
       switchMap(userOwnsLab => {
         if (!userOwnsLab) {
           return of(true);
         }
-        return this.labExecutionService.labHasRunningExecutions(labId)
-          .pipe(switchMap(val => val ? this.showDialog() : of(true)));
+        return this.labExecutionService
+          .labHasRunningExecutions(labId)
+          .pipe(switchMap(val => (val ? this.showDialog() : of(true))));
       }),
       catchError(_ => {
         // We might run into a firebase permission error when the user has logged
@@ -77,4 +73,3 @@ export class HasRunningExecutionGuard implements CanDeactivate<EditorViewCompone
       .afterClosed();
   }
 }
-

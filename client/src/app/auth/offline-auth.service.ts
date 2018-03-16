@@ -14,7 +14,7 @@ export let dummyUser = {
   email: 'tony@starkindustries.com',
   isAnonymous: true,
   photoURL: null,
-  photoUrl: null,
+  photoUrl: null
 };
 
 // We emulate the logged in user and its state of being
@@ -25,7 +25,6 @@ export interface OfflineAuth extends AuthService {
 
 @Injectable()
 export class OfflineAuthService implements OfflineAuth {
-
   user: LoginUser = dummyUser;
 
   requireAuth(): Observable<LoginUser> {

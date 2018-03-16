@@ -9,10 +9,12 @@ import { LandingPageComponent } from './landing-page.component';
 @NgModule({
   imports: [
     SharedModule,
-    RouterModule.forChild([{
-      path: '',
-      component: LandingPageComponent
-    }]),
+    RouterModule.forChild([
+      {
+        path: '',
+        component: LandingPageComponent
+      }
+    ]),
     ToolbarModule
   ],
   declarations: [LandingPageComponent]

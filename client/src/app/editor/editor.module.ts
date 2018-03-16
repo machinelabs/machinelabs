@@ -32,11 +32,7 @@ import { LabConfigCompletionProvider } from './completion-providers/lab-config-c
 import { ClipboardModule } from 'ngx-clipboard';
 
 @NgModule({
-  imports: [
-    SharedModule,
-    ReactiveFormsModule,
-    ClipboardModule
-  ],
+  imports: [SharedModule, ReactiveFormsModule, ClipboardModule],
   declarations: [
     XtermComponent,
     EditorLayoutComponent,
@@ -53,13 +49,7 @@ import { ClipboardModule } from 'ngx-clipboard';
     FilePreviewDialogToolbarComponent,
     NameDialogComponent
   ],
-  providers: [
-    FileTreeService,
-    EditorService,
-    NameDialogService,
-    RemoteLabExecService,
-    FilePreviewDialogService
-  ],
+  providers: [FileTreeService, EditorService, NameDialogService, RemoteLabExecService, FilePreviewDialogService],
   exports: [
     XtermComponent,
     EditorLayoutComponent,
@@ -75,19 +65,13 @@ import { ClipboardModule } from 'ngx-clipboard';
     FilePreviewDialogComponent,
     FilePreviewDialogToolbarComponent
   ],
-  entryComponents: [
-    FilePreviewDialogComponent,
-    NameDialogComponent
-  ]
+  entryComponents: [FilePreviewDialogComponent, NameDialogComponent]
 })
 export class EditorModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: EditorModule,
-      providers: [
-        { provide: COMPLETION_PROVIDERS, useClass: LabConfigCompletionProvider, multi: true }
-      ]
+      providers: [{ provide: COMPLETION_PROVIDERS, useClass: LabConfigCompletionProvider, multi: true }]
     };
   }
 }
-

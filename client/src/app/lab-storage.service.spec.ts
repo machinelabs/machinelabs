@@ -13,21 +13,20 @@ import { LAB_TEMPLATES } from './data/lab-templates';
 import { FirebaseMock } from '../test-helper/firebase-mock';
 import { LAB_STUB } from '../test-helper/stubs/lab.stubs';
 
-let authServiceStub = {
-  requireAuthOnce: () => { }
+const authServiceStub = {
+  requireAuthOnce: () => {}
 };
 
-let databaseStub = {
-  ref: (arg) => {
+const databaseStub = {
+  ref: arg => {
     return {
-      once: (_arg) => { },
-      set: (_arg) => { }
+      once: _arg => {},
+      set: _arg => {}
     };
   }
 };
 
 describe('LabStorageService', () => {
-
   let labStorageService: LabStorageService;
   let labTemplateService: LabTemplateService;
   let authService: AuthService;
@@ -35,7 +34,6 @@ describe('LabStorageService', () => {
   let fbMock;
 
   beforeEach(() => {
-
     fbMock = new FirebaseMock();
 
     TestBed.configureTestingModule({
@@ -53,13 +51,12 @@ describe('LabStorageService', () => {
     authService = TestBed.get(AuthService);
     db = TestBed.get(DATABASE);
 
-    let user = { uid: 'some-id' };
+    const user = { uid: 'some-id' };
 
     spyOn(authService, 'requireAuthOnce').and.returnValue(of(user));
   });
 
   describe('.createLab()', () => {
-
     it('should create a new lab', () => {
       labStorageService.createLab().subscribe(lab => {
         expect(lab).toBeDefined();
@@ -71,8 +68,7 @@ describe('LabStorageService', () => {
     });
 
     it('should create new lab from existing lab (forking)', () => {
-
-      let existingLab = Object.assign({}, LAB_STUB, { directory: [] });
+      const existingLab = Object.assign({}, LAB_STUB, { directory: [] });
 
       labStorageService.createLab(existingLab).subscribe(lab => {
         expect(lab).toBeDefined();
@@ -86,9 +82,7 @@ describe('LabStorageService', () => {
   });
 
   describe('.createLabFromTemplate()', () => {
-
     it('should create lab from given template', () => {
-
       const TEMPLATE = DEFAULT_LAB_TPL_ID;
 
       spyOn(labTemplateService, 'getTemplate').and.returnValue(of(LAB_TEMPLATES[TEMPLATE]));
@@ -105,43 +99,34 @@ describe('LabStorageService', () => {
   });
 
   describe('.getLab()', () => {
-
-    it('should return lab by given id', (done) => {
-
+    it('should return lab by given id', done => {
       fbMock.data[`labs/${LAB_STUB.id}/common`] = LAB_STUB;
 
-      labStorageService.getLab(LAB_STUB.id)
-        .subscribe(lab => {
-          expect(lab).toEqual(LAB_STUB);
-          done();
-        });
+      labStorageService.getLab(LAB_STUB.id).subscribe(lab => {
+        expect(lab).toEqual(LAB_STUB);
+        done();
+      });
     });
   });
 
   describe('.saveLab()', () => {
-
-    it('should save lab using firebase.database.set()', (done) => {
-
-      let expectedLab = Object.assign({}, LAB_STUB, { user_id: 'some-id', directory: [] });
+    it('should save lab using firebase.database.set()', done => {
+      const expectedLab = Object.assign({}, LAB_STUB, { user_id: 'some-id', directory: [] });
       // Since `has_cached_run` is only written by the server, the
       // returned lab should actually not have this property
       delete expectedLab.has_cached_run;
 
       labStorageService.saveLab(expectedLab).subscribe(lab => {
-
-        labStorageService.getLab(LAB_STUB.id)
-          .subscribe(_lab => {
-            // The returned lab should have its user_id changed
-            expect(_lab.id).toEqual(expectedLab.id);
-            expect(_lab.name).toEqual(expectedLab.name);
-            expect(_lab.description).toEqual(expectedLab.description);
-            expect(_lab.tags).toEqual(expectedLab.tags);
-            expect(_lab.directory).toEqual(expectedLab.directory);
-            done();
-          });
+        labStorageService.getLab(LAB_STUB.id).subscribe(_lab => {
+          // The returned lab should have its user_id changed
+          expect(_lab.id).toEqual(expectedLab.id);
+          expect(_lab.name).toEqual(expectedLab.name);
+          expect(_lab.description).toEqual(expectedLab.description);
+          expect(_lab.tags).toEqual(expectedLab.tags);
+          expect(_lab.directory).toEqual(expectedLab.directory);
+          done();
+        });
       });
-
     });
   });
 });
-

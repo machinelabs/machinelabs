@@ -42,7 +42,8 @@ const completions = [
     label: 'parameters',
     kind: 9,
     insertText: 'parameters: ',
-    documentation: 'A list of parameters that will be passed to our entry file (e.g. main.py) in the same order they are specified.'
+    documentation:
+      'A list of parameters that will be passed to our entry file (e.g. main.py) in the same order they are specified.'
   },
   {
     label: 'cli',
@@ -56,7 +57,10 @@ describe('LabConfigCompletionProvider', () => {
   let completionProvider: LabConfigCompletionProvider;
 
   beforeEach(() => {
-    completionProvider = new LabConfigCompletionProvider(DOCKER_IMAGE_SERVICE_STUB as DockerImageService, WINDOW_SERVICE_STUB);
+    completionProvider = new LabConfigCompletionProvider(
+      DOCKER_IMAGE_SERVICE_STUB as DockerImageService,
+      WINDOW_SERVICE_STUB
+    );
   });
 
   it('should define `yaml` as language', () => {
@@ -65,51 +69,40 @@ describe('LabConfigCompletionProvider', () => {
 
   describe('provideCompletionItems', () => {
     it('should return an empty list if the file is not `ml.yaml`', async () => {
-      const model = createModel('foo.yaml', [
-        'foo: '
-      ]);
+      const model = createModel('foo.yaml', ['foo: ']);
 
-      const result = await completionProvider.provideCompletionItems(model, createPosition(1, 5))
+      const result = await completionProvider.provideCompletionItems(model, createPosition(1, 5));
       expect(result).toEqual([]);
     });
 
     it('should return all the values', async () => {
-      const model = createModel(ML_YAML_FILENAME, [
-        ''
-      ]);
+      const model = createModel(ML_YAML_FILENAME, ['']);
 
-      const result = await completionProvider.provideCompletionItems(model, createPosition(1, 1))
+      const result = await completionProvider.provideCompletionItems(model, createPosition(1, 1));
 
       expect(result).toEqual(completions);
     });
 
     it('should return all the values when some text is provided', async () => {
-      const model = createModel(ML_YAML_FILENAME, [
-        'hard'
-      ]);
+      const model = createModel(ML_YAML_FILENAME, ['hard']);
 
-      const result = await completionProvider.provideCompletionItems(model, createPosition(1, 2))
+      const result = await completionProvider.provideCompletionItems(model, createPosition(1, 2));
 
       expect(result).toEqual(completions);
     });
 
     it('should not return already used properties', async () => {
-      const model = createModel(ML_YAML_FILENAME, [
-        'hardwareType: cpu',
-        ''
-      ]);
+      const model = createModel(ML_YAML_FILENAME, ['hardwareType: cpu', '']);
 
-      const result = await completionProvider.provideCompletionItems(model, createPosition(2, 1))
+      const result = await completionProvider.provideCompletionItems(model, createPosition(2, 1));
 
       expect(result).toEqual(completions.filter(x => x.label !== 'hardwareType'));
     });
 
     it('should return the values of the hardwareType', async () => {
-      const model = createModel(ML_YAML_FILENAME, [
-        'hardwareType: '
-      ]);
+      const model = createModel(ML_YAML_FILENAME, ['hardwareType: ']);
 
-      const result = await completionProvider.provideCompletionItems(model, createPosition(1, 14))
+      const result = await completionProvider.provideCompletionItems(model, createPosition(1, 14));
 
       expect(result).toEqual([
         {
@@ -128,11 +121,9 @@ describe('LabConfigCompletionProvider', () => {
     });
 
     it('should return the values of the dockerImageId', async () => {
-      const model = createModel(ML_YAML_FILENAME, [
-        'dockerImageId: '
-      ]);
+      const model = createModel(ML_YAML_FILENAME, ['dockerImageId: ']);
 
-      const result = await completionProvider.provideCompletionItems(model, createPosition(1, 15))
+      const result = await completionProvider.provideCompletionItems(model, createPosition(1, 15));
 
       expect(result).toEqual([
         {

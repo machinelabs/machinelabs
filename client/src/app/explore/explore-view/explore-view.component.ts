@@ -8,6 +8,5 @@ import { MenuTriggerType } from '../../toolbar/toolbar-menu/toolbar-menu.compone
   styleUrls: ['./explore-view.component.scss']
 })
 export class ExploreViewComponent {
-
   MenuTriggerType = MenuTriggerType;
 }

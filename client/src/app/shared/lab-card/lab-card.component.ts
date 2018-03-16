@@ -12,10 +12,9 @@ import { Execution } from '../../models/execution';
   styleUrls: ['./lab-card.component.scss']
 })
 export class LabCardComponent {
-
   @Input() lab: Lab;
   @Input() user: User;
-  @Input() executions: Array<{ id: string, execution: Observable<Execution> }>;
+  @Input() executions: Array<{ id: string; execution: Observable<Execution> }>;
   @Input() showDescription = false;
   @Input() showUsername = true;
   @Input() showTags = false;

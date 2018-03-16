@@ -4,7 +4,6 @@ import { waitForContentReady } from './../utils';
 import { EmbeddedEditorViewPageObject } from './embedded-editor-view.page-object';
 
 describe('Editor-View Component', () => {
-
   const embeddedEditorView = new EmbeddedEditorViewPageObject();
 
   beforeEach(() => {
@@ -18,4 +17,3 @@ describe('Editor-View Component', () => {
     expect(embeddedEditorView.activeTabLabel).toEqual('Console');
   });
 });
-

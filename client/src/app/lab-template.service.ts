@@ -12,7 +12,6 @@ export abstract class LabTemplateService {
 }
 
 export class InMemoryLabTemplateService extends LabTemplateService {
-
   getTemplate(name: string): Observable<LabTemplate> {
     const template = LAB_TEMPLATES[name];
     return of(template ? JSON.parse(JSON.stringify(template)) : null);

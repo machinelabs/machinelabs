@@ -9,7 +9,6 @@ import { Lab } from '../../models/lab';
   styleUrls: ['./embedded-editor-toolbar.component.scss']
 })
 export class EmbeddedEditorToolbarComponent implements OnInit {
-
   @Input() lab: Lab;
 
   @Output() replay = new EventEmitter<Lab>();
@@ -22,7 +21,9 @@ export class EmbeddedEditorToolbarComponent implements OnInit {
 
   ngOnInit() {
     this.breakpointObserver.observe([Breakpoints.Tablet, Breakpoints.Web]).subscribe(state => {
-      this.truncateLabNameWordCount = state.matches ? LabNameTruncationWordCount.Tablet : LabNameTruncationWordCount.Mobile;
+      this.truncateLabNameWordCount = state.matches
+        ? LabNameTruncationWordCount.Tablet
+        : LabNameTruncationWordCount.Mobile;
     });
   }
 }

@@ -50,9 +50,7 @@
   font-size: 0.9em;
 }
 
-
 @include TabletPortraitUp {
-
   .ml-page-footer-sections {
     padding: 2em 0;
     flex-direction: row;

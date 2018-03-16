@@ -11,7 +11,6 @@ import {
 
 @Injectable()
 export class FileTreeService {
-
   collapseDirectory(fileOrDirectory: File | Directory) {
     this.setCollapsed(fileOrDirectory, true);
   }
@@ -55,5 +54,4 @@ export class FileTreeService {
   private updateClientState(clientState: DirectoryClientState, newState: DirectoryClientState) {
     return { ...clientState, ...newState };
   }
-
 }

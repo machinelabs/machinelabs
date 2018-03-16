@@ -15,14 +15,8 @@ import { USER_PROFILE_ROUTES } from './user-profile.routes';
 import { EditUserProfileDialogComponent } from './edit-user-profile-dialog/edit-user-profile-dialog.component';
 
 @NgModule({
-  declarations: [
-    UserProfileComponent,
-    EditUserProfileDialogComponent
-  ],
-  providers: [
-    UserResolver,
-    UserLabsResolver
-  ],
+  declarations: [UserProfileComponent, EditUserProfileDialogComponent],
+  providers: [UserResolver, UserLabsResolver],
   imports: [
     CommonModule,
     SharedModule,
@@ -30,10 +24,8 @@ import { EditUserProfileDialogComponent } from './edit-user-profile-dialog/edit-
     MachineLabsMaterialModule,
     FlexLayoutModule,
     RouterModule.forChild(USER_PROFILE_ROUTES),
-    ToolbarModule,
+    ToolbarModule
   ],
-  entryComponents: [
-    EditUserProfileDialogComponent
-  ]
+  entryComponents: [EditUserProfileDialogComponent]
 })
 export class UserProfileModule {}

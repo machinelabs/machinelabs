@@ -7,13 +7,7 @@ import { FilePreviewDialogRef } from './file-preview-dialog-ref';
 
 import { OutputFile } from '../../models/output-file';
 
-import {
-  OverlayConfig,
-  ScrollStrategy,
-  OverlayRef,
-  Overlay,
-  BlockScrollStrategy
-} from '@angular/cdk/overlay';
+import { OverlayConfig, ScrollStrategy, OverlayRef, Overlay, BlockScrollStrategy } from '@angular/cdk/overlay';
 
 import { FILE_PREVIEW_DIALOG_DATA } from './file-preview.tokens';
 
@@ -35,17 +29,13 @@ const DEFAULT_CONFIG: FilePreviewDialogConfig = {
   backdropClass: 'dark-backdrop',
   panelClass: 'ml-file-preview-dialog-panel',
   viewContainerRef: null
-}
+};
 
 @Injectable()
 export class FilePreviewDialogService {
-
   private openDialog: FilePreviewDialogRef = null;
 
-  constructor(
-    private overlay: Overlay,
-    private injector: Injector,
-    private location: Location) {
+  constructor(private overlay: Overlay, private injector: Injector, private location: Location) {
     location.subscribe(() => {
       if (this.openDialog) {
         this.openDialog.close();
@@ -63,7 +53,7 @@ export class FilePreviewDialogService {
     dialogRef.containerInstance = dialogContainer;
 
     overlayRef.backdropClick().subscribe(_ => dialogRef.close());
-    dialogRef.afterClosed().subscribe(_ => this.openDialog = null!);
+    dialogRef.afterClosed().subscribe(_ => (this.openDialog = null));
 
     this.openDialog = dialogRef;
 
@@ -75,7 +65,11 @@ export class FilePreviewDialogService {
     return this.overlay.create(overlayConfig);
   }
 
-  private attachDialogContainer(overlayRef: OverlayRef, config: FilePreviewDialogConfig, dialogRef: FilePreviewDialogRef) {
+  private attachDialogContainer(
+    overlayRef: OverlayRef,
+    config: FilePreviewDialogConfig,
+    dialogRef: FilePreviewDialogRef
+  ) {
     const injector = this.createInjector(config, dialogRef);
 
     const containerPortal = new ComponentPortal(FilePreviewDialogComponent, config.viewContainerRef, injector);
@@ -96,7 +90,8 @@ export class FilePreviewDialogService {
   }
 
   private getOverlayConfig(config: FilePreviewDialogConfig): OverlayConfig {
-    const positionStrategy = this.overlay.position()
+    const positionStrategy = this.overlay
+      .position()
       .global()
       .centerHorizontally()
       .centerVertically();

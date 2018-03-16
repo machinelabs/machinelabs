@@ -1,18 +1,8 @@
-import {
-  protractor,
-  browser,
-  element,
-  by,
-  ElementFinder,
-  ElementArrayFinder,
-  promise
-} from 'protractor';
+import { protractor, browser, element, by, ElementFinder, ElementArrayFinder, promise } from 'protractor';
 
 import { FileNameDialogPageObject } from './file-name-dialog.page-object';
 
-
 const EC = protractor.ExpectedConditions;
-
 
 export class EditorViewPageObject {
   fileNameDialog: FileNameDialogPageObject = new FileNameDialogPageObject();
@@ -25,9 +15,8 @@ export class EditorViewPageObject {
    * TABS
    */
   get tabsLabels(): promise.Promise<Array<string>> {
-    return this.tabs
-            .reduce((acc: Array<string>, elem: ElementFinder) => {
-              return elem.getText().then((text: string) => acc.concat(text));
+    return this.tabs.reduce((acc: Array<string>, elem: ElementFinder) => {
+      return elem.getText().then((text: string) => acc.concat(text));
     }, []);
   }
 
@@ -48,8 +37,7 @@ export class EditorViewPageObject {
   }
 
   getFileEditBtn(index: number): ElementFinder {
-    return this.getFileByIndex(index)
-                        .element(by.css('.ml-file-tree-item-button.edit'));
+    return this.getFileByIndex(index).element(by.css('.ml-file-tree-item-button.edit'));
   }
 
   addFile(name: string): void {
@@ -59,7 +47,10 @@ export class EditorViewPageObject {
   }
 
   changeFileName(index: number, newName: string): void {
-    browser.actions().mouseMove(this.getFileByIndex(index)).perform();
+    browser
+      .actions()
+      .mouseMove(this.getFileByIndex(index))
+      .perform();
     const editButton = this.getFileEditBtn(index);
     if (editButton) {
       editButton.click();

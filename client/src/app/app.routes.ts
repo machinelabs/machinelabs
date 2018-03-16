@@ -10,7 +10,7 @@ export const APP_ROUTES: Routes = [
   },
   {
     path: 'editor',
-    loadChildren: './lab-editor/lab-editor.module#LabEditorModule',
+    loadChildren: './lab-editor/lab-editor.module#LabEditorModule'
   },
   {
     path: 'embedded',

@@ -12,7 +12,6 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./editor-footer.component.scss']
 })
 export class FooterComponent {
-
   @Input() lab: Lab;
 
   @Input() execution = null as Observable<Execution>;
@@ -27,7 +26,7 @@ export class FooterComponent {
 
   embedDialogRef: MatDialogRef<EmbedDialogComponent>;
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog) {}
 
   openShareDialog() {
     this.shareDialogRef = this.dialog.open(ShareDialogComponent);
@@ -41,5 +40,4 @@ export class FooterComponent {
       }
     });
   }
-
 }

@@ -10,18 +10,14 @@ import { User } from '../models/user';
   styleUrls: ['./toolbar.component.scss']
 })
 export class ToolbarComponent implements OnInit {
-
   private user: User;
 
   @Input() hasSubRow = false;
 
-  constructor(private authService: AuthService,
-              private userService: UserService,
-              private snackBar: MatSnackBar) {}
+  constructor(private authService: AuthService, private userService: UserService, private snackBar: MatSnackBar) {}
 
   ngOnInit() {
-    this.userService.observeUserChanges()
-                    .subscribe(user => this.user = user);
+    this.userService.observeUserChanges().subscribe(user => (this.user = user));
   }
 }
 

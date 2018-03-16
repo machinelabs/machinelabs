@@ -5,11 +5,13 @@ import { Component } from '@angular/core';
   template: `
     <ng-content></ng-content>
   `,
-  styles: [`
+  styles: [
+    `
     :host {
       display: flex;
       flex: 1;
     }
-  `]
+  `
+  ]
 })
 export class EditorLayoutPanelsComponent {}

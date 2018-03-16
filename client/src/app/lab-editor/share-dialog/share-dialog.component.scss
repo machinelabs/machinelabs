@@ -14,7 +14,7 @@ mat-form-field {
   transition: background-color 25ms ease-out, border-color 25ms ease-out, opacity 250ms ease-out;
   margin: 0.5em;
   padding: 0.5em 0.75em;
-  font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-size: 0.95em;
 }
 
@@ -25,7 +25,7 @@ mat-form-field {
 
 .resp-sharing-button a {
   text-decoration: none;
-  color: #FFF;
+  color: #fff;
   display: block;
 }
 
@@ -41,20 +41,20 @@ mat-form-field {
 
 /* Non solid icons get a stroke */
 .resp-sharing-button__icon {
-  stroke: #FFF;
+  stroke: #fff;
   fill: none;
 }
 
 /* Solid icons get a fill */
 .resp-sharing-button__icon--solid,
 .resp-sharing-button__icon--solidcircle {
-  fill: #FFF;
+  fill: #fff;
   stroke: none;
 }
 
 .resp-sharing-button__link {
   text-decoration: none;
-  color: #FFF;
+  color: #fff;
 }
 
 .resp-sharing-button--large .resp-sharing-button__icon svg {
@@ -97,4 +97,3 @@ mat-form-field {
   background-color: #c23321;
   border-color: #c23321;
 }
-

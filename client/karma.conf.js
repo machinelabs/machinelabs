@@ -1,7 +1,7 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/0.13/config/configuration-file.html
 
-module.exports = function (config) {
+module.exports = function(config) {
   config.set({
     basePath: '',
     frameworks: ['jasmine', '@angular/cli'],
@@ -12,11 +12,11 @@ module.exports = function (config) {
       require('karma-mocha-reporter'),
       require('@angular/cli/plugins/karma')
     ],
-    client:{
+    client: {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
     coverageIstanbulReporter: {
-      reports: [ 'html', 'lcovonly' ],
+      reports: ['html', 'lcovonly'],
       fixWebpackSourcePaths: true
     },
     angularCli: {
@@ -32,8 +32,8 @@ module.exports = function (config) {
     singleRun: false,
     customLaunchers: {
       Chrome_travis_ci: {
-          base: 'Chrome',
-          flags: ['--no-sandbox']
+        base: 'Chrome',
+        flags: ['--no-sandbox']
       }
     }
   });

@@ -14,10 +14,10 @@ describe('UserResolver', () => {
   let routeSnapshotStub: ActivatedRouteSnapshot;
   let router: Router;
 
-  let routerStub = {
-    navigate: (params) => {}
+  const routerStub = {
+    navigate: params => {}
   };
-  let userServiceStub = {
+  const userServiceStub = {
     getUser: (id: string) => {}
   };
 
@@ -41,14 +41,14 @@ describe('UserResolver', () => {
 
   describe('.resolve()', () => {
     it('should resolve a user given their id', () => {
-      routeSnapshotStub.params = {userId: 1};
+      routeSnapshotStub.params = { userId: 1 };
       userResolver.resolve(routeSnapshotStub).subscribe(_ => {
         expect(userService.getUser).toHaveBeenCalledWith(1);
       });
     });
 
-    it('should navigate to editor if requested user doesn\'t exist', () => {
-      routeSnapshotStub.params = {userId: 1};
+    it("should navigate to editor if requested user doesn't exist", () => {
+      routeSnapshotStub.params = { userId: 1 };
       userResolver.resolve(routeSnapshotStub).subscribe(_ => {
         expect(router.navigate).toHaveBeenCalledWith(['/editor']);
       });
@@ -60,17 +60,13 @@ describe('UserLabsResolver', () => {
   let userLabsResolver: UserLabsResolver;
   let labStorage: LabStorageService;
   let routeSnapshotStub: ActivatedRouteSnapshot;
-  let labStorageStub = {
+  const labStorageStub = {
     getLabsFromUser: (id: string) => {}
   };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        UserLabsResolver,
-        SnackbarService,
-        {provide: LabStorageService, useValue: labStorageStub}
-      ],
+      providers: [UserLabsResolver, SnackbarService, { provide: LabStorageService, useValue: labStorageStub }],
       imports: [MatSnackBarModule]
     });
     userLabsResolver = TestBed.get(UserLabsResolver);
@@ -80,8 +76,8 @@ describe('UserLabsResolver', () => {
   });
 
   describe('.resolve()', () => {
-    it('should resolve the labs created by a user, given the user\'s id', () => {
-      routeSnapshotStub.params = {userId: 2};
+    it("should resolve the labs created by a user, given the user's id", () => {
+      routeSnapshotStub.params = { userId: 2 };
       userLabsResolver.resolve(routeSnapshotStub).subscribe(_ => {
         expect(labStorage.getLabsFromUser).toHaveBeenCalledWith(2);
       });

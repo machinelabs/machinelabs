@@ -1,3 +1,5 @@
+/* tslint:disable:no-use-before-declare */
+
 export class FirebaseMock {
   log = [];
   data = {};
@@ -7,9 +9,7 @@ export class FirebaseMock {
   }
 }
 
-
 export class FireBaseDbMock {
-
   constructor(private fbMock: FirebaseMock) {}
 
   ref(ref: string) {
@@ -18,7 +18,6 @@ export class FireBaseDbMock {
 }
 
 export class FirebaseDbRefMock {
-
   constructor(private fbMock: FirebaseMock, private ref: string) {}
 
   set(data: any) {
@@ -32,10 +31,9 @@ export class FirebaseDbRefMock {
 }
 
 export class FirebaseDataSnapshotMock {
-
   constructor(private fbMock: FirebaseMock, private data: any) {}
 
   val() {
-    return this.data  || null;
+    return this.data || null;
   }
 }

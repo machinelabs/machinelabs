@@ -44,13 +44,10 @@ export function databaseFactory() {
 const AnimationsModule = [environment.testing ? NoopAnimationsModule : BrowserAnimationsModule];
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     ...AnimationsModule,
     BrowserModule,
-    HttpModule,
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
@@ -90,4 +87,4 @@ const AnimationsModule = [environment.testing ? NoopAnimationsModule : BrowserAn
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

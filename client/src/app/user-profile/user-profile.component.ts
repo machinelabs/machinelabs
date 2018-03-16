@@ -20,7 +20,7 @@ import { tap } from 'rxjs/operators/tap';
 
 interface UserLab {
   lab: Lab;
-  executions: Observable<Array<{ id: string, execution: Observable<Execution> }>>;
+  executions: Observable<Array<{ id: string; execution: Observable<Execution> }>>;
   user: Observable<User>;
 }
 
@@ -30,7 +30,6 @@ interface UserLab {
   styleUrls: ['./user-profile.component.scss']
 })
 export class UserProfileComponent implements OnInit, OnDestroy {
-
   userLabs$: Observable<Array<UserLab>>;
 
   user: User;
@@ -43,27 +42,32 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   private userChangesSubscription;
 
-  constructor(private route: ActivatedRoute,
-              private labStorage: LabStorageService,
-              private dialog: MatDialog,
-              private snackBar: SnackbarService,
-              private labExecutionService: LabExecutionService,
-              private userService: UserService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private labStorage: LabStorageService,
+    private dialog: MatDialog,
+    private snackBar: SnackbarService,
+    private labExecutionService: LabExecutionService,
+    private userService: UserService
+  ) {}
 
   ngOnInit() {
-    this.route.data.pipe(map(data => data['user'])).subscribe(user => this.user = user);
+    this.route.data.pipe(map(data => data['user'])).subscribe(user => (this.user = user));
 
     this.userLabs$ = this.route.data.pipe(map(data => data['labs'])).pipe(
-      map((labs => labs.map(lab => ({
-        lab,
-        user: this.user,
-        executions: this.observeRecentExecutionsForLab(lab)
-      }))))
+      map(labs =>
+        labs.map(lab => ({
+          lab,
+          user: this.user,
+          executions: this.observeRecentExecutionsForLab(lab)
+        }))
+      )
     );
 
-    this.userChangesSubscription = this.userService.observeUserChanges()
+    this.userChangesSubscription = this.userService
+      .observeUserChanges()
       .pipe(switchMap(_ => this.userService.isLoggedInUser(this.user.id)))
-      .subscribe(isLoggedIn => this.isAuthUser = isLoggedIn);
+      .subscribe(isLoggedIn => (this.isAuthUser = isLoggedIn));
 
     // Need to wrap this in a timeout, otherwise we're running into an
     // ExpressionChangedAfterItHasBeenCheckedError.
@@ -75,18 +79,19 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   edit() {
-    this.showEditDialog(this.user).pipe(
-      filter(user => user),
-      switchMap(user => this.userService.updateUser(user))
-    ).subscribe(_ => this.snackBar.notifyProfileUpdated());
+    this.showEditDialog(this.user)
+      .pipe(filter(user => user), switchMap(user => this.userService.updateUser(user)))
+      .subscribe(_ => this.snackBar.notifyProfileUpdated());
   }
 
   showEditDialog(user: User) {
-    return this.dialog.open(EditUserProfileDialogComponent, {
-      data: {
-        user: user
-      }
-    }).afterClosed();
+    return this.dialog
+      .open(EditUserProfileDialogComponent, {
+        data: {
+          user: user
+        }
+      })
+      .afterClosed();
   }
 
   ngOnDestroy() {
@@ -94,8 +99,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   private observeRecentExecutionsForLab(lab: Lab, limit = 3) {
-    return this.labExecutionService.observeExecutionsForLab(lab).pipe(
-      map(executions => executions.slice(0, limit))
-    );
+    return this.labExecutionService.observeExecutionsForLab(lab).pipe(map(executions => executions.slice(0, limit)));
   }
 }

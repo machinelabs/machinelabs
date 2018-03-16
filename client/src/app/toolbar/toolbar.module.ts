@@ -3,11 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MachineLabsMaterialModule } from '../ml-material.module';
 
-import {
-  ToolbarComponent,
-  ToolbarContentDirective,
-  ToolbarCtaBarDirective
-} from './toolbar.component';
+import { ToolbarComponent, ToolbarContentDirective, ToolbarCtaBarDirective } from './toolbar.component';
 
 import { ToolbarLogoComponent } from './toolbar-logo.component';
 import { ToolbarMenuComponent } from './toolbar-menu/toolbar-menu.component';
@@ -23,11 +19,7 @@ const TOOLBAR_DIRECTIVES = [
 ];
 
 @NgModule({
-  imports: [
-    MachineLabsMaterialModule,
-    CommonModule,
-    RouterModule
-  ],
+  imports: [MachineLabsMaterialModule, CommonModule, RouterModule],
   declarations: TOOLBAR_DIRECTIVES,
   exports: TOOLBAR_DIRECTIVES
 })

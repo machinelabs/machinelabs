@@ -1,16 +1,6 @@
 import { Subject } from 'rxjs/Subject';
 import { of } from 'rxjs/observable/of';
-import {
-  combineLatest,
-  filter,
-  map,
-  share,
-  startWith,
-  skip,
-  switchMap,
-  tap,
-  catchError
-} from 'rxjs/operators';
+import { combineLatest, filter, map, share, startWith, skip, switchMap, tap, catchError } from 'rxjs/operators';
 
 import { Injectable, EventEmitter } from '@angular/core';
 import { UrlSerializer, ActivatedRoute } from '@angular/router';
@@ -40,10 +30,7 @@ import { createSkipTextHelper } from './util/skip-helper';
 import { FileTreeService } from './file-tree/file-tree.service';
 import { Lab } from '../models/lab';
 
-
-import {
-  Execution,
-} from '../models/execution';
+import { Execution } from '../models/execution';
 
 export enum TabIndex {
   Editor = 'editor',
@@ -68,7 +55,6 @@ export interface ListenAndNotifyOptions {
 
 @Injectable()
 export class EditorService {
-
   selectedTabChange = new EventEmitter<TabIndex>();
 
   selectedTab: TabIndex;
@@ -146,38 +132,44 @@ export class EditorService {
   }
 
   listenAndNotify(executionId: string, options?: ListenAndNotifyOptions) {
-    let wrapper = this.rleService.listen(executionId);
+    const wrapper = this.rleService.listen(executionId);
 
-    let genSkipText = createSkipTextHelper('character');
+    const genSkipText = createSkipTextHelper('character');
 
     this.snackbarService.notifyLateExecutionUnless(wrapper.controlMessages);
 
-    wrapper.controlMessages
-           .subscribe(msg => {
-            if (msg.kind === MessageKind.ExecutionFinished) {
-              this.snackbarService.notifyExecutionFinished();
-            }
-            if (options && options.inPauseMode()) {
-              if (msg.kind === MessageKind.ExecutionStarted) {
-                this.snackbarService.notifyExecutionStartedPauseMode().onAction()
-                  .subscribe(_ => { options.pauseModeExecutionStartedAction() });
-              }
-              if (msg.kind === MessageKind.ExecutionFinished) {
-                this.snackbarService.notifyExecutionFinishedPauseMode().onAction()
-                  .subscribe(_ => { options.pauseModeExecutionFinishedAction() });
-              }
-            }
-          });
+    wrapper.controlMessages.subscribe(msg => {
+      if (msg.kind === MessageKind.ExecutionFinished) {
+        this.snackbarService.notifyExecutionFinished();
+      }
+      if (options && options.inPauseMode()) {
+        if (msg.kind === MessageKind.ExecutionStarted) {
+          this.snackbarService
+            .notifyExecutionStartedPauseMode()
+            .onAction()
+            .subscribe(_ => {
+              options.pauseModeExecutionStartedAction();
+            });
+        }
+        if (msg.kind === MessageKind.ExecutionFinished) {
+          this.snackbarService
+            .notifyExecutionFinishedPauseMode()
+            .onAction()
+            .subscribe(_ => {
+              options.pauseModeExecutionFinishedAction();
+            });
+        }
+      }
+    });
 
-    let messages = wrapper.messages
-      .pipe(
-        filter(_ => !options || !options.inPauseMode()),
-        filter(msg => msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr),
-        // We replace newlines with carriage returns to ensure all messages start
-        // at the beginning of a new line. This needed when rendering messages in
-        // a terminal emulation, that haven't been produced by a tty emulation.
-        map(msg => msg.terminal_mode ? <string>msg.data : (<string>msg.data).replace(/[\n]/g, '\n\r'))
-      );
+    const messages = wrapper.messages.pipe(
+      filter(_ => !options || !options.inPauseMode()),
+      filter(msg => msg.kind === MessageKind.Stdout || msg.kind === MessageKind.Stderr),
+      // We replace newlines with carriage returns to ensure all messages start
+      // at the beginning of a new line. This needed when rendering messages in
+      // a terminal emulation, that haven't been produced by a tty emulation.
+      map(msg => (msg.terminal_mode ? <string>msg.data : (<string>msg.data).replace(/[\n]/g, '\n\r')))
+    );
 
     return {
       execution: wrapper.execution,
@@ -186,12 +178,11 @@ export class EditorService {
   }
 
   addLocalExecution(id: string) {
-
     this.localExecutions.set(id, {
       id: id,
       status: ExecutionStatus.Executing,
       started_at: Date.now()
-    })
+    });
 
     this.localExecutions$.next(this.localExecutions);
   }
@@ -202,80 +193,70 @@ export class EditorService {
   }
 
   observeExecutionsForLab(lab: Lab) {
-    return this.labExecutionService
-        .observeExecutionsForLab(this.lab)
-        .pipe(
-          startWith([]),
-          combineLatest(
-            this.localExecutions$.pipe(startWith(new Map())),
-            (confirmedExecutions, localExecutions) => {
-              localExecutions.forEach((localExecution, index) => {
-                let confirmedEx = confirmedExecutions.find(execution => execution.id === localExecution.id);
-                if (confirmedEx) {
-                  localExecutions.delete(localExecution.id);
-                } else {
-                  confirmedExecutions = [{
-                    id: localExecution.id,
-                    execution: of(localExecution)
-                  }, ...confirmedExecutions];
-                }
-
-              });
-              return confirmedExecutions.map(v => v.execution);
-            }
-          ),
-          skip(1),
-          share()
-        );
-
+    return this.labExecutionService.observeExecutionsForLab(this.lab).pipe(
+      startWith([]),
+      combineLatest(this.localExecutions$.pipe(startWith(new Map())), (confirmedExecutions, localExecutions) => {
+        localExecutions.forEach((localExecution, index) => {
+          const confirmedEx = confirmedExecutions.find(execution => execution.id === localExecution.id);
+          if (confirmedEx) {
+            localExecutions.delete(localExecution.id);
+          } else {
+            confirmedExecutions = [
+              {
+                id: localExecution.id,
+                execution: of(localExecution)
+              },
+              ...confirmedExecutions
+            ];
+          }
+        });
+        return confirmedExecutions.map(v => v.execution);
+      }),
+      skip(1),
+      share()
+    );
   }
 
   forkLab(lab: Lab) {
-    return this.labStorageService
-      .createLab(lab).pipe(tap(createdLab => this.lab = createdLab));
+    return this.labStorageService.createLab(lab).pipe(tap(createdLab => (this.lab = createdLab)));
   }
 
   saveLab(lab: Lab, msg = 'Lab saved') {
-    return this.labStorageService
-      .saveLab(lab)
-      .pipe(
-        tap(_ => {
-          const urlSegments = [`/${this.locationHelper.getRootUrlSegment()}`, lab.id];
+    return this.labStorageService.saveLab(lab).pipe(
+      tap(_ => {
+        const urlSegments = [`/${this.locationHelper.getRootUrlSegment()}`, lab.id];
 
-          if (this.activeExecutionId) {
-            urlSegments.push(this.activeExecutionId);
-          }
+        if (this.activeExecutionId) {
+          urlSegments.push(this.activeExecutionId);
+        }
 
-          this.locationHelper.updateUrl(urlSegments, {
-            queryParamsHandling: 'merge',
-            queryParams: this.locationHelper.getQueryParams(this.location.path())
-          });
+        this.locationHelper.updateUrl(urlSegments, {
+          queryParamsHandling: 'merge',
+          queryParams: this.locationHelper.getQueryParams(this.location.path())
+        });
 
-          this.snackbarService.notify(msg);
-        }),
-        map(_ => lab),
-        catchError(_ => {
-          this.snackbarService.notifySaveLabFailed()
-          return of(null);
-        })
-      );
+        this.snackbarService.notify(msg);
+      }),
+      map(_ => lab),
+      catchError(_ => {
+        this.snackbarService.notifySaveLabFailed();
+        return of(null);
+      })
+    );
   }
 
   deleteLab(lab: Lab) {
     lab.hidden = true;
-    return this.labStorageService
-      .saveLab(lab).pipe(tap(_ => this.snackbarService.notifyLabDeleted()));
+    return this.labStorageService.saveLab(lab).pipe(tap(_ => this.snackbarService.notifyLabDeleted()));
   }
 
   executeLab(lab: Lab) {
-    return this.labStorageService
-      .labExists(lab.id)
-      .pipe(
-        // First check if this lab is already persisted or not. We don't want to
-        // execute labs that don't exist in the database.
-        switchMap(exists => exists ? of(null) : this.labStorageService.saveLab(lab)),
-        switchMap(_ => this.rleService.run(lab))
-      );
+    return this.labStorageService.labExists(lab.id).pipe(
+      // First check if this lab is already persisted or not. We don't want to
+      // execute labs that don't exist in the database.
+      switchMap(exists => (exists ? of(null) : this.labStorageService.saveLab(lab))),
+      switchMap(_ => this.rleService.run(lab))
+    );
   }
 
   selectTab(tabIndex: TabIndex) {
@@ -297,7 +278,7 @@ export class EditorService {
       // from the server. Unselecting the `activeFile` wouldn't have any effect then
       // because that file is not an instance in the `lab.directory` as the `activeFile`
       // belongs to an outdated directory.
-      let previousActiveFile = getFileFromPath(this.activeFilePath, this.lab.directory);
+      const previousActiveFile = getFileFromPath(this.activeFilePath, this.lab.directory);
       this.fileTreeService.unselectFile(previousActiveFile);
     }
 
@@ -340,7 +321,7 @@ export class EditorService {
 
   private initActiveFile() {
     const path = this.urlSerializer.parse(this.location.path()).queryParams.file;
-    let file = path ? getFileFromPath(path, this.lab.directory) : null;
+    const file = path ? getFileFromPath(path, this.lab.directory) : null;
     this.openFile(file || getMainFile(this.lab.directory), file ? path : null);
   }
 }

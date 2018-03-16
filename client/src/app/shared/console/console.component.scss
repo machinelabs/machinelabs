@@ -51,7 +51,8 @@
 }
 
 @keyframes blink {
-  0%, 100% {
+  0%,
+  100% {
     background: transparent;
   }
   50% {

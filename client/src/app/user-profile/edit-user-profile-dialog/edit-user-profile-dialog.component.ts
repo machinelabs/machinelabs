@@ -15,7 +15,6 @@ function validateNoPlaceholderName(control: AbstractControl) {
   styleUrls: ['./edit-user-profile-dialog.component.scss']
 })
 export class EditUserProfileDialogComponent implements OnInit {
-
   user: User;
   form: FormGroup;
 
@@ -23,7 +22,7 @@ export class EditUserProfileDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<EditUserProfileDialogComponent>,
     private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.user = this.data.user;
@@ -39,4 +38,3 @@ export class EditUserProfileDialogComponent implements OnInit {
     this.dialogRef.close(this.user);
   }
 }
-

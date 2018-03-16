@@ -1,7 +1,6 @@
 @import '../../../node_modules/@angular/material/theming';
 
 @mixin ml-user-profile-theme($theme) {
-
   $primary: map-get($theme, primary);
   $accent: map-get($theme, accent);
   $foreground: map-get($theme, foreground);
@@ -18,7 +17,6 @@
   }
 
   .ml-user-profile-execution-list {
-
     mat-card {
       span {
         display: inline-block;
@@ -49,11 +47,9 @@
       }
 
       .mat-progress-spinner svg {
-        width: initial!important;
-        height: initial!important;
+        width: initial !important;
+        height: initial !important;
       }
     }
   }
-
 }
-

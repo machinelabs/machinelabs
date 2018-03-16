@@ -2,7 +2,6 @@ import { element, by, ElementFinder } from 'protractor';
 
 import { MdDialogPageObject } from './../md-dialog/md-dialog.page-object';
 
-
 export class FileNameDialogPageObject {
   mdDialog = new MdDialogPageObject();
   dialog: ElementFinder = this.mdDialog.getDialogComponent('ml-name-dialog');
