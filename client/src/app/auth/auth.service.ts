@@ -9,4 +9,3 @@ export abstract class AuthService {
   abstract signInWithGitHub(): Observable<LoginUser>;
   abstract linkOrSignInWithGitHub(): Observable<LoginUser>;
 }
-

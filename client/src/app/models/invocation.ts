@@ -16,4 +16,3 @@ export interface Invocation {
   type: InvocationType;
   data: any;
 }
-

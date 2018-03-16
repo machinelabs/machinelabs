@@ -10,37 +10,31 @@ import { User } from '../models/user';
 
 @Injectable()
 export class UserResolver implements Resolve<User> {
-
-  constructor(
-      private userService: UserService,
-      private router: Router,
-      private snackBar: SnackbarService) {}
+  constructor(private userService: UserService, private router: Router, private snackBar: SnackbarService) {}
 
   resolve(route: ActivatedRouteSnapshot) {
-    return this.userService
-               .getUser(route.paramMap.get('userId')).pipe(
-                tap(user => {
-                  if (!user) {
-                    this.snackBar.notifyUserDoesntExist();
-                    this.router.navigate(['/editor']);
-                  }
-                  return user;
-                })
-              );
+    return this.userService.getUser(route.paramMap.get('userId')).pipe(
+      tap(user => {
+        if (!user) {
+          this.snackBar.notifyUserDoesntExist();
+          this.router.navigate(['/editor']);
+        }
+        return user;
+      })
+    );
   }
 }
 
 @Injectable()
 export class UserLabsResolver implements Resolve<any> {
-
   constructor(private labStorage: LabStorageService, private snackBar: SnackbarService) {}
 
   resolve(route: ActivatedRouteSnapshot) {
-    return this.labStorage
-      .getLabsFromUser(route.paramMap.get('userId'))
-      .pipe(catchError(_ => {
+    return this.labStorage.getLabsFromUser(route.paramMap.get('userId')).pipe(
+      catchError(_ => {
         this.snackBar.notifyLoadingUserLabsFailed();
         return of([]);
-      }));
+      })
+    );
   }
 }

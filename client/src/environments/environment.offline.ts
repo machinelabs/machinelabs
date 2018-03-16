@@ -6,4 +6,3 @@ export const environment = {
     databaseURL: 'ws://127.0.1:52100'
   }
 };
-

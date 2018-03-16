@@ -19,4 +19,3 @@ model.compile(loss='mean_squared_error',
 model.fit(training_data, target_data, nb_epoch=500, verbose=2)
 
 print(model.predict(training_data).round())`;
-

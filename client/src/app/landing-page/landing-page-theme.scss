@@ -2,12 +2,10 @@
 @import './mixins';
 
 @mixin ml-landing-page-theme($theme) {
-
   $primary: map-get($theme, primary);
   $accent: map-get($theme, accent);
 
   ml-landing-page {
-
     .mat-toolbar.mat-primary {
       background-color: transparent;
     }
@@ -59,7 +57,7 @@
       color: #3b3b44;
 
       &:before {
-        background-color: #dfdfdf
+        background-color: #dfdfdf;
       }
 
       &:after {
@@ -70,7 +68,7 @@
         background-color: #fafafa;
 
         &:before {
-          background-color: #dfdfdf
+          background-color: #dfdfdf;
         }
 
         &:after {
@@ -148,7 +146,8 @@
     }
 
     .ml-landing-page-properties-list {
-      mat-icon, a {
+      mat-icon,
+      a {
         color: #fff;
       }
     }
@@ -164,7 +163,6 @@
     }
 
     @include TabletPortraitUp {
-
       ml-toolbar-navigation {
         [mat-button] {
           color: #3b3b44;

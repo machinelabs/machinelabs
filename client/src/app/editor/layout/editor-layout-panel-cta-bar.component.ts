@@ -5,14 +5,14 @@ import { Component } from '@angular/core';
   template: `
     <ng-content></ng-content>
   `,
-  styles: [`
+  styles: [
+    `
     :host {
       width: 40px;
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.24);
       z-index: 1;
     }
-  `]
+  `
+  ]
 })
 export class EditorLayoutPanelCtaBarComponent {}
-
-

@@ -10,7 +10,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background:white;
+  background: white;
 }
 
 mat-card {
@@ -59,7 +59,8 @@ button + button {
 }
 
 @keyframes blink {
-  0%, 100% {
+  0%,
+  100% {
     background: transparent;
   }
   50% {

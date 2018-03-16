@@ -18,7 +18,7 @@ import { map } from 'rxjs/operators';
 
 interface TopPickLab {
   lab: Lab;
-  executions: Observable<Array<{ id: string, execution: Observable<Execution> }>>;
+  executions: Observable<Array<{ id: string; execution: Observable<Execution> }>>;
   user: Observable<User>;
 }
 
@@ -28,7 +28,6 @@ interface TopPickLab {
   styleUrls: ['./landing-page.component.scss']
 })
 export class LandingPageComponent implements OnInit {
-
   MenuTriggerType = MenuTriggerType;
 
   topPicks: Observable<Array<TopPickLab>>;
@@ -37,20 +36,23 @@ export class LandingPageComponent implements OnInit {
     private labStorageService: LabStorageService,
     private userService: UserService,
     private labExecutionService: LabExecutionService,
-    @Inject(TOP_PICKS) private topPicksIds) {}
+    @Inject(TOP_PICKS) private topPicksIds
+  ) {}
 
   ngOnInit() {
     this.topPicks = forkJoin(
       this.labStorageService.getLab(this.topPicksIds[0]),
       this.labStorageService.getLab(this.topPicksIds[1]),
-      this.labStorageService.getLab(this.topPicksIds[2]),
+      this.labStorageService.getLab(this.topPicksIds[2])
     ).pipe(
       map(labs => labs.filter(lab => !!lab)),
-      map(labs => labs.map(lab => ({
-        lab,
-        executions: this.labExecutionService.observeRecentExecutionsForLab(lab),
-        user: this.userService.getUser(lab.user_id)
-      })))
+      map(labs =>
+        labs.map(lab => ({
+          lab,
+          executions: this.labExecutionService.observeRecentExecutionsForLab(lab),
+          user: this.userService.getUser(lab.user_id)
+        }))
+      )
     );
   }
 }

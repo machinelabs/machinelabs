@@ -14,15 +14,14 @@ import { ROUTER_STUB } from '../test-helper/stubs/router.stubs';
 import { LAB_STUB } from '../test-helper/stubs/lab.stubs';
 
 describe('LabResolver', () => {
-
   let labResolver: LabResolver;
   let labStorageService: LabStorageService;
   let router: Router;
 
-  let labStorageServiceStub = {
+  const labStorageServiceStub = {
     createLab: () => {},
-    createLabFromTemplate: (arg) => {},
-    getLab: (id) => {}
+    createLabFromTemplate: arg => {},
+    getLab: id => {}
   };
 
   beforeEach(() => {
@@ -42,12 +41,10 @@ describe('LabResolver', () => {
   });
 
   describe('.resolve()', () => {
-
     it('should resolve with new lab from default template if no route param id is given', () => {
+      const newLab = Object.assign({}, LAB_STUB);
 
-      let newLab = Object.assign({}, LAB_STUB);
-
-      let activatedRouteSnapshotStub =  new ActivatedRouteSnapshot();
+      const activatedRouteSnapshotStub = new ActivatedRouteSnapshot();
       activatedRouteSnapshotStub.params = {};
       activatedRouteSnapshotStub.queryParams = {};
       spyOn(labStorageService, 'createLabFromTemplate').and.returnValue(of(newLab));
@@ -59,10 +56,9 @@ describe('LabResolver', () => {
     });
 
     it('should resolve with blank lab, if template param for blank is given', () => {
+      const newLab = Object.assign({}, LAB_STUB);
 
-      let newLab = Object.assign({}, LAB_STUB);
-
-      let activatedRouteSnapshotStub = new ActivatedRouteSnapshot();
+      const activatedRouteSnapshotStub = new ActivatedRouteSnapshot();
       activatedRouteSnapshotStub.params = {};
       activatedRouteSnapshotStub.queryParams = { tpl: BLANK_LAB_TPL_ID };
 
@@ -75,12 +71,11 @@ describe('LabResolver', () => {
     });
 
     it('should resolve with lab from template, if template param is given', () => {
+      const newLab = Object.assign({}, LAB_STUB);
 
-      let newLab = Object.assign({}, LAB_STUB);
-
-      let activatedRouteSnapshotStub = new ActivatedRouteSnapshot();
+      const activatedRouteSnapshotStub = new ActivatedRouteSnapshot();
       activatedRouteSnapshotStub.params = {};
-      activatedRouteSnapshotStub.queryParams = { tpl: 'any'};
+      activatedRouteSnapshotStub.queryParams = { tpl: 'any' };
 
       spyOn(labStorageService, 'createLabFromTemplate').and.returnValue(of(newLab));
 
@@ -91,23 +86,21 @@ describe('LabResolver', () => {
     });
 
     it('should resolve with existing lab if id is given', () => {
+      const existingLab = Object.assign({}, LAB_STUB);
 
-      let existingLab = Object.assign({}, LAB_STUB);
-
-      let activatedRouteSnapshotStub = new ActivatedRouteSnapshot();
+      const activatedRouteSnapshotStub = new ActivatedRouteSnapshot();
       activatedRouteSnapshotStub.params = { id: 'some-id' };
 
       spyOn(labStorageService, 'getLab').and.returnValue(of(existingLab));
 
       labResolver.resolve(activatedRouteSnapshotStub).subscribe(lab => {
-        expect(labStorageService.getLab)
-          .toHaveBeenCalledWith(activatedRouteSnapshotStub.params['id']);
+        expect(labStorageService.getLab).toHaveBeenCalledWith(activatedRouteSnapshotStub.params['id']);
         expect(lab).toEqual(existingLab);
       });
     });
 
     it('should redirect if id is given but resolves to non-existing or hidden lab', () => {
-      let activatedRouteSnapshotStub = new ActivatedRouteSnapshot();
+      const activatedRouteSnapshotStub = new ActivatedRouteSnapshot();
       activatedRouteSnapshotStub.params = { id: 'some-id' };
 
       spyOn(labStorageService, 'getLab').and.returnValue(of(null));
@@ -116,7 +109,6 @@ describe('LabResolver', () => {
       labResolver.resolve(activatedRouteSnapshotStub).subscribe(lab => {
         expect(router.navigate).toHaveBeenCalledWith(['/editor']);
       });
-
     });
   });
 });

@@ -12,9 +12,7 @@ import { HANDSHAKE_ROUTES } from './handshake.routes';
 import { HandshakeComponent } from './handshake.component';
 
 @NgModule({
-  declarations: [
-    HandshakeComponent
-  ],
+  declarations: [HandshakeComponent],
   imports: [
     CommonModule,
     SharedModule,

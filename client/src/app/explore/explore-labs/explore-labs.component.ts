@@ -13,7 +13,7 @@ import { map } from 'rxjs/operators';
 
 interface RecentLab {
   lab: Lab;
-  executions: Observable<Array<{ id: string, execution: Observable<Execution> }>>;
+  executions: Observable<Array<{ id: string; execution: Observable<Execution> }>>;
   user: Observable<User>;
 }
 
@@ -23,13 +23,13 @@ interface RecentLab {
   styleUrls: ['./explore-labs.component.scss']
 })
 export class ExploreLabsComponent implements OnInit {
-
   recentLabs$: Observable<Array<RecentLab>>;
 
   constructor(
     private labExecutionService: LabExecutionService,
     private labStorageService: LabStorageService,
-    private userService: UserService) { }
+    private userService: UserService
+  ) {}
 
   ngOnInit() {
     this.recentLabs$ = this.getRecentLabs();
@@ -37,11 +37,13 @@ export class ExploreLabsComponent implements OnInit {
 
   private getRecentLabs() {
     return this.labStorageService.getRecentLabs().pipe(
-      map(labs => labs.map(lab => ({
-        lab,
-        executions: this.labExecutionService.observeRecentExecutionsForLab(lab),
-        user: this.userService.getUser(lab.user_id)
-      })))
+      map(labs =>
+        labs.map(lab => ({
+          lab,
+          executions: this.labExecutionService.observeRecentExecutionsForLab(lab),
+          user: this.userService.getUser(lab.user_id)
+        }))
+      )
     );
   }
 }

@@ -3,30 +3,35 @@ import { SIMPLE_MNIST_CODE } from './mnist-lab-code';
 import { ML_YAML, ML_YAML_FILENAME } from '@machinelabs/core';
 
 export const LAB_TEMPLATES = {
-  'xor': {
+  xor: {
     name: 'XOR Template',
     description: '',
     tags: [],
-    directory: [{
-      name: 'main.py',
-      content: SIMPLE_XOR_LAB_CODE
-    }, {
-      name: ML_YAML_FILENAME,
-      content: ML_YAML
-    }]
+    directory: [
+      {
+        name: 'main.py',
+        content: SIMPLE_XOR_LAB_CODE
+      },
+      {
+        name: ML_YAML_FILENAME,
+        content: ML_YAML
+      }
+    ]
   },
-  'mnist': {
+  mnist: {
     name: 'Simple MNIST',
     description: `A neural net learning to recognize hand-written
       digits using the MNIST dataset.`,
     tags: ['MNIST'],
-    directory: [{
-      name: 'main.py',
-      content: SIMPLE_MNIST_CODE
-    },
-    {
-      name: ML_YAML_FILENAME,
-      content: ML_YAML
-    }]
+    directory: [
+      {
+        name: 'main.py',
+        content: SIMPLE_MNIST_CODE
+      },
+      {
+        name: ML_YAML_FILENAME,
+        content: ML_YAML
+      }
+    ]
   }
 };

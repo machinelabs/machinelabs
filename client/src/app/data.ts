@@ -1,7 +1,7 @@
 export const DUMMY_LAB = {
   name: 'Testlab',
   description: 'Some Description',
-  tags: [{name: 'MNIST'}, {name: 'NN'}],
+  tags: [{ name: 'MNIST' }, { name: 'NN' }],
   directory: [
     {
       name: 'main.py',
@@ -33,4 +33,3 @@ print model.predict(training_data).round()`
   ],
   status: 0
 };
-

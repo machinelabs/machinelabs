@@ -8,11 +8,9 @@ import { updateFileInDirectory } from '@machinelabs/core';
 
 @Injectable()
 export class NameDialogService {
-
   fileNameDialogRef: MatDialogRef<NameDialogComponent>;
 
-  constructor(public dialog: MatDialog,
-              private fileTreeService: FileTreeService) {}
+  constructor(public dialog: MatDialog, private fileTreeService: FileTreeService) {}
 
   openEditFolderNameDialog(parentDirectory: Directory, directory?: Directory) {
     return this.openFolderNameDialog(NameDialogType.EditDirectory, parentDirectory, directory);
@@ -73,7 +71,6 @@ export class NameDialogService {
       }
     });
 
-    return this.fileNameDialogRef.afterClosed()
-      .pipe(filter(name => name !== '' && name !== undefined));
+    return this.fileNameDialogRef.afterClosed().pipe(filter(name => name !== '' && name !== undefined));
   }
 }

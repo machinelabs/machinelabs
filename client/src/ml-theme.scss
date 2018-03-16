@@ -52,4 +52,3 @@ $ml-app-theme: mat-light-theme($ml-app-primary, $ml-app-accent, $ml-app-warn);
 
 @include angular-material-theme($ml-app-theme);
 @include machine-labs-theme($ml-app-theme);
-

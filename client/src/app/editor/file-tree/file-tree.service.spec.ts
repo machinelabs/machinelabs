@@ -37,14 +37,11 @@ describe('FileTreeService', () => {
   it('should not throw an error when collapsing an undefined directory', () => {
     expect(() => {
       fileTreeService.collapseDirectory(null);
-    }).not.toThrow('Cannot read property \'clientState\' of null');
+    }).not.toThrow("Cannot read property 'clientState' of null");
   });
 
   it('should collapse a LabDirectory', () => {
-    const labDirectory: LabDirectory = [
-      { name: 'lib', contents: [] },
-      { name: 'shared', contents: [] }
-    ];
+    const labDirectory: LabDirectory = [{ name: 'lib', contents: [] }, { name: 'shared', contents: [] }];
 
     fileTreeService.collapseAll(labDirectory);
 
@@ -77,7 +74,7 @@ describe('FileTreeService', () => {
   it('should not throw an expection when selecting an undefined file', () => {
     expect(() => {
       fileTreeService.selectFile(null);
-    }).not.toThrow('Cannot read property \'clientState\' of null');
+    }).not.toThrow("Cannot read property 'clientState' of null");
   });
 
   it('should unselect file', () => {

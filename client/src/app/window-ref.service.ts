@@ -7,4 +7,3 @@ export class WindowRef {
     return _window();
   }
 }
-

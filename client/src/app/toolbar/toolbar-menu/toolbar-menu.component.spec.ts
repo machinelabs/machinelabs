@@ -15,7 +15,7 @@ import { DbRefBuilder } from '../../firebase/db-ref-builder';
 import { LoginService } from '../../../app/login.service';
 import { SnackbarService } from '../../snackbar.service';
 
-let authServiceStub = {
+const authServiceStub = {
   requireAuth: () => {},
   requireAuthOnce: () => {},
   linkOrSignInWithGitHub: () => {},
@@ -23,7 +23,6 @@ let authServiceStub = {
 };
 
 describe('ToolbarMenuComponent', () => {
-
   let fixture: ComponentFixture<ToolbarMenuComponent>;
   let component: ToolbarMenuComponent;
   let authService: AuthService;
@@ -31,16 +30,11 @@ describe('ToolbarMenuComponent', () => {
   let fbMock: FirebaseMock;
 
   beforeEach(() => {
-
     fbMock = new FirebaseMock();
 
     TestBed.configureTestingModule({
       declarations: [ToolbarMenuComponent],
-      imports: [
-        MachineLabsMaterialModule,
-        CommonModule,
-        RouterTestingModule
-      ],
+      imports: [MachineLabsMaterialModule, CommonModule, RouterTestingModule],
       providers: [
         { provide: AuthService, useValue: authServiceStub },
         { provide: DATABASE, useValue: fbMock.mockDb() },
@@ -78,7 +72,7 @@ describe('ToolbarMenuComponent', () => {
 
   it('should logout', () => {
     // fake logged-in state
-    let user = Object.assign({}, dummyUser);
+    const user = Object.assign({}, dummyUser);
     user.isAnonymous = false;
     spyOn(userService, 'observeUserChanges').and.returnValue(of(user));
     fixture.detectChanges();
@@ -94,4 +88,3 @@ describe('ToolbarMenuComponent', () => {
     expect(authService.signOut).toHaveBeenCalled();
   });
 });
-

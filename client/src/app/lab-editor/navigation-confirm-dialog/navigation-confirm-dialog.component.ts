@@ -25,21 +25,22 @@ export enum NavigationConfirmReason {
       <button mat-button type="button" (click)="dialogRef.close()">Close</button>
     </ml-dialog-cta-bar>
   `,
-  styles: [`
+  styles: [
+    `
     :host {
       display: block;
       width: 500px;
     }
 
     p { text-align: center; }
-  `]
+  `
+  ]
 })
 export class NavigationConfirmDialogComponent {
-
   NavigationConfirmReason = NavigationConfirmReason;
 
   constructor(
     public dialogRef: MatDialogRef<NavigationConfirmDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
+  ) {}
 }

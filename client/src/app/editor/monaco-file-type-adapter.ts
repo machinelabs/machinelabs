@@ -2,7 +2,6 @@ import { File } from '@machinelabs/models';
 import { MonacoFile } from 'ngx-monaco';
 
 export class MonacoFileTypeAdapter {
-
   static labFileToMonacoFile(file: File): MonacoFile {
     return {
       uri: file.name,
@@ -14,6 +13,6 @@ export class MonacoFileTypeAdapter {
     return {
       name: file.uri,
       content: file.content
-    }
+    };
   }
 }

@@ -6,11 +6,9 @@ const { SpecReporter } = require('jasmine-spec-reporter');
 exports.config = {
   useAllAngular2AppRoots: true,
   allScriptsTimeout: 11000,
-  specs: [
-    './e2e/**/*.e2e-spec.ts'
-  ],
+  specs: ['./e2e/**/*.e2e-spec.ts'],
   capabilities: {
-    'browserName': 'chrome'
+    browserName: 'chrome'
   },
   directConnect: true,
   baseUrl: 'http://localhost:4200/',

@@ -23,16 +23,8 @@ import { DATABASE_STUB } from '../../../test-helper/stubs/database.stubs';
 import { AUTH_SERVICE_STUB } from '../../../test-helper/stubs/auth.service.stubs';
 
 @NgModule({
-  imports: [
-    RouterTestingModule,
-    MachineLabsMaterialModule,
-    MatDialogModule
-  ],
-  exports: [
-    RouterModule,
-    MachineLabsMaterialModule,
-    EditorModule
-  ],
+  imports: [RouterTestingModule, MachineLabsMaterialModule, MatDialogModule],
+  exports: [RouterModule, MachineLabsMaterialModule, EditorModule],
   providers: [
     LocationHelper,
     LabStorageService,

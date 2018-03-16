@@ -15,8 +15,23 @@ import { FilePreviewDialogToolbarComponent } from './file-preview-dialog-toolbar
 
 import { dispatchKeyboardEvent } from '../../../test-helper/dispatch-events';
 
-describe('FilePreviewDialogService', () => {
+@Component({
+  template: 'Test'
+})
+class TestComponent {
+  constructor(public viewContainerRef: ViewContainerRef) {}
+}
 
+@NgModule({
+  imports: [CommonModule, OverlayModule, PortalModule, MatProgressSpinnerModule, NoopAnimationsModule],
+  declarations: [FilePreviewDialogComponent, FilePreviewDialogToolbarComponent, TestComponent],
+  providers: [FilePreviewDialogService, { provide: Location, useClass: SpyLocation }],
+  entryComponents: [TestComponent, FilePreviewDialogComponent],
+  schemas: [NO_ERRORS_SCHEMA]
+})
+class FilePreviewDialogTestModule {}
+
+describe('FilePreviewDialogService', () => {
   let dialog: FilePreviewDialogService;
   let mockLocation: SpyLocation;
   let overlayContainerElement: HTMLElement;
@@ -29,7 +44,8 @@ describe('FilePreviewDialogService', () => {
       imports: [FilePreviewDialogTestModule],
       providers: [
         {
-          provide: OverlayContainer, useFactory: () => {
+          provide: OverlayContainer,
+          useFactory: () => {
             overlayContainerElement = document.createElement('div');
             return { getContainerElement: () => overlayContainerElement };
           }
@@ -91,7 +107,9 @@ describe('FilePreviewDialogService', () => {
     viewContainerFixture.detectChanges();
 
     expect(overlayContainerElement.querySelector('.cdk-overlay-backdrop').classList).toContain('dark-backdrop');
-    expect(overlayContainerElement.querySelector('.cdk-overlay-pane').classList).toContain('ml-file-preview-dialog-panel');
+    expect(overlayContainerElement.querySelector('.cdk-overlay-pane').classList).toContain(
+      'ml-file-preview-dialog-panel'
+    );
   });
 
   it('should override config defaults', () => {
@@ -130,7 +148,7 @@ describe('FilePreviewDialogService', () => {
     expect(dialogRef.containerInstance.animationState).toBe('leave');
   });
 
-  it('should close a dialog and and call beforeClose before it is closed', (done) => {
+  it('should close a dialog and and call beforeClose before it is closed', done => {
     const dialogRef = dialog.open({
       data: {
         outputFile
@@ -138,8 +156,9 @@ describe('FilePreviewDialogService', () => {
     });
 
     const beforeCloseCallback = jasmine.createSpy('beforeClose callback').and.callFake(() => {
-      expect(overlayContainerElement.querySelector('ml-output-file-preview-dialog'))
-        .not.toBeNull('Dialog container exists when beforeClose is called');
+      expect(overlayContainerElement.querySelector('ml-output-file-preview-dialog')).not.toBeNull(
+        'Dialog container exists when beforeClose is called'
+      );
     });
 
     dialogRef.beforeClose().subscribe(beforeCloseCallback);
@@ -153,14 +172,14 @@ describe('FilePreviewDialogService', () => {
     });
   });
 
-  it('should close a dialog and call afterClose after it was closed', (done) => {
+  it('should close a dialog and call afterClose after it was closed', done => {
     const dialogRef = dialog.open({
       data: {
         outputFile
       }
     });
 
-    let afterCloseCallback = jasmine.createSpy('afterClose callback');
+    const afterCloseCallback = jasmine.createSpy('afterClose callback');
 
     dialogRef.afterClosed().subscribe(afterCloseCallback);
     dialogRef.close();
@@ -173,7 +192,7 @@ describe('FilePreviewDialogService', () => {
     });
   });
 
-  it('should close a dialog when the escape key is pressed', (done) => {
+  it('should close a dialog when the escape key is pressed', done => {
     const dialogRef = dialog.open({
       data: {
         outputFile
@@ -189,7 +208,7 @@ describe('FilePreviewDialogService', () => {
     });
   });
 
-  it('should close when backdrop is clicked', (done) => {
+  it('should close when backdrop is clicked', done => {
     const dialogRef = dialog.open({
       data: {
         outputFile
@@ -209,7 +228,7 @@ describe('FilePreviewDialogService', () => {
     });
   });
 
-  it('should emit on backdropClick when backdrop is clicked', (done) => {
+  it('should emit on backdropClick when backdrop is clicked', done => {
     const dialogRef = dialog.open({
       data: {
         outputFile
@@ -235,7 +254,7 @@ describe('FilePreviewDialogService', () => {
     });
   });
 
-  it('should close dialog when location changes', (done) => {
+  it('should close dialog when location changes', done => {
     const dialogRef = dialog.open({
       data: {
         outputFile
@@ -251,7 +270,7 @@ describe('FilePreviewDialogService', () => {
     });
   });
 
-  it('should clear the reference to the component after the dialog is closed', (done) => {
+  it('should clear the reference to the component after the dialog is closed', done => {
     const dialogRef = dialog.open({
       data: {
         outputFile
@@ -269,35 +288,3 @@ describe('FilePreviewDialogService', () => {
     });
   });
 });
-
-@Component({
-  template: 'Test'
-})
-class TestComponent {
-  constructor(public viewContainerRef: ViewContainerRef) { }
-}
-
-@NgModule({
-  imports: [
-    CommonModule,
-    OverlayModule,
-    PortalModule,
-    MatProgressSpinnerModule,
-    NoopAnimationsModule
-  ],
-  declarations: [
-    FilePreviewDialogComponent,
-    FilePreviewDialogToolbarComponent,
-    TestComponent
-  ],
-  providers: [
-    FilePreviewDialogService,
-    { provide: Location, useClass: SpyLocation }
-  ],
-  entryComponents: [
-    TestComponent,
-    FilePreviewDialogComponent
-  ],
-  schemas: [NO_ERRORS_SCHEMA]
-})
-class FilePreviewDialogTestModule { }

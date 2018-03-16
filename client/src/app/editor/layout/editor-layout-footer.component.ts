@@ -5,7 +5,8 @@ import { Component } from '@angular/core';
   template: `
     <ng-content></ng-content>
   `,
-  styles: [`
+  styles: [
+    `
     :host {
       display: block;
       position: relative;
@@ -13,6 +14,7 @@ import { Component } from '@angular/core';
       height: 48px;
       box-shadow: 0 -1px 5px rgba(0,0,0,.24);
     }
-  `]
+  `
+  ]
 })
 export class EditorLayoutFooterComponent {}

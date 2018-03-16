@@ -16,7 +16,17 @@ import { LabTemplateService, InMemoryLabTemplateService } from '../../lab-templa
 import { AuthService } from '../../auth';
 import { UserService } from '../../user/user.service';
 
-let loginUser = {
+@NgModule({
+  imports: [MatDialogModule, ReactiveFormsModule, CommonModule],
+  declarations: [EditLabDialogComponent],
+  providers: [LabStorageService],
+  exports: [EditLabDialogComponent],
+  entryComponents: [EditLabDialogComponent],
+  schemas: [NO_ERRORS_SCHEMA]
+})
+class DialogTestModule {}
+
+const loginUser = {
   uid: 'some-id',
   displayName: 'foo',
   email: 'foo@bar.de',
@@ -24,7 +34,7 @@ let loginUser = {
   photoUrl: '/some/address'
 };
 
-let authServiceStub = {
+const authServiceStub = {
   requireAuth: () => new Observable(obs => obs.next(loginUser)),
   requireAuthOnce: () => of(loginUser)
 };
@@ -37,14 +47,11 @@ const lab = {
 };
 
 describe('EditLabDialogComponent', () => {
-
   let component: EditLabDialogComponent;
-  let fixture: ComponentFixture<EditLabDialogComponent>;
   let dialog: MatDialog;
   let fbMock: FirebaseMock;
 
   beforeEach(() => {
-
     fbMock = new FirebaseMock();
 
     TestBed.configureTestingModule({
@@ -61,12 +68,14 @@ describe('EditLabDialogComponent', () => {
     });
   });
 
-  beforeEach(inject([MatDialog], (d: MatDialog) => {
-    dialog = d;
-  }));
+  beforeEach(
+    inject([MatDialog], (d: MatDialog) => {
+      dialog = d;
+    })
+  );
 
   it('should initialize form with lab data', () => {
-    let dialogRef = dialog.open(EditLabDialogComponent, {
+    const dialogRef = dialog.open(EditLabDialogComponent, {
       data: {
         lab: lab
       }
@@ -80,8 +89,8 @@ describe('EditLabDialogComponent', () => {
     expect(component.form.value.tags).toEqual(lab.tags.join(','));
   });
 
-  it('should close dialog with right params on submit', (done) => {
-    let dialogRef = dialog.open(EditLabDialogComponent, {
+  it('should close dialog with right params on submit', done => {
+    const dialogRef = dialog.open(EditLabDialogComponent, {
       data: {
         lab: lab
       }
@@ -100,13 +109,3 @@ describe('EditLabDialogComponent', () => {
     });
   });
 });
-
-@NgModule({
-  imports: [MatDialogModule, ReactiveFormsModule, CommonModule],
-  declarations: [EditLabDialogComponent],
-  providers: [LabStorageService],
-  exports: [EditLabDialogComponent],
-  entryComponents: [EditLabDialogComponent],
-  schemas: [NO_ERRORS_SCHEMA]
-})
-class DialogTestModule {}

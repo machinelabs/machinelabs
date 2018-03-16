@@ -14,7 +14,9 @@ export interface EditLabDialogOptions {
 }
 
 export enum EditLabDialogActions {
-  Save, Delete, Cancel
+  Save,
+  Delete,
+  Cancel
 }
 
 @Component({
@@ -23,7 +25,6 @@ export enum EditLabDialogActions {
   styleUrls: ['./edit-lab-dialog.component.scss']
 })
 export class EditLabDialogComponent implements OnInit {
-
   form: FormGroup;
 
   lab: Lab;
@@ -40,7 +41,7 @@ export class EditLabDialogComponent implements OnInit {
     private labStorageService: LabStorageService,
     private userService: UserService,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.lab = this.data.lab;
@@ -54,7 +55,7 @@ export class EditLabDialogComponent implements OnInit {
       })
     });
 
-    this.labExists = this.labStorageService.labExists(this.lab.id)
+    this.labExists = this.labStorageService.labExists(this.lab.id);
 
     this.userService.getUserPlan().subscribe(plan => {
       this.hasPrivateLabs = plan && plan.plan_id !== PlanId.Beta;

@@ -11,7 +11,8 @@ const { version } = require('../../package.json');
     <ng2-slim-loading-bar color="#FFC107" height="3px"></ng2-slim-loading-bar>
     <router-outlet></router-outlet>
   `,
-  styles: [`
+  styles: [
+    `
     :host {
       display: block;
     }
@@ -24,24 +25,23 @@ const { version } = require('../../package.json');
       right: 0;
       z-index: 6;
     }
-  `]
+  `
+  ]
 })
 export class AppComponent implements OnInit {
-
   @HostBinding('attr.ml-version') version = version;
 
-  constructor(private router: Router, private slimLoadingBarService: SlimLoadingBarService) { }
+  constructor(private router: Router, private slimLoadingBarService: SlimLoadingBarService) {}
 
   ngOnInit() {
-    this.router.events
-      .subscribe(event => {
-        if (event instanceof NavigationStart) {
-          this.slimLoadingBarService.start();
-        } else if (event instanceof NavigationEnd) {
-          this.slimLoadingBarService.complete();
-        } else if (event instanceof NavigationError || event instanceof NavigationCancel) {
-          this.slimLoadingBarService.reset();
-        }
-      });
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        this.slimLoadingBarService.start();
+      } else if (event instanceof NavigationEnd) {
+        this.slimLoadingBarService.complete();
+      } else if (event instanceof NavigationError || event instanceof NavigationCancel) {
+        this.slimLoadingBarService.reset();
+      }
+    });
   }
 }

@@ -1,17 +1,17 @@
 export interface LoginUser {
   uid: string;
-  displayName: string|null;
-  email: string|null;
+  displayName: string | null;
+  email: string | null;
   isAnonymous: boolean;
-  photoURL: string|null;
+  photoURL: string | null;
   providerData?: Array<any>;
 }
 
 export interface User {
   id: string;
-  displayName: string|null;
-  email: string|null;
-  bio?: string|null;
+  displayName: string | null;
+  email: string | null;
+  bio?: string | null;
   isAnonymous: boolean;
-  photoUrl: string|null;
+  photoUrl: string | null;
 }

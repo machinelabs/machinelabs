@@ -18,7 +18,6 @@ declare const Terminal: any;
   styleUrls: ['./xterm.component.scss']
 })
 export class XtermComponent implements OnInit, AfterViewInit, AfterViewChecked, OnChanges, OnDestroy {
-
   private term;
 
   private messagesSubscription = null;
@@ -34,18 +33,18 @@ export class XtermComponent implements OnInit, AfterViewInit, AfterViewChecked, 
   private _enabled = false;
 
   @Input()
-  set enabled (val) {
+  set enabled(val) {
     this._enabled = val;
 
     if (this.messages !== this.consumedMessages) {
       this.consumeMessages();
     }
   }
-  get enabled () {
+  get enabled() {
     return this._enabled;
   }
 
-  constructor(private element: ElementRef) { }
+  constructor(private element: ElementRef) {}
 
   ngOnInit() {
     this.term = new Terminal();
@@ -67,8 +66,7 @@ export class XtermComponent implements OnInit, AfterViewInit, AfterViewChecked, 
     }
   }
 
-  private consumeMessages () {
-
+  private consumeMessages() {
     if (!this.enabled || !this.messages) {
       return;
     }

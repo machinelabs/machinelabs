@@ -2,7 +2,6 @@
 @import '../../../mixins';
 
 @mixin ml-explore-view-theme($theme) {
-
   $primary: map-get($theme, primary);
 
   ml-explore-view {

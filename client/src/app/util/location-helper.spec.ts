@@ -6,15 +6,13 @@ import { Location } from '@angular/common';
 import { LocationHelper } from './location-helper';
 import { WindowRef } from '../window-ref.service';
 
-
-let windowStub = {
+const windowStub = {
   nativeWindow: {
     open: () => {}
   }
-}
+};
 
 describe('LocationHelper', () => {
-
   let locationHelper: LocationHelper;
   let location: Location;
   let windowRef: WindowRef;
@@ -22,10 +20,7 @@ describe('LocationHelper', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      providers: [
-        LocationHelper,
-        { provide: WindowRef, useValue: windowStub }
-      ]
+      providers: [LocationHelper, { provide: WindowRef, useValue: windowStub }]
     });
 
     locationHelper = TestBed.get(LocationHelper);
@@ -34,7 +29,6 @@ describe('LocationHelper', () => {
   });
 
   describe('.updateQueryParams', () => {
-
     it('should add query parameters of given url', () => {
       locationHelper.updateQueryParams('/my/app', {
         foo: 'bar'
@@ -53,7 +47,6 @@ describe('LocationHelper', () => {
   });
 
   describe('.openInNewTab()', () => {
-
     it('should generate link and open in new tab', () => {
       const urlSegments = ['/foo', 'bar'];
 

@@ -8,17 +8,12 @@ import { DbRefBuilder } from './firebase/db-ref-builder';
 
 @Injectable()
 export class DockerImageService {
-
-  constructor(
-    private db: DbRefBuilder
-  ) { }
+  constructor(private db: DbRefBuilder) {}
 
   getDockerImages() {
-    return this.db.dockerImagesRef()
+    return this.db
+      .dockerImagesRef()
       .onceValue()
-      .pipe(
-        snapshotToValue,
-        map((data: any) => Object.keys(data).map(id => data[id]))
-      );
+      .pipe(snapshotToValue, map((data: any) => Object.keys(data).map(id => data[id])));
   }
 }

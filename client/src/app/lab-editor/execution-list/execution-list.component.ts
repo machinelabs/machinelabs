@@ -20,7 +20,6 @@ import { switchMap, filter } from 'rxjs/operators';
   styleUrls: ['./execution-list.component.scss']
 })
 export class ExecutionListComponent implements OnInit, OnDestroy {
-
   @Input() executions: Array<Observable<Execution>>;
 
   @Input() activeId: string;
@@ -37,16 +36,16 @@ export class ExecutionListComponent implements OnInit, OnDestroy {
 
   editExecutionDialogRef: MatDialogRef<EditExecutionDialogComponent>;
 
-  constructor(public userService: UserService,
-              private labExecutionService: LabExecutionService,
-              private snackbarService: SnackbarService,
-              private dialog: MatDialog,
-              private rleService: RemoteLabExecService) {
-  }
+  constructor(
+    public userService: UserService,
+    private labExecutionService: LabExecutionService,
+    private snackbarService: SnackbarService,
+    private dialog: MatDialog,
+    private rleService: RemoteLabExecService
+  ) {}
 
   ngOnInit() {
-    this.userSubscription = this.userService.observeUserChanges()
-                    .subscribe(user => this.user = user);
+    this.userSubscription = this.userService.observeUserChanges().subscribe(user => (this.user = user));
   }
 
   stop(execution: Execution) {
@@ -56,18 +55,15 @@ export class ExecutionListComponent implements OnInit, OnDestroy {
   remove(execution: Execution) {
     execution.hidden = true;
     this.labExecutionService
-        .updateExecution(execution)
-        .pipe(
-          switchMap(_ => this.snackbarService.notifyExecutionRemoved().onAction()),
-          switchMap(_ => {
-            execution.hidden = false;
-            return this.labExecutionService.updateExecution(execution);
-          })
-        )
-        .subscribe(
-          _ => this.snackbarService.notifyActionUndone(),
-          _ => this.snackbarService.notifyError()
-        );
+      .updateExecution(execution)
+      .pipe(
+        switchMap(_ => this.snackbarService.notifyExecutionRemoved().onAction()),
+        switchMap(_ => {
+          execution.hidden = false;
+          return this.labExecutionService.updateExecution(execution);
+        })
+      )
+      .subscribe(_ => this.snackbarService.notifyActionUndone(), _ => this.snackbarService.notifyError());
   }
 
   showEditExecutionModal(execution: Execution) {
@@ -78,18 +74,15 @@ export class ExecutionListComponent implements OnInit, OnDestroy {
     });
 
     this.editExecutionDialogRef
-        .afterClosed()
-        .pipe(
-          filter(name => name !== undefined),
-          switchMap((name: string) => {
-            execution.name = name;
-            return this.labExecutionService.updateExecution(execution);
-          })
-        )
-        .subscribe(
-          _ => this.snackbarService.notifyExecutionUpdated(),
-          _ => this.snackbarService.notifyError()
-        );
+      .afterClosed()
+      .pipe(
+        filter(name => name !== undefined),
+        switchMap((name: string) => {
+          execution.name = name;
+          return this.labExecutionService.updateExecution(execution);
+        })
+      )
+      .subscribe(_ => this.snackbarService.notifyExecutionUpdated(), _ => this.snackbarService.notifyError());
   }
 
   ngOnDestroy() {

@@ -58,10 +58,7 @@ import { ExecutionListComponent } from './execution-list/execution-list.componen
     EditExecutionDialogComponent,
     EmbedDialogComponent
   ],
-  providers: [
-    HasValidExecutionGuard,
-    HasRunningExecutionGuard
-  ],
+  providers: [HasValidExecutionGuard, HasRunningExecutionGuard],
   entryComponents: [
     NavigationConfirmDialogComponent,
     EditLabDialogComponent,

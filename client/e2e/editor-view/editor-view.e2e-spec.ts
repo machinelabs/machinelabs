@@ -30,7 +30,7 @@ describe('Editor-View Component', function() {
 
     it('should not allow users to edit mandatory file names', () => {
       // index 1 == ml.yaml (this file is mandatory)
-      let fileIndex = 1;
+      const fileIndex = 1;
       expect(editorView.getFileEditBtn(fileIndex).isPresent()).toEqual(false);
     });
 
@@ -41,13 +41,12 @@ describe('Editor-View Component', function() {
     });
 
     it('should allow users to edit file names', () => {
-      let fileIndex = 2;
+      const fileIndex = 2;
 
       editorView.toggleFileTreeDrawer();
       editorView.addFile('ml-main-2.py');
       editorView.changeFileName(fileIndex, 'changed.py');
       expect(editorView.getFileName(fileIndex)).toContain('changed.py');
     });
-
   });
 });

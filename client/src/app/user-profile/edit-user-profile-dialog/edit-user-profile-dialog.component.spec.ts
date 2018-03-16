@@ -14,7 +14,17 @@ import { UserService } from '../../user/user.service';
 
 import { EditUserProfileDialogComponent } from './edit-user-profile-dialog.component';
 
-let loginUser = {
+@NgModule({
+  imports: [MatDialogModule, ReactiveFormsModule, CommonModule],
+  declarations: [EditUserProfileDialogComponent],
+  providers: [UserService],
+  exports: [EditUserProfileDialogComponent],
+  entryComponents: [EditUserProfileDialogComponent],
+  schemas: [NO_ERRORS_SCHEMA]
+})
+class DialogTestModule {}
+
+const loginUser = {
   uid: 'some-id',
   displayName: 'foo',
   email: 'foo@bar.de',
@@ -23,19 +33,17 @@ let loginUser = {
   photoUrl: '/some/address'
 };
 
-let authServiceStub = {
+const authServiceStub = {
   requireAuth: () => new Observable(obs => obs.next(loginUser)),
   requireAuthOnce: () => of(loginUser)
 };
 
 describe('EditUserProfileDialogComponent', () => {
   let component: EditUserProfileDialogComponent;
-  let fixture: ComponentFixture<EditUserProfileDialogComponent>;
   let dialog: MatDialog;
   let fbMock: FirebaseMock;
 
   beforeEach(() => {
-
     fbMock = new FirebaseMock();
 
     TestBed.configureTestingModule({
@@ -49,12 +57,14 @@ describe('EditUserProfileDialogComponent', () => {
     });
   });
 
-  beforeEach(inject([MatDialog], (d: MatDialog) => {
-    dialog = d;
-  }));
+  beforeEach(
+    inject([MatDialog], (d: MatDialog) => {
+      dialog = d;
+    })
+  );
 
   it('should initialize form with user data', () => {
-    let dialogRef = dialog.open(EditUserProfileDialogComponent, {
+    const dialogRef = dialog.open(EditUserProfileDialogComponent, {
       data: {
         user: loginUser
       }
@@ -67,8 +77,8 @@ describe('EditUserProfileDialogComponent', () => {
     expect(component.form.value.bio).toEqual(loginUser.bio);
   });
 
-  it('should close dialog with right params on submit', (done) => {
-    let dialogRef = dialog.open(EditUserProfileDialogComponent, {
+  it('should close dialog with right params on submit', done => {
+    const dialogRef = dialog.open(EditUserProfileDialogComponent, {
       data: {
         user: loginUser
       }
@@ -87,13 +97,3 @@ describe('EditUserProfileDialogComponent', () => {
     });
   });
 });
-
-@NgModule({
-  imports: [MatDialogModule, ReactiveFormsModule, CommonModule],
-  declarations: [EditUserProfileDialogComponent],
-  providers: [UserService],
-  exports: [EditUserProfileDialogComponent],
-  entryComponents: [EditUserProfileDialogComponent],
-  schemas: [NO_ERRORS_SCHEMA]
-})
-class DialogTestModule {}

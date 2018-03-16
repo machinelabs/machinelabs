@@ -1,25 +1,18 @@
 import { Component, Input, Optional, SkipSelf, Output, EventEmitter } from '@angular/core';
 
-import {
-  File,
-  LabDirectory,
-  Directory,
-  instanceOfFile,
-  instanceOfDirectory
-} from '@machinelabs/models';
+import { File, LabDirectory, Directory, instanceOfFile, instanceOfDirectory } from '@machinelabs/models';
 
 import { deleteFromDirectory } from '@machinelabs/core';
-
 
 import { NameDialogService } from '../name-dialog/name-dialog-service';
 import { FileTreeService } from './file-tree.service';
 
 export interface FileTreeEventArgs {
-  target: File | Directory,
-  parentDirectory: Directory,
-  path: string,
-  isFile: boolean
-  isDirectory: boolean
+  target: File | Directory;
+  parentDirectory: Directory;
+  path: string;
+  isFile: boolean;
+  isDirectory: boolean;
 }
 
 type EventEmitterSelectorFn = (instance: FileTreeComponent) => EventEmitter<FileTreeEventArgs>;
@@ -31,7 +24,6 @@ type EventEmitterSetterFn = (instance: FileTreeComponent, emitter: EventEmitter<
   styleUrls: ['./file-tree.component.scss']
 })
 export class FileTreeComponent {
-
   @Input() showActionButtons = true;
 
   @Input() directory = null as Directory;
@@ -43,64 +35,70 @@ export class FileTreeComponent {
   // on the outermost FileTreeComponent. Hence, creating those
   // on every level would be a waste of memory.
 
-   _remove: EventEmitter<FileTreeEventArgs> = null;
+  _remove: EventEmitter<FileTreeEventArgs> = null;
 
-   _addFile: EventEmitter<FileTreeEventArgs> = null;
+  _addFile: EventEmitter<FileTreeEventArgs> = null;
 
-   _editFile: EventEmitter<FileTreeEventArgs> = null;
+  _editFile: EventEmitter<FileTreeEventArgs> = null;
 
-   _selectFile: EventEmitter<FileTreeEventArgs> = null;
+  _selectFile: EventEmitter<FileTreeEventArgs> = null;
 
-   // All these outputs look recursively for the EventEmitter on the
-   // outermost FileTreeComponent or create if the outermost component
-   // is reached.
+  // All these outputs look recursively for the EventEmitter on the
+  // outermost FileTreeComponent or create if the outermost component
+  // is reached.
 
-    @Output() get remove() {
-      return this.lookupOrCreateReturn(
-        compInstance => compInstance.remove,
-        compInstance => compInstance._remove,
-        (compInstance, val) => compInstance._remove = val
-      );
-    }
+  @Output()
+  get remove() {
+    return this.lookupOrCreateReturn(
+      compInstance => compInstance.remove,
+      compInstance => compInstance._remove,
+      (compInstance, val) => (compInstance._remove = val)
+    );
+  }
 
-    @Output() get addFile () {
-      return this.lookupOrCreateReturn(
-        compInstance => compInstance.addFile,
-        compInstance => compInstance._addFile,
-        (compInstance, val) => compInstance._addFile = val
-      );
-    }
+  @Output()
+  get addFile() {
+    return this.lookupOrCreateReturn(
+      compInstance => compInstance.addFile,
+      compInstance => compInstance._addFile,
+      (compInstance, val) => (compInstance._addFile = val)
+    );
+  }
 
-    @Output() get editFile () {
-      return this.lookupOrCreateReturn(
-        compInstance => compInstance.editFile,
-        compInstance => compInstance._editFile,
-        (compInstance, val) => compInstance._editFile = val
-      );
-    }
+  @Output()
+  get editFile() {
+    return this.lookupOrCreateReturn(
+      compInstance => compInstance.editFile,
+      compInstance => compInstance._editFile,
+      (compInstance, val) => (compInstance._editFile = val)
+    );
+  }
 
-    @Output() get selectFile () {
-      return this.lookupOrCreateReturn(
-        compInstance => compInstance.selectFile,
-        compInstance => compInstance._selectFile,
-        (compInstance, val) => compInstance._selectFile = val
-      );
-    }
+  @Output()
+  get selectFile() {
+    return this.lookupOrCreateReturn(
+      compInstance => compInstance.selectFile,
+      compInstance => compInstance._selectFile,
+      (compInstance, val) => (compInstance._selectFile = val)
+    );
+  }
 
   constructor(
     private nameDialogService: NameDialogService,
-    @Optional() @SkipSelf() public parent: FileTreeComponent,
-    public fileTreeService: FileTreeService) {}
+    @Optional()
+    @SkipSelf()
+    public parent: FileTreeComponent,
+    public fileTreeService: FileTreeService
+  ) {}
 
-  get level () {
+  get level() {
     return this.parent ? this.parent.level + 1 : 0;
   }
 
   private createEventArgs(target: File | Directory) {
+    const isFile = instanceOfFile(target);
 
-    let isFile = instanceOfFile(target);
-
-    let path = isFile ? `${this.getFileTreePath()}/${target.name}` : this.getFileTreePath();
+    const path = isFile ? `${this.getFileTreePath()}/${target.name}` : this.getFileTreePath();
 
     return {
       target: target,
@@ -108,7 +106,7 @@ export class FileTreeComponent {
       isFile: isFile,
       isDirectory: !isFile,
       path: path
-    }
+    };
   }
 
   isRemovable(file: File) {
@@ -125,7 +123,7 @@ export class FileTreeComponent {
     }
   }
 
-  deleteFileOrDirectory(event: Event, fileOrDirectory: File|Directory) {
+  deleteFileOrDirectory(event: Event, fileOrDirectory: File | Directory) {
     this.stopEventPropagation(event);
     deleteFromDirectory(fileOrDirectory, this.directory);
     this.remove.emit(this.createEventArgs(fileOrDirectory));
@@ -148,14 +146,16 @@ export class FileTreeComponent {
 
   openEditFileNameDialog(event: Event, parentDirectory: Directory, file: File) {
     this.stopEventPropagation(event);
-    this.nameDialogService.openEditFileNameDialog(parentDirectory, file)
-                          .subscribe(editedFile => this.editFile.emit(this.createEventArgs(editedFile)));
+    this.nameDialogService
+      .openEditFileNameDialog(parentDirectory, file)
+      .subscribe(editedFile => this.editFile.emit(this.createEventArgs(editedFile)));
   }
 
   openAddFileNameDialog(event: Event, parentDirectory: Directory) {
     this.stopEventPropagation(event);
-    this.nameDialogService.openAddFileNameDialog(parentDirectory)
-                          .subscribe(file => this.addFile.emit(this.createEventArgs(file)));
+    this.nameDialogService
+      .openAddFileNameDialog(parentDirectory)
+      .subscribe(file => this.addFile.emit(this.createEventArgs(file)));
   }
 
   private stopEventPropagation(event: Event) {
@@ -172,9 +172,11 @@ export class FileTreeComponent {
   // EventEmitters from the top most parent FileTreeComponent. As
   // we need this for multiple Outputs, we genereralize it into
   // a pattern where lookups are DRY yet type safe (e.g no string name passing)
-  private lookupOrCreateReturn(propertySelector: EventEmitterSelectorFn,
-                               backingFieldSelector: EventEmitterSelectorFn,
-                               setter: EventEmitterSetterFn) {
+  private lookupOrCreateReturn(
+    propertySelector: EventEmitterSelectorFn,
+    backingFieldSelector: EventEmitterSelectorFn,
+    setter: EventEmitterSetterFn
+  ) {
     if (this.parent) {
       return propertySelector(this.parent);
     }
@@ -187,7 +189,7 @@ export class FileTreeComponent {
   }
 
   public getFileTreePath() {
-    let path = [];
+    const path = [];
     let p = this.parent;
     path.push(this.directory.name);
 

@@ -17,12 +17,11 @@ import { FilePreviewDialogComponent } from '../file-preview-dialog/file-preview-
   ]
 })
 export class FilePreviewDialogToolbarComponent implements OnInit {
-
   @HostBinding('@slideDown') slideDown = 'enter';
 
-  constructor(private dialogRef: FilePreviewDialogRef) { }
+  constructor(private dialogRef: FilePreviewDialogRef) {}
 
   ngOnInit() {
-    this.dialogRef.beforeClose().subscribe(() => this.slideDown = 'leave');
+    this.dialogRef.beforeClose().subscribe(() => (this.slideDown = 'leave'));
   }
 }

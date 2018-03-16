@@ -13,4 +13,3 @@ export const environment = {
   },
   topPicksLabIds: ['ryGF9Mxgz', 'ByCErAGlz', 'r1JhQGJDb']
 };
-

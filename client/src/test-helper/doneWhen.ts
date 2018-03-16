@@ -1,11 +1,9 @@
 export class DoneWhen {
-
   private expectedCalls: number;
   private actualCalls = 0;
   private fn: Function;
 
-  constructor(private done) {
-  }
+  constructor(private done) {}
 
   calledNTimes(n: number) {
     this.expectedCalls = n;
@@ -31,6 +29,4 @@ export class DoneWhen {
       this.done();
     }
   }
-
-
 }

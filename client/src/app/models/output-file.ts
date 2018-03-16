@@ -1,5 +1,5 @@
 export interface OutputFile {
-  id: string,
+  id: string;
   name: string;
   path: string;
   download_url: string;

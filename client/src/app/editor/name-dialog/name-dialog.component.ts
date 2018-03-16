@@ -4,9 +4,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { File, Directory, instanceOfFile, instanceOfDirectory } from '@machinelabs/models';
 
 export interface NameDialogData {
-  fileOrDirectory: File|Directory,
-  parentDirectory: Directory,
-  type: NameDialogType
+  fileOrDirectory: File | Directory;
+  parentDirectory: Directory;
+  type: NameDialogType;
 }
 
 export enum NameDialogType {
@@ -16,9 +16,8 @@ export enum NameDialogType {
   EditDirectory
 }
 
-const isNameAllowed = (fileOrDirectory: File|Directory, parentDirectory: Directory) => {
+const isNameAllowed = (fileOrDirectory: File | Directory, parentDirectory: Directory) => {
   return (c: FormControl) => {
-
     const foundFileOrDirectory = parentDirectory.contents.find(f => f.name === c.value);
 
     return !foundFileOrDirectory ? null : { alreadyExists: true };
@@ -28,7 +27,8 @@ const isNameAllowed = (fileOrDirectory: File|Directory, parentDirectory: Directo
 @Component({
   selector: 'ml-name-dialog',
   templateUrl: './name-dialog.component.html',
-  styles: [`
+  styles: [
+    `
     :host {
       display: block;
       width: 500px;
@@ -40,10 +40,10 @@ const isNameAllowed = (fileOrDirectory: File|Directory, parentDirectory: Directo
       width: 100%;
       text-align: right;
     }
-  `]
+  `
+  ]
 })
 export class NameDialogComponent implements OnInit {
-
   form: FormGroup;
 
   NameDialogType = NameDialogType;
@@ -52,18 +52,14 @@ export class NameDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<NameDialogComponent>,
     private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: NameDialogData
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({
       filename: [
-        this.data.fileOrDirectory ? this.data.fileOrDirectory.name : '', [
-        Validators.required,
-        isNameAllowed(
-          this.data.fileOrDirectory,
-          this.data.parentDirectory
-        )
-      ]]
+        this.data.fileOrDirectory ? this.data.fileOrDirectory.name : '',
+        [Validators.required, isNameAllowed(this.data.fileOrDirectory, this.data.parentDirectory)]
+      ]
     });
   }
 

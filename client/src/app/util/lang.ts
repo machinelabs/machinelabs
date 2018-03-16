@@ -1,5 +1,5 @@
 export class Lang {
-  static isNullOrUndefined (val) {
+  static isNullOrUndefined(val) {
     return val === undefined || val === null;
   }
 

@@ -50,7 +50,8 @@ export class LabConfigCompletionProvider implements CompletionItemProvider {
     {
       name: 'parameters',
       type: 'array',
-      description: 'A list of parameters that will be passed to our entry file (e.g. main.py) in the same order they are specified.',
+      description:
+        'A list of parameters that will be passed to our entry file (e.g. main.py) in the same order they are specified.',
       values: [
         {
           name: 'pass-as',
@@ -77,9 +78,10 @@ export class LabConfigCompletionProvider implements CompletionItemProvider {
     }
   ];
 
-  private loadYamlProvider = this.dockerImageService.getDockerImages()
+  private loadYamlProvider = this.dockerImageService
+    .getDockerImages()
     .pipe(
-      map((data => {
+      map(data => {
         const index = this.completionData.findIndex(x => x.name === 'dockerImageId');
 
         this.completionData[index].values = data.map(image => ({
@@ -88,14 +90,11 @@ export class LabConfigCompletionProvider implements CompletionItemProvider {
         }));
 
         return new CompletionHelper(this.completionData);
-      })),
+      })
     )
     .toPromise();
 
-  constructor(
-    private dockerImageService: DockerImageService,
-    private windowRef: WindowRef
-  ) {}
+  constructor(private dockerImageService: DockerImageService, private windowRef: WindowRef) {}
 
   get language() {
     return 'yaml';

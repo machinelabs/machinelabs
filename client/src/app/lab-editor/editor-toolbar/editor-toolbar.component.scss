@@ -1,6 +1,8 @@
 @import '../../../mixins';
 
-:host { z-index: 1; }
+:host {
+  z-index: 1;
+}
 
 ml-toolbar {
   box-shadow: none;
@@ -81,7 +83,6 @@ ml-toolbar {
 }
 
 @include TabletPortraitUp {
-
   .ml-editor-toolbar-lab-info {
     font-size: 1em;
   }

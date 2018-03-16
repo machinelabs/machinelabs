@@ -7,24 +7,27 @@ import { UserService, PLACEHOLDER_USERNAME } from './user/user.service';
 
 @Injectable()
 export class LoginService {
-
   constructor(
     private authService: AuthService,
     private userService: UserService,
     private router: Router,
-    private snackBar: SnackbarService) {}
+    private snackBar: SnackbarService
+  ) {}
 
   loginWithGitHub() {
-    this.authService.linkOrSignInWithGitHub()
+    this.authService
+      .linkOrSignInWithGitHub()
       .pipe(switchMap(loginUser => this.userService.createUserIfMissing()))
-      .subscribe(user => {
+      .subscribe(
+        user => {
+          if (user.displayName === PLACEHOLDER_USERNAME) {
+            this.router.navigate(['/user', user.id], { queryParams: { editing: true } });
+          }
 
-        if (user.displayName === PLACEHOLDER_USERNAME) {
-          this.router.navigate(['/user', user.id], { queryParams: { editing: true }});
-        }
-
-        this.snackBar.notifyLoginSuccessful(user.displayName);
-      }, e => this.snackBar.notifyLoginFailed());
+          this.snackBar.notifyLoginSuccessful(user.displayName);
+        },
+        e => this.snackBar.notifyLoginFailed()
+      );
   }
 
   logout() {

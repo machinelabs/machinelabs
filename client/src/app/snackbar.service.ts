@@ -8,7 +8,6 @@ import { takeUntil } from 'rxjs/operators';
 
 @Injectable()
 export class SnackbarService {
-
   constructor(private snackBar: MatSnackBar) {}
 
   notify(text: string, config = { actionLabel: 'Dismiss', duration: 3000 }) {
@@ -44,16 +43,16 @@ export class SnackbarService {
   }
 
   notifyLabDoesntExist() {
-    this.notify('This lab doesn\'t exist anymore');
+    this.notify("This lab doesn't exist anymore");
   }
 
   notifyUserDoesntExist() {
-    this.notify('The user doesn\'t exist');
+    this.notify("The user doesn't exist");
   }
 
   notifyExecutionStartedPauseMode() {
     return this.notify('Execution started', {
-      actionLabel:  'Unpause to see output',
+      actionLabel: 'Unpause to see output',
       duration: 5000
     });
   }
@@ -79,7 +78,7 @@ export class SnackbarService {
   }
 
   notifyServerNotAvailable() {
-    return this.notify('The server doesn\'t seem to be available, please try again');
+    return this.notify("The server doesn't seem to be available, please try again");
   }
 
   notifyExecutionRateLimitExceeded() {
@@ -111,7 +110,7 @@ export class SnackbarService {
   }
 
   notifyLoadingUserLabsFailed() {
-    return this.notify('Couldn\'t load labs from user');
+    return this.notify("Couldn't load labs from user");
   }
 
   notifyActionUndone() {
@@ -119,10 +118,12 @@ export class SnackbarService {
   }
 
   notifyUnless<T>(notifier$: Observable<T>, message: string, waitMs = 10000) {
-    timer(waitMs).pipe(takeUntil(notifier$)).subscribe(_ => this.notify(message));
+    timer(waitMs)
+      .pipe(takeUntil(notifier$))
+      .subscribe(_ => this.notify(message));
   }
 
   notifyLateExecutionUnless<T>(notifier$: Observable<T>, waitMs?) {
-    this.notifyUnless(notifier$, 'The server doesn\'t seem responding', waitMs);
+    this.notifyUnless(notifier$, "The server doesn't seem responding", waitMs);
   }
 }

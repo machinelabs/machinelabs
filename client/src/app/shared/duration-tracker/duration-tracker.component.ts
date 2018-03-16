@@ -16,7 +16,6 @@ import * as distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
   `
 })
 export class DurationTrackerComponent implements OnInit, OnChanges, OnDestroy {
-
   @Input() startDate;
   @Input() delay = 1000;
   @Input() pause = false;
@@ -32,9 +31,7 @@ export class DurationTrackerComponent implements OnInit, OnChanges, OnDestroy {
       console.warn('[ml-duration-tracker] Please provide a startDate');
     }
 
-    this.duration$ = this.pause$.pipe(
-      switchMap(paused => paused ? never() : this.trackDuration())
-    );
+    this.duration$ = this.pause$.pipe(switchMap(paused => (paused ? never() : this.trackDuration())));
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -50,9 +47,11 @@ export class DurationTrackerComponent implements OnInit, OnChanges, OnDestroy {
   trackDuration() {
     return interval(this.delay).pipe(
       startWith(0),
-      map(_ => distanceInWordsToNow(new Date(this.startDate), {
-        includeSeconds: true
-      }))
+      map(_ =>
+        distanceInWordsToNow(new Date(this.startDate), {
+          includeSeconds: true
+        })
+      )
     );
   }
 }

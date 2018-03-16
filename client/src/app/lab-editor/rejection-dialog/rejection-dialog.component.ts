@@ -9,9 +9,8 @@ import { ExecutionRejectionReason } from '@machinelabs/models';
   styleUrls: ['./rejection-dialog.component.scss']
 })
 export class RejectionDialogComponent {
-  ExecutionRejectionReason = ExecutionRejectionReason
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
-              public loginService: LoginService) {}
+  ExecutionRejectionReason = ExecutionRejectionReason;
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public loginService: LoginService) {}
 
   loginWithGithub() {
     this.loginService.loginWithGitHub();

@@ -22,7 +22,7 @@ describe('PanelComponent', () => {
     component.panelTitle = 'Panel title';
 
     fixture.detectChanges();
-    let titleElement = fixture.debugElement.query(By.css('ml-panel-title')).nativeElement;
+    const titleElement = fixture.debugElement.query(By.css('ml-panel-title')).nativeElement;
     expect(titleElement.textContent).toContain('Panel title');
   });
 });

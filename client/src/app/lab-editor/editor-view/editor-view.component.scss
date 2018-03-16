@@ -2,7 +2,7 @@
 
 .ml-editor-view-nav-bar {
   z-index: 2;
-  box-shadow: 0 -1px 5px rgba(0,0,0,.24);
+  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.24);
 
   [matTabLink] {
     flex: 1;
@@ -15,7 +15,7 @@
 
 mat-drawer {
   width: 270px;
-  box-shadow: 0 0 8px rgba(0,0,0,.24);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.24);
 }
 
 mat-drawer-container {
@@ -72,7 +72,7 @@ monaco-editor {
   }
 
   .ml-editor-restore-message {
-     display: block;
+    display: block;
   }
 
   mat-drawer {

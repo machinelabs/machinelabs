@@ -1,12 +1,9 @@
 @import '../../../../node_modules/@angular/material/theming';
 
 @mixin ml-execution-status-theme($theme) {
-
   $foreground: map-get($theme, foreground);
 
   .ml-status-message {
     color: mat-color($foreground, text);
   }
 }
-
-

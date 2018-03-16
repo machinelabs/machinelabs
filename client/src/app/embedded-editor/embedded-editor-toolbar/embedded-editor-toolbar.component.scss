@@ -6,7 +6,7 @@ ml-toolbar {
 
 ml-toolbar {
   ::ng-deep .ml-toolbar-logo img {
-    height: 24px!important;
+    height: 24px !important;
   }
 }
 
@@ -33,7 +33,7 @@ ml-toolbar {
 @include TabletPortraitUp {
   ml-toolbar {
     ::ng-deep .ml-toolbar-logo img {
-      height: 18px!important;
+      height: 18px !important;
     }
   }
 }

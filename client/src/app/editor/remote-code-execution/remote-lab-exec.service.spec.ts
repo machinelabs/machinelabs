@@ -13,16 +13,14 @@ import { DbRefBuilder } from '../../firebase/db-ref-builder';
 import { ExecutionMessage, Execution } from '../../models/execution';
 import { MessageKind, ExecutionStatus } from '@machinelabs/models';
 
+const createSnapshot = data => ({ val: () => data });
+const createMessageSnapshot = (kind, data) => createSnapshot({ kind, data });
 
-let createSnapshot = data => ({ val: () => data });
-let createMessageSnapshot = (kind, data) => createSnapshot({kind, data});
-
-let testLab, context, authServiceStub, user,
-    databaseStub, obsDbRefStub, snapshotStub, execution;
+let testLab, authServiceStub, user, databaseStub, obsDbRefStub, snapshotStub;
 
 // it's important to recreate the stubs for every test to not
 // have one test cause side effects for another test
-function createStubs () {
+function createStubs() {
   testLab = {
     id: '1',
     user_id: 'user id',
@@ -33,17 +31,17 @@ function createStubs () {
     has_cached_run: false
   };
 
-    user = { uid: 'some-id' };
+  user = { uid: 'some-id' };
 
   authServiceStub = {
     requireAuthOnce: () => {}
   };
 
   databaseStub = {
-    ref: (arg) => {
+    ref: arg => {
       return {
-        once: (_arg) => {},
-        set: (_arg) => Promise.resolve(_arg),
+        once: _arg => {},
+        set: _arg => Promise.resolve(_arg),
         on: () => {}
       };
     }
@@ -59,25 +57,23 @@ function createStubs () {
 }
 
 function spyOnExecutionAndCallDone(db, doneWhen) {
-     let executionRef = {
-      value: () => new Observable(obs => {
+  const executionRef = {
+    value: () =>
+      new Observable(obs => {
         setTimeout(() => obs.next(createSnapshot({ status: ExecutionStatus.Executing })), 50);
         setTimeout(() => obs.next(createSnapshot({ status: ExecutionStatus.Finished })), 150);
         return () => doneWhen.call();
       })
-    };
-    spyOn(db, 'executionRef').and.returnValue(executionRef);
+  };
+  spyOn(db, 'executionRef').and.returnValue(executionRef);
 }
 
-
 describe('RemoteLabExecService', () => {
-
   let authService: AuthService;
   let db;
   let rleService: RemoteLabExecService;
 
   beforeEach(() => {
-
     createStubs();
 
     TestBed.configureTestingModule({
@@ -97,10 +93,10 @@ describe('RemoteLabExecService', () => {
   });
 
   describe('.run()', () => {
-    it('should handle ProcessFinished gracefully', (done) => {
-      let doneWhen = new DoneWhen(done).calledNTimes(5);
+    it('should handle ProcessFinished gracefully', done => {
+      const doneWhen = new DoneWhen(done).calledNTimes(5);
 
-      let playedMessages = [
+      const playedMessages = [
         { id: '0', kind: MessageKind.Stdout, data: 'some-text' },
         { id: '1', kind: MessageKind.Stdout, data: 'other-text' },
         { id: '2', kind: MessageKind.ExecutionFinished, data: '' },
@@ -109,7 +105,7 @@ describe('RemoteLabExecService', () => {
 
       let controlMessagesSubscriber = 0;
 
-      let controllMessages$ = new Observable<ExecutionMessage>(obs => {
+      const controllMessages$ = new Observable<ExecutionMessage>(obs => {
         controlMessagesSubscriber++;
         obs.next(playedMessages[2]);
         return () => {
@@ -119,20 +115,20 @@ describe('RemoteLabExecService', () => {
 
       let messagesSubscriber = 0;
 
-      let messages$ = new Observable<ExecutionMessage>(obs => {
-          messagesSubscriber++;
-          obs.next(playedMessages[0]);
-          obs.next(playedMessages[1]);
-          obs.next(playedMessages[2]);
-          obs.next(playedMessages[3]);
-          return () => {
-            // in case the cleanup does not run, the test won't complete
-            // which seems to be the only way to properly test this.
-            doneWhen.call();
-          };
+      const messages$ = new Observable<ExecutionMessage>(obs => {
+        messagesSubscriber++;
+        obs.next(playedMessages[0]);
+        obs.next(playedMessages[1]);
+        obs.next(playedMessages[2]);
+        obs.next(playedMessages[3]);
+        return () => {
+          // in case the cleanup does not run, the test won't complete
+          // which seems to be the only way to properly test this.
+          doneWhen.call();
+        };
       }).pipe(delay(1));
 
-      let playedExecutions = [
+      const playedExecutions = [
         { id: '1', status: ExecutionStatus.Executing },
         { id: '1', status: ExecutionStatus.Finished },
         { id: '1', status: ExecutionStatus.Executing }
@@ -140,20 +136,20 @@ describe('RemoteLabExecService', () => {
 
       let executionsSubscriber = 0;
 
-      let executions$ = new Observable<Execution>(obs => {
-          executionsSubscriber++;
-          obs.next(playedExecutions[0]);
-          obs.next(playedExecutions[1]);
-          obs.next(playedExecutions[2]);
-          return () => {
-            // in case the cleanup does not run, the test won't complete
-            // which seems to be the only way to properly test this.
-            doneWhen.call();
-          };
+      const executions$ = new Observable<Execution>(obs => {
+        executionsSubscriber++;
+        obs.next(playedExecutions[0]);
+        obs.next(playedExecutions[1]);
+        obs.next(playedExecutions[2]);
+        return () => {
+          // in case the cleanup does not run, the test won't complete
+          // which seems to be the only way to properly test this.
+          doneWhen.call();
+        };
       }).pipe(delay(1));
 
-      let actualMessages = [];
-      let actualExecutions = [];
+      const actualMessages = [];
+      const actualExecutions = [];
 
       doneWhen.assertBeforeDone(() => {
         expect(controlMessagesSubscriber).toBe(1);
@@ -163,37 +159,41 @@ describe('RemoteLabExecService', () => {
 
       const wrapper = rleService.consumeExecution(messages$, controllMessages$, executions$);
 
-      wrapper.messages.pipe(
-        tap(msg => actualMessages.push(msg)),
-        finalize(() => {
-          expect(actualMessages.length).toBe(3);
-          doneWhen.call();
-        })
-      ).subscribe();
+      wrapper.messages
+        .pipe(
+          tap(msg => actualMessages.push(msg)),
+          finalize(() => {
+            expect(actualMessages.length).toBe(3);
+            doneWhen.call();
+          })
+        )
+        .subscribe();
 
-      wrapper.execution.pipe(
-        tap(e => {
-          console.log(e);
-          actualExecutions.push(e);
-        }),
-        finalize(() => {
-          expect(actualExecutions.length).toBe(2);
-          doneWhen.call();
-        })
-      ).subscribe();
+      wrapper.execution
+        .pipe(
+          tap(e => {
+            console.log(e);
+            actualExecutions.push(e);
+          }),
+          finalize(() => {
+            expect(actualExecutions.length).toBe(2);
+            doneWhen.call();
+          })
+        )
+        .subscribe();
     });
 
-    it('should handle ExecutionRejected gracefully', (done) => {
-      let doneWhen = new DoneWhen(done).calledNTimes(5);
+    it('should handle ExecutionRejected gracefully', done => {
+      const doneWhen = new DoneWhen(done).calledNTimes(5);
 
-      let playedMessages = [
+      const playedMessages = [
         { id: '0', kind: MessageKind.ExecutionRejected, data: 'meh' },
         { id: '1', kind: MessageKind.Stdout, data: 'other-text' }
       ] as Array<ExecutionMessage>;
 
       let controlMessagesSubscriber = 0;
 
-      let controllMessages$ = new Observable<ExecutionMessage>(obs => {
+      const controllMessages$ = new Observable<ExecutionMessage>(obs => {
         controlMessagesSubscriber++;
         obs.next(playedMessages[0]);
         return () => {
@@ -203,39 +203,37 @@ describe('RemoteLabExecService', () => {
 
       let messagesSubscriber = 0;
 
-      let messages$ = new Observable<ExecutionMessage>(obs => {
-          messagesSubscriber++;
-          console.log('producing messages$');
-          obs.next(playedMessages[0]);
-          obs.next(playedMessages[1]);
-          return () => {
-            // in case the cleanup does not run, the test won't complete
-            // which seems to be the only way to properly test this.
-            console.log('unsubscribed messages$');
-            doneWhen.call();
-          };
+      const messages$ = new Observable<ExecutionMessage>(obs => {
+        messagesSubscriber++;
+        console.log('producing messages$');
+        obs.next(playedMessages[0]);
+        obs.next(playedMessages[1]);
+        return () => {
+          // in case the cleanup does not run, the test won't complete
+          // which seems to be the only way to properly test this.
+          console.log('unsubscribed messages$');
+          doneWhen.call();
+        };
       }).pipe(delay(1));
 
-      let playedExecutions = [
-        null
-      ] as Array<Execution>;
+      const playedExecutions = [null] as Array<Execution>;
 
       let executionsSubscriber = 0;
 
-      let executions$ = new Observable<Execution>(obs => {
-          console.log('producing executions$');
-          executionsSubscriber++;
-          obs.next(playedExecutions[0]);
-          return () => {
-            // in case the cleanup does not run, the test won't complete
-            // which seems to be the only way to properly test this.
-            console.log('unsubscribed executions$');
-            doneWhen.call();
-          };
+      const executions$ = new Observable<Execution>(obs => {
+        console.log('producing executions$');
+        executionsSubscriber++;
+        obs.next(playedExecutions[0]);
+        return () => {
+          // in case the cleanup does not run, the test won't complete
+          // which seems to be the only way to properly test this.
+          console.log('unsubscribed executions$');
+          doneWhen.call();
+        };
       }).pipe(delay(1));
 
-      let actualMessages = [];
-      let actualExecutions = [];
+      const actualMessages = [];
+      const actualExecutions = [];
 
       doneWhen.assertBeforeDone(() => {
         expect(messagesSubscriber).toBe(1);
@@ -245,25 +243,29 @@ describe('RemoteLabExecService', () => {
 
       const wrapper = rleService.consumeExecution(messages$, controllMessages$, executions$);
 
-      wrapper.messages.pipe(
-        tap(msg => actualMessages.push(msg)),
-        finalize(() => {
-          expect(actualMessages.length).toBe(1);
-          console.log('messages$ completed');
-          doneWhen.call();
-        })
-      ).subscribe();
+      wrapper.messages
+        .pipe(
+          tap(msg => actualMessages.push(msg)),
+          finalize(() => {
+            expect(actualMessages.length).toBe(1);
+            console.log('messages$ completed');
+            doneWhen.call();
+          })
+        )
+        .subscribe();
 
-      wrapper.execution.pipe(
-        tap(e => {
-          actualExecutions.push(e);
-        }),
-        finalize(() => {
-          expect(actualExecutions.length).toBe(0);
-          console.log('execution$ completed');
-          doneWhen.call();
-        })
-      ).subscribe();
+      wrapper.execution
+        .pipe(
+          tap(e => {
+            actualExecutions.push(e);
+          }),
+          finalize(() => {
+            expect(actualExecutions.length).toBe(0);
+            console.log('execution$ completed');
+            doneWhen.call();
+          })
+        )
+        .subscribe();
     });
   });
 });

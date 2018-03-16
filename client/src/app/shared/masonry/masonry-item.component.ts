@@ -1,12 +1,4 @@
-import {
-  Injectable,
-  Component,
-  ElementRef,
-  Renderer2,
-  NgZone,
-  OnDestroy,
-  AfterContentInit
-} from '@angular/core';
+import { Injectable, Component, ElementRef, Renderer2, NgZone, OnDestroy, AfterContentInit } from '@angular/core';
 
 import { Subject } from 'rxjs/Subject';
 import { scan } from 'rxjs/operators';
@@ -24,14 +16,15 @@ export class MutationObserverFactory {
 @Component({
   selector: 'ml-masonry-item',
   template: '<ng-content></ng-content>',
-  styles: [`
+  styles: [
+    `
     :host {
       display: block;
     }
-  `]
+  `
+  ]
 })
 export class MasonryItemComponent implements AfterContentInit, OnDestroy {
-
   private observer: MutationObserver | null;
 
   private mutations$ = new Subject<MutationRecord[]>();
@@ -42,23 +35,29 @@ export class MasonryItemComponent implements AfterContentInit, OnDestroy {
     private ngZone: NgZone,
     private masonry: MasonryComponent,
     private mutationObserverFactory: MutationObserverFactory,
-    private windowRef: WindowRef) { }
+    private windowRef: WindowRef
+  ) {}
 
   ngAfterContentInit() {
     this.setItemWidth();
 
-    this.mutations$.pipe(
-      scan((acc, _: any) => {
-        return {
-          prev: acc.curr,
-          curr: this.height
-        };
-      }, { prev: 0, curr: 0 })
-    ).subscribe(height => {
-      if (height.prev !== height.curr) {
-        this.masonry.pack();
-      }
-    });
+    this.mutations$
+      .pipe(
+        scan(
+          (acc, _: any) => {
+            return {
+              prev: acc.curr,
+              curr: this.height
+            };
+          },
+          { prev: 0, curr: 0 }
+        )
+      )
+      .subscribe(height => {
+        if (height.prev !== height.curr) {
+          this.masonry.pack();
+        }
+      });
 
     this.observer = this.ngZone.runOutsideAngular(() => {
       return this.mutationObserverFactory.create((mutations: MutationRecord[]) => {
@@ -98,14 +97,14 @@ export class MasonryItemComponent implements AfterContentInit, OnDestroy {
   }
 
   private getStylePropertyValue(node: HTMLElement, props: string | Array<string>): { [key: string]: number } {
-    let elementStyles = this.windowRef.nativeWindow.getComputedStyle(node, null);
+    const elementStyles = this.windowRef.nativeWindow.getComputedStyle(node, null);
 
     if (!(props instanceof Array)) {
       props = [props];
     }
 
     return props.reduce((acc, prop) => {
-      let propertyName = prop.replace(/-([a-z])/g, (match) => match[1].toUpperCase());
+      const propertyName = prop.replace(/-([a-z])/g, match => match[1].toUpperCase());
       acc[propertyName] = parseFloat(elementStyles.getPropertyValue(prop));
       return acc;
     }, {});
