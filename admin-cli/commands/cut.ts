@@ -6,15 +6,15 @@ const cutCmd = (argv) => {
   console.log(chalk.green('Cutting release'));
 
   if (argv.major) {
-    cut('major', argv.dryRun);
+    cut('major', argv.dryRun).subscribe();
   } else if (argv.minor) {
-    cut('minor', argv.dryRun);
+    cut('minor', argv.dryRun).subscribe();
   } else if (argv.patch) {
-    cut('patch', argv.dryRun);
+    cut('patch', argv.dryRun).subscribe();
   } else if (argv.dev) {
-    cut('dev', argv.dryRun);
+    cut('dev', argv.dryRun).subscribe();
   } else if (argv.version) {
-    cut(argv.version, argv.dryRun);
+    cut(argv.version, argv.dryRun).subscribe();
   }
 }
 
