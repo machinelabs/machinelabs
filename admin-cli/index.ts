@@ -35,58 +35,68 @@ const commands = [
   generateChangelogCommand
 ];
 
-let sharedOptions = {
-      'cfg.template': {
-        describe: `Preinitialize googleProjectId, serverName and zone
-                   from a template configuration`,
-        type: 'string',
-        requiresArg: true
-      },
-      'cfg.googleProjectId': {
-        describe: `GoogleProjectId to be used`,
-        type: 'string',
-        requiresArg: true
-      },
-      'cfg.server.name': {
-        describe: `Name of server to be used`,
-        type: 'string',
-        requiresArg: true
-      },
-      'cfg.server.zone': {
-        describe: `Zone of server`,
-        type: 'string',
-        requiresArg: true
-      },
-      'cfg.server.env': {
-        describe: `Environment file for server`,
-        type: 'string',
-        requiresArg: true
-      },
-      'cfg.client.env': {
-        describe: `Environment file for server`,
-        type: 'string',
-        requiresArg: true
-      }
-    };
+const sharedOptions = {
+  'cfg.template': {
+    describe: `Preinitialize googleProjectId, serverName and zone from a template configuration`,
+    type: 'string',
+    requiresArg: true
+  },
+  'cfg.googleProjectId': {
+    describe: `GoogleProjectId to be used`,
+    type: 'string',
+    requiresArg: true
+  },
+  'cfg.server.name': {
+    describe: `Name of server to be used`,
+    type: 'string',
+    requiresArg: true
+  },
+  'cfg.server.zone': {
+    describe: `Zone of server`,
+    type: 'string',
+    requiresArg: true
+  },
+  'cfg.server.env': {
+    describe: `Environment file for server`,
+    type: 'string',
+    requiresArg: true
+  },
+  'cfg.client.env': {
+    describe: `Environment file for server`,
+    type: 'string',
+    requiresArg: true
+  }
+};
 
-let argv = yargs(process.argv.slice(2))
-    .usage('$0 <cmd> [args]')
-    .command('deploy [<options>]', 'Deploy MachineLabs', Object.assign({
-      'noServer': {
-        describe: 'Flag to suppress deployment of server',
-        boolean: true,
+const args = yargs(process.argv.slice(2))
+  .usage('$0 <cmd> [args]')
+  .command(
+    'deploy [<options>]',
+    'Deploy MachineLabs',
+    Object.assign(
+      {
+        noServer: {
+          describe: 'Flag to suppress deployment of server',
+          boolean: true
+        },
+        noFb: {
+          describe: 'Flag to suppress deployment of firebase',
+          boolean: true
+        },
+        noClient: {
+          describe: 'Flag to suppress deployment of client',
+          boolean: true
+        }
       },
-      'noFb': {
-        describe: 'Flag to suppress deployment of firebase',
-        boolean: true,
-      },
-      'noClient': {
-        describe: 'Flag to suppress deployment of client',
-        boolean: true,
-      }
-    }, sharedOptions), deployCommand.run)
-    .command('login [<options>]', 'Login to server', sharedOptions, loginCommand.run)
-    .command('cut [<options>]', 'Cut a release', {
+      sharedOptions
+    ),
+    deployCommand.run
+  )
+  .command('login [<options>]', 'Login to server', sharedOptions, loginCommand.run)
+  .command(
+    'cut [<options>]',
+    'Cut a release',
+    {
       major: {
         describe: 'Cuts a new major release',
         boolean: true
@@ -111,58 +121,69 @@ let argv = yargs(process.argv.slice(2))
         describe: 'Cuts a new release with a specified version',
         type: 'string',
         requiresArg: true
-      },
-    }, cutCommand.run)
-    .command('onboard [<options>]', 'Onboard waiting users', {
+      }
+    },
+    cutCommand.run
+  )
+  .command(
+    'onboard [<options>]',
+    'Onboard waiting users',
+    {
       'dry-run': {
         describe: 'Does a dry run',
         boolean: true
       }
-    }, onboardCommand.run)
-    .command('export-users [<options>]', 'Export csv of all users', {
-    }, exportUsersCommand.run)
-    .command('build-shared', 'Build shared libs', {
-    }, buildSharedCommand.run)
-    .command('clean-deps', 'Delete node_modules across the entire repository', {
-    }, cleanDepsCommand.run)
-    .command(
-      'migrate [<options>]',
-      `Migrates database with a migration file that contains a function
-      with a reference to a firebase database to perform operations for
-      migrations.`, {
-        'file': {
-          describe: `Path to migration file that contains a function
-            with a reference to a firebase database to perform database
-            operations for migrations.`,
-          type: 'string',
-          requiresArg: true
-        }
-    }, migrateCommand.run)
-    .command('takedown [<options>]', 'Taking down (overtime) executions', {}, takedownCommand.run)
-    .command('generate-changelog [<options>]', 'Generate changelog', {}, generateChangelogCommand.run)
-    .command('ls-live-executions [<options>]', 'Display all live executions according to our index', {}, lsLiveExecutionsCommand.run)
-    .command('publish-cli', 'Prepare publishing of CLI npm packages', {}, publishCliCommand.run)
-    .coerce('cfg', cfg => {
-      if (cfg.template) {
-        if (cfg.server || cfg.client || cfg.firebase) {
-          throw new Error("`cfg.template` option can't be used with `cfg.server`, `cfg.client`, `cfg.firebase`")
-        }
-        const templateConfig = tryLoadTemplate(cfg.template);
-        cfg = Object.assign(cfg, templateConfig);
+    },
+    onboardCommand.run
+  )
+  .command('export-users [<options>]', 'Export csv of all users', {}, exportUsersCommand.run)
+  .command('build-shared', 'Build shared libs', {}, buildSharedCommand.run)
+  .command('clean-deps', 'Delete node_modules across the entire repository', {}, cleanDepsCommand.run)
+  .command(
+    'migrate [<options>]',
+    `Migrates database with a migration file that contains a function
+    with a reference to a firebase database to perform operations for
+    migrations.`,
+    {
+      file: {
+        describe: `Path to migration file that contains a function
+          with a reference to a firebase database to perform database
+          operations for migrations.`,
+        type: 'string',
+        requiresArg: true
       }
-      return cfg;
-    })
-    .check(argv => {
-      commands.forEach(command => command.check(argv));
-
-      if (!argv._.length) {
-        yargs.showHelp();
+    },
+    migrateCommand.run
+  )
+  .command('takedown [<options>]', 'Taking down (overtime) executions', {}, takedownCommand.run)
+  .command('generate-changelog [<options>]', 'Generate changelog', {}, generateChangelogCommand.run)
+  .command(
+    'ls-live-executions [<options>]',
+    'Display all live executions according to our index',
+    {},
+    lsLiveExecutionsCommand.run
+  )
+  .command('publish-cli', 'Prepare publishing of CLI npm packages', {}, publishCliCommand.run)
+  .coerce('cfg', cfg => {
+    if (cfg.template) {
+      if (cfg.server || cfg.client || cfg.firebase) {
+        throw new Error("`cfg.template` option can't be used with `cfg.server`, `cfg.client`, `cfg.firebase`");
       }
+      const templateConfig = tryLoadTemplate(cfg.template);
+      cfg = Object.assign(cfg, templateConfig);
+    }
+    return cfg;
+  })
+  .check(argv => {
+    commands.forEach(command => command.check(argv));
 
-      return true;
-    })
-    .help()
-    .argv;
+    if (!argv._.length) {
+      yargs.showHelp();
+    }
+
+    return true;
+  })
+  .help().argv;
 
 function setRootDir() {
   process.chdir(__dirname);

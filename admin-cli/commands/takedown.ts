@@ -9,32 +9,30 @@ import { UsageStatisticService, CostCalculator, LiveMetricsService } from '@mach
 import { empty } from 'rxjs/observable/empty';
 import { filter, tap, mergeMap, finalize } from 'rxjs/operators';
 
-const hasArgsForTakedown = argv => argv.cfg &&
-                                   argv.cfg.firebase.privateKeyEnv &&
-                                   argv.cfg.firebase.clientEmailEnv &&
-                                   argv.cfg.firebase.databaseUrl;
+const hasArgsForTakedown = argv =>
+  argv.cfg && argv.cfg.firebase.privateKeyEnv && argv.cfg.firebase.clientEmailEnv && argv.cfg.firebase.databaseUrl;
 
 const check = argv => {
   if (argv._.includes('takedown') && !hasArgsForTakedown(argv)) {
     throw new Error('Command needs `cfg.server.name`, `cfg.server.zone` and `cfg.googleProjectId`');
   }
-}
+};
 
-export const takedown = (argv) => {
+export const takedown = argv => {
   if (hasArgsForTakedown(argv)) {
-    let fbPrivateKey = getEnv(argv.cfg.firebase.privateKeyEnv);
-    let fbClientEmail = getEnv(argv.cfg.firebase.clientEmailEnv);
-    let fbDatabaseUrl = argv.cfg.firebase.databaseUrl;
+    const fbPrivateKey = getEnv(argv.cfg.firebase.privateKeyEnv);
+    const fbClientEmail = getEnv(argv.cfg.firebase.clientEmailEnv);
+    const fbDatabaseUrl = argv.cfg.firebase.databaseUrl;
 
-    let db = createDb(fbPrivateKey, fbClientEmail, fbDatabaseUrl);
-    let refBuilder = new DbRefBuilder(db);
+    const db = createDb(fbPrivateKey, fbClientEmail, fbDatabaseUrl);
+    const refBuilder = new DbRefBuilder(db);
 
-    let liveMetricsService = new LiveMetricsService(<any>refBuilder);
-    let takedownService = new TakedownService(<any>refBuilder);
-    let svc = new UsageStatisticService(new CostCalculator(), liveMetricsService, <any>refBuilder);
+    const liveMetricsService = new LiveMetricsService(<any>refBuilder);
+    const takedownService = new TakedownService(<any>refBuilder);
+    const svc = new UsageStatisticService(new CostCalculator(), liveMetricsService, <any>refBuilder);
 
-    let isDryRun = !!argv['dry-run'];
-    let dryRunPrefix = isDryRun ? `[Dry Run] ` : '';
+    const isDryRun = !!argv['dry-run'];
+    const dryRunPrefix = isDryRun ? `[Dry Run] ` : '';
 
     if (argv.execution) {
       console.log(chalk.red.bold(`\n${dryRunPrefix}Taking down execution ${argv.execution}`));
@@ -42,14 +40,14 @@ export const takedown = (argv) => {
       return;
     }
 
-
     if (isDryRun) {
       console.log(chalk.green.bold('This is a dry run. Not taking down any executions.'));
     }
 
-    let takeDownMsg = (id:string) => console.log(chalk.yellow.bold(`Taking down execution ${id}`));
+    const takeDownMsg = (id: string) => console.log(chalk.yellow.bold(`Taking down execution ${id}`));
 
-    svc.getUsageStatisticForAllCurrentlyActiveUsers()
+    svc
+      .getUsageStatisticForAllCurrentlyActiveUsers()
       .pipe(
         filter(statistic => !!statistic),
         tap(statistic => printStatistic(statistic)),
@@ -58,11 +56,19 @@ export const takedown = (argv) => {
             console.log(chalk.red.bold(`\n${dryRunPrefix}Taking down all executions from user ${statistic.userId}...`));
             return isDryRun ? empty() : takedownService.takedownByUser(statistic.userId).pipe(tap(takeDownMsg));
           } else if (statistic.cpuSecondsLeft <= 0) {
-            console.log(chalk.red.bold(`\n${dryRunPrefix}Taking down all CPU executions from user ${statistic.userId}...`));
-            return isDryRun ? empty() : takedownService.takedownByUser(statistic.userId, [HardwareType.CPU]).pipe(tap(takeDownMsg));
+            console.log(
+              chalk.red.bold(`\n${dryRunPrefix}Taking down all CPU executions from user ${statistic.userId}...`)
+            );
+            return isDryRun
+              ? empty()
+              : takedownService.takedownByUser(statistic.userId, [HardwareType.CPU]).pipe(tap(takeDownMsg));
           } else if (statistic.gpuSecondsLeft <= 0) {
-            console.log(chalk.red.bold(`\n${dryRunPrefix}Taking down all GPU executions from user ${statistic.userId}...`));
-            return isDryRun ? empty() : takedownService.takedownByUser(statistic.userId, [HardwareType.GPU]).pipe(tap(takeDownMsg));
+            console.log(
+              chalk.red.bold(`\n${dryRunPrefix}Taking down all GPU executions from user ${statistic.userId}...`)
+            );
+            return isDryRun
+              ? empty()
+              : takedownService.takedownByUser(statistic.userId, [HardwareType.GPU]).pipe(tap(takeDownMsg));
           }
 
           return empty();
@@ -71,7 +77,7 @@ export const takedown = (argv) => {
       )
       .subscribe();
   }
-}
+};
 
 export const takedownCommand = {
   run: takedown,

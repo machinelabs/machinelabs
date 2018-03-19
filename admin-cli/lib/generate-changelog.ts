@@ -9,7 +9,7 @@ import { conventionalChangelogObservable } from './conventional-changelog-observ
 
 function createIfMissing(args) {
   if (!fs.existsSync(args.inFile)) {
-    console.log(chalk.blue('Changelog file doesn\'t exist. Creating it...'));
+    console.log(chalk.blue("Changelog file doesn't exist. Creating it..."));
     fs.writeFileSync(args.inFile, '\n', 'utf8');
   }
 }
@@ -25,7 +25,7 @@ const defaults = {
 export function generateChangelog(args) {
   console.log(chalk.yellow('Generating changelog...'));
 
-  const options = {...defaults, ...args};
+  const options = { ...defaults, ...args };
 
   createIfMissing(options);
 
@@ -44,7 +44,7 @@ export function generateChangelog(args) {
       if (options.dryRun) {
         console.info(`\n${chalk.gray(newContent.trim())}\n`);
       } else {
-        fs.writeFileSync(options.inFile, (newContent+oldContent).replace(/\n+$/, '\n'), 'utf8');
+        fs.writeFileSync(options.inFile, (newContent + oldContent).replace(/\n+$/, '\n'), 'utf8');
         console.log(chalk.yellow(`Changelog generated in ${options.inFile}.`));
       }
     }),

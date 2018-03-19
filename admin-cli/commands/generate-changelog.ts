@@ -6,7 +6,7 @@ const generateChangelogCmd = argv => {
 
 const check = argv => {
   if (argv._.includes('generate-changelog') && !argv.version) {
-    throw new Error('Couldn\'t generate changelog, missing option \'version\'');
+    throw new Error("Couldn't generate changelog, missing option 'version'");
   }
 };
 

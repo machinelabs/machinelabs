@@ -5,26 +5,26 @@ import * as padStart from 'lodash.padstart';
 import * as chalk from 'chalk';
 
 export const printStatistic = (statistic: UsageStatistic) => {
-  let credits = PlanCredits.get(statistic.planId);
-        console.log(statistic);
-        let hoursToMs = (hours: number) => hours * 60 * 60 * 1000;
+  const credits = PlanCredits.get(statistic.planId);
+  console.log(statistic);
+  const hoursToMs = (hours: number) => hours * 60 * 60 * 1000;
 
-        let freeCpuTime = prettyPrintDuration(hoursToMs(credits.cpuHoursPerMonth))
-        let actualCpuTime = prettyPrintDuration(statistic.costReport.getSecondsPerHardware(HardwareType.CPU) * 1000);
-        let tmpLeftCpuTime = statistic.cpuSecondsLeft * 1000;
-        let leftCpuTime = prettyPrintDuration(statistic.cpuSecondsLeft * 1000);
-        let cpuCosts = statistic.costReport.getCostPerHardware(HardwareType.CPU);
+  const freeCpuTime = prettyPrintDuration(hoursToMs(credits.cpuHoursPerMonth));
+  const actualCpuTime = prettyPrintDuration(statistic.costReport.getSecondsPerHardware(HardwareType.CPU) * 1000);
+  const tmpLeftCpuTime = statistic.cpuSecondsLeft * 1000;
+  const leftCpuTime = prettyPrintDuration(statistic.cpuSecondsLeft * 1000);
+  const cpuCosts = statistic.costReport.getCostPerHardware(HardwareType.CPU);
 
-        let freeGpuTime = prettyPrintDuration(hoursToMs(credits.gpuHoursPerMonth))
-        let actualGpuTime = prettyPrintDuration(statistic.costReport.getSecondsPerHardware(HardwareType.GPU) * 1000);
-        let leftGpuTime = prettyPrintDuration(statistic.gpuSecondsLeft * 1000);
-        let gpuCosts = statistic.costReport.getCostPerHardware(HardwareType.GPU);
+  const freeGpuTime = prettyPrintDuration(hoursToMs(credits.gpuHoursPerMonth));
+  const actualGpuTime = prettyPrintDuration(statistic.costReport.getSecondsPerHardware(HardwareType.GPU) * 1000);
+  const leftGpuTime = prettyPrintDuration(statistic.gpuSecondsLeft * 1000);
+  const gpuCosts = statistic.costReport.getCostPerHardware(HardwareType.GPU);
 
-        let pad = 17;
+  const pad = 17;
 
-        let colorize = (negOrPos, str) => negOrPos > 0 ? chalk.green.bold(str) : chalk.red.bold(str);
+  const colorize = (negOrPos, str) => (negOrPos > 0 ? chalk.green.bold(str) : chalk.red.bold(str));
 
-        console.log(`
+  console.log(`
 
   User: ${statistic.userId}
 
@@ -45,5 +45,5 @@ export const printStatistic = (statistic: UsageStatistic) => {
   ${colorize(statistic.gpuSecondsLeft, `Left GPU time:      |${padStart(leftGpuTime, pad)} |`)}
   ----------------------------------------
   Costs (USD):        |${padStart(gpuCosts, pad)} |
-  ########################################`)
-}
+  ########################################`);
+};

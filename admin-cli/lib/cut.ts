@@ -14,10 +14,10 @@ import { generateChangelog } from './generate-changelog';
 import { finalize } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 
-let execute = factory({displayErrors: true});
+const execute = factory({ displayErrors: true });
 
 function updatePackageJsons(version) {
-  let yarnVersionCmd = `yarn version --no-git-tag-version --new-version ${version}`;
+  const yarnVersionCmd = `yarn version --no-git-tag-version --new-version ${version}`;
 
   execute(`(cd ./server && ${yarnVersionCmd}) &&
           (cd ./shared/core && ${yarnVersionCmd}) &&
@@ -37,13 +37,14 @@ function commitAndTag(tagVersion, versionWithBuild) {
           git tag -a ${tagVersion} -m "chore: tagging ${versionWithBuild}"`);
 }
 
-
-export function cut (versionOrType, dryRun) {
+export function cut(versionOrType, dryRun) {
   if (!isRootDir()) {
     failWith('Command needs to be run from root dir');
   }
 
-  let buildnumber = moment().utc().format('utc.YYYY.MMM.DD-H.mm.ss');
+  const buildnumber = moment()
+    .utc()
+    .format('utc.YYYY.MMM.DD-H.mm.ss');
 
   let newVersion;
   if (versionOrType === 'major' || versionOrType === 'minor' || versionOrType === 'patch') {
@@ -57,11 +58,11 @@ export function cut (versionOrType, dryRun) {
     newVersion = versionOrType;
   }
 
-  let versionWithBuild = `${newVersion}+${buildnumber}`;
+  const versionWithBuild = `${newVersion}+${buildnumber}`;
 
   // Dev versions don't increase so it's crucial to have the build number
   // in the tag to not have conflicting tag names
-  let tagVersion = versionOrType === 'dev' ? versionWithBuild : newVersion;
+  const tagVersion = versionOrType === 'dev' ? versionWithBuild : newVersion;
 
   console.log(chalk.green(`New version will be ${versionWithBuild}`));
 
@@ -69,7 +70,6 @@ export function cut (versionOrType, dryRun) {
     console.log(chalk.green(`Dry run...stopping`));
     process.exit(0);
   }
-
 
   // Dev versions don't generate a changelog
   if (versionOrType === 'dev') {
@@ -84,6 +84,4 @@ export function cut (versionOrType, dryRun) {
       })
     );
   }
-
-
 }

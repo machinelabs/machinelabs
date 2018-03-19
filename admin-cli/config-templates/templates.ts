@@ -41,7 +41,8 @@ const productionTemplate = {
 export const templates = {
   staging: stagingTemplate,
   staging2: {
-    ...stagingTemplate, ...{
+    ...stagingTemplate,
+    ...{
       server: {
         name: 'list',
         zone: 'europe-west1-c',
@@ -50,7 +51,8 @@ export const templates = {
     }
   },
   'staging-portimao': {
-    ...stagingTemplate, ...{
+    ...stagingTemplate,
+    ...{
       server: {
         name: 'portimao',
         zone: 'us-east1-d',
@@ -60,7 +62,8 @@ export const templates = {
   },
   production: productionTemplate,
   production2: {
-    ...productionTemplate, ...{
+    ...productionTemplate,
+    ...{
       server: {
         name: 'stephanskirchen',
         zone: 'europe-west1-c',
@@ -69,7 +72,8 @@ export const templates = {
     }
   },
   'production-rijnbuurt': {
-    ...productionTemplate, ...{
+    ...productionTemplate,
+    ...{
       server: {
         name: 'rijnbuurt',
         zone: 'us-east1-c',

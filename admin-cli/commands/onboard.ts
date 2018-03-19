@@ -5,21 +5,19 @@ import { of } from 'rxjs/observable/of';
 import { empty } from 'rxjs/observable/empty';
 import { map, mergeMap } from 'rxjs/operators';
 
-const hasArgsForOnboard = argv => argv.cfg &&
-                                  argv.cfg.firebase.privateKeyEnv &&
-                                  argv.cfg.firebase.clientEmailEnv &&
-                                  argv.cfg.firebase.databaseUrl;
+const hasArgsForOnboard = argv =>
+  argv.cfg && argv.cfg.firebase.privateKeyEnv && argv.cfg.firebase.clientEmailEnv && argv.cfg.firebase.databaseUrl;
 
-const onboard = (argv) => {
+const onboard = argv => {
   if (hasArgsForOnboard(argv)) {
-    let fbPrivateKey = getEnv(argv.cfg.firebase.privateKeyEnv);
-    let fbClientEmail = getEnv(argv.cfg.firebase.clientEmailEnv);
-    let fbDatabaseUrl = argv.cfg.firebase.databaseUrl;
+    const fbPrivateKey = getEnv(argv.cfg.firebase.privateKeyEnv);
+    const fbClientEmail = getEnv(argv.cfg.firebase.clientEmailEnv);
+    const fbDatabaseUrl = argv.cfg.firebase.databaseUrl;
 
-    let db = createDb(fbPrivateKey, fbClientEmail, fbDatabaseUrl);
+    const db = createDb(fbPrivateKey, fbClientEmail, fbDatabaseUrl);
 
-    if (argv['dry-run']){
-      console.log('Dry run Onboarding. Abort at any time:')
+    if (argv['dry-run']) {
+      console.log('Dry run Onboarding. Abort at any time:');
     } else {
       console.log(`Onboarding running. Abort at any time:`);
     }
@@ -28,12 +26,11 @@ const onboard = (argv) => {
       .childAdded()
       .pipe(
         mergeMap(snapshot => {
-          let val = snapshot.val();
+          const val = snapshot.val();
 
-          if (val && !val.plan){
-
-            if (argv['dry-run']){
-              return of(snapshot.val())
+          if (val && !val.plan) {
+            if (argv['dry-run']) {
+              return of(snapshot.val());
             }
 
             return new ObservableDbRef(snapshot.ref)
@@ -43,27 +40,31 @@ const onboard = (argv) => {
                   created_at: Date.now()
                 }
               })
-              .pipe(
-                map(_ => snapshot.val())
-              );
+              .pipe(map(_ => snapshot.val()));
           }
 
           return empty();
         })
       )
-      .subscribe(val => {
-        console.log(`Onboarded user ${val.common.id} / ${val.common.email}`);
-      }, e => {
-        console.error(e);
-      },() => {
-        console.log('Finished');
-      });
+      .subscribe(
+        val => {
+          console.log(`Onboarded user ${val.common.id} / ${val.common.email}`);
+        },
+        e => {
+          console.error(e);
+        },
+        () => {
+          console.log('Finished');
+        }
+      );
   }
-}
+};
 
 const check = argv => {
   if (argv._.includes('onboard') && !hasArgsForOnboard(argv)) {
-    throw new Error('Command needs `cfg.firebase.privateKeyEnv`, `cfg.firebase.clientEmailEnv` and `cfg.firebase.databaseUrl`');
+    throw new Error(
+      'Command needs `cfg.firebase.privateKeyEnv`, `cfg.firebase.clientEmailEnv` and `cfg.firebase.databaseUrl`'
+    );
   }
 };
 

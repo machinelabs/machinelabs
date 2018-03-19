@@ -14,17 +14,18 @@ import { OutputType, ProcessStreamData } from '@machinelabs/core';
 import { Command } from './command';
 import { countTrue } from '../lib/utils';
 
-let execute = factory({displayErrors: true});
+const execute = factory({ displayErrors: true });
 
-const hasArgsForServerDeploy = argv => argv.cfg && argv.cfg.server.name && argv.cfg.server.zone && argv.cfg.server.env && argv.cfg.googleProjectId;
+const hasArgsForServerDeploy = argv =>
+  argv.cfg && argv.cfg.server.name && argv.cfg.server.zone && argv.cfg.server.env && argv.cfg.googleProjectId;
 const hasArgsForFirebaseDeploy = argv => argv.cfg && argv.cfg.googleProjectId;
 const hasArgsForRestApiDeploy = argv => argv.cfg && argv.cfg.googleProjectId && argv.cfg.rest.env;
 const hasArgsForClientDeploy = argv => argv.cfg && argv.cfg.googleProjectId && argv.cfg.client.env;
 
-const deploy = (argv) => {
+const deploy = argv => {
   console.log(chalk.green('Deployment mode'));
 
-  let tasks: Array<Observable<ProcessStreamData>> = [];
+  const tasks: Array<Observable<ProcessStreamData>> = [];
 
   if (!isTag()) {
     console.log(chalk.red('Deployments need to be made from tags. Run `cut --help`'));
@@ -52,26 +53,28 @@ const deploy = (argv) => {
     tasks.push(deployRestApi(argv.cfg.googleProjectId, argv.cfg.rest.env));
   }
 
-  concat(...tasks)
-    .subscribe(val => {
+  concat(...tasks).subscribe(
+    val => {
       if (val.origin === OutputType.Stdout) {
         console.log(val.str);
       } else {
         console.error(chalk.red(val.str));
       }
-    }, 
-    e => console.error(e), 
+    },
+    e => console.error(e),
     () => {
       console.log(chalk.red('Uploading tags'));
       execute('git push --tags');
-    });
-}
+    }
+  );
+};
 
 const check = argv => {
   if (argv._.includes('deploy')) {
-    
     if (!argv._.includes('noServer') && !hasArgsForServerDeploy(argv)) {
-      throw new Error('Command needs `cfg.server.name`, `cfg.server.zone`, `argv.server.env` and `cfg.googleProjectId`');
+      throw new Error(
+        'Command needs `cfg.server.name`, `cfg.server.zone`, `argv.server.env` and `cfg.googleProjectId`'
+      );
     }
 
     if (!argv._.includes('noFb') && !hasArgsForFirebaseDeploy(argv)) {
@@ -95,4 +98,4 @@ const check = argv => {
 export const deployCommand = {
   run: deploy,
   check: check
-}
+};

@@ -46,7 +46,9 @@ export function deployServer(project, serverName, zone, env) {
     // unzip and run
     stdout(chalk.green('Unzipping and restarting services')),
     // tslint:disable-next-line
-    spawnShell(`gcloud compute --project "${project}" ssh --zone "${zone}" "root@${serverName}" --command "cd /var && tar -zxf machinelabs-server.tar.gz && rm -rf machinelabs-server && mv server machinelabs-server && pm2 restart all"`),
+    spawnShell(
+      `gcloud compute --project "${project}" ssh --zone "${zone}" "root@${serverName}" --command "cd /var && tar -zxf machinelabs-server.tar.gz && rm -rf machinelabs-server && mv server machinelabs-server && pm2 restart all"`
+    ),
 
     // // Cleanup
     stdout(chalk.green('Cleaning up')),
@@ -55,8 +57,7 @@ export function deployServer(project, serverName, zone, env) {
   );
 }
 
-const copyServer = (serverName: string, project:string, zone:string) => {
-
+const copyServer = (serverName: string, project: string, zone: string) => {
   // In order to get live progress updates we have to use a TTY.
   // Using `stdio: inherit` (aka using the tty of the host process)
   // messes up everything Instead we are using a fake tty and then
@@ -67,21 +68,27 @@ const copyServer = (serverName: string, project:string, zone:string) => {
   // There's no way to tell when the process is finished so we have to
   // concat the command with an echo and use a unique indicator and
   // scan for its appearance
-  let endOfProcessIndicator = 'a1c80580-1505-4555-814c-301b1c5fff98';
+  const endOfProcessIndicator = 'a1c80580-1505-4555-814c-301b1c5fff98';
 
   return defer(() => {
-    var term = pty.spawn(`/bin/bash`, ['-c', `gcloud compute copy-files ./machinelabs-server.tar.gz root@${serverName}:/var/machinelabs-server.tar.gz --project "${project}" --zone "${zone}"; echo ${endOfProcessIndicator}`], {
-      name: 'xterm-color',
-      cols: 80,
-      rows: 30,
-      cwd: process.cwd(),
-      env: process.env
-    });
+    const term = pty.spawn(
+      `/bin/bash`,
+      [
+        '-c',
+        `gcloud compute copy-files ./machinelabs-server.tar.gz root@${serverName}:/var/machinelabs-server.tar.gz --project "${project}" --zone "${zone}"; echo ${endOfProcessIndicator}`
+      ],
+      {
+        name: 'xterm-color',
+        cols: 80,
+        rows: 30,
+        cwd: process.cwd(),
+        env: process.env
+      }
+    );
 
-    return fromEvent(term, 'data')
-      .pipe(
-        takeWhile((data:string) => !data.trim().endsWith(endOfProcessIndicator)),
-        mergeMap((data:string) => stdout(data))
-      );
+    return fromEvent(term, 'data').pipe(
+      takeWhile((data: string) => !data.trim().endsWith(endOfProcessIndicator)),
+      mergeMap((data: string) => stdout(data))
+    );
   });
-}
+};
