@@ -16,6 +16,8 @@
     "@machinelabs/metrics": "link:../shared/metrics",
     "@machinelabs/supervisor": "link:../shared/supervisor",
     "chalk": "^2.0.1",
+    "conventional-changelog": "^1.1.18",
+    "conventional-changelog-cli": "^1.3.16",
     "firebase-admin": "^5.1.0",
     "jsonfile": "^4.0.0",
     "lodash.isstring": "^4.0.1",

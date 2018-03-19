@@ -15,6 +15,7 @@ import { cleanDepsCommand } from './commands/clean-deps';
 import { tryLoadTemplate } from './lib/load-template';
 import { lsLiveExecutionsCommand } from './commands/ls-live-executions';
 import { publishCliCommand } from './commands/publish-cli';
+import { generateChangelogCommand } from './commands/generate-changelog';
 
 // set process directory to root directory so that
 // we can assume all further commands are realtive to root
@@ -30,7 +31,8 @@ const commands = [
   takedownCommand,
   cleanDepsCommand,
   lsLiveExecutionsCommand,
-  publishCliCommand
+  publishCliCommand,
+  generateChangelogCommand
 ];
 
 let sharedOptions = {
@@ -137,6 +139,7 @@ let argv = yargs(process.argv.slice(2))
         }
     }, migrateCommand.run)
     .command('takedown [<options>]', 'Taking down (overtime) executions', {}, takedownCommand.run)
+    .command('generate-changelog [<options>]', 'Generate changelog', {}, generateChangelogCommand.run)
     .command('ls-live-executions [<options>]', 'Display all live executions according to our index', {}, lsLiveExecutionsCommand.run)
     .command('publish-cli', 'Prepare publishing of CLI npm packages', {}, publishCliCommand.run)
     .coerce('cfg', cfg => {

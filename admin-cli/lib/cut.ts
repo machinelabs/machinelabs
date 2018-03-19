@@ -9,8 +9,32 @@ import { isRootDir } from './is-root-dir';
 import { incVersion } from './inc-version';
 import { getCurrentVersion } from './get-version';
 import { failWith } from './fail-with';
+import { generateChangelog } from './generate-changelog';
+
+import { finalize } from 'rxjs/operators';
 
 let execute = factory({displayErrors: true});
+
+function updatePackageJsons(version) {
+  let yarnVersionCmd = `yarn version --no-git-tag-version --new-version ${version}`;
+
+  execute(`(cd ./server && ${yarnVersionCmd}) &&
+          (cd ./shared/core && ${yarnVersionCmd}) &&
+          (cd ./shared/metrics && ${yarnVersionCmd}) &&
+          (cd ./shared/models && ${yarnVersionCmd}) &&
+          (cd ./server && yarn upgrade @machinelabs/core) &&
+          (cd ./client && ${yarnVersionCmd}) &&
+          (cd ./firebase/functions && ${yarnVersionCmd}) &&
+          (cd ./rest-api && ${yarnVersionCmd}) &&
+          (cd ./cli && ${yarnVersionCmd}) &&
+          (cd ./admin-cli && ${yarnVersionCmd})`);
+}
+
+function commitAndTag(tagVersion, versionWithBuild) {
+  execute(`git add -A &&
+          git commit -m "chore(package.json): cutting version ${tagVersion}" &&
+          git tag -a ${tagVersion} -m "chore: tagging ${versionWithBuild}"`);
+}
 
 
 export function cut (versionOrType, dryRun) {
@@ -45,21 +69,20 @@ export function cut (versionOrType, dryRun) {
     process.exit(0);
   }
 
-  let yarnVersionCmd = `yarn version --no-git-tag-version --new-version ${versionWithBuild}`;
 
-  execute(`(cd ./server && ${yarnVersionCmd}) &&
-           (cd ./shared/core && ${yarnVersionCmd}) &&
-           (cd ./shared/metrics && ${yarnVersionCmd}) &&
-           (cd ./shared/models && ${yarnVersionCmd}) &&
-           (cd ./server && yarn upgrade @machinelabs/core) &&
-           (cd ./client && ${yarnVersionCmd}) &&
-           (cd ./firebase/functions && ${yarnVersionCmd}) &&
-           (cd ./rest-api && ${yarnVersionCmd}) &&
-           (cd ./cli && ${yarnVersionCmd}) &&
-           (cd ./admin-cli && ${yarnVersionCmd})`);
+  // Dev versions don't generate a changelog
+  if (versionOrType === 'dev') {
+    updatePackageJsons(versionWithBuild);
+    commitAndTag(tagVersion, versionWithBuild);
+    return of(null);
+  } else {
+    return generateChangelog({ dryRun, version: tagVersion }).pipe(
+      finalize(() => {
+        updatePackageJsons(versionWithBuild);
+        commitAndTag(tagVersion, versionWithBuild);
+      })
+    );
+  }
 
 
-  execute(`git add -A &&
-           git commit -m "chore(package.json): cutting version ${tagVersion}" &&
-           git tag -a ${tagVersion} -m "chore: tagging ${versionWithBuild}"`);
 }
