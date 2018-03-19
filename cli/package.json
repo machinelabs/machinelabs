@@ -10,7 +10,11 @@
   "scripts": {
     "build:production": "ncp ./src/environments/environment.production.ts ./src/environments/environment.ts && tsc",
     "build:staging": "ncp ./src/environments/environment.staging.ts ./src/environments/environment.ts && tsc",
-    "build:personal": "ncp ./src/environments/environment.personal.ts ./src/environments/environment.ts && tsc"
+    "build:personal": "ncp ./src/environments/environment.personal.ts ./src/environments/environment.ts && tsc",
+    "lint:check": "tslint -c ./tslint.json 'src/**/*.ts'",
+    "lint:fix": "tslint --fix -c ./tslint.json 'src/**/*.ts'",
+    "format:check": "prettier --list-different \"./**/*{.ts,.js,.json}\"",
+    "format:fix": "prettier --write \"./**/*{.ts,.js,.json}\""
   },
   "dependencies": {
     "@machinelabs/core": "link:../shared/core",
@@ -30,6 +34,8 @@
   },
   "devDependencies": {
     "ncp": "^2.0.0",
+    "prettier": "^1.11.1",
+    "tslint": "^5.9.1",
     "typescript": "^2.4.2"
   }
 }

@@ -1,5 +1,5 @@
-let program = require('commander');
-let pgk = require('../package.json');
+const program = require('commander');
+const pgk = require('../package.json');
 
 import './firebase/fb';
 
@@ -8,10 +8,9 @@ import './commands/logout';
 import './commands/push';
 import './commands/init';
 import './commands/pull';
-import './commands/catch-all'
+import './commands/catch-all';
 
-program
-  .version(pgk.version);
+program.version(pgk.version);
 
 program.parse(process.argv);
 

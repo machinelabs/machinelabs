@@ -1,4 +1,4 @@
-let program = require('commander');
+import program = require('commander');
 import * as chalk from 'chalk';
 import { logout } from '../lib/auth/auth';
 
