@@ -16,12 +16,12 @@
     "suppressImplicitAnyIndexErrors": true,
     "inlineSources": true,
     "stripInternal": true,
-    "paths": { 
+    "paths": {
       "firebase": ["./node_modules/firebase"],
       "firebase-admin": ["./node_modules/firebase-admin"]
     },
     "baseUrl": "",
-    "typeRoots": [  "./node_modules/@types" ],
-    "types": [  "node"  ]
+    "typeRoots": ["./node_modules/@types"],
+    "types": ["node"]
   }
 }

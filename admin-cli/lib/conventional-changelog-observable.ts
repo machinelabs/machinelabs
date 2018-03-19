@@ -5,20 +5,25 @@ import { Observable } from 'rxjs/Observable';
 
 export function conventionalChangelogObservable(args) {
   return new Observable(observer => {
-    conventionalChangelog({
-      preset: args.preset,
-      releaseCount: args.releaseCount
-    }, {
-      version: args.version,
-      owner: args.owner,
-      repository: args.repository
-    }).on('err', err => {
-      observer.error(err);
-    }).on('data', buffer => {
-      observer.next(buffer);
-    }).on('end', () => {
-      observer.complete();
-    });
+    conventionalChangelog(
+      {
+        preset: args.preset,
+        releaseCount: args.releaseCount
+      },
+      {
+        version: args.version,
+        owner: args.owner,
+        repository: args.repository
+      }
+    )
+      .on('err', err => {
+        observer.error(err);
+      })
+      .on('data', buffer => {
+        observer.next(buffer);
+      })
+      .on('end', () => {
+        observer.complete();
+      });
   });
 }
-

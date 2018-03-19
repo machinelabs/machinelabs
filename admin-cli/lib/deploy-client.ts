@@ -2,7 +2,7 @@ import * as chalk from 'chalk';
 import { concat } from 'rxjs/observable/concat';
 import { factory } from './execute';
 
-import { isRootDir} from './is-root-dir';
+import { isRootDir } from './is-root-dir';
 import { failWith } from './fail-with';
 import { stdout, spawnShell } from '@machinelabs/core';
 
