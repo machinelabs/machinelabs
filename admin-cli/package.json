@@ -11,7 +11,8 @@
     "lint:check": "tslint -c ./tslint.json \"{commands,config-templates,lib}/**/*.ts\"",
     "lint:fix": "tslint --fix -c ./tslint.json \"{commands,config-templates,lib}/**/*.ts\"",
     "format:check": "prettier --list-different \"./**/*{.ts,.js,.json}\"",
-    "format:fix": "prettier --write \"./**/*{.ts,.js,.json}\""
+    "format:fix": "prettier --write \"./**/*{.ts,.js,.json}\"",
+    "ci": "npm run lint:check && npm run format:check && npm run build"
   },
   "dependencies": {
     "@machinelabs/core": "link:../shared/core",

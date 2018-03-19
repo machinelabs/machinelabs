@@ -12,6 +12,11 @@ addons:
       - google-chrome-stable
 matrix:
   include:
+    - stage: "@machinelabs/admin-cli"
+      node_js: "8"
+      before_install:
+        - cd ./admin-cli
+      script: npm run ci
     - stage: "server"
       node_js: "8"
       before_install:
