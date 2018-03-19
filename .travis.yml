@@ -17,6 +17,11 @@ matrix:
       before_install:
         - cd ./admin-cli
       script: npm run ci
+    - stage: "@machinelabs/cli"
+      node_js: "8"
+      before_install:
+        - cd ./cli
+      script: npm run ci
     - stage: "server"
       node_js: "8"
       before_install:
