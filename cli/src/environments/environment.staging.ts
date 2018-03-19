@@ -8,4 +8,3 @@ export const environment = {
   },
   mlDomain: 'http://staging.machinelabs.ai'
 };
-

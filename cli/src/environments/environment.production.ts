@@ -9,4 +9,3 @@ export const environment = {
   },
   mlDomain: 'https://machinelabs.ai'
 };
-

@@ -1,4 +1,4 @@
-let program = require('commander');
+import program = require('commander');
 import * as chalk from 'chalk';
 import * as firebase from 'firebase';
 import * as shortid from 'shortid';
@@ -21,89 +21,95 @@ program
   .option('-d --description [description]', 'Specify lab description')
   .option('-n --name [name]', 'Specify lab name')
   .action(cmd => {
-
-    let parsedMlYaml = parseMlYamlFromPath('.');
+    const parsedMlYaml = parseMlYamlFromPath('.');
 
     if (!parsedMlYaml) {
-      console.error(chalk.default.red(`No ${ML_YAML_FILENAME} found. Run \`ml init\` to create one with default settings`));
-      process.exit(1);;
+      console.error(
+        chalk.default.red(`No ${ML_YAML_FILENAME} found. Run \`ml init\` to create one with default settings`)
+      );
+      process.exit(1);
     }
 
-    let cliOptions = parsedMlYaml.cli || {};
-    let excludeRegex = cliOptions.exclude && cliOptions.exclude.length ? cliOptions.exclude : [];
-    let id = cmd.id || cliOptions.id || shortid.generate();
+    const cliOptions = parsedMlYaml.cli || {};
+    const excludeRegex = cliOptions.exclude && cliOptions.exclude.length ? cliOptions.exclude : [];
+    const id = cmd.id || cliOptions.id || shortid.generate();
 
-    let readOptions = {
+    const readOptions = {
       exclude: excludeRegex,
       excludeBinaries: true,
       extensions: null
     };
 
-    let dir = readLabDirectory('.', readOptions);
+    const labDir = readLabDirectory('.', readOptions);
 
     if (!existsSync('main.py')) {
-      console.error(chalk.default.red('No main.py found. Labs are currently required to use main.py as the program entry file.'));
+      console.error(
+        chalk.default.red('No main.py found. Labs are currently required to use main.py as the program entry file.')
+      );
       process.exit(1);
     }
 
-    let labApi = new LabApi(refBuilder);
+    const labApi = new LabApi(refBuilder);
 
     loginFromCache()
       .pipe(
-        switchMap(res => refBuilder
-          .labRef(id)
-          .onceValue()
-          .pipe(
-            map(snapshot => snapshot.val()),
-            map((lab: Lab) => {
+        switchMap(res =>
+          refBuilder
+            .labRef(id)
+            .onceValue()
+            .pipe(
+              map(snapshot => snapshot.val()),
+              map((lab: Lab) => {
+                if (!lab) {
+                  lab = {
+                    id: id,
+                    directory: labDir,
+                    user_id: res.uid,
+                    name: isString(cmd.name) ? cmd.name : 'Untitled',
+                    description: isString(cmd.description) ? cmd.description : '',
+                    tags: [],
+                    created_at: Date.now(),
+                    modified_at: Date.now(),
+                    hidden: false,
+                    is_private: false
+                  };
+                } else if (lab.user_id !== res.uid) {
+                  console.error(`Can't write to lab from another user`);
+                  process.exit(1);
+                }
 
-              if (!lab) {
-                lab = {
-                  id: id,
-                  directory: dir,
-                  user_id: res.uid,
-                  name: isString(cmd.name) ? cmd.name : 'Untitled',
-                  description: isString(cmd.description) ? cmd.description : '',
-                  tags: [],
-                  created_at: Date.now(),
-                  modified_at: Date.now(),
-                  hidden: false,
-                  is_private: false
-                };
-              } else if (lab.user_id !== res.uid) {
-                console.error(`Can't write to lab from another user`);
-                process.exit(1);
-              }
+                // We can't use `cmd.something || 'something'` here because of the way commander
+                // handles these flags.
+                lab.name = isString(cmd.name) ? cmd.name : lab.name;
+                lab.description = isString(cmd.description) ? cmd.description : lab.description;
+                lab.directory = labDir;
 
-              // We can't use `cmd.something || 'something'` here because of the way commander
-              // handles these flags.
-              lab.name = isString(cmd.name) ? cmd.name : lab.name;
-              lab.description = isString(cmd.description) ? cmd.description : lab.description;
-              lab.directory = dir;
+                return lab;
+              }),
+              tap(lab => {
+                const dir = './';
+                const labConfig = parseMlYamlFromPath(dir);
 
-              return lab;
-            }),
-            tap(lab => {
-              const dir = './';
-              const labConfig = parseMlYamlFromPath(dir);
+                labConfig.cli = labConfig.cli || {};
 
-              labConfig.cli = labConfig.cli || {};
-
-              if (!labConfig.cli.id) {
-                labConfig.cli.id = id;
-                writeMlYamlToPath(dir, writeMlYaml(labConfig));
-                console.log(`  ${chalk.default.green('updated')} ${ML_YAML_FILENAME}\n`);
-              }
-            })
-          )
+                if (!labConfig.cli.id) {
+                  labConfig.cli.id = id;
+                  writeMlYamlToPath(dir, writeMlYaml(labConfig));
+                  console.log(`  ${chalk.default.green('updated')} ${ML_YAML_FILENAME}\n`);
+                }
+              })
+            )
         ),
         switchMap(lab => labApi.save(lab).pipe(map(_ => lab)))
       )
-      .subscribe(lab => {
-        console.log(chalk.default.green.bold(`Pushed to ${environment.mlDomain}/editor/${lab.id}`));
-        process.exit();
-      }, e => {
-        console.error('Push failed. Try logging in again with `ml login`');
-        process.exit(1);
-      });
+      .subscribe(
+        lab => {
+          console.log(chalk.default.green.bold(`Pushed to ${environment.mlDomain}/editor/${lab.id}`));
+          process.exit();
+        },
+        e => {
+          console.error('Push failed. Try logging in again with `ml login`');
+          process.exit(1);
+        }
+      );
   });

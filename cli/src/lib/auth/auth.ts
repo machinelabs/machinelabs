@@ -8,8 +8,7 @@ import { catchError } from 'rxjs/operators/catchError';
 import { configstore } from '../../configstore';
 
 export const loginFromCache = () =>
-  fromPromise(firebase.auth().signInWithCustomToken(configstore.get('lastToken') || ''))
-  .pipe(
+  fromPromise(firebase.auth().signInWithCustomToken(configstore.get('lastToken') || '')).pipe(
     catchError(error => {
       console.error(chalk.default.red('Authentication failed. Try logging in again with `ml login`'));
       return _throw(error);
@@ -21,7 +20,8 @@ export const loginAndCache = (customToken: string) => {
   return loginFromCache();
 };
 
-export const logout = () => defer(() => {
-  configstore.delete('lastToken');
-  return fromPromise(firebase.auth().signOut());
-});
+export const logout = () =>
+  defer(() => {
+    configstore.delete('lastToken');
+    return fromPromise(firebase.auth().signOut());
+  });
