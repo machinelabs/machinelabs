@@ -4,7 +4,7 @@ const execSync = require('child_process').execSync;
 const spawnOptions = { stdio: 'inherit' };
 
 module.exports = (options = { displayErrors: false }) => {
-  return (cmd) => {
+  return cmd => {
     try {
       execSync(cmd, spawnOptions);
     } catch (e) {
@@ -12,5 +12,5 @@ module.exports = (options = { displayErrors: false }) => {
         console.log(chalk.red(e));
       }
     }
-  }
-}
+  };
+};

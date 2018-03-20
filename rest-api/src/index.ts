@@ -25,23 +25,27 @@ const getFileFromFs = (path: string) => fs.createReadStream(`./mock-bucket/${pat
 
 const getFileStream = isDebug ? getFileFromFs : getFileFromBucket;
 
-
 app.get('/version', (req: Request, res: Response) => {
-  res.status(200).send(`MachineLabs REST API v${version}`).end();
+  res
+    .status(200)
+    .send(`MachineLabs REST API v${version}`)
+    .end();
 });
 
 app.get('/404', (req: Request, res: Response) => {
-  res.status(404).send(`The requested file does not exist`).end();
+  res
+    .status(404)
+    .send(`The requested file does not exist`)
+    .end();
 });
 
 app.get('/executions/:eid/outputs/:oid', (req, res) => {
-
   const eid = req.params.eid;
   const oid = req.params.oid;
 
   res.setHeader('Content-Disposition', `attachment; filename=${oid}`);
 
-  let fileStream =  getFileStream(`/executions/${eid}/outputs/${oid}`);
+  const fileStream = getFileStream(`/executions/${eid}/outputs/${oid}`);
 
   // Theoretically we could return 404 directly instead of redirecting to 404.
   // However, it turns out that Chrome doesn't like it if we start responding
