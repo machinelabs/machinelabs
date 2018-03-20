@@ -22,7 +22,7 @@ matrix:
       before_install:
         - cd ./cli
       script: npm run ci
-    - stage: "server"
+    - stage: "@machinelabs/server"
       node_js: "8"
       before_install:
         - (cd ./shared && node build.js --install)
