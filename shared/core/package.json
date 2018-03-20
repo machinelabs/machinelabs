@@ -16,12 +16,12 @@
     "moduleFileExtensions": ["ts", "tsx", "js", "json"]
   },
   "scripts": {
-    "test": "./node_modules/jest/bin/jest.js",
+    "test": "jest",
     "lint:check": "tslint  -c ./tslint.json 'src/**/*.ts'",
     "lint:fix": "tslint --fix -c ./tslint.json 'src/**/*.ts'",
     "format:check": "prettier --list-different \"src/**/*{.ts,.js,.json}\"",
     "format:fix": "prettier --write \"src/**/*{.ts,.js,.json}\"",
-    "ci": "npm run tslint && npm run test"
+    "ci": "npm run lint:check && npm run format:check && npm run test"
   },
   "dependencies": {
     "@machinelabs/models": "link:../models",
