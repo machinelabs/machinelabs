@@ -20,9 +20,11 @@ export interface InvocationExecution {
 export interface InvocationWrapper {
   common: Invocation;
   server: {
-    [index: string]: {
-      timestamp: number
-    } | string;
-    id: string
+    [index: string]:
+      | {
+          timestamp: number;
+        }
+      | string;
+    id: string;
   };
 }

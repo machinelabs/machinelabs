@@ -5,9 +5,11 @@ export type getInvocationFn = (invocationId: string) => Promise<InvocationWrappe
 export type updateInvocationFn = (invocationWrapper: InvocationWrapper) => Promise<any>;
 
 export class InvocationProcessor {
-  constructor(private getInvocation: getInvocationFn,
-              private serverResolver: ServerResolver,
-              private updateInvocation: updateInvocationFn) {}
+  constructor(
+    private getInvocation: getInvocationFn,
+    private serverResolver: ServerResolver,
+    private updateInvocation: updateInvocationFn
+  ) {}
 
   process(invocationId: string) {
     console.log(`Processing invocation: ${invocationId}`);
@@ -18,16 +20,19 @@ export class InvocationProcessor {
     }
 
     return this.getInvocation(invocationId)
-               .then(invocationWrapper => this.serverResolver.getServer(invocationWrapper)
-                                                            .then(serverId => ({invocation: invocationWrapper, serverId: serverId })))
-               .then(val => {
-                 if (val && val.serverId) {
-                   this.setServer(val.invocation, val.serverId);
-                   return this.updateInvocation(val.invocation);
-                 }
+      .then(invocationWrapper =>
+        this.serverResolver
+          .getServer(invocationWrapper)
+          .then(serverId => ({ invocation: invocationWrapper, serverId: serverId }))
+      )
+      .then(val => {
+        if (val && val.serverId) {
+          this.setServer(val.invocation, val.serverId);
+          return this.updateInvocation(val.invocation);
+        }
 
-                 return val ? val.invocation : null;
-               });
+        return val ? val.invocation : null;
+      });
   }
 
   private setServer(invocationWrapper, serverId) {
@@ -39,4 +44,3 @@ export class InvocationProcessor {
     };
   }
 }
-

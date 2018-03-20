@@ -9,8 +9,10 @@
     "deploy": "npm run node_modules && npm run clean_dist && npm run mk_dist && npm run cp__node_modules && npm run cp__package && tsc && firebase deploy && npm run clean_dist",
     "clean_dist": "rm -rf ./dist",
     "mk_dist": "mkdir dist",
-    "tslint": "tslint -c tslint.json src/**/*.ts",
-    "tsfix": "tslint --fix -c tslint.json src/**/*.ts",
+    "lint:check": "tslint -c tslint.json 'src/**/*.ts'",
+    "lint:fix": "tslint --fix -c tslint.json 'src/**/*.ts'",
+    "format:check": "prettier --list-different \"./**/*{.ts,.js,.json}\"",
+    "format:fix": "prettier --write \"./**/*{.ts,.js,.json}\"",
     "test": "npm run tslint && jest"
   },
   "jest": {
@@ -18,16 +20,8 @@
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/dist/"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "json"
-    ]
+    "testPathIgnorePatterns": ["/node_modules/", "/dist/"],
+    "moduleFileExtensions": ["ts", "tsx", "js", "json"]
   },
   "dependencies": {
     "firebase-admin": "^4.1.2",
@@ -45,6 +39,7 @@
     "@types/jest": "^20.0.5",
     "@types/js-yaml": "^3.9.1",
     "jest": "^20.0.4",
+    "prettier": "^1.11.1",
     "ts-jest": "^20.0.7",
     "tslint": "^5.5.0",
     "typescript": "2.4.2"

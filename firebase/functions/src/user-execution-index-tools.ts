@@ -1,10 +1,10 @@
-
 import * as moment from 'moment';
 import * as merge from 'lodash.merge';
 import { pathify } from './util/pathify';
 
 function resetToBeginOfMonth(date) {
-  return date.date(1)
+  return date
+    .date(1)
     .hour(0)
     .minute(0)
     .second(0)
@@ -12,7 +12,6 @@ function resetToBeginOfMonth(date) {
 }
 
 export function appendEntryToMonthIndex(index, startDate, endDate, executionId) {
-
   startDate = moment.utc(startDate);
   endDate = moment.utc(endDate);
 
@@ -24,11 +23,11 @@ export function appendEntryToMonthIndex(index, startDate, endDate, executionId) 
     throw 'End date must be greater than start date.';
   }
 
-  let currentDate = startDate.clone();
+  const currentDate = startDate.clone();
 
   while (currentDate.isSameOrBefore(endDate)) {
-    let year = currentDate.year();
-    let month = currentDate.format('MMM');
+    const year = currentDate.year();
+    const month = currentDate.format('MMM');
     merge(index, { [year]: { [month]: { [executionId]: true } } });
 
     currentDate.add(1, 'month');
@@ -38,12 +37,11 @@ export function appendEntryToMonthIndex(index, startDate, endDate, executionId) 
 }
 
 export function updateUserExecutions(event, data, delta) {
-
-  let finalized = data.finished_at || data.stopped_at || data.failed_at;
+  const finalized = data.finished_at || data.stopped_at || data.failed_at;
 
   if (data.started_at && finalized) {
-    let userIdx = {};
-    let idx = {
+    const userIdx = {};
+    const idx = {
       idx: {
         user_executions: {
           [data.user_id]: userIdx
@@ -51,8 +49,7 @@ export function updateUserExecutions(event, data, delta) {
       }
     };
 
-    let finalizedAt = data.stopped_at ? data.stopped_at :
-                      data.failed_at ? data.failed_at : data.finished_at;
+    const finalizedAt = data.stopped_at ? data.stopped_at : data.failed_at ? data.failed_at : data.finished_at;
 
     appendEntryToMonthIndex(userIdx, data.started_at, finalizedAt, data.id);
     Object.assign(delta, pathify(idx));

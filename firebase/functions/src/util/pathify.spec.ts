@@ -3,22 +3,20 @@ import { pathify } from './pathify';
 
 describe('pathify', () => {
   it('should translate nested objects to paths', () => {
-
-    let input = {
-      '2012':
-      {
-        'Apr': {
+    const input = {
+      '2012': {
+        Apr: {
           '4711': true,
           '4712': true
         },
-        'May': {
+        May: {
           '4711': true,
           '4712': true
         }
       }
     };
 
-    let expected = {
+    const expected = {
       '/2012/Apr/4711': true,
       '/2012/Apr/4712': true,
       '/2012/May/4711': true,
