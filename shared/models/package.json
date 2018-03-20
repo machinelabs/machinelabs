@@ -9,31 +9,24 @@
     "transform": {
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
-    "transformIgnorePatterns": [
-      "/node_modules/(?!@machinelabs/models)/"
-    ],
+    "transformIgnorePatterns": ["/node_modules/(?!@machinelabs/models)/"],
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/dist/"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "json"
-    ]
+    "testPathIgnorePatterns": ["/node_modules/", "/dist/"],
+    "moduleFileExtensions": ["ts", "tsx", "js", "json"]
   },
   "scripts": {
     "test": "./node_modules/jest/bin/jest.js",
-    "tslint": "tslint  -c ./tslint.json './src/**/*.ts'",
-    "tsfix": "tslint --fix -c ./tslint.json './src/**/*.ts'",
+    "lint:check": "tslint  -c ./tslint.json 'src/**/*.ts'",
+    "lint:fix": "tslint --fix -c ./tslint.json 'src/**/*.ts'",
+    "format:check": "prettier --list-different \"src/**/*{.ts,.js,.json}\"",
+    "format:fix": "prettier --write \"src/**/*{.ts,.js,.json}\"",
     "ci": "npm run tslint && npm run test"
   },
   "dependencies": {
     "@types/node": "^8.0.19"
   },
   "devDependencies": {
+    "prettier": "^1.11.1",
     "tslint": "^5.6.0",
     "typescript": "^2.4.2"
   }
