@@ -13,40 +13,43 @@ import { LiveMetricsService } from '../live/live-metrics.service';
 const hoursToSeconds = (hours: number) => hours * 60 * 60;
 
 export class UsageStatisticService {
-
-  constructor(private costCalculator: CostCalculator,
-              private liveMetricsService: LiveMetricsService,
-              private db: DbRefBuilder) {
-
-  }
+  constructor(
+    private costCalculator: CostCalculator,
+    private liveMetricsService: LiveMetricsService,
+    private db: DbRefBuilder
+  ) {}
 
   getUsageStatisticForAllCurrentlyActiveUsers() {
     return this.liveMetricsService
-    .getLiveExecutionsRef()
-    .onceValue()
-    .pipe(
-      map(snapshot => snapshot.val()),
-      filter(val => !!val),
-      mergeMap(val => Object.keys(val)),
-      mergeMap(userId => {
-        return forkJoin(
-          this.db.userRef(userId).onceValue().pipe(map(snapshot => snapshot.val())),
-          this.getCostReportForCurrentMonth(userId)
-        )
-        .pipe(
-          map(([fullUser, costReport]) => this.calculateStatisticForPlan(fullUser.common.id, fullUser.plan.plan_id, costReport))
-        );
-      })
-    );
+      .getLiveExecutionsRef()
+      .onceValue()
+      .pipe(
+        map(snapshot => snapshot.val()),
+        filter(val => !!val),
+        mergeMap(val => Object.keys(val)),
+        mergeMap(userId => {
+          return forkJoin(
+            this.db
+              .userRef(userId)
+              .onceValue()
+              .pipe(map(snapshot => snapshot.val())),
+            this.getCostReportForCurrentMonth(userId)
+          ).pipe(
+            map(([fullUser, costReport]) =>
+              this.calculateStatisticForPlan(fullUser.common.id, fullUser.plan.plan_id, costReport)
+            )
+          );
+        })
+      );
   }
 
   getUsageStatisticForCurrentMonth(userId: string, planId: PlanId): Observable<UsageStatistic> {
-    let costReport$ = this.getCostReportForCurrentMonth(userId);
+    const costReport$ = this.getCostReportForCurrentMonth(userId);
     return this.calculateStatistic(userId, planId, costReport$);
   }
 
   getUsageStatistic(userId: string, planId: PlanId, year: number, month: ShortMonth): Observable<UsageStatistic> {
-    let costReport$ = this.getCostReport(userId, year, month);
+    const costReport$ = this.getCostReport(userId, year, month);
     return this.calculateStatistic(userId, planId, costReport$);
   }
 
@@ -55,31 +58,26 @@ export class UsageStatisticService {
   }
 
   getCostReport(userId: string, year: number, month: ShortMonth): Observable<CostReport> {
-        let executions$ = merge(
-          this.db.userExecutionsByMonthRef(userId, year, month).onceValue(),
-          this.db.userExecutionsLiveRef(userId).onceValue()
-        )
-        .pipe(
-          map(snapshot => snapshot.val()),
-          map(val => val ? Object.keys(val) : []),
-          mergeMap(executionIds => from(executionIds)
-            .pipe(
-              mergeMap(id => this.db.executionRef(id).onceValue())
-            )
-          ),
-          map(snapshot => snapshot.val()),
-          filter(execution => execution !== null)
-        );
+    const executions$ = merge(
+      this.db.userExecutionsByMonthRef(userId, year, month).onceValue(),
+      this.db.userExecutionsLiveRef(userId).onceValue()
+    ).pipe(
+      map(snapshot => snapshot.val()),
+      map(val => (val ? Object.keys(val) : [])),
+      mergeMap(executionIds => from(executionIds).pipe(mergeMap(id => this.db.executionRef(id).onceValue()))),
+      map(snapshot => snapshot.val()),
+      filter(execution => execution !== null)
+    );
 
-        return this.costCalculator.calc(executions$);
-      }
+    return this.costCalculator.calc(executions$);
+  }
 
   calculateStatistic(userId: string, planId: PlanId, costReport: Observable<CostReport>) {
     return costReport.pipe(map(report => this.calculateStatisticForPlan(userId, planId, report)));
   }
 
   calculateStatisticForPlan(userId: string, planId: PlanId, report: CostReport): UsageStatistic {
-    let credits = PlanCredits.get(planId);
+    const credits = PlanCredits.get(planId);
 
     if (!credits || !report) {
       return null;
