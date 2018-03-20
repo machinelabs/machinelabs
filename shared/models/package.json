@@ -15,12 +15,12 @@
     "moduleFileExtensions": ["ts", "tsx", "js", "json"]
   },
   "scripts": {
-    "test": "./node_modules/jest/bin/jest.js",
     "lint:check": "tslint  -c ./tslint.json 'src/**/*.ts'",
     "lint:fix": "tslint --fix -c ./tslint.json 'src/**/*.ts'",
     "format:check": "prettier --list-different \"src/**/*{.ts,.js,.json}\"",
     "format:fix": "prettier --write \"src/**/*{.ts,.js,.json}\"",
-    "ci": "npm run tslint && npm run test"
+    "test": "echo \"Error: no test specified\" && exit 0",
+    "ci": "npm run lint:check && npm run format:check"
   },
   "dependencies": {
     "@types/node": "^8.0.19"
