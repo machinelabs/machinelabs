@@ -14,32 +14,44 @@ export enum PlanId {
 }
 
 export const PlanCredits = new Map<string, Credits>([
-  [PlanId.None, {
-    gpuHoursPerMonth: 0,
-    cpuHoursPerMonth: 0,
-    maxFileUploads: 0,
-    maxUploadFileSizeMb: 0,
-    maxExecutionConcurrency: 0
-  }],
-  [PlanId.Admin, {
-    gpuHoursPerMonth: Number.POSITIVE_INFINITY,
-    cpuHoursPerMonth: Number.POSITIVE_INFINITY,
-    maxFileUploads: 20,
-    maxUploadFileSizeMb: 150,
-    maxExecutionConcurrency: 8
-  }],
-  [PlanId.Beta, {
-    gpuHoursPerMonth: 0,
-    cpuHoursPerMonth: 72,
-    maxFileUploads: 5,
-    maxUploadFileSizeMb: 20,
-    maxExecutionConcurrency: 2
-  }],
-  [PlanId.BetaBacker, {
-    gpuHoursPerMonth: 20,
-    cpuHoursPerMonth: 72,
-    maxFileUploads: 10,
-    maxUploadFileSizeMb: 100,
-    maxExecutionConcurrency: 2
-  }]
+  [
+    PlanId.None,
+    {
+      gpuHoursPerMonth: 0,
+      cpuHoursPerMonth: 0,
+      maxFileUploads: 0,
+      maxUploadFileSizeMb: 0,
+      maxExecutionConcurrency: 0
+    }
+  ],
+  [
+    PlanId.Admin,
+    {
+      gpuHoursPerMonth: Number.POSITIVE_INFINITY,
+      cpuHoursPerMonth: Number.POSITIVE_INFINITY,
+      maxFileUploads: 20,
+      maxUploadFileSizeMb: 150,
+      maxExecutionConcurrency: 8
+    }
+  ],
+  [
+    PlanId.Beta,
+    {
+      gpuHoursPerMonth: 0,
+      cpuHoursPerMonth: 72,
+      maxFileUploads: 5,
+      maxUploadFileSizeMb: 20,
+      maxExecutionConcurrency: 2
+    }
+  ],
+  [
+    PlanId.BetaBacker,
+    {
+      gpuHoursPerMonth: 20,
+      cpuHoursPerMonth: 72,
+      maxFileUploads: 10,
+      maxUploadFileSizeMb: 100,
+      maxExecutionConcurrency: 2
+    }
+  ]
 ]);
