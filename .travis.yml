@@ -28,11 +28,11 @@ matrix:
         - (cd ./shared && node build.js --install)
         - cd ./server
       script: npm run ci
-    - stage: "firebase functions"
+    - stage: "@machinelabs/firebase-functions"
       node_js: "8"
       before_install:
         - cd ./firebase/functions
-      script: npm run test
+      script: npm run ci
     - stage: "@machinelabs/core"
       node_js: "8"
       before_install:
