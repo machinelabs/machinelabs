@@ -13,8 +13,9 @@
     "build:personal": "ncp ./src/environments/environment.personal.ts ./src/environments/environment.ts && tsc",
     "lint:check": "tslint -c ./tslint.json 'src/**/*.ts'",
     "lint:fix": "tslint --fix -c ./tslint.json 'src/**/*.ts'",
-    "format:check": "prettier --list-different \"./**/*{.ts,.js,.json}\"",
-    "format:fix": "prettier --write \"./**/*{.ts,.js,.json}\"",
+    "format:base": "prettier --config ../.prettierrc --ignore-path ../.prettierignore '**/*{.ts,.js,.json}'",
+    "format:check": "npm run format:base -- --list-different",
+    "format:fix": "npm run format:base -- --write",
     "shared": "(cd ../shared && node build.js --install)",
     "ci": "npm run lint:check && npm run format:check && npm run shared && npm run build:production"
   },

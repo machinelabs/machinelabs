@@ -10,8 +10,9 @@
     "mla": "node ./dist/index.js",
     "lint:check": "tslint -c ./tslint.json \"{commands,config-templates,lib}/**/*.ts\"",
     "lint:fix": "tslint --fix -c ./tslint.json \"{commands,config-templates,lib}/**/*.ts\"",
-    "format:check": "prettier --list-different \"./**/*{.ts,.js,.json}\"",
-    "format:fix": "prettier --write \"./**/*{.ts,.js,.json}\"",
+    "format:base": "prettier --config ../.prettierrc --ignore-path ../.prettierignore '**/*{.ts,.js,.json}'",
+    "format:check": "npm run format:base -- --list-different",
+    "format:fix": "npm run format:base -- --write",
     "ci": "npm run lint:check && npm run format:check && npm run build"
   },
   "dependencies": {
