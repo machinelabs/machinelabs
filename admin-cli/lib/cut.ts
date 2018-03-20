@@ -12,6 +12,7 @@ import { failWith } from './fail-with';
 import { generateChangelog } from './generate-changelog';
 
 import { finalize } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
 
 let execute = factory({displayErrors: true});
 
