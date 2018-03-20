@@ -9,37 +9,33 @@ import { Invocation, InvocationType, HardwareType } from '@machinelabs/models';
 import { DockerExecutable } from './docker-availability-lookup';
 
 describe('.run(lab)', () => {
+  it('should create container, execute code and invoke uploader', done => {
+    const containerId = 'awesome-id';
+    const spawn = jest
+      .fn()
+      .mockReturnValueOnce(stdout(containerId))
+      .mockReturnValue(stdout('execution output'));
 
-  it('should create container, execute code and invoke uploader', (done) => {
+    const spawnShell = jest.fn().mockReturnValue(stdout('spawnshell output'));
 
-    let containerId = 'awesome-id';
-    let spawn = jest.fn()
-                    .mockReturnValueOnce(stdout(containerId))
-                    .mockReturnValue(stdout('execution output'));
-
-    let spawnShell = jest.fn()
-                         .mockReturnValue(stdout('spawnshell output'));
-
-    let uploader: any = {
+    const uploader: any = {
       handleUpload: jest.fn().mockReturnValue(stdout('uploader output'))
     };
 
-    let downloader: any = {
+    const downloader: any = {
       fetch: jest.fn().mockReturnValue(stdout('downloader output'))
     };
 
-
-    let config = new DockerRunnerConfig();
+    const config = new DockerRunnerConfig();
     config.dockerExecutable = DockerExecutable.Docker;
     config.maxKernelMemoryKb = 1024;
     config.spawn = spawn;
     config.spawnShell = spawnShell;
     config.uploader = uploader;
     config.downloader = downloader;
-    let runner = new DockerRunner(config);
+    const runner = new DockerRunner(config);
 
-
-    let inv: Invocation = {
+    const inv: Invocation = {
       id: '4711',
       timestamp: Date.now(),
       user_id: 'me',
@@ -54,7 +50,7 @@ describe('.run(lab)', () => {
       }
     };
 
-    let conf: InternalLabConfiguration = {
+    const conf: InternalLabConfiguration = {
       maxFileUploads: 5,
       maxUploadFileSizeMb: 20,
       imageWithDigest: 'bar',
@@ -62,15 +58,13 @@ describe('.run(lab)', () => {
       inputs: [],
       mountPoints: [],
       errors: [],
-      parameters: [
-        { 'pass-as': '--learning_rate=5' },
-        { 'pass-as': '--max_steps=200' }
-      ]
+      parameters: [{ 'pass-as': '--learning_rate=5' }, { 'pass-as': '--max_steps=200' }]
     };
 
-    let outgoingMessages: Array<ProcessStreamData> = [];
+    const outgoingMessages: Array<ProcessStreamData> = [];
 
-    runner.run(inv, conf)
+    runner
+      .run(inv, conf)
       .pipe(
         tap(msg => outgoingMessages.push(msg)),
         tap(_ => expect(runner.count()).toBe(1)),
@@ -84,43 +78,44 @@ describe('.run(lab)', () => {
         expect(outgoingMessages[0]).toEqual(stdoutMsg('downloader output'));
         expect(outgoingMessages[1]).toEqual(stdoutMsg('execution output'));
         expect(outgoingMessages[2]).toEqual(stdoutMsg('uploader output'));
-        expect(spawn.mock.calls[0]).toEqual(['docker', [
-          'create',
-          '--cap-drop=ALL',
-          '--kernel-memory=1024k',
-          '--security-opt=no-new-privileges',
-          '-t',
-          '--read-only',
-          '--tmpfs',
-          '/run:rw,size=5g,mode=1777',
-          '--tmpfs',
-          '/tmp:rw,size=1g,mode=1777',
-          '-v',
-          '/tmp/4711:/lab:ro',
-          '--name',
-          '4711',
-          'bar',
-          '/bin/bash']
+        expect(spawn.mock.calls[0]).toEqual([
+          'docker',
+          [
+            'create',
+            '--cap-drop=ALL',
+            '--kernel-memory=1024k',
+            '--security-opt=no-new-privileges',
+            '-t',
+            '--read-only',
+            '--tmpfs',
+            '/run:rw,size=5g,mode=1777',
+            '--tmpfs',
+            '/tmp:rw,size=1g,mode=1777',
+            '-v',
+            '/tmp/4711:/lab:ro',
+            '--name',
+            '4711',
+            'bar',
+            '/bin/bash'
+          ]
         ]);
-        expect(spawn.mock.calls[1]).toEqual(['docker', [
-          'exec',
-          '-t',
-          'awesome-id',
-          '/bin/bash',
-          '-c',
-          'cp -R /lab/* /run']
+        expect(spawn.mock.calls[1]).toEqual([
+          'docker',
+          ['exec', '-t', 'awesome-id', '/bin/bash', '-c', 'cp -R /lab/* /run']
         ]);
-        expect(spawn.mock.calls[2]).toEqual(['docker', [
-          'exec',
-          '-t',
-          containerId,
-          '/bin/bash',
-          '-c',
-          `mkdir /run/outputs && cd /run && python main.py --learning_rate=5 --max_steps=200`]
+        expect(spawn.mock.calls[2]).toEqual([
+          'docker',
+          [
+            'exec',
+            '-t',
+            containerId,
+            '/bin/bash',
+            '-c',
+            `mkdir /run/outputs && cd /run && python main.py --learning_rate=5 --max_steps=200`
+          ]
         ]);
         expect(uploader.handleUpload.mock.calls.length).toBe(1);
         done();
       });
   });
-
 });

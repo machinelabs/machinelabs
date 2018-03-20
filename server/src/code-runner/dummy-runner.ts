@@ -12,9 +12,7 @@ export class DummyRunner implements CodeRunner {
     return spawn(`ping`, ['-c10', 'machinelabs.ai']);
   }
 
-  stop(id: string) {
-
-  }
+  stop(id: string) {}
 
   count() {
     return 0;

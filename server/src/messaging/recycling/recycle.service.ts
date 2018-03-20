@@ -17,10 +17,13 @@ export class RecycleService {
   constructor(private config: RecycleConfig) {}
 
   watch(executionId: string, messages: Observable<ExecutionMessage>) {
-    return messages
-      .pipe(
-        mergeScan((acc: RecycleAccumulator, message: ExecutionMessage) => acc.pass(acc, message), new RecycleAccumulator(executionId, this.config), 1),
-        map(val => val.message)
-      );
+    return messages.pipe(
+      mergeScan(
+        (acc: RecycleAccumulator, message: ExecutionMessage) => acc.pass(acc, message),
+        new RecycleAccumulator(executionId, this.config),
+        1
+      ),
+      map(val => val.message)
+    );
   }
 }

@@ -4,59 +4,45 @@ import { spawnShell } from '@machinelabs/core';
 import { stdout, stderr } from '@machinelabs/core';
 
 describe('.hasDocker', () => {
+  it('should propagate correct numbers if spawn succeeds', done => {
+    const spawnFn = jest.fn(arg => stdout('8388608'));
 
-  it('should propagate correct numbers if spawn succeeds', (done) => {
-
-    let spawnFn = jest.fn(arg => stdout('8388608'));
-
-    let expected = {
+    const expected = {
       maxKernelMemoryKb: 6291456,
       reservedKernelMemoryKb: RESERVED_KERNEL_MEMORY,
       totalMemoryKb: 8388608
     };
 
-    let lookup = new DockerMemoryLookup(spawnFn);
+    const lookup = new DockerMemoryLookup(spawnFn);
     expect.assertions(1);
-    lookup.getMemoryStats()
-          .subscribe(exists => expect(exists).toEqual(expected),
-                      null,
-                     () => done());
+    lookup.getMemoryStats().subscribe(exists => expect(exists).toEqual(expected), null, () => done());
   });
 
-  it('should propagate zero memory if spawn fails', (done) => {
+  it('should propagate zero memory if spawn fails', done => {
+    const spawnFn = jest.fn(arg => stderr('meh'));
 
-    let spawnFn = jest.fn(arg => stderr('meh'));
-
-    let expected = {
+    const expected = {
       maxKernelMemoryKb: 0,
       reservedKernelMemoryKb: RESERVED_KERNEL_MEMORY,
       totalMemoryKb: 0
     };
 
-    let lookup = new DockerMemoryLookup(spawnFn);
+    const lookup = new DockerMemoryLookup(spawnFn);
     expect.assertions(1);
-    lookup.getMemoryStats()
-          .subscribe(exists => expect(exists).toEqual(expected),
-                      null,
-                     () => done());
+    lookup.getMemoryStats().subscribe(exists => expect(exists).toEqual(expected), null, () => done());
   });
 
-  it('should propagate zero memory if output is not a number', (done) => {
+  it('should propagate zero memory if output is not a number', done => {
+    const spawnFn = jest.fn(arg => stdout('meh'));
 
-    let spawnFn = jest.fn(arg => stdout('meh'));
-
-    let expected = {
+    const expected = {
       maxKernelMemoryKb: 0,
       reservedKernelMemoryKb: RESERVED_KERNEL_MEMORY,
       totalMemoryKb: 0
     };
 
-    let lookup = new DockerMemoryLookup(spawnFn);
+    const lookup = new DockerMemoryLookup(spawnFn);
     expect.assertions(1);
-    lookup.getMemoryStats()
-          .subscribe(exists => expect(exists).toEqual(expected),
-                      null,
-                     () => done());
+    lookup.getMemoryStats().subscribe(exists => expect(exists).toEqual(expected), null, () => done());
   });
-
 });

@@ -12,26 +12,26 @@ export enum DockerExecutable {
 export class DockerAvailabilityLookup {
   constructor(private spawn: SpawnFn) {}
 
-  hasDocker () {
+  hasDocker() {
     return this.doesNotFail('docker');
   }
 
-  hasNvidiaDocker () {
+  hasNvidiaDocker() {
     return this.doesNotFail('nvidia-docker');
   }
 
   getExecutable() {
-    return forkJoin(this.hasDocker(), this.hasNvidiaDocker())
-      .pipe(
-        map(([hasDocker, hasNvidiaDocker]) => (hasNvidiaDocker && hasDocker) ? DockerExecutable.NvidiaDocker :
-                                              hasDocker ? DockerExecutable.Docker : DockerExecutable.None)
-      );
+    return forkJoin(this.hasDocker(), this.hasNvidiaDocker()).pipe(
+      map(
+        ([hasDocker, hasNvidiaDocker]) =>
+          hasNvidiaDocker && hasDocker
+            ? DockerExecutable.NvidiaDocker
+            : hasDocker ? DockerExecutable.Docker : DockerExecutable.None
+      )
+    );
   }
 
-  private doesNotFail (cmd: string) {
-    return this.spawn(cmd, ['-v'])
-      .pipe(
-        map(val => val.origin === OutputType.Stderr ? false : true)
-      );
+  private doesNotFail(cmd: string) {
+    return this.spawn(cmd, ['-v']).pipe(map(val => (val.origin === OutputType.Stderr ? false : true)));
   }
 }

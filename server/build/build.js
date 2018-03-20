@@ -1,5 +1,5 @@
 const executeFactory = require('./lib/execute');
-const execute = executeFactory({displayErrors: true});
+const execute = executeFactory({ displayErrors: true });
 const copyConfig = require('./tasks/copy-config');
 const execSync = require('child_process').execSync;
 
@@ -7,7 +7,7 @@ const setRootDir = () => {
   process.chdir(__dirname);
   // We are going one directory up to be in ./server
   process.chdir('../');
-}
+};
 
 let skipShared = process.argv.includes('--skip-shared');
 
@@ -21,4 +21,3 @@ if (!skipShared) {
   console.log('--skip-shared used. Not building shared libs.');
 }
 execute('./node_modules/typescript/bin/tsc');
-

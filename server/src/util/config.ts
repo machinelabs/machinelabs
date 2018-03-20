@@ -9,7 +9,7 @@ export class Config {
 
   static readonly ENV_SLACK_TOKEN = 'MACHINELABS_SLACK_TOKEN';
 
-  static getEnv (name: string) {
+  static getEnv(name: string) {
     if (!process.env[name]) {
       console.log(`UNABLE TO LOCATE ENVIRONMENT VARIABLE: ${name}`);
       throw new Error(`Unable to locate environment variable: ${name}`);

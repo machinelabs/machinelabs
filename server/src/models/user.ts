@@ -9,8 +9,8 @@ export interface UserPlan {
 
 export interface User {
   id: string;
-  displayName: string|null;
-  email: string|null;
+  displayName: string | null;
+  email: string | null;
   isAnonymous: boolean;
-  photoUrl: string|null;
+  photoUrl: string | null;
 }

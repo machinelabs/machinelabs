@@ -38,23 +38,18 @@ export interface ValidatedMounts {
 }
 
 export class MountService {
-
-  constructor (private rootMountPath: string,
-               private db: DbRefBuilder) {}
+  constructor(private rootMountPath: string, private db: DbRefBuilder) {}
 
   getMount(userId: string, mount: string): Observable<Mount> {
-    return this.db.mountRef(userId, mount)
-                  .onceValue()
-                  .pipe(
-                    map(snapshot => snapshot.val())
-                  );
+    return this.db
+      .mountRef(userId, mount)
+      .onceValue()
+      .pipe(map(snapshot => snapshot.val()));
   }
 
   getMountFromOption(mountOption: ParsedMountOption): Observable<Mount> {
-    return mountOption ? this.getMount(mountOption.fragments.user, mountOption.fragments.mount) :
-                         of(null);
+    return mountOption ? this.getMount(mountOption.fragments.user, mountOption.fragments.mount) : of(null);
   }
-
 
   userCanAccessMount(userId: string, mount: Mount) {
     return mount && (mount.userId === userId || !mount.private);
@@ -62,15 +57,14 @@ export class MountService {
 
   parseMountOption(mountOption: MountOption): ParsedMountOption {
     if (mountOption && isString(mountOption.path)) {
-
-      let fragements = trimStart(mountOption.path, '/').split('/');
+      const fragements = trimStart(mountOption.path, '/').split('/');
 
       if (fragements.length == 2) {
         return {
           fragments: {
             user: fragements[0],
             mount: fragements[1],
-            version: null,
+            version: null
           },
           name: mountOption.name
         };
@@ -79,7 +73,7 @@ export class MountService {
           fragments: {
             user: fragements[0],
             mount: fragements[1],
-            version: fragements[2],
+            version: fragements[2]
           },
           name: mountOption.name
         };
@@ -89,15 +83,17 @@ export class MountService {
     return null;
   }
 
-  toMountPoint (option: ParsedMountOption) {
+  toMountPoint(option: ParsedMountOption) {
     return {
-      source: `${this.rootMountPath}/mounts/${option.fragments.user}/${option.fragments.mount}/${option.fragments.version}`,
+      source: `${this.rootMountPath}/mounts/${option.fragments.user}/${option.fragments.mount}/${
+        option.fragments.version
+      }`,
       destination: `${CONTAINER_MOUNT_PREFIX}/${option.name}`
     };
   }
 
   validateMounts(userId: string, requestedMounts: Array<MountOption>): Observable<ValidatedMounts> {
-    let parsedMounts = requestedMounts.map(mount => this.parseMountOption(mount));
+    const parsedMounts = requestedMounts.map(mount => this.parseMountOption(mount));
 
     if (!requestedMounts.length) {
       return of({
@@ -108,37 +104,36 @@ export class MountService {
       });
     }
 
-    let mounts$ = parsedMounts.map(parsedOption => this.getMountFromOption(parsedOption));
+    const mounts$ = parsedMounts.map(parsedOption => this.getMountFromOption(parsedOption));
 
-    return forkJoin(mounts$)
-      .pipe(
-        map(mounts => {
-
-            let validated = mounts.map((mount, index) => this.toValidatedMount(userId, requestedMounts[index], parsedMounts[index], mount));
-            let mountPoints = validated.map(val => val.mountPoint);
-            let parsed = parsedMounts;
-            let errors = flatMap(validated, val => val.errors);
-            let hasErrors = errors.length === 0;
-
-            return {
-              validated: validated,
-              mountPoints: mountPoints,
-              errors: errors,
-              hasErrors: hasErrors
-            };
-          })
+    return forkJoin(mounts$).pipe(
+      map(mounts => {
+        const validated = mounts.map((mount, index) =>
+          this.toValidatedMount(userId, requestedMounts[index], parsedMounts[index], mount)
         );
+        const mountPoints = validated.map(val => val.mountPoint);
+        const parsed = parsedMounts;
+        const errors = flatMap(validated, val => val.errors);
+        const hasErrors = errors.length === 0;
+
+        return {
+          validated: validated,
+          mountPoints: mountPoints,
+          errors: errors,
+          hasErrors: hasErrors
+        };
+      })
+    );
   }
 
   toValidatedMount(userId: string, requested: MountOption, parsed: ParsedMountOption, mount: Mount): ValidatedMount {
-
     parsed.fragments.version = parsed.fragments.version === null ? mount.latest_version : parsed.fragments.version;
 
-    let exists = !!mount;
-    let versionExists = mount && ((parsed.fragments.version) in mount.versions);
-    let accessible = this.userCanAccessMount(userId, mount);
-    let validName = validFilename(requested.name);
-    let errors = [];
+    const exists = !!mount;
+    const versionExists = mount && parsed.fragments.version in mount.versions;
+    const accessible = this.userCanAccessMount(userId, mount);
+    const validName = validFilename(requested.name);
+    const errors = [];
 
     if (!exists) {
       errors.push(`Can not mount ${requested.path}. Mount does not exist.`);

@@ -2,7 +2,7 @@ import { ExecutionMessage } from '../../models/execution';
 import isNumber = require('lodash.isnumber');
 
 export interface ForeEachable {
-  forEach(fn: (val: any) => boolean| void): void;
+  forEach(fn: (val: any) => boolean | void): void;
 }
 
 export interface RecycleCmdInfo {
@@ -14,14 +14,14 @@ export interface RecycleCmdInfo {
 }
 
 export function recycleCmdFactory(executionId: string, msgs: ForeEachable, deleteCount: number): RecycleCmdInfo {
-  let cmd = {};
+  const cmd = {};
 
   let index = 0;
   let removeCount = 0;
   let patchCount = 0;
 
   msgs.forEach(snapshot => {
-    let msg = snapshot.val();
+    const msg = snapshot.val();
     if (index + 1 <= deleteCount) {
       cmd[`/executions/${executionId}/messages/${msg.id}`] = null;
       removeCount++;

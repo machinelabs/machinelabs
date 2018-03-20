@@ -9,29 +9,29 @@ import { forkJoin } from 'rxjs/observable/forkJoin';
 import { ExtendedUser } from '../../models/user';
 
 export class WithinConcurrencyLimit implements ValidationRule {
-
   check(invocation: Invocation, resolves: Map<Function, Observable<any>>): Observable<ValidationResult> {
-
     if (!resolves.has(UserResolver)) {
       throw new Error('Missing resolver: UserResolver');
     }
 
     return forkJoin(
-        resolves.get(UserResolver),
-        dbRefBuilder.userExecutionsLiveRef(invocation.user_id).onceValue()
-      )
-      .pipe(
-        map(([user, liveSnapshot]) => {
-          let extendedUser: ExtendedUser = user;
-          let liveEntries = liveSnapshot.val();
-          let plan = PlanCredits.get(extendedUser.plan.plan_id);
+      resolves.get(UserResolver),
+      dbRefBuilder.userExecutionsLiveRef(invocation.user_id).onceValue()
+    ).pipe(
+      map(([user, liveSnapshot]) => {
+        const extendedUser: ExtendedUser = user;
+        const liveEntries = liveSnapshot.val();
+        const plan = PlanCredits.get(extendedUser.plan.plan_id);
 
-          let runningExecutionCount = Object.keys(liveEntries || {}).length;
+        const runningExecutionCount = Object.keys(liveEntries || {}).length;
 
-          return runningExecutionCount >= plan.maxExecutionConcurrency ?
-            new ExecutionRejectionInfo(ExecutionRejectionReason.ExceedsMaximumConcurrency, 'User has too many parallel executions') :
-            true;
-        })
-      );
+        return runningExecutionCount >= plan.maxExecutionConcurrency
+          ? new ExecutionRejectionInfo(
+              ExecutionRejectionReason.ExceedsMaximumConcurrency,
+              'User has too many parallel executions'
+            )
+          : true;
+      })
+    );
   }
 }

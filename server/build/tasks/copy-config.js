@@ -7,13 +7,13 @@ const environmentConfigPath = `./src/environments/`;
 const personalEnvironmentConfigPath = `./src/environments/personal/`;
 const environmentActiveConfigName = 'environment.ts';
 
-const execute = executeFactory({displayErrors: true});
+const execute = executeFactory({ displayErrors: true });
 
 function getFilePath(envConfigPath, envName) {
-  return `${envConfigPath}environment.${envName}.ts`
+  return `${envConfigPath}environment.${envName}.ts`;
 }
 
-module.exports = function () {
+module.exports = function() {
   let isRegularConfig = fs.existsSync(getFilePath(environmentConfigPath, argv.env));
   let isPersonalConfig = fs.existsSync(getFilePath(personalEnvironmentConfigPath, argv.env));
 
@@ -25,12 +25,12 @@ module.exports = function () {
     throw new Error('Could not locate env file');
   }
 
-  let filePath = isPersonalConfig ? 
-                    getFilePath(personalEnvironmentConfigPath, argv.env) : 
-                    getFilePath(environmentConfigPath, argv.env);
+  let filePath = isPersonalConfig
+    ? getFilePath(personalEnvironmentConfigPath, argv.env)
+    : getFilePath(environmentConfigPath, argv.env);
 
   let cmd = `cp ${filePath} ${environmentConfigPath}${environmentActiveConfigName}`;
 
   console.log(cmd);
   execute(cmd);
-}
+};

@@ -20,36 +20,32 @@ import { RecycleService } from './recycling/recycle.service';
 const MAX_MESSAGES_COUNT = 10000;
 
 export class MessagingService {
-
   server: Server;
 
-  constructor(private startValidationService: ValidationService,
-              private stopValidationService: ValidationService,
-              private recycleService: RecycleService,
-              private codeRunner: CodeRunner) {
-  }
+  constructor(
+    private startValidationService: ValidationService,
+    private stopValidationService: ValidationService,
+    private recycleService: RecycleService,
+    private codeRunner: CodeRunner
+  ) {}
 
   init() {
-
-    dbRefBuilder.serverRef(environment.serverId).onceValue()
-      .pipe(
-        map(snapshot => snapshot.val())
-      )
+    dbRefBuilder
+      .serverRef(environment.serverId)
+      .onceValue()
+      .pipe(map(snapshot => snapshot.val()))
       .subscribe(server => {
         this.server = server;
         this.initMessaging();
       });
   }
 
-  initMessaging () {
-
+  initMessaging() {
     // Share one subscription to all incoming messages
-    let newInvocations$ = dbRefBuilder.newInvocationsForServerRef(this.server.id)
-                                .childAdded()
-                                .pipe(
-                                  map(snapshot => snapshot.val().common),
-                                  share()
-                                );
+    const newInvocations$ = dbRefBuilder
+      .newInvocationsForServerRef(this.server.id)
+      .childAdded()
+      .pipe(map(snapshot => snapshot.val().common), share());
 
     // Invoke new processes for incoming StartExecution Invocations
     newInvocations$
@@ -61,22 +57,22 @@ export class MessagingService {
         })
       )
       .subscribe((invocation: Invocation) => {
-
         this.getOutputAsObservable(invocation)
-            .pipe(
-              mergeMap(data => this.handleOutput(data.message, data.invocation))
-            )
-            .subscribe(null, (error) => {
+          .pipe(mergeMap(data => this.handleOutput(data.message, data.invocation)))
+          .subscribe(
+            null,
+            error => {
               console.error(`Message processing of execution ${invocation.id} ended unexpectedly at ${Date.now()}`);
               console.error(error);
               console.log(`Stopping execution ${invocation.id} now`);
               this.codeRunner.stop(invocation.id);
               this.completeExecution(invocation.id, ExecutionStatus.Failed);
-            }, () => {
+            },
+            () => {
               console.log(`Message stream completed for execution ${invocation.id} at ${Date.now()}`);
-            });
+            }
+          );
       });
-
 
     newInvocations$
       .pipe(
@@ -84,13 +80,13 @@ export class MessagingService {
         mergeMap(invocation => this.stopValidationService.validate(invocation))
       )
       .subscribe(validationContext => {
-          let execution: Execution = validationContext.resolved.get(ExecutionResolver);
-          if (validationContext.isApproved() && execution) {
-            this.completeExecution(execution.id, ExecutionStatus.Stopped);
-            this.codeRunner.stop(execution.id);
-          } else {
-            console.log('Request to stop invocation was invalid');
-          }
+        const execution: Execution = validationContext.resolved.get(ExecutionResolver);
+        if (validationContext.isApproved() && execution) {
+          this.completeExecution(execution.id, ExecutionStatus.Stopped);
+          this.codeRunner.stop(execution.id);
+        } else {
+          console.log('Request to stop invocation was invalid');
+        }
       });
   }
 
@@ -98,57 +94,55 @@ export class MessagingService {
    * Take a run and observe the output. The run maybe cached or rejected
    * but it is guaranteed to get some message back.
    */
-  getOutputAsObservable(invocation: Invocation): Observable<{message: ExecutionMessage, invocation: Invocation}> {
+  getOutputAsObservable(invocation: Invocation): Observable<{ message: ExecutionMessage; invocation: Invocation }> {
     console.log(`Starting new run ${invocation.id}`);
 
     // check if we have existing output for the requested run
-    let hash = Crypto.getCacheHash(invocation.data);
+    const hash = Crypto.getCacheHash(invocation.data);
     // otherwise, try to get approval
-    return this.startValidationService
-      .validate(invocation)
-      .pipe(
-        switchMap(validationContext => {
-          if (validationContext.isApproved() && validationContext.resolved.get(LabConfigResolver)) {
-            // if we get the approval, create the meta data
-            this.createExecutionAndUpdateLabs(invocation, hash);
-            // and execute the code
-            let config = validationContext.resolved.get(LabConfigResolver);
+    return this.startValidationService.validate(invocation).pipe(
+      switchMap(validationContext => {
+        if (validationContext.isApproved() && validationContext.resolved.get(LabConfigResolver)) {
+          // if we get the approval, create the meta data
+          this.createExecutionAndUpdateLabs(invocation, hash);
+          // and execute the code
+          const config = validationContext.resolved.get(LabConfigResolver);
 
-            return this.codeRunner
-              .run(invocation, config)
-              .pipe(
-                map(data => this.processStreamDataToExecutionMessage(data)),
-                startWith(<ExecutionMessage>{
-                  kind: MessageKind.ExecutionStarted,
-                  data: '\r\nExecution started... (this might take a little while)\r\n'
-                }),
-                concat(of(<ExecutionMessage>{
-                  kind: MessageKind.ExecutionFinished,
-                  data: ''
-                })),
-                tap(msg => {
-                  if (msg.kind === MessageKind.ExecutionFinished) {
-                    this.completeExecution(invocation.id);
-                  }
-                }),
-                msgs => this.recycleService.watch(invocation.id, msgs)
-              );
-          }
+          return this.codeRunner.run(invocation, config).pipe(
+            map(data => this.processStreamDataToExecutionMessage(data)),
+            startWith(<ExecutionMessage>{
+              kind: MessageKind.ExecutionStarted,
+              data: '\r\nExecution started... (this might take a little while)\r\n'
+            }),
+            concat(
+              of(<ExecutionMessage>{
+                kind: MessageKind.ExecutionFinished,
+                data: ''
+              })
+            ),
+            tap(msg => {
+              if (msg.kind === MessageKind.ExecutionFinished) {
+                this.completeExecution(invocation.id);
+              }
+            }),
+            msgs => this.recycleService.watch(invocation.id, msgs)
+          );
+        }
 
-          // if we don't get an approval, reject it
-          return of(<ExecutionMessage>{
-            kind: MessageKind.ExecutionRejected,
-            data: validationContext.validationResult,
-            index: 0,
-            virtual_index: 0
-          });
-        }),
-        map(msg => {
-          msg.terminal_mode = true;
-          return msg;
-        }),
-        map(message => ({ message, invocation }))
-      );
+        // if we don't get an approval, reject it
+        return of(<ExecutionMessage>{
+          kind: MessageKind.ExecutionRejected,
+          data: validationContext.validationResult,
+          index: 0,
+          virtual_index: 0
+        });
+      }),
+      map(msg => {
+        msg.terminal_mode = true;
+        return msg;
+      }),
+      map(message => ({ message, invocation }))
+    );
   }
 
   handleOutput(message: ExecutionMessage, invocation: Invocation) {
@@ -168,12 +162,12 @@ export class MessagingService {
   }
 
   createExecutionAndUpdateLabs(invocation: Invocation, hash: string) {
-
     const lab = Object.assign({}, invocation.data, {
       directory: JSON.stringify(invocation.data.directory)
     });
 
-    dbRefBuilder.executionRef(invocation.id)
+    dbRefBuilder
+      .executionRef(invocation.id)
       .set({
         id: invocation.id,
         cache_hash: hash,
@@ -195,41 +189,42 @@ export class MessagingService {
   }
 
   completeExecution(executionId: string, status = ExecutionStatus.Finished) {
+    dbRefBuilder
+      .executionRef(executionId)
+      .onceValue()
+      .pipe(
+        map(snapshot => snapshot.val()),
+        switchMap(execution => {
+          const executing = execution && execution.status === ExecutionStatus.Executing;
 
-    dbRefBuilder.executionRef(executionId).onceValue()
-                .pipe(
-                  map(snapshot => snapshot.val()),
-                  switchMap(execution => {
-                    let executing = execution && execution.status === ExecutionStatus.Executing;
+          const delta = {};
 
-                    let delta = {};
+          if (status === ExecutionStatus.Finished) {
+            delta['finished_at'] = firebase.database.ServerValue.TIMESTAMP;
+          }
 
-                    if (status === ExecutionStatus.Finished) {
-                      delta['finished_at'] = firebase.database.ServerValue.TIMESTAMP;
-                    }
+          if (status === ExecutionStatus.Failed) {
+            delta['failed_at'] = firebase.database.ServerValue.TIMESTAMP;
+          }
 
-                    if (status === ExecutionStatus.Failed) {
-                      delta['failed_at'] = firebase.database.ServerValue.TIMESTAMP;
-                    }
+          if (status === ExecutionStatus.Stopped) {
+            delta['stopped_at'] = firebase.database.ServerValue.TIMESTAMP;
+          }
 
-                    if (status === ExecutionStatus.Stopped) {
-                      delta['stopped_at'] = firebase.database.ServerValue.TIMESTAMP;
-                    }
+          // We want to change the status only if it is still `executing`.
+          // If not, it is finalized already and the state shouldn't change.
+          if (executing) {
+            delta['status'] = status;
+          }
 
-                    // We want to change the status only if it is still `executing`.
-                    // If not, it is finalized already and the state shouldn't change.
-                    if (executing) {
-                      delta['status'] = status;
-                    }
-
-                    return dbRefBuilder.executionRef(executionId).update(delta);
-                  }),
-                  catchError(err => {
-                    console.error(`Failed to complete execution ${executionId} to state ${status}`);
-                    return empty();
-                  })
-                )
-                .subscribe();
+          return dbRefBuilder.executionRef(executionId).update(delta);
+        }),
+        catchError(err => {
+          console.error(`Failed to complete execution ${executionId} to state ${status}`);
+          return empty();
+        })
+      )
+      .subscribe();
   }
 
   processStreamDataToExecutionMessage(data: ProcessStreamData): ExecutionMessage {
@@ -241,7 +236,7 @@ export class MessagingService {
   }
 
   writeExecutionMessage(data: ExecutionMessage, run: Invocation) {
-    let id = db.ref().push().key;
+    const id = db.ref().push().key;
     data.id = id;
     data.timestamp = firebase.database.ServerValue.TIMESTAMP;
     return dbRefBuilder

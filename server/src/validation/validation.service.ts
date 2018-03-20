@@ -11,7 +11,6 @@ import { shareReplay } from 'rxjs/operators/shareReplay';
 export type ResolvedMap = Map<Function, any>;
 
 export class ValidationService {
-
   private rules: Array<ValidationRule> = [];
   private resolver = new Map<Function, Resolver>();
   private transformers: Array<(val: ResolvedMap) => void> = [];
@@ -32,31 +31,28 @@ export class ValidationService {
   }
 
   validate(invocation: Invocation): Observable<ValidationContext> {
-
-    let resolves = new Map<Function, Observable<any>>();
-    let resolved = new Map<Function, any>();
+    const resolves = new Map<Function, Observable<any>>();
+    const resolved = new Map<Function, any>();
 
     this.resolver.forEach((val, key) => {
-      resolves.set(key, val.resolve(invocation)
-                           .pipe(
-                            tap(data => resolved.set(key, data)),
-                            tap(() => this.transformers.forEach(fn => fn(resolved))),
-                            // Ensure we map to the value from the `resolved` map.
-                            // Otherwise if a resolver resolves to some primitive
-                            // there would be no way for a transformer to actually
-                            // transform it.
-                            map(() => resolved.get(key)),
-                            shareReplay(1)
-                           ));
+      resolves.set(
+        key,
+        val.resolve(invocation).pipe(
+          tap(data => resolved.set(key, data)),
+          tap(() => this.transformers.forEach(fn => fn(resolved))),
+          // Ensure we map to the value from the `resolved` map.
+          // Otherwise if a resolver resolves to some primitive
+          // there would be no way for a transformer to actually
+          // transform it.
+          map(() => resolved.get(key)),
+          shareReplay(1)
+        )
+      );
     });
 
-    let results$ = from(this.rules)
-                    .pipe(
-                      mergeMap(rule => rule.check(invocation, resolves)),
-                      share()
-                    );
+    const results$ = from(this.rules).pipe(mergeMap(rule => rule.check(invocation, resolves)), share());
 
-    let fails$ = results$.pipe(filter(result => result instanceof ExecutionRejectionInfo));
+    const fails$ = results$.pipe(filter(result => result instanceof ExecutionRejectionInfo));
 
     return results$.pipe(
       takeUntil(fails$),

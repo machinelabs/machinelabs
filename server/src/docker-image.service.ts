@@ -5,11 +5,10 @@ import { map, share, mergeMap, tap } from 'rxjs/operators';
 import { SpawnShellFn, ProcessStreamData } from '@machinelabs/core';
 
 export function getDockerImages() {
-  return dbRefBuilder.dockerImagesRef()
+  return dbRefBuilder
+    .dockerImagesRef()
     .onceValue()
-    .pipe(
-      map(snapshot => snapshot.val())
-    );
+    .pipe(map(snapshot => snapshot.val()));
 }
 
 export interface DockerImages {
@@ -17,7 +16,7 @@ export interface DockerImages {
     [index: string]: {
       id: string;
       name: string;
-    }
+    };
   };
 
   protected: {
@@ -25,22 +24,20 @@ export interface DockerImages {
       id: string;
       image_digest: string;
       image_name: string;
-    }
+    };
   };
 }
 
 export class DockerImageService {
-
   private dockerImages$: Observable<DockerImages>;
   private dockerImages: DockerImages;
 
-  constructor(dockerImages$: Observable<DockerImages>,
-              private spawnShell: SpawnShellFn) {
+  constructor(dockerImages$: Observable<DockerImages>, private spawnShell: SpawnShellFn) {
     this.dockerImages$ = dockerImages$.pipe(share());
   }
 
   init(): Observable<any> {
-    this.dockerImages$.subscribe(images => this.dockerImages = images);
+    this.dockerImages$.subscribe(images => (this.dockerImages = images));
     return this.dockerImages$;
   }
 
@@ -57,10 +54,7 @@ export class DockerImageService {
   }
 
   private pullImage(id: string) {
-    return this.spawnShell(`docker pull ${this.getImageNameWithDigest(id)}`)
-               .pipe(
-                tap(msg => console.log(msg.str))
-               );
+    return this.spawnShell(`docker pull ${this.getImageNameWithDigest(id)}`).pipe(tap(msg => console.log(msg.str)));
   }
 
   getImageInfo(id: string) {
@@ -79,12 +73,12 @@ export class DockerImageService {
   }
 
   getImageDigest(id: string) {
-    let imageInfo = this.getImageInfo(id);
+    const imageInfo = this.getImageInfo(id);
     return imageInfo ? imageInfo.protected.image_digest : null;
   }
 
   getImageNameWithDigest(id: string) {
-    let imageInfo = this.getImageInfo(id);
+    const imageInfo = this.getImageInfo(id);
     return imageInfo ? `${imageInfo.protected.image_name}@${imageInfo.protected.image_digest}` : null;
   }
 }
