@@ -7,9 +7,9 @@ import { environment } from '../environments/environment';
 // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/18492
 export const log4js: any = l4js;
 
-let slackToken = Config.tryGetEnv(Config.ENV_SLACK_TOKEN);
+const slackToken = Config.tryGetEnv(Config.ENV_SLACK_TOKEN);
 
-let config = {
+const config = {
   appenders: {
     stdout: { type: 'stdout' }
   },

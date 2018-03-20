@@ -29,28 +29,20 @@
     "transform": {
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
-    "transformIgnorePatterns": [
-      "/node_modules/(?!@machinelabs/core)/"
-    ],
+    "transformIgnorePatterns": ["/node_modules/(?!@machinelabs/core)/"],
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/dist/"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "json"
-    ]
+    "testPathIgnorePatterns": ["/node_modules/", "/dist/"],
+    "moduleFileExtensions": ["ts", "tsx", "js", "json"]
   },
   "scripts": {
     "node_modules": "rm -rf ./node_modules && yarn install",
     "build": "node ./build/build.js",
     "test": "./node_modules/jest/bin/jest.js",
     "debug-test": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand",
-    "tslint": "tslint -c ./tslint.json 'src/**/*.ts'",
-    "tsfix": "tslint --fix -c ./tslint.json 'src/**/*.ts'",
+    "lint:check": "tslint -c ./tslint.json 'src/**/*.ts'",
+    "lint:fix": "tslint --fix -c ./tslint.json 'src/**/*.ts'",
+    "format:check": "prettier --list-different \"./**/*{.ts,.js,.json}\"",
+    "format:fix": "prettier --write \"./**/*{.ts,.js,.json}\"",
     "ci": "node ./build/build.js --env=staging && npm run tslint && npm run test"
   },
   "devDependencies": {
@@ -71,6 +63,7 @@
     "chalk": "^1.1.3",
     "jasmine": "^2.4.1",
     "jest": "^20.0.4",
+    "prettier": "^1.11.1",
     "request": "^2.72.0",
     "ts-jest": "^20.0.10",
     "typescript": "2.4.0",

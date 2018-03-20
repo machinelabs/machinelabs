@@ -4,16 +4,14 @@ import { Observable } from 'rxjs/Observable';
 export class MessageRepository {
   getMessages(executionId: string, fromVirtualIndex: number, toVirtualIndex: number) {
     return dbRefBuilder
-            .executionMessagesRef(executionId)
-            .orderByChild('virtual_index')
-            .startAt(fromVirtualIndex)
-            .endAt(toVirtualIndex)
-            .onceValue();
+      .executionMessagesRef(executionId)
+      .orderByChild('virtual_index')
+      .startAt(fromVirtualIndex)
+      .endAt(toVirtualIndex)
+      .onceValue();
   }
 
   bulkUpdate(cmd: any) {
-    return dbRefBuilder.rootRef()
-                       .update(cmd);
+    return dbRefBuilder.rootRef().update(cmd);
   }
 }
-

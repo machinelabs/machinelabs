@@ -7,9 +7,7 @@ import { ValidationResult } from '../validation-result';
 import { UserResolver } from '../resolver/user-resolver';
 
 export class HasPlanRule implements ValidationRule {
-
   check(validationContext: Invocation, resolves: Map<Function, Observable<any>>): Observable<ValidationResult> {
-
     if (!resolves.has(UserResolver)) {
       throw new Error('Missing resoler: UserResolver');
     }
@@ -17,8 +15,11 @@ export class HasPlanRule implements ValidationRule {
     return resolves
       .get(UserResolver)
       .pipe(
-        map(user => (user && user.plan && Object.values(PlanId).includes(user.plan.plan_id)) ||
-          new ExecutionRejectionInfo(ExecutionRejectionReason.NoPlan, 'Missing plan that allows executions'))
+        map(
+          user =>
+            (user && user.plan && Object.values(PlanId).includes(user.plan.plan_id)) ||
+            new ExecutionRejectionInfo(ExecutionRejectionReason.NoPlan, 'Missing plan that allows executions')
+        )
       );
   }
 }

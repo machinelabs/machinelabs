@@ -1,66 +1,25 @@
 {
   "rules": {
-    "max-line-length": [true, 170],
     "no-inferrable-types": true,
     "class-name": true,
-    "comment-format": [
-      true,
-      "check-space"
-    ],
-    "indent": [
-      true,
-      "spaces"
-    ],
-    "eofline": true,
     "no-duplicate-variable": true,
     "no-eval": true,
     "no-arg": true,
+    "no-var-keyword": true,
     "no-internal-module": true,
-    "no-trailing-whitespace": true,
     "no-bitwise": false,
     "no-shadowed-variable": true,
     "no-unused-expression": true,
-    "no-unused-variable": [true, {
-      "ignore-pattern": "^(_.*)$"
-    }],
-    "one-line": [
-      true,
-      "check-catch",
-      "check-else",
-      "check-open-brace",
-      "check-whitespace"
-    ],
-    "quotemark": [
-      true,
-      "single",
-      "avoid-escape"
-    ],
-    "semicolon": true,
-    "typedef-whitespace": [
+    "no-unused-variable": [
       true,
       {
-        "call-signature": "nospace",
-        "index-signature": "nospace",
-        "parameter": "nospace",
-        "property-declaration": "nospace",
-        "variable-declaration": "nospace"
+        "ignore-pattern": "^(_.*)$"
       }
     ],
-    "curly": true,
-    "variable-name": [
-      true,
-      "ban-keywords",
-      "check-format",
-      "allow-leading-underscore",
-      "allow-pascal-case"
-    ],
-    "whitespace": [
-      true,
-      "check-branch",
-      "check-decl",
-      "check-operator",
-      "check-separator",
-      "check-type"
-    ]
+    "no-trailing-whitespace": true,
+    "prefer-const": true,
+    "jsdoc-format": true,
+    "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore", "allow-pascal-case"],
+    "whitespace": [true, "check-branch", "check-decl", "check-operator", "check-separator", "check-type"]
   }
 }

@@ -5,13 +5,10 @@ import { dbRefBuilder } from '../../ml-firebase';
 import { Invocation } from '@machinelabs/models';
 
 export class UserResolver implements Resolver {
-
   resolve(invocation: Invocation) {
     return dbRefBuilder
-            .userRef(invocation.user_id)
-            .onceValue()
-            .pipe(
-              map(snapshot => snapshot.val())
-            );
+      .userRef(invocation.user_id)
+      .onceValue()
+      .pipe(map(snapshot => snapshot.val()));
   }
 }

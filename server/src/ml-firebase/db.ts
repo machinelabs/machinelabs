@@ -5,15 +5,15 @@ import { DbRefBuilder } from '@machinelabs/core';
 import { SYSTEM_USER } from '@machinelabs/models';
 import { credential } from 'firebase-admin';
 
-let privateKey = Config.tryGetEnv(Config.ENV_PRIVATE_KEY);
-let clientEmail = Config.tryGetEnv(Config.ENV_CLIENT_EMAIL);
+const privateKey = Config.tryGetEnv(Config.ENV_PRIVATE_KEY);
+const clientEmail = Config.tryGetEnv(Config.ENV_CLIENT_EMAIL);
 
 let credentials = { getAccessToken: () => <any>{} };
 
 if (privateKey && clientEmail) {
   credentials = admin.credential.cert(<any>{
-    'private_key': privateKey,
-    'client_email': clientEmail
+    private_key: privateKey,
+    client_email: clientEmail
   });
 }
 

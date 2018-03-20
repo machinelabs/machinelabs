@@ -7,8 +7,7 @@ import { trimNewLines, spawnShell } from '@machinelabs/core';
 const spawnOptions = { stdio: 'pipe' };
 
 export const getAccessToken = () => {
-  return spawnShell(`gcloud auth print-access-token`)
-    .pipe(
-      mergeMap(val => val.origin === 'stderr' ? _throw(val.str) : of(trimNewLines(val.str)))
-    );
+  return spawnShell(`gcloud auth print-access-token`).pipe(
+    mergeMap(val => (val.origin === 'stderr' ? _throw(val.str) : of(trimNewLines(val.str))))
+  );
 };

@@ -5,16 +5,15 @@ import { Lab } from '@machinelabs/models';
 
 describe('.hash()', () => {
   it('should return correct hash for string', () => {
-    let hash = Crypto.hash('foo');
-    let expectedHash = '2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae';
+    const hash = Crypto.hash('foo');
+    const expectedHash = '2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae';
     expect(hash).toBe(expectedHash);
   });
 });
 
 describe('.hashLabFiles()', () => {
   it('should return correct hash for lab', () => {
-
-    let lab: Lab = {
+    const lab: Lab = {
       id: 'test',
       name: '',
       description: '',
@@ -32,8 +31,8 @@ describe('.hashLabFiles()', () => {
       is_private: false
     };
 
-    let hash = Crypto.getCacheHash(lab);
-    let expectedHash = '99e84db3997fc16a78ddf71d9cf3c25b5a0f3712ab325c0b2ab5898e44f4df74';
+    const hash = Crypto.getCacheHash(lab);
+    const expectedHash = '99e84db3997fc16a78ddf71d9cf3c25b5a0f3712ab325c0b2ab5898e44f4df74';
     expect(hash).toBe(expectedHash);
   });
 });

@@ -70,50 +70,51 @@ if (environment['pullImages']) {
   console.log('Not pulling docker images');
 }
 
-forkJoin(initActions)
-  .subscribe(results => {
-    let dockerBinary: DockerExecutable = results[0];
-    let memoryStats: MemoryStats = results[1];
+forkJoin(initActions).subscribe(results => {
+  const dockerBinary: DockerExecutable = results[0];
+  const memoryStats: MemoryStats = results[1];
 
-    if (!memoryStats.maxKernelMemoryKb) {
-      console.error('Server appears to have insufficient memory');
-    }
+  if (!memoryStats.maxKernelMemoryKb) {
+    console.error('Server appears to have insufficient memory');
+  }
 
-    const DUMMY_RUNNER = process.argv.includes('--dummy-runner') || dockerBinary === DockerExecutable.None;
+  const DUMMY_RUNNER = process.argv.includes('--dummy-runner') || dockerBinary === DockerExecutable.None;
 
-    const dockerRunnerConfig = new DockerRunnerConfig();
-    dockerRunnerConfig.dockerExecutable = dockerBinary;
-    dockerRunnerConfig.maxKernelMemoryKb = memoryStats.maxKernelMemoryKb;
-    dockerRunnerConfig.spawn = spawn;
-    dockerRunnerConfig.spawnShell = spawnShell;
-    dockerRunnerConfig.uploader = uploader;
-    dockerRunnerConfig.downloader = downloader;
+  const dockerRunnerConfig = new DockerRunnerConfig();
+  dockerRunnerConfig.dockerExecutable = dockerBinary;
+  dockerRunnerConfig.maxKernelMemoryKb = memoryStats.maxKernelMemoryKb;
+  dockerRunnerConfig.spawn = spawn;
+  dockerRunnerConfig.spawnShell = spawnShell;
+  dockerRunnerConfig.uploader = uploader;
+  dockerRunnerConfig.downloader = downloader;
 
-    let runner = DUMMY_RUNNER ? new DummyRunner() : new DockerRunner(dockerRunnerConfig);
+  const runner = DUMMY_RUNNER ? new DummyRunner() : new DockerRunner(dockerRunnerConfig);
 
-    const validationService = new ValidationService();
-    validationService
-      .addTransformer(LAB_CONFIG_TRANSFORMER)
-      .addRule(new NoAnonymousRule())
-      .addRule(new HasPlanRule())
-      .addRule(new HasValidConfigRule(labConfigService))
-      .addRule(new CanUseHardwareType())
-      .addRule(new HasCreditsLeftRule(usageStatisticService))
-      .addRule(new WithinConcurrencyLimit())
-      .addRule(new ServerHasCapacityRule(runner))
-      .addResolver(UserResolver, new UserResolver())
-      .addResolver(LabConfigResolver, new LabConfigResolver(labConfigService))
-      .addResolver(CostReportResolver, new CostReportResolver(usageStatisticService));
+  const validationService = new ValidationService();
+  validationService
+    .addTransformer(LAB_CONFIG_TRANSFORMER)
+    .addRule(new NoAnonymousRule())
+    .addRule(new HasPlanRule())
+    .addRule(new HasValidConfigRule(labConfigService))
+    .addRule(new CanUseHardwareType())
+    .addRule(new HasCreditsLeftRule(usageStatisticService))
+    .addRule(new WithinConcurrencyLimit())
+    .addRule(new ServerHasCapacityRule(runner))
+    .addResolver(UserResolver, new UserResolver())
+    .addResolver(LabConfigResolver, new LabConfigResolver(labConfigService))
+    .addResolver(CostReportResolver, new CostReportResolver(usageStatisticService));
 
-    const stopValidationService = new ValidationService();
-    stopValidationService
-      .addRule(new OwnsExecutionRule())
-      .addResolver(ExecutionResolver, new ExecutionResolver());
+  const stopValidationService = new ValidationService();
+  stopValidationService.addRule(new OwnsExecutionRule()).addResolver(ExecutionResolver, new ExecutionResolver());
 
-    const messagingService = new MessagingService(validationService, stopValidationService, recycleService, runner);
-    messagingService.init();
+  const messagingService = new MessagingService(validationService, stopValidationService, recycleService, runner);
+  messagingService.init();
 
-    console.log(`Using runner: ${runner.constructor.name}`);
-    console.log(`MachineLabs server running (${environment.serverId} on v${version})`);
-    console.log(`Total available RAM ${memoryStats.totalMemoryKb} Kb | max. available Kernel Memory ${memoryStats.maxKernelMemoryKb} kB`);
-  });
+  console.log(`Using runner: ${runner.constructor.name}`);
+  console.log(`MachineLabs server running (${environment.serverId} on v${version})`);
+  console.log(
+    `Total available RAM ${memoryStats.totalMemoryKb} Kb | max. available Kernel Memory ${
+      memoryStats.maxKernelMemoryKb
+    } kB`
+  );
+});

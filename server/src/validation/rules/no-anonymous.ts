@@ -7,9 +7,7 @@ import { ValidationResult } from '../validation-result';
 import { UserResolver } from '../resolver/user-resolver';
 
 export class NoAnonymousRule implements ValidationRule {
-
   check(validationContext: Invocation, resolves: Map<Function, Observable<any>>): Observable<ValidationResult> {
-
     if (!resolves.has(UserResolver)) {
       throw new Error('Missing resoler: UserResolver');
     }
@@ -17,9 +15,14 @@ export class NoAnonymousRule implements ValidationRule {
     return resolves
       .get(UserResolver)
       .pipe(
-        map(user => (!user || user.common.isAnonymous) ?
-          new ExecutionRejectionInfo(ExecutionRejectionReason.NoAnonymous, 'Anonymous users can not start executions') :
-          true
+        map(
+          user =>
+            !user || user.common.isAnonymous
+              ? new ExecutionRejectionInfo(
+                  ExecutionRejectionReason.NoAnonymous,
+                  'Anonymous users can not start executions'
+                )
+              : true
         )
       );
   }

@@ -2,9 +2,10 @@ import * as moment from 'moment';
 import { Month, ShortMonth, toShortMonth } from '@machinelabs/models';
 
 export class DateUtil {
-
   static getCurrentUtcMonth(): Month {
-    return moment().utc().month();
+    return moment()
+      .utc()
+      .month();
   }
 
   static getCurrentUtcShortMonth(): ShortMonth {
@@ -12,14 +13,26 @@ export class DateUtil {
   }
 
   static getCurrentUtcYear(): number {
-    return moment().utc().year();
+    return moment()
+      .utc()
+      .year();
   }
 
   static getUTCBeginOfMonth(year: number, month: Month) {
-    return moment().utc().year(year).month(month).startOf('month').valueOf();
+    return moment()
+      .utc()
+      .year(year)
+      .month(month)
+      .startOf('month')
+      .valueOf();
   }
 
   static getUTCEndOfMonth(year: number, month: Month) {
-    return moment().utc().year(year).month(month).endOf('month').valueOf();
+    return moment()
+      .utc()
+      .year(year)
+      .month(month)
+      .endOf('month')
+      .valueOf();
   }
 }

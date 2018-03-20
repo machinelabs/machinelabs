@@ -5,18 +5,18 @@ import { Lab } from '@machinelabs/models';
 import { ML_YAML_FILENAME } from '@machinelabs/core';
 import { PublicLabConfiguration } from '../models/lab-configuration';
 
-let dockerImageId = 'keras_v2-4-x_python_2';
+const dockerImageId = 'keras_v2-4-x_python_2';
 
-let validConfig = `
+const validConfig = `
 dockerImageId: ${dockerImageId}
 `;
 
-let invalidConfig = `
+const invalidConfig = `
 |||
 dockerImageId= ${dockerImageId}
 `;
 
-let lab: Lab = {
+const lab: Lab = {
   id: 'some-lab',
   name: '',
   description: '',
@@ -34,7 +34,7 @@ let lab: Lab = {
   is_private: false
 };
 
-let labWithPascalCase: Lab = {
+const labWithPascalCase: Lab = {
   id: 'some-lab',
   name: '',
   description: '',
@@ -52,7 +52,7 @@ let labWithPascalCase: Lab = {
   is_private: false
 };
 
-let labWithInvalidConfig: Lab = {
+const labWithInvalidConfig: Lab = {
   id: 'some-lab',
   name: '',
   description: '',
@@ -70,7 +70,7 @@ let labWithInvalidConfig: Lab = {
   is_private: false
 };
 
-let labWithoutConfig: Lab = {
+const labWithoutConfig: Lab = {
   id: 'some-lab',
   name: '',
   description: '',
@@ -87,28 +87,26 @@ let svc: LabConfigService;
 
 beforeEach(() => {
   svc = new LabConfigService(null, null);
-
 });
 
 describe('.readConfig(lab)', () => {
   it('should return parsed PublicLabConfiguration', () => {
-    let config: PublicLabConfiguration = svc.readPublicConfig(lab);
+    const config: PublicLabConfiguration = svc.readPublicConfig(lab);
     expect(config.dockerImageId).toBe(dockerImageId);
   });
 
   it('should return parsed PublicLabConfiguration no matter file name casing', () => {
-    let config: PublicLabConfiguration = svc.readPublicConfig(labWithPascalCase);
+    const config: PublicLabConfiguration = svc.readPublicConfig(labWithPascalCase);
     expect(config.dockerImageId).toBe(dockerImageId);
   });
 
   it('should return null for invalid configs', () => {
-    let config: PublicLabConfiguration = svc.readPublicConfig(labWithInvalidConfig);
+    const config: PublicLabConfiguration = svc.readPublicConfig(labWithInvalidConfig);
     expect(config).toBeNull();
   });
 
   it('should return null if config does not exist', () => {
-    let config: PublicLabConfiguration = svc.readPublicConfig(labWithoutConfig);
+    const config: PublicLabConfiguration = svc.readPublicConfig(labWithoutConfig);
     expect(config).toBeNull();
   });
-
 });
