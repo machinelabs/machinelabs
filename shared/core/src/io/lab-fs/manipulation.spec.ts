@@ -3,9 +3,7 @@ import 'jest';
 import { deleteFromDirectory, updateFileInDirectory } from './manipulation';
 
 describe('mainpulation', () => {
-
   describe('.deleteFromDirectory()', () => {
-
     it('should remove file from given directory', () => {
       const directory = {
         name: 'Folder',
@@ -13,9 +11,7 @@ describe('mainpulation', () => {
           { name: 'foo.py', content: '' },
           {
             name: 'Other folder',
-            contents: [
-              { name: 'bar.py', content: '' }
-            ]
+            contents: [{ name: 'bar.py', content: '' }]
           }
         ]
       };
@@ -25,9 +21,7 @@ describe('mainpulation', () => {
         contents: [
           {
             name: 'Other folder',
-            contents: [
-              { name: 'bar.py', content: '' }
-            ]
+            contents: [{ name: 'bar.py', content: '' }]
           }
         ]
       };
@@ -40,7 +34,6 @@ describe('mainpulation', () => {
   });
 
   describe('.updateFileInDirectory()', () => {
-
     it('should update file in given directoru', () => {
       const directory = {
         name: 'Folder',
@@ -48,9 +41,7 @@ describe('mainpulation', () => {
           { name: 'foo.py', content: '' },
           {
             name: 'Other folder',
-            contents: [
-              { name: 'bar.py', content: '' }
-            ]
+            contents: [{ name: 'bar.py', content: '' }]
           }
         ]
       };
@@ -61,9 +52,7 @@ describe('mainpulation', () => {
           { name: 'jinx.py', content: '' },
           {
             name: 'Other folder',
-            contents: [
-              { name: 'bar.py', content: '' }
-            ]
+            contents: [{ name: 'bar.py', content: '' }]
           }
         ]
       };

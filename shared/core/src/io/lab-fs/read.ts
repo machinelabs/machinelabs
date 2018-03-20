@@ -6,7 +6,6 @@ import { File, Directory, LabDirectory, instanceOfDirectory } from '@machinelabs
 
 const isBinaryFile = require('isbinaryfile').sync;
 
-
 export interface ReadOptions {
   extensions?: RegExp;
   exclude?: string[];
@@ -64,9 +63,10 @@ export const readDirectory = (path: string, options: ReadOptions = {}): Director
     const directoryName = dirname(file);
 
     // Skip if it does not match the extension regex or it is a binary file
-    if (options &&
-      (options.extensions && !options.extensions.test(extension) ||
-      (options.excludeBinaries && isBinaryFile(path)))) {
+    if (
+      options &&
+      ((options.extensions && !options.extensions.test(extension)) || (options.excludeBinaries && isBinaryFile(path)))
+    ) {
       continue;
     }
 
@@ -101,7 +101,7 @@ export const readDirectory = (path: string, options: ReadOptions = {}): Director
 };
 
 export const readLabDirectory = (path: string, options?: ReadOptions): LabDirectory => {
-  let dir = readDirectory(path, options);
+  const dir = readDirectory(path, options);
 
   if (instanceOfDirectory(dir)) {
     return dir.contents;

@@ -21,7 +21,12 @@ export class DbRefBuilder {
   }
 
   labsForHashRef(hash: string) {
-    return new ObservableDbRef(this.db.ref(`labs`).orderByChild('common/cache_hash').equalTo(hash));
+    return new ObservableDbRef(
+      this.db
+        .ref(`labs`)
+        .orderByChild('common/cache_hash')
+        .equalTo(hash)
+    );
   }
 
   serverRef(id: string) {
@@ -37,15 +42,30 @@ export class DbRefBuilder {
   }
 
   invocationsForServerRef(server: string) {
-    return new ObservableDbRef(this.db.ref('invocations').orderByChild(`server/id`).equalTo(server));
+    return new ObservableDbRef(
+      this.db
+        .ref('invocations')
+        .orderByChild(`server/id`)
+        .equalTo(server)
+    );
   }
 
   newInvocationsRef() {
-    return new ObservableDbRef(this.db.ref('invocations').orderByChild('common/timestamp').startAt(Date.now()));
+    return new ObservableDbRef(
+      this.db
+        .ref('invocations')
+        .orderByChild('common/timestamp')
+        .startAt(Date.now())
+    );
   }
 
   newInvocationsForServerRef(server: string) {
-    return new ObservableDbRef(this.db.ref('invocations').orderByChild(`server/${server}/timestamp`).startAt(Date.now()));
+    return new ObservableDbRef(
+      this.db
+        .ref('invocations')
+        .orderByChild(`server/${server}/timestamp`)
+        .startAt(Date.now())
+    );
   }
 
   executionRef(id: string) {
@@ -69,9 +89,12 @@ export class DbRefBuilder {
   }
 
   executionByHashRef(hash: string) {
-    return new ObservableDbRef(this.db.ref(`executions`)
-                                 .orderByChild('common/cache_hash')
-                                 .equalTo(hash));
+    return new ObservableDbRef(
+      this.db
+        .ref(`executions`)
+        .orderByChild('common/cache_hash')
+        .equalTo(hash)
+    );
   }
 
   executionMessageRef(executionId: string, messageId: string) {
@@ -86,4 +109,3 @@ export class DbRefBuilder {
     return new ObservableDbRef(this.db.ref(`/handshakes/${id}/commit`));
   }
 }
-

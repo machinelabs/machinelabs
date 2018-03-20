@@ -1,6 +1,6 @@
 import { Directory, File } from '@machinelabs/models';
 
-export const deleteFromDirectory = (fileOrDirectory: File|Directory, directory: Directory) => {
+export const deleteFromDirectory = (fileOrDirectory: File | Directory, directory: Directory) => {
   directory.contents.splice(directory.contents.indexOf(fileOrDirectory), 1);
 };
 

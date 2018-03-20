@@ -3,15 +3,14 @@ import { existsSync, rmdirSync, readFileSync } from 'fs';
 import * as rimraf from 'rimraf';
 import { finalize, tap } from 'rxjs/operators';
 
-import {  writeDirectory } from './fs';
+import { writeDirectory } from './fs';
 import { spawnShell } from '../reactive-process';
 
 import { Directory } from '@machinelabs/models';
 
 describe('.writeDirectory', () => {
-
-  it('should write directory with nested files and directories', (done) => {
-    let dir = {
+  it('should write directory with nested files and directories', done => {
+    const dir = {
       name: 'foo',
       contents: [
         {
@@ -46,8 +45,8 @@ describe('.writeDirectory', () => {
       .subscribe();
   });
 
-  it('should skip the root folder', (done) => {
-    let dir = {
+  it('should skip the root folder', done => {
+    const dir = {
       name: 'foo',
       contents: [
         {
@@ -78,8 +77,8 @@ describe('.writeDirectory', () => {
       .subscribe();
   });
 
-  it('should allow empty directories', (done) => {
-    let dir: Directory = {
+  it('should allow empty directories', done => {
+    const dir: Directory = {
       name: 'foo',
       contents: [
         {
@@ -108,8 +107,8 @@ describe('.writeDirectory', () => {
       .subscribe();
   });
 
-  it('should override existing files (last one wins)', (done) => {
-    let dir: Directory = {
+  it('should override existing files (last one wins)', done => {
+    const dir: Directory = {
       name: 'foo',
       contents: [
         {
