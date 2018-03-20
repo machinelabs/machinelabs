@@ -33,6 +33,11 @@ matrix:
       before_install:
         - cd ./firebase/functions
       script: npm run ci
+    - stage: "@machinelabs/rest-api"
+      node_js: "8"
+      before_install:
+        - cd ./rest-api
+      script: npm run ci
     - stage: "@machinelabs/core"
       node_js: "8"
       before_install:
