@@ -9,7 +9,7 @@ export type SpawnShellFn = (command: string, args?: Array<string>) => Observable
 
 export const spawn = (command: string, args?: Array<string>, options?: SpawnOptions) => {
   return defer(() => {
-    let ps = _spawn(command, args, options);
+    const ps = _spawn(command, args, options);
 
     return toObservableProcess(ps);
   });

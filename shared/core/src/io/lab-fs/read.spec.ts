@@ -6,7 +6,6 @@ import { writeDirectory } from './fs';
 import { readLabDirectory } from './read';
 
 describe('readLabDirectory', () => {
-
   beforeAll(() => {
     const foo = {
       name: 'foo',
@@ -63,10 +62,7 @@ describe('readLabDirectory', () => {
       ]
     };
 
-    forkJoin(
-      writeDirectory(foo),
-      writeDirectory(folder)
-    ).subscribe();
+    forkJoin(writeDirectory(foo), writeDirectory(folder)).subscribe();
   });
 
   afterAll(() => {
@@ -103,7 +99,7 @@ describe('readLabDirectory', () => {
   });
 
   it('should exclude globbing patterns files', () => {
-    const result = readLabDirectory('foo', {exclude: ['**/*.txt']});
+    const result = readLabDirectory('foo', { exclude: ['**/*.txt'] });
 
     expect(result).toEqual([
       {
@@ -123,7 +119,7 @@ describe('readLabDirectory', () => {
   });
 
   it('should only include files matching the extension', () => {
-    expect(readLabDirectory('foo', {extensions: /\.js/})).toEqual([
+    expect(readLabDirectory('foo', { extensions: /\.js/ })).toEqual([
       {
         name: 'bar',
         contents: [
@@ -135,7 +131,7 @@ describe('readLabDirectory', () => {
       }
     ]);
 
-    expect(readLabDirectory('folder', {extensions: /\.js/})).toEqual([
+    expect(readLabDirectory('folder', { extensions: /\.js/ })).toEqual([
       {
         name: 'folder-1',
         contents: [

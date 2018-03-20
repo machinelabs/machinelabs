@@ -6,9 +6,7 @@ import { DbRefBuilder } from '../firebase/db-ref-builder';
 import { stringifyDirectory } from '../io/lab-fs/serialize';
 
 export class LabApi {
-  constructor(private refBuilder: DbRefBuilder) {
-
-  }
+  constructor(private refBuilder: DbRefBuilder) {}
 
   save(lab: Lab) {
     return this.refBuilder.labRef(lab.id).set({
@@ -30,5 +28,4 @@ export class LabApi {
       is_private: !!lab.is_private
     });
   }
-
 }

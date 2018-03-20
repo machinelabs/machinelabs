@@ -13,7 +13,7 @@ const findDirectory = (name: string) => {
 };
 
 export const normalizePathSegments = (path: string) => {
-  let segments = path.split('/');
+  const segments = path.split('/');
   if (segments[0] === '') {
     segments.splice(0, 1);
   }
@@ -21,16 +21,15 @@ export const normalizePathSegments = (path: string) => {
 };
 
 export const getFileFromPath = (path: string, directory: LabDirectory) => {
-  let pathSegments = normalizePathSegments(path);
+  const pathSegments = normalizePathSegments(path);
   let currentDirectory = directory;
   let file = null;
 
   for (let i = 0; i < pathSegments.length; i++) {
-    let name = pathSegments[i];
-    let lookingForDirectory = i !== pathSegments.length - 1;
+    const name = pathSegments[i];
+    const lookingForDirectory = i !== pathSegments.length - 1;
 
-    let fileOrDirectory = currentDirectory
-        .find(lookingForDirectory ? findDirectory(name) : findFile(name));
+    const fileOrDirectory = currentDirectory.find(lookingForDirectory ? findDirectory(name) : findFile(name));
 
     if (!fileOrDirectory) {
       break;
