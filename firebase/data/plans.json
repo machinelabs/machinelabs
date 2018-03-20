@@ -1,10 +1,10 @@
 {
-  "beta" : {
-    "common" : {
-      "description" : "Beta",
-      "free_credit" : 100,
-      "id" : "beta",
-      "name" : "beta"
+  "beta": {
+    "common": {
+      "description": "Beta",
+      "free_credit": 100,
+      "id": "beta",
+      "name": "beta"
     }
   }
 }
