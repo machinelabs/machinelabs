@@ -13,11 +13,11 @@ export interface File {
 
 export interface Directory {
   name: string;
-  contents: Array<File|Directory>;
+  contents: Array<File | Directory>;
   clientState?: DirectoryClientState;
 }
 
-export type LabDirectory = Array<File|Directory>;
+export type LabDirectory = Array<File | Directory>;
 
 export const isLabDirectory = (object: any): object is LabDirectory => {
   return Array.isArray(object);

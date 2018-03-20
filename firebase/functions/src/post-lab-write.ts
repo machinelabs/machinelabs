@@ -1,12 +1,12 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
-import { TriggerAnnotated, Event} from 'firebase-functions';
+import { TriggerAnnotated, Event } from 'firebase-functions';
 import { DeltaSnapshot } from 'firebase-functions/lib/providers/database';
 
 import * as crypto from 'crypto';
 
-
-export const postLabWrite = functions.database.ref('/labs/{id}/common')
+export const postLabWrite = functions.database
+  .ref('/labs/{id}/common')
   .onWrite(event => Promise.all([updateIndices(event), setHasCachedRun(event)]));
 
 function hashDirectory(directory) {
@@ -15,7 +15,7 @@ function hashDirectory(directory) {
 }
 
 function updateIndices(event) {
-  let delta = {};
+  const delta = {};
   const data = event.data.val();
 
   console.log('Post lab write: updating indices');
@@ -27,22 +27,28 @@ function updateIndices(event) {
     delta[`/idx/recent_labs/${data.id}`] = null;
   }
 
-
   // We need to find all executions that are attached to this lab
   // and hide them as well.
   //
   // Notice we don't update `lab_visible_executions` because we only
   // need to hide them for the users not for the labs.
-  return admin.database().ref(`/idx/lab_executions/${data.id}`)
+  return admin
+    .database()
+    .ref(`/idx/lab_executions/${data.id}`)
     .once('value')
     .then(snapshot => snapshot.val())
-    .then(val => val ? Object.keys(val) : [])
+    .then(val => (val ? Object.keys(val) : []))
     .then(executionIds => {
       executionIds.forEach(id => {
         delta[`/idx/user_visible_executions/${data.user_id}/${id}`] = data.hidden ? null : true;
       });
     })
-    .then(_ => admin.database().ref().update(delta));
+    .then(_ =>
+      admin
+        .database()
+        .ref()
+        .update(delta)
+    );
 }
 
 function setHasCachedRun(event) {
@@ -54,7 +60,8 @@ function setHasCachedRun(event) {
   const hash = hashDirectory(data.directory);
   console.log(`Setting hash ${hash} of lab ${event.params.id}`);
 
-  return admin.database()
+  return admin
+    .database()
     .ref(`/labs/${event.params.id}/common`)
-    .update({ 'cache_hash': hash });
+    .update({ cache_hash: hash });
 }
