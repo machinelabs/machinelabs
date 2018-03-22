@@ -9,7 +9,8 @@ export const LAB_CONFIG_TRANSFORMER = (resolved: ResolvedMap) => {
   const user: ExtendedUser = resolved.get(UserResolver);
   const config: InternalLabConfiguration = resolved.get(LabConfigResolver);
   if (user && config) {
-    const userCredits = PlanCredits.get(user.plan.plan_id);
+    const planId = !user.plan ? PlanId.None : user.plan.plan_id;
+    const userCredits = PlanCredits.get(planId);
 
     if (userCredits) {
       config.maxFileUploads = userCredits.maxFileUploads;
