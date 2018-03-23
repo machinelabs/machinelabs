@@ -12,6 +12,7 @@ import { failWith } from './fail-with';
 import { generateChangelog } from './generate-changelog';
 
 import { finalize } from 'rxjs/operators';
+import { concat } from 'rxjs/observable/concat';
 import { of } from 'rxjs/observable/of';
 
 const execute = factory({ displayErrors: true });
@@ -77,11 +78,10 @@ export function cut(versionOrType, dryRun) {
     commitAndTag(tagVersion, versionWithBuild);
     return of(null);
   } else {
-    return generateChangelog({ dryRun, version: tagVersion }).pipe(
-      finalize(() => {
-        updatePackageJsons(versionWithBuild);
-        commitAndTag(tagVersion, versionWithBuild);
-      })
+    return concat(
+      generateChangelog({ dryRun, version: tagVersion }),
+      of(updatePackageJsons(versionWithBuild)),
+      of(commitAndTag(tagVersion, versionWithBuild))
     );
   }
 }
