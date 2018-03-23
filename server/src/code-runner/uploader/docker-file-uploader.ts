@@ -70,7 +70,7 @@ export class DockerFileUploader {
       containerId,
       '/bin/bash',
       '-c',
-      'cd /run/outputs && find . -maxdepth 1 -type f | xargs stat --printf "%n:::%s"'
+      'cd /run/outputs && find . -maxdepth 1 -type f | xargs -d "\n" stat --printf "%n:::%s"'
     ]).pipe(
       filter(val => val.origin === OutputType.Stdout),
       map(val =>
@@ -118,7 +118,7 @@ Backers on ${bold(PATREON_URL)} can upload ${BACKER_PLAN.maxFileUploads} files p
     return getCurlForUpload(
       environment.firebaseConfig.storageBucket,
       file,
-      `executions/${invocation.id}/outputs/${file}`,
+      `executions/${invocation.id}/outputs/${encodeURIComponent(file)}`,
       token,
       headers
     );
