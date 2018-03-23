@@ -28,7 +28,7 @@ This guide helps you setting up, building and running MachineLabs on your own ma
 ## Prerequisites
 
 - Get a [Firebase](https://firebase.google.com) account
-- Install [Git](https://git-scm.com) and [NodeJS](https://nodejs.org)
+- Install [Git](https://git-scm.com) and [NodeJS 8+](https://nodejs.org)
 - Install [gcloud SDK](https://cloud.google.com/sdk/gcloud/)
 - Install [Docker](https://docs.docker.com/)
 - Install [Yarn](https://yarnpkg.com/en/)
@@ -54,32 +54,32 @@ Once cloned, we need to install all dependencies for every package of the Machin
 
 #### Installing shared dependencies
 
-For every package in `shared` in run `yarn install`:
+For every package in `shared`, run `npx yarn install`:
 
 ```shell
 $ cd shared/*
-$ yarn install
+$ npx yarn install
 ```
 
 #### Installing server dependencies
 
 ```shell
 $ cd server
-$ yarn install
+$ npx yarn install
 ```
 
 #### Installing firebase dependencies
 
 ```shell
 $ cd firebase/functions
-$ yarn install
+$ npx yarn install
 ```
 
 #### Installing client dependencies
 
 ```shell
 $ cd client
-$ yarn install
+$ npx yarn install
 ```
 
 ### Configuring Firebase
@@ -148,7 +148,7 @@ Once logged in, we can deploy the provided rules by executing:
 
 ```
 $ cd firebase/functions
-$ yarn run deploy
+$ npx yarn run deploy
 ```
 
 ##### Recompile Firebase rules
@@ -174,11 +174,11 @@ In order to make both, the server and the client, talk to your project's firebas
 
 ##### Server environment files
 
-To add a new environment to the server, create a new typescript file in `server/src/environments/personal` with the schema `environment.[NAME].ts`. A good practice is to use the server name for your environments. For example, if you want to call your personal environment server `sanf-francisco`, you'd create a file `environment.san-francisco.ts`. All environment files added to this folder will be ignored by source control.
+To add a new environment to the server, create a new typescript file in `server/src/environments/personal` with the schema `environment.[NAME].ts`. A good practice is to use the server name for your environments. For example, if you want to call your personal environment server `san-francisco`, you'd create a file `environment.san-francisco.ts`. All environment files added to this folder will be ignored by source control.
 
 Inside that file, export an `environment` object that looks like this:
 
-```typescript
+```ts
 export const environment = {
   firebaseConfig: {
     apiKey: '...',
@@ -204,28 +204,11 @@ export const environment = {
 
 ##### Client environment files
 
-We can repeat the process for the client. Create a file `environment.[NAME].ts` in `client/src/environments`.
-
-Also, add an entry in `angular-cli.json` accordingly:
-
-```
-...
-"environmentSource": "environments/environment.ts",
-"environments": {
-  "dev": "environments/environment.ts",
-  "personal": "environments/environment.personal.ts",
-  "offline": "environments/environment.offline.ts",
-  "staging": "environments/environment.staging.ts",
-  "production": "environments/environment.production.ts",
-  "test": "environments/environment.test.ts",
-  "e2e": "environments/environment.e2e.ts"
-}
-...
-```
+We can repeat the process for the client. Create a file `environment.personal.ts` in `client/src/environments`. This file is ignored by source control. Feel free to add other environment files by creating a `environment.[NAME].ts` file and adding an entry in [angular-cli.json](https://github.com/angular/angular-cli/wiki/build#build-targets-and-environment-files) accordingly.
 
 The contents of your environment file for the client should look something like this:
 
-```
+```ts
 export const environment = {
   production: false,
   offline: false,
@@ -242,6 +225,8 @@ export const environment = {
   topPicksLabIds: []
 }
 ```
+
+Make sure to replace the `firebaseConfig` with your own. You can retrieve the firebase configuration from your firebase project by going to **Project Overview -> Add Firebase to your web app**.
 
 ## Setting up environment variables
 
@@ -261,13 +246,13 @@ To run the server, navigate to the `server` folder and execute the following com
 
 ```
 $ cd server
-$ yarn run build -- --env=YOUR_ENV_NAME && node dist/index.js
+$ npx yarn build --env=YOUR_ENV_NAME && node dist/index.js
 ```
 
 This will build the server using your personal environment file and serve the resulting distribution file. You might notice that it'll also build all packages in `shared`. If you don't want it to build the shared libraries, use the `--skip-shared` option as follows:
 
 ```
-$ yarn run build -- --env=YOUR_ENV_NAME --skip-shared && node dist/index.js
+$ npx yarn build --env=YOUR_ENV_NAME --skip-shared && node dist/index.js
 ```
 
 ### Running the client
@@ -276,7 +261,7 @@ To run the client, we use Angular CLI, as the client is an Angular app. All we h
 
 ```
 $ cd client
-$ ng serve --env=YOUR_ENV_NAME
+$ ng serve --env=personal
 ```
 
 **That's it!** You can now open your favourite browser at `localhost:4200` and use the app.
