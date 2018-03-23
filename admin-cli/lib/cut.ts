@@ -14,6 +14,7 @@ import { generateChangelog } from './generate-changelog';
 import { finalize } from 'rxjs/operators';
 import { concat } from 'rxjs/observable/concat';
 import { of } from 'rxjs/observable/of';
+import { defer } from 'rxjs/observable/defer';
 
 const execute = factory({ displayErrors: true });
 
@@ -80,8 +81,10 @@ export function cut(versionOrType, dryRun) {
   } else {
     return concat(
       generateChangelog({ dryRun, version: tagVersion }),
-      of(updatePackageJsons(versionWithBuild)),
-      of(commitAndTag(tagVersion, versionWithBuild))
+      defer(() => {
+        updatePackageJsons(versionWithBuild);
+        commitAndTag(tagVersion, versionWithBuild);
+      })
     );
   }
 }
