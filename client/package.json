@@ -75,7 +75,8 @@
     "protractor": "~5.1.2",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",
-    "typescript": "~2.5.3"
+    "typescript": "~2.5.3",
+    "yarn": "^1.5.1"
   },
   "resolutions": {
     "clean-css": "4.1.10"
