@@ -43,6 +43,7 @@
     "prettier": "^1.11.1",
     "ts-jest": "^20.0.10",
     "tslint": "^5.5.0",
-    "typescript": "2.4.0"
+    "typescript": "2.4.0",
+    "yarn": "^1.5.1"
   }
 }
