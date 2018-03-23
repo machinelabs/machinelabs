@@ -1,6 +1,6 @@
 {
   "name": "@machinelabs/server",
-  "version": "0.28.1+utc.2018.Feb.20-19.44.11",
+  "version": "0.30.0+utc.2018.Mar.23-12.52.19",
   "description": "Machinelabs Execution Server",
   "main": "index.js",
   "author": "Christoph Burgdorf <christoph.burgdorf@bvsn.org> (http://cburgdorf.wordpress.com/)",
@@ -29,10 +29,20 @@
     "transform": {
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
-    "transformIgnorePatterns": ["/node_modules/(?!@machinelabs/core)/"],
+    "transformIgnorePatterns": [
+      "/node_modules/(?!@machinelabs/core)/"
+    ],
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "testPathIgnorePatterns": ["/node_modules/", "/dist/"],
-    "moduleFileExtensions": ["ts", "tsx", "js", "json"]
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ]
   },
   "scripts": {
     "node_modules": "rm -rf ./node_modules && yarn install",

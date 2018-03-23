@@ -1,3 +1,33 @@
+<a name="0.30.0"></a>
+# [0.30.0](https://github.com/machinelabs/machinelabs/compare/0.28.1...0.30.0) (2018-03-23)
+
+
+### Bug Fixes
+
+* **admin-cli:** add missing import for `of` ([f1a4063](https://github.com/machinelabs/machinelabs/commit/f1a4063))
+* **admin-cli:** don't exit with error code 1 if no version is given ([3a1aa5b](https://github.com/machinelabs/machinelabs/commit/3a1aa5b))
+* **admin-cli:** ensure changelog is part of each release commit ([383e0c1](https://github.com/machinelabs/machinelabs/commit/383e0c1))
+* **admin-cli:** ensure changelog is part of release commit ([2341c15](https://github.com/machinelabs/machinelabs/commit/2341c15))
+* **cli:** ignore all dot directories by default ([e609ea6](https://github.com/machinelabs/machinelabs/commit/e609ea6))
+* **CompletionProvider:** Support arrays on same level as keyword ([f7f0393](https://github.com/machinelabs/machinelabs/commit/f7f0393))
+* **core:** Prevent ignoring source directory ([9d3b94b](https://github.com/machinelabs/machinelabs/commit/9d3b94b)), closes [#746](https://github.com/machinelabs/machinelabs/issues/746)
+* **handshake:** Fix typo ([e61c1a9](https://github.com/machinelabs/machinelabs/commit/e61c1a9)), closes [#738](https://github.com/machinelabs/machinelabs/issues/738)
+* **LandingPage:** make Getting Started link point to quickstart ([e8384df](https://github.com/machinelabs/machinelabs/commit/e8384df))
+* **readme:** fix broken links in README ([d680af6](https://github.com/machinelabs/machinelabs/commit/d680af6))
+* **server:** ensure transformer can handle null plan ([dc38023](https://github.com/machinelabs/machinelabs/commit/dc38023))
+* **supervisor:** ensure firebase as dependency ([a86cec0](https://github.com/machinelabs/machinelabs/commit/a86cec0))
+
+
+### Features
+
+* introduce initial explore page ([1394ac4](https://github.com/machinelabs/machinelabs/commit/1394ac4)), closes [#16](https://github.com/machinelabs/machinelabs/issues/16)
+* **admin-cli:** introduce new generate-changelog command ([c8e6ca3](https://github.com/machinelabs/machinelabs/commit/c8e6ca3))
+* **cli:** Support globbing patterns ([4c44d79](https://github.com/machinelabs/machinelabs/commit/4c44d79)), closes [#751](https://github.com/machinelabs/machinelabs/issues/751)
+* **CompletionProvider:** Add completions for the CLI options ([c967684](https://github.com/machinelabs/machinelabs/commit/c967684))
+* **LabExecutionService:** introduce method to observe recent executions of lab ([106030b](https://github.com/machinelabs/machinelabs/commit/106030b))
+
+
+
 <a name="0.28.1"></a>
 ## [0.28.1](https://github.com/machinelabs/machinelabs/compare/0.28.0...0.28.1) (2018-02-20)
 

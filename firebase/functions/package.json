@@ -25,8 +25,16 @@
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "testPathIgnorePatterns": ["/node_modules/", "/dist/"],
-    "moduleFileExtensions": ["ts", "tsx", "js", "json"]
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ]
   },
   "dependencies": {
     "firebase-admin": "^4.1.2",
@@ -49,5 +57,5 @@
     "tslint": "^5.5.0",
     "typescript": "2.4.2"
   },
-  "version": "0.28.1+utc.2018.Feb.20-19.44.11"
+  "version": "0.30.0+utc.2018.Mar.23-12.52.19"
 }
