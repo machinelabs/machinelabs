@@ -51,7 +51,7 @@ In case you need to create a fresh service account file go to:
 
 console.firebase.google.com > Project Settings > Service Accouts > Firebase Admin SDK
 
-Run `firebase use <my-fb>` followed by `firebase functions:config:set fb_service_account="$(cat service-account.json)"
+Run `npx firebase use <my-fb>` followed by `npx firebase functions:config:set fb_service_account="$(cat service-account.json)"
 
 
 Where `service-account.json` looks like this:

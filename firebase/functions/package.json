@@ -6,7 +6,7 @@
     "cp__node_modules": "cp -R ./node_modules ./dist/node_modules",
     "cp__package": "cp -R ./package.json ./dist/package.json",
     "copy": "npm run cp__node_modules && npm run cp__package",
-    "node_modules": "rm -rf ./node_modules && npx yarn install",
+    "node_modules": "rm -rf ./node_modules && yarn install",
     "build:pre": "npm run node_modules && npm run clean_dist && npm run mk_dist && npm run copy",
     "build": "npm run build:pre && tsc",
     "deploy": "npm run build && firebase deploy && npm run clean_dist",
@@ -29,8 +29,9 @@
     "moduleFileExtensions": ["ts", "tsx", "js", "json"]
   },
   "dependencies": {
-    "firebase-admin": "^4.1.2",
-    "firebase-functions": "^0.5",
+    "firebase-admin": "^5.11.0",
+    "firebase-functions": "^0.9.1",
+    "firebase-tools": "^3.17.7",
     "js-yaml": "^3.10.0",
     "lodash.isstring": "^4.0.1",
     "lodash.merge": "^4.6.0",

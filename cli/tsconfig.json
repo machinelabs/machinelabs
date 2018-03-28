@@ -17,6 +17,7 @@
     "inlineSources": true,
     "stripInternal": true,
     "paths": {
+      "firebase": ["./node_modules/firebase"],
       "rxjs/*": ["./node_modules/rxjs/*"]
     },
     "baseUrl": "",
