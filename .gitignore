@@ -40,6 +40,8 @@ testem.log
 # e2e
 /client/e2e/*.js
 /client/e2e/*.map
+/client/cypress/screenshots
+/client/cypress/videos
 
 #shared
 /shared/**/*.js
