@@ -141,7 +141,7 @@ MachineLabs will look for available servers to run in the database. For that we 
 Next we need to deploy firebase rules so not everyone can just go ahead and write into any entries of our database. The repository comes with rules. To deploy them we first need to login to firebase using the firebase CLI:
 
 ```
-$ firebase login
+$ npx firebase login
 ```
 
 Once logged in, we can deploy the provided rules by executing:

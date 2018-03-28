@@ -23,7 +23,7 @@
     "moduleFileExtensions": ["ts", "tsx", "js", "json"]
   },
   "scripts": {
-    "node_modules": "rm -rf ./node_modules && yarn install",
+    "node_modules": "rm -rf ./node_modules && npx yarn install",
     "build": "node ./build/build.js",
     "start": "node ./dist/index.js",
     "lint:check": "tslint -c tslint.json 'src/**/*.ts'",

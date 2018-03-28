@@ -10,8 +10,8 @@
     "@machinelabs/metrics": "link:../shared/metrics",
     "@machinelabs/models": "link:../shared/models",
     "ansi-escape-sequences": "^4.0.0",
-    "firebase": "^4.9.0",
-    "firebase-admin": "^5.8.1",
+    "firebase": "^4.9.1",
+    "firebase-admin": "^5.11.0",
     "js-yaml": "^3.8.4",
     "lodash.flatmap": "^4.5.0",
     "lodash.isnumber": "^3.0.3",
@@ -35,7 +35,7 @@
     "moduleFileExtensions": ["ts", "tsx", "js", "json"]
   },
   "scripts": {
-    "node_modules": "rm -rf ./node_modules && yarn install",
+    "node_modules": "rm -rf ./node_modules && npx yarn install",
     "build": "node ./build/build.js",
     "test": "./node_modules/jest/bin/jest.js",
     "debug-test": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand",
