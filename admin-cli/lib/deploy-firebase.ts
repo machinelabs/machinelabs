@@ -13,7 +13,7 @@ export function deployFirebase(project) {
 
   return concat(
     stdout(chalk.green(`Deploying firebase project ${project}`)),
-    spawnShell(`(cd ./firebase/functions; firebase use ${project} && npm run deploy)`),
+    spawnShell(`(cd ./firebase/functions; npx firebase use ${project} && npm run deploy)`),
     stdout(chalk.green('Firebase functions and rules successfully deployed'))
   );
 }
