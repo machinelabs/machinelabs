@@ -40,7 +40,7 @@
     "@types/globby": "^6.1.0",
     "@types/jest": "^22.1.0",
     "@types/rimraf": "^2.0.2",
-    "firebase": "^4.2.0",
+    "firebase": "^4.12.0",
     "jest": "^20.0.4",
     "prettier": "^1.11.1",
     "rimraf": "^2.6.2",
@@ -51,7 +51,7 @@
     "yarn": "^1.5.1"
   },
   "peerDependencies": {
-    "firebase": "^4.2.0",
+    "firebase": "^4.12.0",
     "rxjs": "^5.5.6"
   }
 }

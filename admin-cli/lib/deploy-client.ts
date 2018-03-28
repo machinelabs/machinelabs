@@ -16,9 +16,9 @@ export function deployClient(project, env) {
 
     spawnShell(`(cd ./client &&
       npm run node_modules &&
-      ng build --prod --environment=${env} &&
-      firebase use ${project} &&
-      firebase deploy)`),
+      npx ng build --prod --environment=${env} &&
+      npx firebase use ${project} &&
+      npx firebase deploy)`),
 
     stdout(chalk.green('Client successfully deployed!'))
   );
