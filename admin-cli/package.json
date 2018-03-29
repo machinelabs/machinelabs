@@ -1,6 +1,6 @@
 {
   "name": "@machinelabs/admin-cli",
-  "version": "0.28.1+utc.2018.Feb.20-19.44.11",
+  "version": "0.28.1-dev+utc.2018.Mar.29-10.57.44",
   "description": "Admin CLI for Machine Labs",
   "main": "index.js",
   "license": "MIT",
