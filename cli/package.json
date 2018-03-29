@@ -1,6 +1,6 @@
 {
   "name": "@machinelabs/cli",
-  "version": "0.28.1+utc.2018.Feb.20-19.44.11",
+  "version": "0.28.1-dev+utc.2018.Mar.29-9.57.08",
   "description": "CLI for MachineLabs",
   "main": "index.js",
   "bin": {

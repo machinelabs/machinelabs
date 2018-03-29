@@ -1,6 +1,6 @@
 {
   "name": "@machinelabs/models",
-  "version": "0.28.1+utc.2018.Feb.20-19.44.11",
+  "version": "0.28.1-dev+utc.2018.Mar.29-9.57.08",
   "description": "Models shared across the @machinelabs ecosystem",
   "license": "MIT",
   "main": "dist/src/index.js",
@@ -9,10 +9,20 @@
     "transform": {
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
-    "transformIgnorePatterns": ["/node_modules/(?!@machinelabs/models)/"],
+    "transformIgnorePatterns": [
+      "/node_modules/(?!@machinelabs/models)/"
+    ],
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "testPathIgnorePatterns": ["/node_modules/", "/dist/"],
-    "moduleFileExtensions": ["ts", "tsx", "js", "json"]
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ]
   },
   "scripts": {
     "lint:check": "tslint  -c ./tslint.json 'src/**/*.ts'",
