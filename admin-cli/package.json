@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "echo \"Compiling admin-cli\" && (cd ../shared && node build.js --install) && tsc",
-    "mla:build": "yarn run build && yarn run mla",
+    "mla:build": "npm run build && npm run mla",
     "mla": "node ./dist/index.js",
     "lint:check": "tslint -c ./tslint.json \"{commands,config-templates,lib}/**/*.ts\"",
     "lint:fix": "tslint --fix -c ./tslint.json \"{commands,config-templates,lib}/**/*.ts\"",
