@@ -40,6 +40,10 @@ export class EditorViewPageObject {
     return cy.get('monaco-editor');
   }
 
+  getEditorLayoutPanel() {
+    return cy.get('ml-editor-layout-panels');
+  }
+
   getConsolePanel() {
     return cy.get('ml-xterm');
   }

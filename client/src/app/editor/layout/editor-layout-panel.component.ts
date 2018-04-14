@@ -9,8 +9,8 @@ import { Component } from '@angular/core';
     `
     :host {
       display: flex;
-      flex: 1;
       position: relative;
+      width: 100%;
     }
   `
   ]

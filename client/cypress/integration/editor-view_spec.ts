@@ -56,6 +56,13 @@ describe('Editor View', () => {
       editorView.getFileTree().should('be.visible');
     });
 
+    it('should not display a horizontal scrollbar when file structure is visible', () => {
+      editorView.toggleFileTree();
+      editorView.getEditorLayoutPanel().should(el => {
+        expect(el[0].clientWidth).to.eq(el[0].scrollWidth);
+      });
+    });
+
     describe('File Tree', () => {
 
       it('should display current lab file structure', () => {

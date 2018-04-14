@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
     `
     :host {
       display: flex;
-      flex: 1;
+      width: 100%;
     }
   `
   ]
