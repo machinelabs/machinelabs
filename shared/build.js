@@ -12,12 +12,12 @@ const doInstall = !!process.argv.includes("--install");
 let buildOrder = ["models", "core", "metrics", "supervisor"];
 
 const buildCmd = dir =>
-  execute(`(cd ${dir} && ./node_modules/typescript/bin/tsc)`, {
+  execute(`(cd ${dir} && npx tsc)`, {
     stdio: "inherit"
   });
 
 const installAndBuildCmd = dir =>
-  execute(`(cd ${dir} && yarn install && ./node_modules/typescript/bin/tsc)`, {
+  execute(`(cd ${dir} && npx yarn install && npx tsc)`, {
     stdio: "inherit"
   });
 
