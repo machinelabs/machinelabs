@@ -50,44 +50,59 @@ isInvocationRateProofKey(userId, key) {
   key === root.child('/idx/invocation_rate_proof/' + userId + '/key').val()
 }
 
+type String50 extends String {
+  validate() { this.length <= 50 }
+}
+
+type String100 extends String {
+  validate() { this.length <= 100 }
+}
+
+type String500 extends String {
+  validate() { this.length <= 500 }
+}
+
+type ServerWritableString extends String100 {
+  validate() { isSystem() }
+}
+
+type ServerWritableNumber extends Number {
+  validate() { isSystem() }
+}
+
 type HandshakeRequest {
-  id: String,
-  token: String | Null
+  id: String100,
+  token: String100 | Null
 }
 
 type HandshakeCommit {
-  id: String,
-  user_id: String
+  id: String100,
+  user_id: String100
 }
 
 type Lab {
-  id: String,
-  user_id: String,
-  name: String,
-  description: String,
+  id: String100,
+  user_id: String100,
+  name: String100,
+  description: String500,
   has_cached_run: Boolean | Null,
   cache_hash: String | Null
-  tags: String[],
+  tags: String50[],
   directory: String,
   hidden: Boolean,
   created_at: Number,
   modified_at: Number,
-  fork_of: String | Null,
+  fork_of: String100 | Null,
   is_private: Boolean
 }
 
-type File {
-  name: String,
-  content: String
-}
-
 type InvocationLab {
-  id: String,
+  id: String100,
   directory: String
 }
 
 type InvocationExecution {
-  execution_id: String
+  execution_id: String100
 }
 
 type AllowOther {
@@ -95,19 +110,11 @@ type AllowOther {
 }
 
 type Invocation {
-  id: String,
-  user_id: String,
+  id: String100,
+  user_id: String100,
   timestamp: Number,
-  type: String,
+  type: String50,
   data: InvocationLab | InvocationExecution
-}
-
-type ServerWritableString extends String {
-  validate() { isSystem() }
-}
-
-type ServerWritableNumber extends Number {
-  validate() { isSystem() }
 }
 
 type Execution {
@@ -124,23 +131,23 @@ type Execution {
   lab: InvocationLab,
   status: ServerWritableString,
   hidden: Boolean | Null,
-  name: String | Null
+  name: String100 | Null
 }
 
 type ExecutionMessage {
-  id: String,
+  id: String100,
   index: Number,
   virtual_index: Number,
   timestamp: Number,
   data: Any,
-  kind: String,
+  kind: String50,
   terminal_mode: Boolean
 }
 
 type Plan {
-  id: String,
-  name: String,
-  description: String,
+  id: String100,
+  name: String50,
+  description: String100,
   free_credit: Number
 }
 
@@ -159,22 +166,22 @@ type UserEmail extends String {
 type User {
   id: UserId,
   isAnonymous: AnonymousState,
-  displayName: String,
-  bio: String,
+  displayName: String50,
+  bio: String500,
   photoUrl: String,
   email: UserEmail,
 }
 
 type Server {
-  id: String,
-  hardware_type: String,
-  name: String
+  id: String100,
+  hardware_type: String100,
+  name: String100,
   disabled: Boolean
 }
 
 type RateProof {
   timestamp: ThrottledTimeStamp,
-  key: String
+  key: String100
 }
 
 type ThrottledTimeStamp extends Number {

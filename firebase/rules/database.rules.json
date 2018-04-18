@@ -8,7 +8,7 @@
             ".validate": "newData.isNumber() && newData.isNumber() && newData.val() == now && (data.val() == null || newData.val() > data.val() + 1000)"
           },
           "key": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && newData.val().length <= 100"
           },
           "$other": {
             ".validate": "false"
@@ -60,16 +60,16 @@
         "common": {
           ".validate": "newData.hasChildren(['id', 'user_id', 'name', 'description', 'directory', 'hidden', 'created_at', 'modified_at', 'is_private'])",
           "id": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && newData.val().length <= 100"
           },
           "user_id": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && newData.val().length <= 100"
           },
           "name": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && newData.val().length <= 100"
           },
           "description": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && newData.val().length <= 500"
           },
           "has_cached_run": {
             ".validate": "newData.isBoolean()"
@@ -79,7 +79,7 @@
           },
           "tags": {
             "$key1": {
-              ".validate": "newData.isString()"
+              ".validate": "newData.isString() && newData.val().length <= 50"
             },
             ".validate": "newData.hasChildren()"
           },
@@ -96,7 +96,7 @@
             ".validate": "newData.isNumber()"
           },
           "fork_of": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && newData.val().length <= 100"
           },
           "is_private": {
             ".validate": "newData.isBoolean()"
@@ -117,21 +117,21 @@
         "common": {
           ".validate": "newData.hasChildren(['id', 'user_id', 'timestamp', 'type', 'data'])",
           "id": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && newData.val().length <= 100"
           },
           "user_id": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && newData.val().length <= 100"
           },
           "timestamp": {
             ".validate": "newData.isNumber()"
           },
           "type": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && newData.val().length <= 50"
           },
           "data": {
             ".validate": "newData.hasChildren() && newData.hasChildren(['id', 'directory']) || newData.hasChildren() && newData.hasChildren(['execution_id'])",
             "id": {
-              ".validate": "newData.isString()"
+              ".validate": "newData.isString() && newData.val().length <= 100"
             },
             "directory": {
               ".validate": "newData.isString()"
@@ -140,7 +140,7 @@
               ".validate": "false"
             },
             "execution_id": {
-              ".validate": "newData.isString()"
+              ".validate": "newData.isString() && newData.val().length <= 100"
             }
           },
           "$other": {
@@ -165,10 +165,10 @@
         "common": {
           ".validate": "newData.hasChildren(['id', 'cache_hash', 'started_at', 'server_id', 'server_info', 'hardware_type', 'user_id', 'lab', 'status'])",
           "id": {
-            ".validate": "newData.isString() && auth.uid == 'SYSTEM_USER'"
+            ".validate": "newData.isString() && newData.val().length <= 100 && auth.uid == 'SYSTEM_USER'"
           },
           "cache_hash": {
-            ".validate": "newData.isString() && auth.uid == 'SYSTEM_USER'"
+            ".validate": "newData.isString() && newData.val().length <= 100 && auth.uid == 'SYSTEM_USER'"
           },
           "started_at": {
             ".validate": "newData.isNumber() && auth.uid == 'SYSTEM_USER'"
@@ -183,21 +183,21 @@
             ".validate": "newData.isNumber() && auth.uid == 'SYSTEM_USER'"
           },
           "server_id": {
-            ".validate": "newData.isString() && auth.uid == 'SYSTEM_USER'"
+            ".validate": "newData.isString() && newData.val().length <= 100 && auth.uid == 'SYSTEM_USER'"
           },
           "server_info": {
-            ".validate": "newData.isString() && auth.uid == 'SYSTEM_USER'"
+            ".validate": "newData.isString() && newData.val().length <= 100 && auth.uid == 'SYSTEM_USER'"
           },
           "hardware_type": {
-            ".validate": "newData.isString() && auth.uid == 'SYSTEM_USER'"
+            ".validate": "newData.isString() && newData.val().length <= 100 && auth.uid == 'SYSTEM_USER'"
           },
           "user_id": {
-            ".validate": "newData.isString() && auth.uid == 'SYSTEM_USER'"
+            ".validate": "newData.isString() && newData.val().length <= 100 && auth.uid == 'SYSTEM_USER'"
           },
           "lab": {
             ".validate": "newData.hasChildren(['id', 'directory'])",
             "id": {
-              ".validate": "newData.isString()"
+              ".validate": "newData.isString() && newData.val().length <= 100"
             },
             "directory": {
               ".validate": "newData.isString()"
@@ -207,13 +207,13 @@
             }
           },
           "status": {
-            ".validate": "newData.isString() && auth.uid == 'SYSTEM_USER'"
+            ".validate": "newData.isString() && newData.val().length <= 100 && auth.uid == 'SYSTEM_USER'"
           },
           "hidden": {
             ".validate": "newData.isBoolean()"
           },
           "name": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && newData.val().length <= 100"
           },
           "$other": {
             ".validate": "false"
@@ -235,7 +235,7 @@
           "$mid": {
             ".validate": "newData.hasChildren(['id', 'index', 'virtual_index', 'timestamp', 'data', 'kind', 'terminal_mode'])",
             "id": {
-              ".validate": "newData.isString()"
+              ".validate": "newData.isString() && newData.val().length <= 100"
             },
             "index": {
               ".validate": "newData.isNumber()"
@@ -250,7 +250,7 @@
               ".validate": "true"
             },
             "kind": {
-              ".validate": "newData.isString()"
+              ".validate": "newData.isString() && newData.val().length <= 50"
             },
             "terminal_mode": {
               ".validate": "newData.isBoolean()"
@@ -278,10 +278,10 @@
             ".validate": "newData.isBoolean() && newData.val() == (auth.provider == 'anonymous')"
           },
           "displayName": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && newData.val().length <= 50"
           },
           "bio": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && newData.val().length <= 500"
           },
           "photoUrl": {
             ".validate": "newData.isString()"
@@ -305,13 +305,13 @@
       "$id": {
         ".validate": "newData.hasChildren(['id', 'hardware_type', 'name', 'disabled'])",
         "id": {
-          ".validate": "newData.isString()"
+          ".validate": "newData.isString() && newData.val().length <= 100"
         },
         "hardware_type": {
-          ".validate": "newData.isString()"
+          ".validate": "newData.isString() && newData.val().length <= 100"
         },
         "name": {
-          ".validate": "newData.isString()"
+          ".validate": "newData.isString() && newData.val().length <= 100"
         },
         "disabled": {
           ".validate": "newData.isBoolean()"
@@ -326,10 +326,10 @@
         "request": {
           ".validate": "newData.hasChildren(['id'])",
           "id": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && newData.val().length <= 100"
           },
           "token": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && newData.val().length <= 100"
           },
           "$other": {
             ".validate": "false"
@@ -340,10 +340,10 @@
         "commit": {
           ".validate": "newData.hasChildren(['id', 'user_id'])",
           "id": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && newData.val().length <= 100"
           },
           "user_id": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && newData.val().length <= 100"
           },
           "$other": {
             ".validate": "false"

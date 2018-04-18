@@ -87,4 +87,17 @@ describe('/users', () => {
     expect(systemUser).canRead('/users/1/plan');
     expect(systemUser).canRead('/users/2/plan');
   });
+
+  describe('Validation', () => {
+    const string51 = new Array(51).fill('0').join('');
+    const string501 = new Array(501).fill('0').join('');
+
+    it('User displayName cannot be longer than 50 characters', () => {
+      expect(currentUser).cannotWrite('/users/1/common/displayName', string51);
+    });
+
+    it('User bio cannot be longer than 500 characters', () => {
+      expect(currentUser).cannotWrite('/users/1/common/bio', string501);
+    });
+  });
 });
