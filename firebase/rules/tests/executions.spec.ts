@@ -2,13 +2,14 @@ import 'jest';
 import * as matchers from '../matchers';
 import * as targaryen from 'targaryen';
 
+const anonymousUser = targaryen.util.users.anonymous;
 const rules = require('../database.rules.json');
 
 describe('/executions', () => {
-  const currentUser = { uid: '1', email: 'foo@bar.com', provider: 'github' };
+  const currentUser = { id: '1', uid: '1', email: 'foo@bar.com', provider: 'github' };
   const systemUser = { uid: 'SYSTEM_USER' };
 
-  const testInvocationLab = {
+  const testExecutionLab = {
     id: '1',
     directory: ''
   };
@@ -16,13 +17,13 @@ describe('/executions', () => {
   const testExecution = {
     id: '1',
     cache_hash: 'some-hash',
+    started_at: Date.now(),
     server_id: 'some-server-id',
     server_info: 'some-server-info',
     hardware_type: 'some-hardware-type',
     user_id: '1',
-    lab: testInvocationLab,
-    status: 'some-status',
-    name: 'some-name'
+    lab: { ...testExecutionLab },
+    status: 'some-status'
   };
 
   beforeEach(() => {
@@ -30,7 +31,11 @@ describe('/executions', () => {
 
     targaryen.util.setFirebaseData({
       executions: {
-        '1': { ...testExecution }
+        '1': {
+          common: {
+            ...testExecution
+          }
+        }
       }
     });
 
@@ -76,5 +81,16 @@ describe('/executions', () => {
     it('Execution message kind cannot be longer than 50 characters', () => {
       expect(systemUser).cannotWrite('/executions/1/messages/kind', string51);
     });
+  });
+
+  it('Only system-user can write into common lab property of executions', () => {
+    const newExecutionLab = {
+      id: '2',
+      directory: 'test'
+    };
+
+    expect(anonymousUser).cannotWrite('/executions/1/common/lab', newExecutionLab);
+    expect(currentUser).cannotWrite('/executions/1/common/lab', newExecutionLab);
+    expect(systemUser).canWrite('/executions/1/common/lab', newExecutionLab);
   });
 });

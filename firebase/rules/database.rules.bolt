@@ -62,6 +62,10 @@ type String500 extends String {
   validate() { this.length <= 500 }
 }
 
+type ServerWritable {
+  validate() { isSystem() }
+}
+
 type ServerWritableString extends String100 {
   validate() { isSystem() }
 }
@@ -128,10 +132,15 @@ type Execution {
   server_info: ServerWritableString,
   hardware_type: ServerWritableString,
   user_id: ServerWritableString,
-  lab: InvocationLab,
+  lab: ExecutionLab,
   status: ServerWritableString,
   hidden: Boolean | Null,
   name: String100 | Null
+}
+
+type ExecutionLab extends InvocationLab {
+  id: ServerWritable,
+  directory: ServerWritable
 }
 
 type ExecutionMessage {
