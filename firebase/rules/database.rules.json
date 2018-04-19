@@ -195,12 +195,12 @@
             ".validate": "newData.isString() && newData.val().length <= 100 && auth.uid == 'SYSTEM_USER'"
           },
           "lab": {
-            ".validate": "newData.hasChildren(['id', 'directory'])",
+            ".validate": "newData.hasChildren(['id', 'directory', 'id', 'directory'])",
             "id": {
-              ".validate": "newData.isString() && newData.val().length <= 100"
+              ".validate": "newData.isString() && newData.val().length <= 100 && auth.uid == 'SYSTEM_USER'"
             },
             "directory": {
-              ".validate": "newData.isString()"
+              ".validate": "newData.isString() && auth.uid == 'SYSTEM_USER'"
             },
             "$other": {
               ".validate": "false"
