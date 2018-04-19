@@ -27,6 +27,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@machinelabs/models": "link:../../shared/models",
     "@types/core-js": "^0.9.34",
     "@types/jest": "^22.1.0",
     "@types/node": "^9.3.0",
