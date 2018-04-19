@@ -2,6 +2,8 @@ import 'jest';
 import * as matchers from '../matchers';
 import * as targaryen from 'targaryen';
 
+import { SYSTEM_USER } from '@machinelabs/models';
+
 const anonymousUser = targaryen.util.users.anonymous;
 const rules = require('../database.rules.json');
 
@@ -38,7 +40,7 @@ describe('/users', () => {
     });
 
     currentUser = { uid: '1', email: 'foo@bar.com', provider: 'github' };
-    systemUser = { uid: 'SYSTEM_USER' };
+    systemUser = { uid: SYSTEM_USER };
 
     targaryen.util.setFirebaseRules(rules);
   });
