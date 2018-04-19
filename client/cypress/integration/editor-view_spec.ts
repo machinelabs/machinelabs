@@ -63,6 +63,14 @@ describe('Editor View', () => {
       });
     });
 
+    it('should fill the available viewport height', () => {
+      editorView.getEditorLayoutMain().then(main => {
+        editorView.getEditorLayoutPanel().should(el => {
+          expect(el[0].clientHeight).to.eq(main[0].clientHeight);
+        });
+      });
+    });
+
     describe('File Tree', () => {
 
       it('should display current lab file structure', () => {

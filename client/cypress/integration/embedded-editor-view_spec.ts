@@ -13,4 +13,12 @@ describe('Embedded Editor View', () => {
     cy.visit('/embedded?tab=console');
     editorView.getActiveTab().contains('Console');
   });
+
+  it('should fill the available viewport height', () => {
+    editorView.getEditorLayoutMain().then(main => {
+      editorView.getEditorLayoutPanel().should(el => {
+        expect(el[0].clientHeight).to.eq(main[0].clientHeight);
+      });
+    });
+  });
 });

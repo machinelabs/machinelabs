@@ -44,6 +44,10 @@ export class EditorViewPageObject {
     return cy.get('ml-editor-layout-panels');
   }
 
+  getEditorLayoutMain() {
+    return cy.get('ml-editor-layout-main');
+  }
+
   getConsolePanel() {
     return cy.get('ml-xterm');
   }
