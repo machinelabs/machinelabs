@@ -29,20 +29,10 @@
     "transform": {
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
-    "transformIgnorePatterns": [
-      "/node_modules/(?!@machinelabs/core)/"
-    ],
+    "transformIgnorePatterns": ["/node_modules/(?!@machinelabs/core)/"],
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/dist/"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "json"
-    ]
+    "testPathIgnorePatterns": ["/node_modules/", "/dist/"],
+    "moduleFileExtensions": ["ts", "tsx", "js", "json"]
   },
   "scripts": {
     "node_modules": "rm -rf ./node_modules && npx yarn install",
