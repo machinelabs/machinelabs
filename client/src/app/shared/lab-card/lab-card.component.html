@@ -4,7 +4,9 @@
       <h3>{{ lab.name | words: 5 }}</h3>
       <span class="ml-user-profile-lab-card-private-badge" *ngIf="lab.is_private">Private</span>
       <div class="ml-lab-card-user" *ngIf="user && showUsername">
-        by <a class="ml-lab-card-username" title="{{ user.displayName }}'s profile" [routerLink]="['/user', user.id]">{{user.displayName}}</a>
+        by
+        <img *ngIf="user.photoUrl && showUserAvatar" [src]="user.photoUrl" alt="User avatar">
+        <a class="ml-lab-card-username" title="{{ user.displayName }}'s profile" [routerLink]="['/user', user.id]">{{user.displayName}}</a>
       </div>
       <div class="ml-lab-card-description" *ngIf="lab.description && showDescription">
         {{ lab.description }}
