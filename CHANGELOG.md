@@ -1,3 +1,14 @@
+<a name="0.30.2"></a>
+## [0.30.2](https://github.com/machinelabs/machinelabs/compare/0.30.1...0.30.2) (2018-04-23)
+
+
+### Bug Fixes
+
+* **client:** ensure embedded editor view fills available viewport ([d4704ec](https://github.com/machinelabs/machinelabs/commit/d4704ec)), closes [#792](https://github.com/machinelabs/machinelabs/issues/792) [#792](https://github.com/machinelabs/machinelabs/issues/792)
+* **firebase/rules:** add rule to ensure that only system-user can write into common lab of executions ([0a5741c](https://github.com/machinelabs/machinelabs/commit/0a5741c)), closes [#791](https://github.com/machinelabs/machinelabs/issues/791)
+* **firebase/rules:** ensure string lengths don't exceed threshold ([2ae7967](https://github.com/machinelabs/machinelabs/commit/2ae7967)), closes [#725](https://github.com/machinelabs/machinelabs/issues/725)
+
+
 
 <a name="0.30.1"></a>
 ## [0.30.1](https://github.com/machinelabs/machinelabs/compare/0.30.0...0.30.1) (2018-04-19)
