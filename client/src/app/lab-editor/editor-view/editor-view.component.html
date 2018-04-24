@@ -48,6 +48,7 @@
             <monaco-editor
               [file]="MonacoFileTypeAdapter.labFileToMonacoFile(activeFile)"
               (fileChange)="onFileChange($event)"
+              (ready)="editorReady$.next()"
               [class.active]="editorService.editorTabActive()"
             ></monaco-editor>
           </mat-drawer-container>
