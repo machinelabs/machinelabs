@@ -17,7 +17,6 @@ export class LabCardComponent {
   @Input() executions: Array<{ id: string; execution: Observable<Execution> }>;
   @Input() showDescription = false;
   @Input() showUsername = true;
-  @Input() showUserAvatar = true;
   @Input() showTags = false;
 
   trackExecutionById(index, execution) {

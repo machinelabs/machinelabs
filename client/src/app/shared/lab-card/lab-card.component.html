@@ -1,23 +1,30 @@
 <mat-card *ngIf="lab">
-  <a class="ml-lab-card-header" title="View lab {{ lab.name}}" [routerLink]="['/editor', lab.id]">
+  <div class="ml-lab-card-header">
+    <a class="ml-lab-card-link-area" [routerLink]="['/editor', lab.id]" title="View lab {{ lab.name}}"></a>
     <div class="ml-title-wrapper">
-      <h3>{{ lab.name | words: 5 }}</h3>
+      <a class="ml-lab-card-link" [routerLink]="['/editor', lab.id]" title="View lab {{ lab.name}}">
+        <h3>{{ lab.name | words: 5 }}</h3>
+      </a>
       <span class="ml-user-profile-lab-card-private-badge" *ngIf="lab.is_private">Private</span>
       <div class="ml-lab-card-user" *ngIf="user && showUsername">
+        <a class="ml-lab-card-link-area" [routerLink]="['/editor', lab.id]" title="View lab {{ lab.name}}"></a>
         by
-        <img *ngIf="user.photoUrl && showUserAvatar" [src]="user.photoUrl" alt="User avatar">
-        <a class="ml-lab-card-username" title="{{ user.displayName }}'s profile" [routerLink]="['/user', user.id]">{{user.displayName}}</a>
+        <img *ngIf="user.photoUrl" [src]="user.photoUrl" alt="{{user.displayName }}'s user avatar">
+        <a class="ml-lab-card-username" [routerLink]="['/user', user.id]" title="{{ user.displayName }}'s profile">{{user.displayName}}</a>
       </div>
-      <div class="ml-lab-card-description" *ngIf="lab.description && showDescription">
-        {{ lab.description }}
-      </div>
+      <a class="ml-lab-card-link" [routerLink]="['/editor', lab.id]" title="View lab {{ lab.name}}">
+        <div class="ml-lab-card-description" *ngIf="lab.description && showDescription">
+          {{ lab.description }}
+        </div>
+      </a>
       <div class="ml-lab-card-tags" *ngIf="lab.tags && showTags">
         <ml-tag-list [tags]="lab.tags"></ml-tag-list>
       </div>
     </div>
-    <mat-icon class="ml-lab-card-cta">keyboard_arrow_right</mat-icon>
-  </a>
-  <ml-execution-card *ngFor="let recentExecution of executions; trackBy: trackExecutionById"
-    [execution]="recentExecution.execution | async">
+    <mat-icon class="ml-lab-card-cta">
+      <a class="ml-lab-card-link" [routerLink]="['/editor', lab.id]" title="View lab {{ lab.name}}">keyboard_arrow_right</a>
+    </mat-icon>
+  </div>
+  <ml-execution-card *ngFor="let recentExecution of executions; trackBy: trackExecutionById" [execution]="recentExecution.execution | async">
   </ml-execution-card>
 </mat-card>
