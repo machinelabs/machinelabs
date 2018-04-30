@@ -109,7 +109,7 @@ MachineLabs runs users code in docker containers. All available docker container
 The easiest way to get hold of a list of docker images is to import the JSON file provided in `firebase/data/docker_images.json` into your firebase database. One way to import that is to use the firebase CLI like this:
 
 ```
-firebase database:set /docker_images firebase/data/docker_images.json
+firebase --project <PROJECT_ID> database:set /docker_images firebase/data/docker_images.json
 ```
 
 However, keep in mind that MachineLabs will need to download them, so instead of registering all docker images, pick only one.
@@ -117,6 +117,10 @@ However, keep in mind that MachineLabs will need to download them, so instead of
 #### Adding plan entries
 
 Available plans for users are stored in the database as well. Same as for the docker images, we have a file prepared to import all available plans in `firebase/data/plans.json`.
+
+```
+firebase --project <PROJECT_ID> database:set /plans firebase/data/plans.json
+```
 
 #### Adding server entries
 
@@ -134,6 +138,12 @@ MachineLabs will look for available servers to run in the database. For that we 
     }
   }
 }
+```
+
+Once you have created you personal `servers.json`, import it like this:
+
+```
+firebase --project <PROJECT_ID> database:set /servers path/you/your/servers.json
 ```
 
 #### Deploying Firebase rules and functions
@@ -189,6 +199,7 @@ export const environment = {
     messagingSenderId: '...'
   },
   serverId: '...',
+  pullImages: true,
   rootMountPath: '/tmp',
   slackLogging: {
     allChannel: '',
@@ -199,6 +210,7 @@ export const environment = {
 
 - **firebaseConfig** - An object with your firebase configuration. You can retrieve the firebase configuration from your firebase project by going to **Project Overview -> Add Firebase to your web app**.
 - **serverId** - This is the id of the server you've added in [adding server entries](#adding-server-entries).
+- **pullImages** - This triggers the server to pull the Docker images on initialization.
 - **rootMountPath** - A path to a location where datasets will be mounted to. Leave this as `/tmp`
 - **slackLogging** - Channel names for Slack. Those can be left blank.
 
