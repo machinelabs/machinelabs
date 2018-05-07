@@ -1,8 +1,6 @@
-import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
-
-import { TriggerAnnotated, Event } from 'firebase-functions';
-import { DeltaSnapshot } from 'firebase-functions/lib/providers/database';
+import * as admin from 'firebase-admin';
+import * as process from 'process';
 
 export { postInvocationWrite } from './post-invocation-write';
 export { postLabWrite } from './post-lab-write';
@@ -11,7 +9,7 @@ export { bucketChange } from './uploads/add-outputs';
 export { postUserCreate } from './post-user-create';
 export { postHandshakeCommitCreate } from './post-handshake-write';
 
-const conf = functions.config().firebase;
+const conf = JSON.parse(process.env.FIREBASE_CONFIG);
 
 const serviceAccount = functions.config().fb_service_account;
 
