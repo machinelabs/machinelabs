@@ -1,11 +1,12 @@
-import * as functions from 'firebase-functions';
+import { database } from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import { TriggerAnnotated, Event } from 'firebase-functions';
-import { DeltaSnapshot } from 'firebase-functions/lib/providers/database';
 
-export const postHandshakeCommitCreate = functions.database.ref('/handshakes/{id}/commit/user_id').onCreate(event => {
-  const userId = event.data.val();
-  const id = event.params.id;
+import { DataSnapshot } from 'firebase-functions/lib/providers/database';
+import { Runnable, TriggerAnnotated } from 'firebase-functions/lib/cloud-functions';
+
+export const postHandshakeCommitCreate = database.ref('/handshakes/{id}/commit/user_id').onCreate((snap, context) => {
+  const userId = snap.val();
+  const id = context.params.id;
   console.log(userId);
   console.log(id);
   console.log('making token');

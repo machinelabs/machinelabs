@@ -1,6 +1,7 @@
-import * as functions from 'firebase-functions';
-import { TriggerAnnotated, Event } from 'firebase-functions';
-import { DeltaSnapshot } from 'firebase-functions/lib/providers/database';
+import { database } from 'firebase-functions';
+
+import { Change, Runnable, TriggerAnnotated } from 'firebase-functions/lib/cloud-functions';
+import { DataSnapshot } from 'firebase-functions/lib/providers/database';
 
 import { InvocationProcessor } from './invocation-processor/invocation-processor';
 import { getInvocationById, updateInvocation } from './invocation-processor/invocation-crud';
@@ -16,6 +17,6 @@ const serverResolver = new ServerResolver(getServerIdForHardwareType, getServerI
 
 const invocationProcessor = new InvocationProcessor(getInvocationById, serverResolver, updateInvocation);
 
-export const postInvocationWrite = functions.database
+export const postInvocationWrite = database
   .ref('/invocations/{id}/common/id')
-  .onWrite(event => invocationProcessor.process(event.data.val()));
+  .onWrite((change, context) => invocationProcessor.process(change.after.val()));

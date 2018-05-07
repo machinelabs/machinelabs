@@ -36,7 +36,7 @@ export function appendEntryToMonthIndex(index, startDate, endDate, executionId) 
   return index;
 }
 
-export function updateUserExecutions(event, data, delta) {
+export function updateUserExecutions(context, data, delta) {
   const finalized = data.finished_at || data.stopped_at || data.failed_at;
 
   if (data.started_at && finalized) {

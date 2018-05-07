@@ -11,7 +11,7 @@
     "@machinelabs/models": "link:../shared/models",
     "ansi-escape-sequences": "^4.0.0",
     "firebase": "^4.9.1",
-    "firebase-admin": "^5.11.0",
+    "firebase-admin": "^5.12.0",
     "js-yaml": "^3.8.4",
     "lodash.flatmap": "^4.5.0",
     "lodash.isnumber": "^3.0.3",

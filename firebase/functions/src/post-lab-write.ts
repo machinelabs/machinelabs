@@ -1,22 +1,23 @@
 import * as admin from 'firebase-admin';
-import * as functions from 'firebase-functions';
-import { TriggerAnnotated, Event } from 'firebase-functions';
-import { DeltaSnapshot } from 'firebase-functions/lib/providers/database';
+import { database } from 'firebase-functions';
 
 import * as crypto from 'crypto';
 
-export const postLabWrite = functions.database
+import { Change, Runnable, TriggerAnnotated } from 'firebase-functions/lib/cloud-functions';
+import { DataSnapshot } from 'firebase-functions/lib/providers/database';
+
+export const postLabWrite = database
   .ref('/labs/{id}/common')
-  .onWrite(event => Promise.all([updateIndices(event), setHasCachedRun(event)]));
+  .onWrite((change, context) => Promise.all([updateIndices(change), setHasCachedRun(change, context)]));
 
 function hashDirectory(directory) {
   const hasher = crypto.createHash('sha256');
   return hasher.update(JSON.stringify(directory)).digest('hex');
 }
 
-function updateIndices(event) {
+function updateIndices(change) {
   const delta = {};
-  const data = event.data.val();
+  const data = change.after.val();
 
   console.log('Post lab write: updating indices');
 
@@ -51,17 +52,17 @@ function updateIndices(event) {
     );
 }
 
-function setHasCachedRun(event) {
-  const data = event.data.val();
+function setHasCachedRun(change, context) {
+  const data = change.after.val();
 
   console.log(`stringify directory:
                 ${JSON.stringify(data.directory)}`);
 
   const hash = hashDirectory(data.directory);
-  console.log(`Setting hash ${hash} of lab ${event.params.id}`);
+  console.log(`Setting hash ${hash} of lab ${context.params.id}`);
 
   return admin
     .database()
-    .ref(`/labs/${event.params.id}/common`)
+    .ref(`/labs/${context.params.id}/common`)
     .update({ cache_hash: hash });
 }
