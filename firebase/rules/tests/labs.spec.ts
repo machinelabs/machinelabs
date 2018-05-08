@@ -163,12 +163,10 @@ describe('/labs', () => {
     it('Lab tags cannot be longer than 50 characters', () => {
       const labWithLongTags = {
         ...testLab,
-        tags: [string51],
-        created_at: undefined,
-        modified_at: undefined
+        tags: [string51]
       };
 
-      expect(currentUser).cannotWrite('/labs/1/common/', labWithLongTags);
+      expect(currentUser).cannotWrite('/labs/1/common', labWithLongTags);
     });
   });
 });
