@@ -6,6 +6,6 @@ export abstract class AuthService {
   abstract requireAuth(): Observable<LoginUser>;
   abstract requireAuthOnce(): Observable<LoginUser>;
   abstract signOut(): Observable<any>;
-  abstract signInWithGitHub(): Observable<LoginUser>;
+  abstract signInWithCredential(credential: firebase.auth.AuthCredential): Observable<LoginUser>;
   abstract linkOrSignInWithGitHub(): Observable<LoginUser>;
 }
