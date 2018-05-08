@@ -434,7 +434,7 @@ export class EditorViewComponent implements OnInit {
 
     setTimeout(() => {
       this.executionMetadataSidebar.close();
-      this.snackbarService.notifyLabRestored();
+      this.snackbarService.notifyExecutionUnselected();
     }, METADATA_SIDEBAR_OPEN_TIMEOUT);
   }
 
