@@ -61,6 +61,10 @@ export class SnackbarService {
     return this.notify('Execution finished', { actionLabel: 'Show output', duration: 0 });
   }
 
+  notifyExecutionUnselected() {
+    return this.notify('Execution unselected');
+  }
+
   notifyExecutionFinished() {
     this.notify('Execution finished');
   }
