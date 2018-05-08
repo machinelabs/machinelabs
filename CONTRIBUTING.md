@@ -12,7 +12,7 @@ today! As a contributor, here are the guidelines we would like you to follow:
  - [Commit Message Guidelines](#commit)
 
 ## <a name="coc"></a> Code of Conduct
-Help us keep MachineLabs open and inclusive. Please read and follow our [Code of Conduct][coc].
+Help us keep MachineLabs open and inclusive. Please read and follow our [Code of Conduct](./CODE_OF_CONDUCT.md).
 
 ## <a name="question"></a> Got a Question or Problem?
 
@@ -26,11 +26,11 @@ Stack Overflow is a much better place to ask questions since:
 
 To save your and our time, we will systematically close all issues that are requests for general support and redirect people to Stack Overflow.
 
-If you would like to chat about the question in real-time, you can reach out via [our gitter channel][gitter].
+If you would like to chat about the question in real-time, you can reach out via [our gitter channel](https://gitter.im/machinelabs/machinelabs).
 
 ## <a name="issue"></a> Found a Bug?
 If you find a bug in the source code, you can help us by
-[submitting an issue](#submit-issue) to our [GitHub Repository][github]. Even better, you can
+[submitting an issue](#submit-issue) to our [GitHub Repository](https://github.com/machinelabs/machinelabs/). Even better, you can
 [submit a Pull Request](#submit-pr) with a fix.
 
 ## <a name="feature"></a> Missing a Feature?
@@ -67,7 +67,7 @@ Before you submit your Pull Request (PR) consider the following guidelines:
      ```
 
 1. Create your patch, **including appropriate test cases**.
-1. Run the test suite, as described in the [developer documentation][dev-doc],
+1. Run the test suite, as described in the [developer documentation](./DEVELOPERS_GUIDE.md),
   and ensure that all tests pass.
 1. Commit your changes using a descriptive commit message that follows our
   [commit message conventions](#commit). Adherence to these conventions
