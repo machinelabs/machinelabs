@@ -67,6 +67,7 @@ describe('ToolbarMenuComponent', () => {
     const loginButton = fixture.debugElement.query(By.css('.mat-menu-panel button'));
 
     loginButton.triggerEventHandler('click', null);
+
     expect(authService.linkOrSignInWithGitHub).toHaveBeenCalled();
   });
 

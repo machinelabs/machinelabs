@@ -35,13 +35,13 @@ export class OfflineAuthService implements OfflineAuth {
     return this.requireAuth().pipe(take(1));
   }
 
-  signInWithGitHub(): Observable<LoginUser> {
+  signInWithCredential(credential: firebase.auth.AuthCredential): Observable<LoginUser> {
     this.user.isAnonymous = false;
     return of(this.user);
   }
 
   linkOrSignInWithGitHub(): Observable<LoginUser> {
-    return this.signInWithGitHub();
+    return this.signInWithCredential({ providerId: '', signInMethod: '' });
   }
 
   signOut(): Observable<any> {
