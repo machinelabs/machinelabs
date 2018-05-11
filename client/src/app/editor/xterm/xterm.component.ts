@@ -8,7 +8,7 @@ import {
   AfterViewChecked,
   OnDestroy
 } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 declare const Terminal: any;
 

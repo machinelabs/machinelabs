@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { AuthService } from '../../auth/auth.service';
 import { LoginService } from '../../login.service';
 import { UserService } from '../../user/user.service';

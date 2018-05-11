@@ -1,6 +1,6 @@
 import { Injectable, Component, ElementRef, Renderer2, NgZone, OnDestroy, AfterContentInit } from '@angular/core';
 
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { scan } from 'rxjs/operators';
 
 import { MasonryComponent } from './masonry.component';

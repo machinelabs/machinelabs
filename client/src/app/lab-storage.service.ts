@@ -3,9 +3,7 @@ import * as firebase from 'firebase';
 
 import { Injectable, Inject } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
-import { forkJoin } from 'rxjs/observable/forkJoin';
-import { of } from 'rxjs/observable/of';
+import { Observable, forkJoin, of } from 'rxjs';
 import { map, switchMap, mergeMap, catchError } from 'rxjs/operators';
 import { snapshotToValue } from './rx/snapshotToValue';
 

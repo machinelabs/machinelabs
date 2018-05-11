@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { CanDeactivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { MatDialog } from '@angular/material';
 
-import { of } from 'rxjs/observable/of';
-import { forkJoin } from 'rxjs/observable/forkJoin';
-import { switchMap, catchError } from 'rxjs/operators';
+import { of, forkJoin } from 'rxjs';
+import { switchMap, catchError, take } from 'rxjs/operators';
 
 import { UserService } from '../user/user.service';
 import { LabStorageService } from '../lab-storage.service';
@@ -15,7 +14,6 @@ import {
 } from './navigation-confirm-dialog/navigation-confirm-dialog.component';
 
 import { LabExecutionService } from '../lab-execution.service';
-import { take } from 'rxjs/operators';
 
 @Injectable()
 export class HasRunningExecutionGuard implements CanDeactivate<EditorViewComponent> {

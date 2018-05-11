@@ -1,8 +1,6 @@
 import * as firebase from 'firebase';
 
-import { Observable } from 'rxjs/Observable';
-import { fromEventPattern } from 'rxjs/observable/fromEventPattern';
-import { fromPromise } from 'rxjs/observable/fromPromise';
+import { Observable, fromEventPattern, from as fromPromise } from 'rxjs';
 
 export class ObservableDbRef {
   ref: any;
@@ -56,6 +54,9 @@ export class ObservableDbRef {
   }
 
   on(eventName: string): Observable<firebase.database.DataSnapshot> {
-    return fromEventPattern(handler => this.ref.on(eventName, handler), handler => this.ref.off(eventName, handler));
+    return fromEventPattern(
+      handler => this.ref.on(eventName, val => handler(val)),
+      handler => this.ref.off(eventName, handler)
+    );
   }
 }

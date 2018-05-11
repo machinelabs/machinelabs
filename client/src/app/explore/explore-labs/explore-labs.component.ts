@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { LabExecutionService } from '../../lab-execution.service';
 import { LabStorageService } from '../../lab-storage.service';

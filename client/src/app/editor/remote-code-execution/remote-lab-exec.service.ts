@@ -1,11 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { of } from 'rxjs/observable/of';
-import { merge as mergeStatic } from 'rxjs/observable/merge';
-import { _throw } from 'rxjs/observable/throw';
-import { timer } from 'rxjs/observable/timer';
+import { Observable, Subject, of, merge as mergeStatic, throwError, timer } from 'rxjs';
 import { catchError, filter, map, merge, share, startWith, switchMap, take, takeUntil } from 'rxjs/operators';
 
 import { takeWhileInclusive } from '../../rx/takeWhileInclusive';
@@ -42,7 +37,7 @@ export class RemoteLabExecService {
   run(lab: Lab, timeout = 15000): Observable<ExecutionInvocationInfo> {
     const id = this.newInvocationId();
 
-    const timeout$ = timer(timeout).pipe(switchMap(_ => _throw(new TimeoutError(id, 'Timeout'))));
+    const timeout$ = timer(timeout).pipe(switchMap(_ => throwError(new TimeoutError(id, 'Timeout'))));
 
     return this.startWithRateProof(id).pipe(
       switchMap(login =>
@@ -104,8 +99,7 @@ export class RemoteLabExecService {
       take(2),
       catchError(e => {
         const error = e instanceof TimeoutError ? e : new RateLimitError(id, 'Rate limit exceeded');
-        console.error(error);
-        return _throw(error);
+        return throwError(e);
       })
     );
   }

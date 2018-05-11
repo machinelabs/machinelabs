@@ -1,7 +1,6 @@
 import { OverlayRef, GlobalPositionStrategy } from '@angular/cdk/overlay';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable, Subject } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 
 import { FilePreviewDialogComponent } from './file-preview-dialog/file-preview-dialog.component';

@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ML_YAML_FILENAME } from '@machinelabs/core';
 
-import { Observable } from 'rxjs/Observable';
-import { timer } from 'rxjs/observable/timer';
+import { Observable, timer } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Injectable()
