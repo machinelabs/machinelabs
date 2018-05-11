@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { tap, catchError } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 import { Lab } from './models/lab';
 import { LabStorageService } from './lab-storage.service';
 import { SnackbarService } from './snackbar.service';

@@ -1,8 +1,8 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { Observable } from 'rxjs/Observable';
-import { map, filter, switchMap } from 'rxjs/operators';
+import { Observable, forkJoin } from 'rxjs';
+import { map, filter, switchMap, tap } from 'rxjs/operators';
 
 import { User } from '../models/user';
 import { Lab } from '../models/lab';
@@ -15,8 +15,6 @@ import { LabExecutionService } from '../lab-execution.service';
 import { UserService } from '../user/user.service';
 
 import { EditUserProfileDialogComponent } from './edit-user-profile-dialog/edit-user-profile-dialog.component';
-import { forkJoin } from 'rxjs/observable/forkJoin';
-import { tap } from 'rxjs/operators/tap';
 
 interface UserLab {
   lab: Lab;

@@ -1,9 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { interval } from 'rxjs/observable/interval';
-import { never } from 'rxjs/observable/never';
+import { Observable, interval, NEVER, BehaviorSubject } from 'rxjs';
 import { map, switchMap, startWith, tap } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import * as distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 
@@ -31,7 +28,7 @@ export class DurationTrackerComponent implements OnInit, OnChanges, OnDestroy {
       console.warn('[ml-duration-tracker] Please provide a startDate');
     }
 
-    this.duration$ = this.pause$.pipe(switchMap(paused => (paused ? never() : this.trackDuration())));
+    this.duration$ = this.pause$.pipe(switchMap(paused => (paused ? NEVER : this.trackDuration())));
   }
 
   ngOnChanges(changes: SimpleChanges) {

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 import { map, tap, switchMap, catchError } from 'rxjs/operators';
 
 import { LabExecutionService } from '../lab-execution.service';

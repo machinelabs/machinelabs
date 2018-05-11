@@ -4,7 +4,7 @@ import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
 import { EmbedDialogComponent } from '../embed-dialog/embed-dialog.component';
 import { Execution } from '../../models/execution';
 import { Lab } from '../../models/lab';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'ml-footer',

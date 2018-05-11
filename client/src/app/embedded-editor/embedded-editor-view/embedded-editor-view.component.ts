@@ -4,7 +4,7 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 import { File } from '@machinelabs/models';
 import { ML_YAML_FILENAME } from '@machinelabs/core';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 
 import { LabExecutionService } from '../../lab-execution.service';

@@ -3,7 +3,7 @@ import { DataSource } from '@angular/cdk/collections';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { filter, mergeMap, scan, take } from 'rxjs/operators';
 
 import { OutputFilesService } from '../../output-files.service';

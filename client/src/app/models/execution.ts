@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { InvocationLab } from './invocation';
 import { ExecutionRejectionInfo, ExecutionStatus, MessageKind } from '@machinelabs/models';
 

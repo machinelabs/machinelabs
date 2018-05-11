@@ -27,7 +27,7 @@
               [mandatoryFiles]="mandatoryFiles"
               [showActionButtons]="false"></ml-file-tree>
           </mat-drawer>
-          <monaco-editor [file]="MonacoFileTypeAdapter.labFileToMonacoFile(activeFile)"></monaco-editor>
+          <monaco-editor [file]="{ uri: activeFile.name, content: activeFile.content }"></monaco-editor>
         </mat-drawer-container>
       </ml-editor-layout-panel>
       <ml-editor-layout-panel [class.hidden]="!editorService.consoleTabActive()">

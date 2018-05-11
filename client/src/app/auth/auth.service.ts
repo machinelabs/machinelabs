@@ -1,5 +1,5 @@
 import { LoginUser } from '../models/user';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import * as firebase from 'firebase';
 
 export abstract class AuthService {

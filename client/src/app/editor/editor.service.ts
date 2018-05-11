@@ -1,5 +1,4 @@
-import { Subject } from 'rxjs/Subject';
-import { of } from 'rxjs/observable/of';
+import { Subject, of } from 'rxjs';
 import { combineLatest, filter, map, share, startWith, skip, switchMap, tap, catchError } from 'rxjs/operators';
 
 import { Injectable, EventEmitter } from '@angular/core';

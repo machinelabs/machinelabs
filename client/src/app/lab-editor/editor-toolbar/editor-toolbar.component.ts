@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, OnChanges } 
 import { Router, ActivatedRoute } from '@angular/router';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { filter, tap, switchMap } from 'rxjs/operators';
 
 import { Lab } from '../../models/lab';

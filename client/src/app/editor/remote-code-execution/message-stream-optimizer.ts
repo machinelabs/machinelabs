@@ -1,6 +1,6 @@
 import { DbRefBuilder } from '../../firebase/db-ref-builder';
 
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 import { switchMap, concat, take, map } from 'rxjs/operators';
 
 import { ExecutionMessage } from '../../models/execution';

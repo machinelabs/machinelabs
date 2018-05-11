@@ -3,8 +3,7 @@ import { Injectable } from '@angular/core';
 import { LoginUser } from '../models/user';
 import { AuthService } from './auth.service';
 
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { Observable, of } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 export let dummyUser = {

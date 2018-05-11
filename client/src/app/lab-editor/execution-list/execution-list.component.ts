@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { MatDialog, MatDialogRef } from '@angular/material';
 
 import { UserService } from 'app/user/user.service';
