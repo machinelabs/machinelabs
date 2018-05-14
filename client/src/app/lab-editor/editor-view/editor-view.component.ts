@@ -3,9 +3,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogRef, MatSnackBar, MatTabGroup, MatDrawer } from '@angular/material';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { FormControl } from '@angular/forms';
-import { MonacoFile } from 'ngx-monaco';
+import { MonacoFile, MonacoEditorService } from 'ngx-monaco';
 
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { filter, tap, map, skip, switchMap, take, share } from 'rxjs/operators';
@@ -114,6 +115,8 @@ export class EditorViewComponent implements OnInit {
 
   mandatoryFiles = ['main.py', ML_YAML_FILENAME];
 
+  editorReady$ = new Subject();
+
   constructor(
     private labStorageService: LabStorageService,
     private route: ActivatedRoute,
@@ -124,13 +127,23 @@ export class EditorViewComponent implements OnInit {
     private snackbarService: SnackbarService,
     private userService: UserService,
     private breakpointObserver: BreakpointObserver,
-    private slimLoadingBarService: SlimLoadingBarService
+    private slimLoadingBarService: SlimLoadingBarService,
+    private monacoEditorService: MonacoEditorService
   ) {}
 
   ngOnInit() {
     this.editorService.selectedTabChange.subscribe(
       tabIndex => (this.outputPanel.enabled = tabIndex === TabIndex.Console)
     );
+
+    combineLatest(this.breakpointObserver.observe([Breakpoints.Tablet, Breakpoints.Web]), this.editorReady$)
+      .pipe(
+        map(([state]) => (state.matches ? 'off' : 'on')),
+        tap((wordWrap: 'on' | 'off') => {
+          this.monacoEditorService.updateOptions({ wordWrap });
+        })
+      )
+      .subscribe();
 
     combineLatest(
       this.breakpointObserver.observe(Breakpoints.Tablet),
