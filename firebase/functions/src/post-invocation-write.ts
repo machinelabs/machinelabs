@@ -18,5 +18,5 @@ const serverResolver = new ServerResolver(getServerIdForHardwareType, getServerI
 const invocationProcessor = new InvocationProcessor(getInvocationById, serverResolver, updateInvocation);
 
 export const postInvocationWrite = database
-  .ref('/invocations/{id}/common/id')
-  .onWrite((change, context) => invocationProcessor.process(change.after.val()));
+  .ref('/invocations/{id}/common')
+  .onCreate((snapshot, context) => invocationProcessor.process(snapshot.val().id));
