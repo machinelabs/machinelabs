@@ -1,5 +1,5 @@
 import { ObservableDbRef, DbRefBuilder } from '@machinelabs/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 export class LiveMetricsService {
   constructor(private db: DbRefBuilder) {}
