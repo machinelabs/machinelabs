@@ -104,14 +104,6 @@ export class EditorViewPageObject {
     return cy.get('ml-editor-layout-footer mat-slide-toggle').click();
   }
 
-  getShareDialog() {
-    return cy.get('ml-share-dialog');
-  }
-
-  openShareDialog() {
-    cy.get('.ml-editor-footer-cta-bar button').contains('Share').click();
-  }
-
   openLabDialog() {
     cy.get('.ml-editor-toolbar-edit-button').click();
   }
