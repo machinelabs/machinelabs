@@ -107,11 +107,6 @@ describe('Editor View', () => {
       editorView.toggleExecutionList();
       editorView.getExecutionListDrawer().should('be.visible');
     });
-
-    it('should open share dialog', () => {
-      editorView.openShareDialog();
-      editorView.getShareDialog().should('be.visible');
-    });
   });
 
   describe('User flows', () => {
