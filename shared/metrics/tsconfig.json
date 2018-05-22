@@ -16,7 +16,9 @@
     "suppressImplicitAnyIndexErrors": true,
     "inlineSources": true,
     "stripInternal": true,
-    "paths": {},
+    "paths": {
+      "firebase": ["./node_modules/firebase"]
+    },
     "baseUrl": "",
     "typeRoots": ["./node_modules/@types"],
     "types": ["node"]
