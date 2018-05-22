@@ -1,11 +1,8 @@
 import * as firebase from 'firebase';
 import { SYSTEM_USER, InvocationType, HardwareType } from '@machinelabs/models';
 import { ObservableDbRef, DbRefBuilder, uniqueId } from '@machinelabs/core';
-import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators/map';
-import { mergeMap } from 'rxjs/operators/mergeMap';
-import { filter } from 'rxjs/operators/filter';
-import { tap } from 'rxjs/operators/tap';
+import { Observable } from 'rxjs';
+import { map, mergeMap, filter, tap } from 'rxjs/operators';
 
 export class TakedownService {
   constructor(private dbRefBuilder: DbRefBuilder) {}
