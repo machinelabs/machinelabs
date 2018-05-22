@@ -1,6 +1,6 @@
 import 'jest';
 import * as rimraf from 'rimraf';
-import { forkJoin } from 'rxjs/observable/forkJoin';
+import { forkJoin } from 'rxjs';
 
 import { writeDirectory } from './fs';
 import { readLabDirectory } from './read';

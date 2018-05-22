@@ -1,8 +1,6 @@
 import { ChildProcess, exec } from 'child_process';
-import { Observable } from 'rxjs/Observable';
+import { Observable, fromEvent, merge } from 'rxjs';
 import { map, share, mergeMap, skip, takeUntil } from 'rxjs/operators';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-import { merge } from 'rxjs/observable/merge';
 import { OutputType } from './process-stream-data';
 
 export const toObservableProcess = (process: ChildProcess) => {
