@@ -1,5 +1,5 @@
 import * as chalk from 'chalk';
-import { concat } from 'rxjs/observable/concat';
+import { concat } from 'rxjs';
 import { factory } from './execute';
 
 import { isRootDir } from './is-root-dir';

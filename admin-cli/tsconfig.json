@@ -18,7 +18,8 @@
     "stripInternal": true,
     "paths": {
       "firebase": ["./node_modules/firebase"],
-      "firebase-admin": ["./node_modules/firebase-admin"]
+      "firebase-admin": ["./node_modules/firebase-admin"],
+      "rxjs": ["./node_modules/rxjs"]
     },
     "baseUrl": "",
     "typeRoots": ["./node_modules/@types"],

@@ -3,7 +3,7 @@ import { DbRefBuilder } from '@machinelabs/core';
 import { createDb } from '../lib/create-db';
 import { getEnv } from '../lib/get-env';
 import { LiveMetricsService } from '@machinelabs/metrics';
-import { from } from 'rxjs/observable/from';
+import { from } from 'rxjs';
 import { map, filter, mergeMap } from 'rxjs/operators';
 import { printExecutionHeader, printExecution } from '../lib/print-execution';
 

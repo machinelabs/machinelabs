@@ -1,7 +1,6 @@
 import * as chalk from 'chalk';
 import * as process from 'process';
-import { Observable } from 'rxjs/Observable';
-import { concat } from 'rxjs/observable/concat';
+import { Observable, concat } from 'rxjs';
 
 import { factory } from '../lib/execute';
 import { deployServer } from '../lib/deploy-server';
