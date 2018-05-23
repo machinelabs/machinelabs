@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ProcessStreamData, OutputType, SpawnShellFn } from '@machinelabs/core';
 import isNumber = require('lodash.isnumber');

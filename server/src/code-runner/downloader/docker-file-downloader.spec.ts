@@ -1,5 +1,5 @@
 import 'jest';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { DockerFileDownloader } from './docker-file-downloader';
 import { stdout, ProcessStreamData, stdoutMsg } from '@machinelabs/core';

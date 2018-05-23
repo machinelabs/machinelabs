@@ -1,7 +1,4 @@
-import { Observable } from 'rxjs/Observable';
-import { empty } from 'rxjs/observable/empty';
-import { merge } from 'rxjs/observable/merge';
-import { concat as concatObservable } from 'rxjs/observable/concat';
+import { Observable, EMPTY, merge, concat as concatObservable } from 'rxjs';
 import { map, concat } from 'rxjs/operators';
 import * as ansi from 'ansi-escape-sequences';
 
@@ -68,6 +65,6 @@ export class DockerFileDownloader {
           concat(this.writeProgressbars(containerId, inputs)),
           concat(stdout(`Finished downloading inputs${newLine()}`))
         )
-      : empty<ProcessStreamData>();
+      : EMPTY;
   }
 }

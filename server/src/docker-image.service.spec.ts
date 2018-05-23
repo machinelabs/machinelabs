@@ -1,8 +1,7 @@
 import 'jest';
 
 import { DockerImageService } from './docker-image.service';
-import { empty } from 'rxjs/observable/empty';
-import { of } from 'rxjs/observable/of';
+import { EMPTY, of } from 'rxjs';
 
 const dockerImages = {
   common: {
@@ -22,7 +21,7 @@ const dockerImages = {
 
 describe('.getImageInfo()', () => {
   it('should raise exception if no image info available', () => {
-    const svc = new DockerImageService(empty(), null);
+    const svc = new DockerImageService(EMPTY, null);
 
     expect(() => {
       svc.getImageInfo('some-id');

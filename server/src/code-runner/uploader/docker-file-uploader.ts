@@ -1,5 +1,4 @@
-import { Observable } from 'rxjs/Observable';
-import { from } from 'rxjs/observable/from';
+import { Observable, from } from 'rxjs';
 import { filter, take, share, map, mergeMap, merge, catchError, distinctUntilChanged, startWith } from 'rxjs/operators';
 import { Invocation, PlanCredits, PlanId } from '@machinelabs/models';
 import { getAccessToken } from '../../util/gcloud';

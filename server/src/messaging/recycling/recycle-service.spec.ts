@@ -1,9 +1,6 @@
 import 'jest';
 
-import { Observable } from 'rxjs/Observable';
-import { from } from 'rxjs/observable/from';
-import { of } from 'rxjs/observable/of';
-import { _throw } from 'rxjs/observable/throw';
+import { Observable, from, of, throwError } from 'rxjs';
 import { delay, tap } from 'rxjs/operators';
 import { RecycleAccumulator } from './recycle-accumulator';
 import { ExecutionMessage } from '../../models/execution';
@@ -236,7 +233,7 @@ describe('createRecycleCommand()', () => {
     ];
 
     // First call fails, second works
-    const getMessages = jest.fn(createGetMessages(msgs)).mockImplementationOnce(() => _throw('no internet'));
+    const getMessages = jest.fn(createGetMessages(msgs)).mockImplementationOnce(() => throwError('no internet'));
 
     const bulkUpdate = jest.fn().mockReturnValue(of({}));
 

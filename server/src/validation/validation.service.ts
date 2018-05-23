@@ -1,12 +1,22 @@
-import { Observable } from 'rxjs/Observable';
-import { from } from 'rxjs/observable/from';
-import { tap, share, filter, mergeMap, takeUntil, merge, last, take, map } from 'rxjs/operators';
+import { Observable, from, asapScheduler } from 'rxjs';
+import {
+  tap,
+  observeOn,
+  share,
+  filter,
+  mergeMap,
+  takeUntil,
+  merge,
+  last,
+  take,
+  map,
+  shareReplay
+} from 'rxjs/operators';
 import { Invocation, ExecutionRejectionInfo } from '@machinelabs/models';
 import { ValidationRule } from './rules/rule';
 import { ValidationContext } from './validation-context';
 import { Resolver } from './resolver/resolver';
 import { ValidationResult } from './validation-result';
-import { shareReplay } from 'rxjs/operators/shareReplay';
 
 export type ResolvedMap = Map<Function, any>;
 
@@ -52,7 +62,15 @@ export class ValidationService {
 
     const results$ = from(this.rules).pipe(mergeMap(rule => rule.check(invocation, resolves)), share());
 
-    const fails$ = results$.pipe(filter(result => result instanceof ExecutionRejectionInfo));
+    const fails$ = results$.pipe(
+      filter(result => result instanceof ExecutionRejectionInfo),
+      // This might look strange but we have to ensure fail$ emits
+      // asynchronously, as takeUntil won't subscribe to its source
+      // stream otherwise.
+      //
+      // See: https://github.com/ReactiveX/rxjs/issues/3727
+      observeOn(asapScheduler)
+    );
 
     return results$.pipe(
       takeUntil(fails$),

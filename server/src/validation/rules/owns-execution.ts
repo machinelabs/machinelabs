@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ValidationRule } from './rule';
 import { Invocation, SYSTEM_USER } from '@machinelabs/models';

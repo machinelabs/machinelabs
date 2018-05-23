@@ -1,5 +1,5 @@
 import { db, dbRefBuilder } from '../ml-firebase/db';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 export class MessageRepository {
   getMessages(executionId: string, fromVirtualIndex: number, toVirtualIndex: number) {
