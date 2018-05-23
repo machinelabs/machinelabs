@@ -12,9 +12,7 @@ import { failWith } from './fail-with';
 import { generateChangelog } from './generate-changelog';
 
 import { finalize } from 'rxjs/operators';
-import { concat } from 'rxjs/observable/concat';
-import { of } from 'rxjs/observable/of';
-import { defer } from 'rxjs/observable/defer';
+import { concat, of, defer } from 'rxjs';
 
 const execute = factory({ displayErrors: true });
 

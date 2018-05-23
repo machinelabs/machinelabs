@@ -1,5 +1,5 @@
 import * as chalk from 'chalk';
-import { concat } from 'rxjs/observable/concat';
+import { concat } from 'rxjs';
 import { OutputType, stdout, spawnShell } from '@machinelabs/core';
 import { factory } from './execute';
 import * as fs from 'fs';

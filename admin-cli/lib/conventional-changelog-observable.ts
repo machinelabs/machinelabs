@@ -1,7 +1,7 @@
 import * as process from 'process';
 import * as conventionalChangelog from 'conventional-changelog';
 import * as chalk from 'chalk';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 export function conventionalChangelogObservable(args) {
   return new Observable(observer => {

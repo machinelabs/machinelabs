@@ -6,7 +6,7 @@ import { createDb } from '../lib/create-db';
 import { getEnv } from '../lib/get-env';
 import { printStatistic } from '../lib/print-statistic';
 import { UsageStatisticService, CostCalculator, LiveMetricsService } from '@machinelabs/metrics';
-import { empty } from 'rxjs/observable/empty';
+import { EMPTY } from 'rxjs';
 import { filter, tap, mergeMap, finalize } from 'rxjs/operators';
 
 const hasArgsForTakedown = argv =>
@@ -54,24 +54,24 @@ export const takedown = argv => {
         mergeMap(statistic => {
           if (statistic.cpuSecondsLeft <= 0 && statistic.gpuSecondsLeft <= 0) {
             console.log(chalk.red.bold(`\n${dryRunPrefix}Taking down all executions from user ${statistic.userId}...`));
-            return isDryRun ? empty() : takedownService.takedownByUser(statistic.userId).pipe(tap(takeDownMsg));
+            return isDryRun ? EMPTY : takedownService.takedownByUser(statistic.userId).pipe(tap(takeDownMsg));
           } else if (statistic.cpuSecondsLeft <= 0) {
             console.log(
               chalk.red.bold(`\n${dryRunPrefix}Taking down all CPU executions from user ${statistic.userId}...`)
             );
             return isDryRun
-              ? empty()
+              ? EMPTY
               : takedownService.takedownByUser(statistic.userId, [HardwareType.CPU]).pipe(tap(takeDownMsg));
           } else if (statistic.gpuSecondsLeft <= 0) {
             console.log(
               chalk.red.bold(`\n${dryRunPrefix}Taking down all GPU executions from user ${statistic.userId}...`)
             );
             return isDryRun
-              ? empty()
+              ? EMPTY
               : takedownService.takedownByUser(statistic.userId, [HardwareType.GPU]).pipe(tap(takeDownMsg));
           }
 
-          return empty();
+          return EMPTY;
         }),
         finalize(() => console.log('\nDone...'))
       )

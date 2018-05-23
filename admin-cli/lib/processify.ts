@@ -1,5 +1,5 @@
 import { stdout } from '@machinelabs/core';
-import { defer } from 'rxjs/observable/defer';
+import { defer } from 'rxjs';
 
 export const processify = (fn: Function) => {
   return defer(() => {
