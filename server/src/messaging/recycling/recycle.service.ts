@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { mergeScan, map } from 'rxjs/operators';
 import { ExecutionMessage } from '../../models/execution';
 import { RecycleAccumulator } from './recycle-accumulator';

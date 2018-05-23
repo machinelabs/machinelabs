@@ -3,9 +3,7 @@ import { Crypto } from '../util/crypto';
 import { environment } from '../environments/environment';
 import { db, dbRefBuilder } from '../ml-firebase/db';
 import { CodeRunner } from '../code-runner/code-runner';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { empty } from 'rxjs/observable/empty';
+import { Observable, of, EMPTY } from 'rxjs';
 import { map, share, filter, mergeMap, switchMap, startWith, concat, tap, catchError } from 'rxjs/operators';
 import { Invocation, InvocationType } from '@machinelabs/models';
 import { Execution, ExecutionStatus, Server, MessageKind } from '@machinelabs/models';
@@ -158,7 +156,7 @@ export class MessagingService {
       return this.writeExecutionMessage(message, invocation);
     }
 
-    return empty();
+    return EMPTY;
   }
 
   createExecutionAndUpdateLabs(invocation: Invocation, hash: string) {
@@ -182,7 +180,7 @@ export class MessagingService {
       .pipe(
         catchError(err => {
           console.error(`Failed to update execution ${invocation.id} of lab ${invocation.data.id}`);
-          return empty();
+          return EMPTY;
         })
       )
       .subscribe();
@@ -221,7 +219,7 @@ export class MessagingService {
         }),
         catchError(err => {
           console.error(`Failed to complete execution ${executionId} to state ${status}`);
-          return empty();
+          return EMPTY;
         })
       )
       .subscribe();
@@ -245,7 +243,7 @@ export class MessagingService {
       .pipe(
         catchError(err => {
           console.error(`Failed to write message for execution ${run.id} of lab ${run.data.id}`);
-          return empty();
+          return EMPTY;
         })
       );
   }

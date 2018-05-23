@@ -2,14 +2,12 @@ import 'jest';
 
 import { ValidationService } from './validation.service';
 import { ValidationRule } from './rules/rule';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { Observable, of, Observer } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
 import { Invocation, InvocationType, ExecutionRejectionInfo, ExecutionRejectionReason } from '@machinelabs/models';
 import { Resolver } from 'src/validation/resolver/resolver';
 import isBoolean = require('lodash.isboolean');
 import { ValidationError } from 'src/validation/validation-result';
-import { Observer } from 'rxjs/Observer';
 
 const dummyInvocation: Invocation = {
   id: 'dummy',

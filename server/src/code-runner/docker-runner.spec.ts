@@ -1,5 +1,5 @@
 import 'jest';
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 import { tap, concat } from 'rxjs/operators';
 import { DockerRunner, DockerRunnerConfig } from './docker-runner';
 import { stdout, ProcessStreamData, stdoutMsg } from '@machinelabs/core';

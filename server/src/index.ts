@@ -1,4 +1,4 @@
-import { forkJoin } from 'rxjs/observable/forkJoin';
+import { forkJoin } from 'rxjs';
 import { DummyRunner } from './code-runner/dummy-runner.js';
 import { DockerRunner, DockerRunnerConfig } from './code-runner/docker-runner.js';
 import { MessagingService } from './messaging/messaging.service';

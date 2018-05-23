@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Resolver } from './resolver';
 import { dbRefBuilder } from '../../ml-firebase';

@@ -1,6 +1,5 @@
 import { dbRefBuilder } from './ml-firebase/db';
-import { Observable } from 'rxjs/Observable';
-import { forkJoin } from 'rxjs/observable/forkJoin';
+import { Observable, forkJoin } from 'rxjs';
 import { map, share, mergeMap, tap } from 'rxjs/operators';
 import { SpawnShellFn, ProcessStreamData } from '@machinelabs/core';
 

@@ -1,7 +1,4 @@
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { timer } from 'rxjs/observable/timer';
-import { _throw } from 'rxjs/observable/throw';
+import { Observable, of, timer, throwError } from 'rxjs';
 import { map, takeUntil, mergeMap, switchMap, catchError } from 'rxjs/operators';
 import { ExecutionMessage } from '../../models/execution';
 import { RecycleCmdInfo, recycleCmdFactory } from './recycle-cmd-factory';
@@ -50,7 +47,7 @@ export class RecycleAccumulator {
       const expectedPatchCount = this.config.tailLength - this.config.deleteCount;
 
       return this.config.messageRepository.getMessages(this.executionId, fromVirtualIndex, toVirtualIndex).pipe(
-        takeUntil(timer(this.config.getMessageTimeout).pipe(switchMap(() => _throw(new Error('Timeout'))))),
+        takeUntil(timer(this.config.getMessageTimeout).pipe(switchMap(() => throwError(new Error('Timeout'))))),
         mergeMap(messages => {
           const cmdInfo = recycleCmdFactory(this.executionId, messages, this.config.deleteCount);
           if (cmdInfo.patched === expectedPatchCount && cmdInfo.removed === this.config.deleteCount) {

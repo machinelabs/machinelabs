@@ -1,11 +1,10 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ValidationRule } from './rule';
 import { Invocation, ExecutionRejectionInfo, ExecutionRejectionReason, PlanCredits } from '@machinelabs/models';
 import { ValidationResult } from '../validation-result';
 import { dbRefBuilder } from '../../ml-firebase';
 import { UserResolver } from '../resolver/user-resolver';
-import { forkJoin } from 'rxjs/observable/forkJoin';
 import { ExtendedUser } from '../../models/user';
 
 export class WithinConcurrencyLimit implements ValidationRule {

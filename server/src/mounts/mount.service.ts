@@ -1,6 +1,4 @@
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { forkJoin } from 'rxjs/observable/forkJoin';
+import { Observable, of, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as validFilename from 'valid-filename';
 import { flatMap, isString, trimStart } from 'lodash';

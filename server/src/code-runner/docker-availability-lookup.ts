@@ -1,5 +1,4 @@
-import { Observable } from 'rxjs/Observable';
-import { forkJoin } from 'rxjs/observable/forkJoin';
+import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ProcessStreamData, OutputType, SpawnFn } from '@machinelabs/core';
 

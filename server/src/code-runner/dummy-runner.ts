@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { CodeRunner } from './code-runner';
 import { Invocation } from '@machinelabs/models';
 import { InternalLabConfiguration } from '../models/lab-configuration';
