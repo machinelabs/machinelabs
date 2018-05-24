@@ -3,8 +3,7 @@ import * as chalk from 'chalk';
 import * as firebase from 'firebase';
 import * as open from 'open';
 import { refBuilder } from '../firebase/fb';
-import { Observable } from 'rxjs/Observable';
-import { fromPromise } from 'rxjs/observable/fromPromise';
+import { Observable, from } from 'rxjs';
 import { switchMap, tap, filter, map } from 'rxjs/operators';
 import { configstore } from '../configstore';
 import { loginAndCache } from '../lib/auth/auth';
@@ -14,7 +13,7 @@ program
   .command('login')
   .description('Login to MachineLabs')
   .action(cmd => {
-    fromPromise(firebase.auth().signInAnonymously())
+    from(firebase.auth().signInAnonymously())
       .pipe(
         switchMap(res => {
           return refBuilder

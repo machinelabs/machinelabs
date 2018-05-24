@@ -18,7 +18,7 @@
     "stripInternal": true,
     "paths": {
       "firebase": ["./node_modules/firebase"],
-      "rxjs/*": ["./node_modules/rxjs/*"]
+      "rxjs": ["./node_modules/rxjs"]
     },
     "baseUrl": "",
     "typeRoots": ["./node_modules/@types"],
