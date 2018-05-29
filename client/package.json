@@ -47,7 +47,6 @@
     "date-fns": "^1.28.4",
     "firebase": "^4.12.0",
     "js-yaml": "^3.8.4",
-    "ng2-slim-loading-bar": "^4.0.0",
     "ngx-clipboard": "11.0.0",
     "ngx-monaco": "0.8.0",
     "rxjs": "6.1.0",

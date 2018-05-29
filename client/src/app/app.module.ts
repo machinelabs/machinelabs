@@ -10,7 +10,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { LayoutModule } from '@angular/cdk/layout';
 import { RouterModule, PreloadAllModules } from '@angular/router';
-import { SlimLoadingBarModule } from 'ng2-slim-loading-bar';
 import { MonacoEditorModule, COMPLETION_PROVIDERS } from 'ngx-monaco';
 
 import { SharedModule } from './shared/shared.module';
@@ -53,7 +52,6 @@ const AnimationsModule = [environment.testing ? NoopAnimationsModule : BrowserAn
     FlexLayoutModule,
     LayoutModule,
     RouterModule.forRoot(APP_ROUTES, { preloadingStrategy: PreloadAllModules }),
-    SlimLoadingBarModule.forRoot(),
     SharedModule.forRoot(),
     EditorModule.forRoot(),
     MonacoEditorModule.forRoot({
