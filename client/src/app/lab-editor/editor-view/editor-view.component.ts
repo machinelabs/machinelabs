@@ -26,15 +26,14 @@ import { SnackbarService } from '../../snackbar.service';
 import { LabStorageService } from '../../lab-storage.service';
 import { UserService } from '../../user/user.service';
 import { Lab } from '../../models/lab';
-import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 import { LocationHelper } from '../../util/location-helper';
 import { Execution } from '../../models/execution';
 import { EditorToolbarAction, EditorToolbarActionTypes } from '../editor-toolbar/editor-toolbar.component';
 import { TimeoutError, RateLimitError } from '../../editor/remote-code-execution/errors';
 import { MonacoFileTypeAdapter } from '../../editor/monaco-file-type-adapter';
+import { ProgressBarService } from '../../shared/progress-bar/progress-bar.service';
 
 const METADATA_SIDEBAR_OPEN_TIMEOUT = 600;
-const INITIAL_LOADING_INDICATOR_PROGRESS = 10;
 const FILE_TREE_DRAWER_MODE_MOBILE = 'over';
 const FILE_TREE_DRAWER_MODE_WEB = 'side';
 
@@ -122,7 +121,7 @@ export class EditorViewComponent implements OnInit {
     private snackbarService: SnackbarService,
     private userService: UserService,
     private breakpointObserver: BreakpointObserver,
-    private slimLoadingBarService: SlimLoadingBarService
+    private loadingBarService: ProgressBarService
   ) {}
 
   ngOnInit() {
@@ -161,7 +160,7 @@ export class EditorViewComponent implements OnInit {
 
   toolbarAction(action: EditorToolbarAction) {
     if (action.type !== EditorToolbarActionTypes.Create && action.type !== EditorToolbarActionTypes.Edit) {
-      this.slimLoadingBarService.start();
+      this.loadingBarService.start();
     }
     switch (action.type) {
       case EditorToolbarActionTypes.Run:
@@ -206,7 +205,7 @@ export class EditorViewComponent implements OnInit {
     this.userService.getCurrentUser().subscribe(user => {
       if (user.isAnonymous) {
         this.openRejectionDialog(ExecutionRejectionReason.NoAnonymous);
-        this.slimLoadingBarService.complete();
+        this.loadingBarService.stop();
       } else {
         this.outputPanel.reset();
         this.editorService.selectConsoleTab();
@@ -226,10 +225,10 @@ export class EditorViewComponent implements OnInit {
                 queryParamsHandling: 'merge'
               });
               this.listen(this.activeExecutionId, false);
-              this.slimLoadingBarService.complete();
+              this.loadingBarService.stop();
             } else if (info.rejection) {
               this.editorService.removeLocalExecution(info.executionId);
-              this.slimLoadingBarService.complete();
+              this.loadingBarService.stop();
               if (info.rejection.reason === ExecutionRejectionReason.InvalidConfig) {
                 this.snackbarService.notifyInvalidConfig(info.rejection.message);
               } else {
@@ -240,7 +239,7 @@ export class EditorViewComponent implements OnInit {
           },
           e => {
             this.editorService.removeLocalExecution(e.executionId);
-            this.slimLoadingBarService.complete();
+            this.loadingBarService.stop();
             if (e instanceof TimeoutError) {
               this.snackbarService.notifyServerNotAvailable();
             } else if (e instanceof RateLimitError) {
@@ -263,7 +262,6 @@ export class EditorViewComponent implements OnInit {
   }
 
   listen(executionId: string, initLabDirectory = true, isInitialization = false) {
-    this.slimLoadingBarService.progress = INITIAL_LOADING_INDICATOR_PROGRESS;
     this.outputPanel.reset();
 
     const wrapper = this.editorService.listenAndNotify(executionId, {
@@ -290,7 +288,7 @@ export class EditorViewComponent implements OnInit {
     // opened up a different execution. It would cause our lab contents to get overwritten
     // with the wrong files.
     this.executionSubscription = this.execution.pipe(take(1)).subscribe(execution => {
-      this.slimLoadingBarService.complete();
+      this.loadingBarService.stop();
       if (initLabDirectory) {
         this.editorService.initDirectory(execution.lab.directory);
       }
@@ -329,7 +327,7 @@ export class EditorViewComponent implements OnInit {
   save(lab: Lab, msg = 'Lab saved', fetchExecutions = false) {
     this.editorService.saveLab(lab, msg).subscribe(_ => {
       this.initLab(lab, fetchExecutions, false);
-      this.slimLoadingBarService.complete();
+      this.loadingBarService.stop();
     });
   }
 

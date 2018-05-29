@@ -21,6 +21,8 @@ import { PageFooterComponent } from './page-footer/page-footer.component';
 import { DurationTrackerComponent } from './duration-tracker/duration-tracker.component';
 import { ExecutionCardComponent } from './execution-card/execution-card.component';
 import { LabCardComponent } from './lab-card/lab-card.component';
+import { ProgressBarComponent } from './progress-bar/progress-bar.component';
+import { ProgressBarService } from './progress-bar/progress-bar.service';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,8 @@ import { LabCardComponent } from './lab-card/lab-card.component';
     PageFooterComponent,
     DurationTrackerComponent,
     ExecutionCardComponent,
-    LabCardComponent
+    LabCardComponent,
+    ProgressBarComponent
   ],
   imports: [MachineLabsMaterialModule, CommonModule, RouterModule],
   exports: [
@@ -62,14 +65,15 @@ import { LabCardComponent } from './lab-card/lab-card.component';
     PageFooterComponent,
     DurationTrackerComponent,
     ExecutionCardComponent,
-    LabCardComponent
+    LabCardComponent,
+    ProgressBarComponent
   ]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: SharedModule,
-      providers: [MutationObserverFactory]
+      providers: [MutationObserverFactory, ProgressBarService]
     };
   }
 }
