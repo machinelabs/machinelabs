@@ -1,9 +1,9 @@
 ---
-name: 🎉 Feature Request
-about: You have a neat idea that should be implemented? 🎩
+name: ⚙ Improvement
+about: You have some improvement to make machinelabs better? 🎁
 ---
 
-### Feature Request
+### Improvement
 
 <!-- Fill in the relevant information below to help triage your issue. -->
 
@@ -14,4 +14,4 @@ about: You have a neat idea that should be implemented? 🎩
 
 #### Summary
 
-<!-- Provide a summary of the feature you would like to see implemented. -->
+<!-- Provide a summary of the improvement you are submitting. -->
