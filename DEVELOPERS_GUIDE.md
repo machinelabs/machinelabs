@@ -200,6 +200,7 @@ export const environment = {
   },
   serverId: '...',
   pullImages: true,
+  writeable: false,
   rootMountPath: '/tmp',
   slackLogging: {
     allChannel: '',

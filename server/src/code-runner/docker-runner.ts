@@ -1,9 +1,9 @@
 import { exec } from 'child_process';
 import * as rimraf from 'rimraf';
-import { Observable } from 'rxjs';
-import { map, mergeMap, finalize, concat } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, mergeMap, finalize, concat, switchMap, takeWhile, filter, tap } from 'rxjs/operators';
 import { CodeRunner } from './code-runner';
-import { File } from '@machinelabs/models';
+import { File, PlanCredits } from '@machinelabs/models';
 import { writeDirectory } from '@machinelabs/core';
 import { Invocation } from '@machinelabs/models';
 import { InternalLabConfiguration } from '../models/lab-configuration';
@@ -16,6 +16,7 @@ import { DockerFileUploader } from './uploader/docker-file-uploader';
 import { DockerFileDownloader } from './downloader/docker-file-downloader';
 import { flatMap } from 'lodash';
 import { DockerExecutable } from './docker-availability-lookup';
+import { UserResolver } from '../validation/resolver/user-resolver';
 
 export class DockerRunnerConfig {
   runPartitionSize = '5g';
@@ -38,6 +39,30 @@ export class DockerRunner implements CodeRunner {
 
   private processCount = 0;
 
+  /**
+   * Run a command on a container conditionally.
+   *
+   * @param containerId ID of the container to run the command on.
+   * @param command Bash command to run.
+   * @param condition Condition which should evaluation to `true` in order to run the command.
+   */
+  private runCommand(containerId: string, command: string, condition = true) {
+    return of(condition)
+      .pipe(
+        filter(Boolean),
+        switchMap(() =>
+          this.config.spawn(this.config.dockerExecutable, [
+            'exec',
+            '-t',
+            containerId,
+            '/bin/bash',
+            '-c',
+            command
+          ])
+        )
+      );
+  }
+
   run(invocation: Invocation, configuration: InternalLabConfiguration): Observable<ProcessStreamData> {
     const tmpExecutionDir = `/tmp/${invocation.id}`;
     writeDirectory({ name: tmpExecutionDir, contents: invocation.data.directory }).subscribe();
@@ -48,40 +73,46 @@ export class DockerRunner implements CodeRunner {
 
     const mounts = flatMap(configuration.mountPoints, mp => ['-v', `${mp.source}:${mp.destination}:ro`]);
 
-    return this.config
-      .spawn(this.config.dockerExecutable, [
-        'create',
-        '--cap-drop=ALL',
-        `--kernel-memory=${this.config.maxKernelMemoryKb}k`,
-        '--security-opt=no-new-privileges',
-        '-t',
-        '--read-only',
-        '--tmpfs',
-        `/run:rw,size=${this.config.runPartitionSize},mode=${this.config.runPartitionMode}`,
-        '--tmpfs',
-        `/tmp:rw,size=${this.config.tmpPartitionSize},mode=${this.config.tmpPartitionMode}`,
-        ...mounts,
-        '-v',
-        `${tmpExecutionDir}:/lab:ro`,
-        `--name`,
-        invocation.id,
-        configuration.imageWithDigest,
-        '/bin/bash'
-      ])
+    return new UserResolver().resolve(invocation)
       .pipe(
+        map(user => {
+          if (!environment.writeable) {
+            return ['--read-only'];
+          }
+
+          const plan = PlanCredits.get(user.plan.plan_id);
+
+          return [
+            '--storage-opt',
+            `size=${plan.maxWriteableContainerSizeInGb}`
+          ];
+        }),
+        switchMap(mode =>
+          this.config
+            .spawn(this.config.dockerExecutable, [
+              'create',
+              '--cap-drop=ALL',
+              `--kernel-memory=${this.config.maxKernelMemoryKb}k`,
+              '--security-opt=no-new-privileges',
+              '-t',
+              ...mode,
+              '--tmpfs',
+              `/run:rw,size=${this.config.runPartitionSize},mode=${this.config.runPartitionMode}`,
+              '--tmpfs',
+              `/tmp:rw,size=${this.config.tmpPartitionSize},mode=${this.config.tmpPartitionMode}`,
+              ...mounts,
+              '-v',
+              `${tmpExecutionDir}:/lab:ro`,
+              `--name`,
+              invocation.id,
+              configuration.imageWithDigest,
+              '/bin/bash'
+            ])
+        ),
         map(msg => trimNewLines(msg.str)),
         mergeMap((containerId: string) =>
           this.config.spawnShell(`docker start ${containerId}`).pipe(
-            concat(
-              this.config.spawn(this.config.dockerExecutable, [
-                'exec',
-                '-t',
-                containerId,
-                '/bin/bash',
-                '-c',
-                `cp -R /lab/* /run`
-              ])
-            ),
+            concat(this.runCommand(containerId, 'cp -R /lab/* /run')),
             mute,
             finalize(() =>
               rimraf(tmpExecutionDir, err => {
@@ -91,16 +122,9 @@ export class DockerRunner implements CodeRunner {
               })
             ),
             concat(this.config.downloader.fetch(containerId, configuration.inputs)),
-            concat(
-              this.config.spawn(this.config.dockerExecutable, [
-                'exec',
-                '-t',
-                containerId,
-                '/bin/bash',
-                '-c',
-                `mkdir /run/outputs && cd /run && python main.py ${args}`
-              ])
-            ),
+            // Only install `requirements.txt` when the container is writeable
+            concat(this.runCommand(containerId, 'cd /run && test -f requirements.txt && pip install -r requirements.txt', environment.writeable)),
+            concat(this.runCommand(containerId, `mkdir /run/outputs && cd /run && python main.py ${args}`)),
             concat(this.config.uploader.handleUpload(invocation, containerId, configuration)),
             concat(this.config.spawnShell(`docker rm -f ${containerId}`).pipe(mute))
           )
