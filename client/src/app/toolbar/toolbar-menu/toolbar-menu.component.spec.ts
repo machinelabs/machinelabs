@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 
 import { ToolbarMenuComponent } from './toolbar-menu.component';
 import { MachineLabsMaterialModule } from '../../ml-material.module';

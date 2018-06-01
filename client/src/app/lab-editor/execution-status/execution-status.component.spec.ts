@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 
 import { ExecutionStatusComponent } from './execution-status.component';
 import { Execution } from '../../models/execution';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { ExecutionStatus } from '@machinelabs/models';
 
 describe('ExecutionStatusComponent', () => {
