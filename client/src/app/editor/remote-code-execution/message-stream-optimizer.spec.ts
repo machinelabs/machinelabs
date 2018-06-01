@@ -2,9 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { Inject } from '@angular/core';
 import { DoneWhen } from '../../../test-helper/doneWhen';
 
-import { Subject } from 'rxjs/Subject';
-import { from as fromStatic } from 'rxjs/observable/from';
-import { of } from 'rxjs/observable/of';
+import { Subject, from, of } from 'rxjs';
 import { delay, tap, finalize, last, skip, take } from 'rxjs/operators';
 
 import { DATABASE } from '../../app.tokens';
@@ -56,7 +54,7 @@ describe('MessageStreamOptimizer', () => {
         { kind: MessageKind.ExecutionFinished, data: '', index: 4 }
       ];
 
-      const allMessages = fromStatic(availableMessages);
+      const allMessages = from(availableMessages);
 
       spyOn(messageStreamOptimizer, 'getAllMessages').and.returnValue(allMessages);
       spyOn(messageStreamOptimizer, 'getTailMessage').and.returnValue(allMessages.pipe(last()));
@@ -95,7 +93,7 @@ describe('MessageStreamOptimizer', () => {
         { kind: MessageKind.Stdout, data: 'other-text', index: 8 }
       ];
 
-      const allMessages = fromStatic(availableMessages);
+      const allMessages = from(availableMessages);
 
       // TODO: This isn't really simulating live messages since they aren't async.
       const liveMessages = of(

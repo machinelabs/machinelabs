@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { MatDialogModule, MatDialog, MatSnackBarModule } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { Observable, of } from 'rxjs';
 
 import { EditLabDialogComponent, EditLabDialogActions } from './edit-lab-dialog.component';
 

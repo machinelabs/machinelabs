@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { MatDialogModule, MatDialog } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { Observable, of } from 'rxjs';
 
 import { DATABASE } from '../../app.tokens';
 import { FirebaseMock } from '../../../test-helper/firebase-mock';

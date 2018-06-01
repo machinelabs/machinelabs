@@ -1,12 +1,11 @@
 import * as firebase from 'firebase';
 import { environment } from '../../environments/environment.test';
 import { TestBed } from '@angular/core/testing';
-import { Subject } from 'rxjs/Subject';
+import { Subject, of } from 'rxjs';
 
 import { AuthService, FirebaseAuthService, OfflineAuthService, OfflineAuth, dummyUser } from './index';
 
 import { LoginUser } from '../models/user';
-import { of } from 'rxjs/observable/of';
 
 describe('Auth services', () => {
   let firebaseApp;

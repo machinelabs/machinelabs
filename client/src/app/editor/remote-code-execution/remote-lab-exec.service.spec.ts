@@ -2,8 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { Inject } from '@angular/core';
 import { DoneWhen } from '../../../test-helper/doneWhen';
 
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { Observable, of } from 'rxjs';
 import { delay, tap, finalize } from 'rxjs/operators';
 
 import { RemoteLabExecService } from './remote-lab-exec.service';
