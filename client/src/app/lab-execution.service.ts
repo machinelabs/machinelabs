@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { forkJoin } from 'rxjs/observable/forkJoin';
+import { Observable, of, forkJoin } from 'rxjs';
 import { map, scan, switchMap } from 'rxjs/operators';
 import { snapshotToValue } from './rx/snapshotToValue';
 

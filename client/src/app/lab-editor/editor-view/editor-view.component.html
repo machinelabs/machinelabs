@@ -46,7 +46,7 @@
               </ml-file-tree>
             </mat-drawer>
             <monaco-editor
-              [file]="MonacoFileTypeAdapter.labFileToMonacoFile(activeFile)"
+              [file]="{ uri: activeFile.name, content: activeFile.content }"
               (fileChange)="onFileChange($event)"
               [class.active]="editorService.editorTabActive()"
             ></monaco-editor>
@@ -68,10 +68,9 @@
         </ml-editor-layout-panel>
       </ml-editor-layout-panels>
       <mat-drawer
-          (open)="executionMetadataSidebarToggled = true"
-          (close)="executionMetadataSidebarToggled = false"
+          (openedChange)="executionMetadataSidebarToggled = $event"
           mode="side"
-          align="end"
+          position="end"
           #executionMetadataSidebar
           class="ml-sidebar"
           >

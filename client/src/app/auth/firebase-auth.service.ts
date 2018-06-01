@@ -2,9 +2,7 @@ import * as firebase from 'firebase';
 
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
-import { fromPromise } from 'rxjs/observable/fromPromise';
-import { of } from 'rxjs/observable/of';
+import { Observable, from as fromPromise, of } from 'rxjs';
 import { map, switchMap, take, catchError } from 'rxjs/operators';
 
 import { AuthService } from './auth.service';

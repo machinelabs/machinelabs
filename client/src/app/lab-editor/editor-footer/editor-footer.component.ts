@@ -1,10 +1,9 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
 import { EmbedDialogComponent } from '../embed-dialog/embed-dialog.component';
 import { Execution } from '../../models/execution';
 import { Lab } from '../../models/lab';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'ml-footer',
@@ -22,15 +21,9 @@ export class FooterComponent {
 
   @Output() slideToggleClick = new EventEmitter<void>();
 
-  shareDialogRef: MatDialogRef<ShareDialogComponent>;
-
   embedDialogRef: MatDialogRef<EmbedDialogComponent>;
 
   constructor(private dialog: MatDialog) {}
-
-  openShareDialog() {
-    this.shareDialogRef = this.dialog.open(ShareDialogComponent);
-  }
 
   openEmbedDialog() {
     this.embedDialogRef = this.dialog.open(EmbedDialogComponent, {

@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
-import { forkJoin } from 'rxjs/observable/forkJoin';
+import { Observable, forkJoin } from 'rxjs';
 
 import { MenuTriggerType } from '../toolbar/toolbar-menu/toolbar-menu.component';
 import { TOP_PICKS } from '../app.tokens';

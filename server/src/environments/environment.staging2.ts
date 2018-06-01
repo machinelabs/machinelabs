@@ -1,4 +1,6 @@
-export const environment = {
+import Environment from 'models/environment';
+
+export const environment: Environment = {
   firebaseConfig: {
     apiKey: 'AIzaSyDu0Qds2fWo8iZMcCj0T_ANqD9V4E0_9QY',
     authDomain: 'machinelabs-a73cd.firebaseapp.com',

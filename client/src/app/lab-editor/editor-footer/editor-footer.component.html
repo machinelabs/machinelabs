@@ -1,8 +1,8 @@
 <div class="ml-editor-footer">
   <div class="ml-editor-footer-layout">
     <div class="ml-editor-footer-cta-bar">
-      <button mat-button mat-raised-button color="primary" class="elevated" (click)="openShareDialog()">Share</button>
       <button *ngIf="executionId" mat-button mat-raised-button color="primary" class="elevated" (click)="openEmbedDialog()">Embed</button>
+      <a href="mailto:hello@machinelabs.ai?subject=Hey, I've got some feedback!" title="Leave feedback to improve MachineLabs"  mat-raised-button color="primary" class="elevated">Feedback</a>
      <a href="https://docs.machinelabs.ai" title="MachineLabs Documentation" mat-button class="elevated">Guides & Examples</a>
     </div>
     <div class="ml-editor-footer-content">

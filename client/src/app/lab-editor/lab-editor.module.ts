@@ -23,7 +23,6 @@ import { FooterComponent } from './editor-footer/editor-footer.component';
 import { NavigationConfirmDialogComponent } from './navigation-confirm-dialog/navigation-confirm-dialog.component';
 import { EditLabDialogComponent } from './edit-lab-dialog/edit-lab-dialog.component';
 import { RejectionDialogComponent } from './rejection-dialog/rejection-dialog.component';
-import { ShareDialogComponent } from './share-dialog/share-dialog.component';
 import { EmbedDialogComponent } from './embed-dialog/embed-dialog.component';
 import { EditExecutionDialogComponent } from './edit-execution-dialog/edit-execution-dialog.component';
 
@@ -51,7 +50,6 @@ import { ExecutionListComponent } from './execution-list/execution-list.componen
     EditLabDialogComponent,
     ExecutionStatusComponent,
     RejectionDialogComponent,
-    ShareDialogComponent,
     ExecutionStatusPipe,
     FooterComponent,
     ExecutionListComponent,
@@ -63,7 +61,6 @@ import { ExecutionListComponent } from './execution-list/execution-list.componen
     NavigationConfirmDialogComponent,
     EditLabDialogComponent,
     RejectionDialogComponent,
-    ShareDialogComponent,
     EditExecutionDialogComponent,
     EmbedDialogComponent
   ]

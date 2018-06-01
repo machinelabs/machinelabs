@@ -25,14 +25,14 @@ if (!slackToken) {
   config.appenders['slack-all'] = {
     type: 'slack',
     token: slackToken,
-    channel_id: environment.slackLogging.allChannel,
+    channel_id: environment.slackLogging ? environment.slackLogging.allChannel : '',
     username: 'ml-bot'
   };
 
   config.appenders['slack-errors'] = {
     type: 'slack',
     token: slackToken,
-    channel_id: environment.slackLogging.errorChannel,
+    channel_id: environment.slackLogging ? environment.slackLogging.errorChannel : '',
     username: 'ml-bot'
   };
 

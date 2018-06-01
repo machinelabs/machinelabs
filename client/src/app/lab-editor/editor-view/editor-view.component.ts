@@ -5,9 +5,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { FormControl } from '@angular/forms';
 import { MonacoFile } from 'ngx-monaco';
 
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { Observable, Subscription, combineLatest } from 'rxjs';
 import { filter, tap, map, skip, switchMap, take, share } from 'rxjs/operators';
 
 import { File, ExecutionRejectionReason } from '@machinelabs/models';
