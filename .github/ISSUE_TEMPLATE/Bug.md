@@ -7,10 +7,10 @@ about: Something is broken? 🔨
 
 <!-- Fill in the relevant information below to help triage your issue. -->
 
-|    Q        |   A
-|------------ | ------
-| BC Break    | yes/no
-| Version     | x.y.z
+|    Q               |   A
+|--------------------| ------
+| Breaking change    | yes/no
+| Version            | x.y.z
 
 #### Summary
 
