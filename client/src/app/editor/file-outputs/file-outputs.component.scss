@@ -48,10 +48,17 @@ mat-cell {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 
   mat-progress-spinner {
+    margin-top: 25px;
     margin-right: 0.5em;
-    width: 50px !important;
-    height: 50px !important;
+    width: 98px !important;
+    height: 98px !important;
+  }
+  .no-output-text {
+    display: flex;
+    justify-content: center;
+    margin-top: 80px;
   }
 }
