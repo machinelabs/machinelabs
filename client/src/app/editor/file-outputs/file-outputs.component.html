@@ -31,19 +31,18 @@
           <ng-container matColumnDef="actions">
             <mat-header-cell *matHeaderCellDef></mat-header-cell>
             <mat-cell *matCellDef="let row">
-              <button mat-icon-button color="primary" matTooltip="Preview" (click)="openPreview(row)"
-                [disabled]="!isImage(row.name)" title="Preview file"><mat-icon>visibility</mat-icon>
+              <button mat-icon-button color="primary" matTooltip="Preview" (click)="openPreview(row)" [disabled]="!isImage(row.name)" title="Preview file">
+                <mat-icon>visibility</mat-icon>
               </button>
 
-              <button mat-icon-button color="primary" matTooltip="Copy API Link"
-                ngxClipboard [cbContent]="getApiLink(row)"
-                (cbOnSuccess)="copyDone()" (cbOnError)="copyDone(true)"
-                title="Copy API link"><mat-icon>link</mat-icon>
+              <button mat-icon-button color="primary" matTooltip="Copy API Link" ngxClipboard [cbContent]="getApiLink(row)" (cbOnSuccess)="copyDone()"
+                (cbOnError)="copyDone(true)" title="Copy API link">
+                <mat-icon>link</mat-icon>
               </button>
 
-              <a mat-icon-button color="primary" matTooltip="Download" [attr.download]="row.name"
-                target="_blank" [href]="row.download_url"
-                title="Download file"><mat-icon>file_download</mat-icon>
+              <a mat-icon-button color="primary" matTooltip="Download" [attr.download]="row.name" target="_blank" [href]="row.download_url"
+                title="Download file">
+                <mat-icon>file_download</mat-icon>
               </a>
             </mat-cell>
           </ng-container>
