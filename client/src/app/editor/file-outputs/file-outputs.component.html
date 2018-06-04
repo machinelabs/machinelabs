@@ -54,10 +54,9 @@
       </ng-container>
     </ng-container>
     <ng-template #noOutputMessage>
-      <div class="ml-no-information-message">
-        <mat-icon class="ml-no-information-message-icon">info_outline</mat-icon>
-        <h4 class="ml-no-information-message-headline">No outputs available</h4>
-        <p class="ml-no-information-message-text">Select an execution that has generated output files.</p>
+      <div class="spinner-wrapper">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+        Loading outputs
       </div>
     </ng-template>
   </mat-card-content>
