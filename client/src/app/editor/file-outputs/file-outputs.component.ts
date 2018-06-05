@@ -2,18 +2,16 @@ import { Component, OnInit, OnDestroy, OnChanges, Input } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-
 import { Observable } from 'rxjs';
 import { filter, mergeMap, scan, take } from 'rxjs/operators';
-
 import { OutputFilesService } from '../../output-files.service';
 import { OutputFile } from '../../models/output-file';
 import { FilePreviewDialogService } from '../file-preview/file-preview-dialog.service';
 import { LocationHelper } from '../../util/location-helper';
 import { isImage } from '../../util/output';
 import { SnackbarService } from '../../snackbar.service';
-
 import { environment } from '../../../environments/environment';
+import { trigger, style, animate, transition, query, keyframes } from '@angular/animations';
 
 export class OutputFilesDataSource extends DataSource<any> {
   constructor(private outputFilesService: OutputFilesService, private executionId: string) {
@@ -32,7 +30,23 @@ export class OutputFilesDataSource extends DataSource<any> {
 @Component({
   selector: 'ml-file-outputs',
   templateUrl: './file-outputs.component.html',
-  styleUrls: ['./file-outputs.component.scss']
+  styleUrls: ['./file-outputs.component.scss'],
+  animations: [
+    trigger('staggerIn', [
+      transition(
+        '* => *',
+        query(':enter', [
+          animate(
+            '450ms cubic-bezier(0.4, 0.0, 0.2, 1)',
+            keyframes([
+              style({ minHeight: '0px', overflow: 'hidden', height: '0px' }),
+              style({ minHeight: '*', overflow: 'inherit', height: '*' })
+            ])
+          )
+        ])
+      )
+    ])
+  ]
 })
 export class FileOutputsComponent implements OnChanges, OnInit {
   @Input() executionId: string;
