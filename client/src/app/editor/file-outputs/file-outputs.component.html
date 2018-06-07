@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-content>
     <ng-container *ngIf="executionId; else noOutputMessage">
-      <ng-container *ngIf="hasOutput | async; else noOutputMessage">
+      <ng-container *ngIf="hasOutput | async; else spinnerMessage">
         <h3 mat-subheader>Output Files</h3>
         <mat-table #table [dataSource]="dataSource">
           <ng-container matColumnDef="name">
@@ -53,6 +53,9 @@
       </ng-container>
     </ng-container>
     <ng-template #noOutputMessage>
+      No execution selected
+    </ng-template>
+    <ng-template #spinnerMessage>
       <div class="spinner-wrapper">
         <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
         <span class="no-output-text">Loading outputs</span>
