@@ -48,7 +48,7 @@
           </ng-container>
 
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-          <mat-row *matRowDef="let row; columns: displayedColumns;" @staggerIn></mat-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"   [@staggerIn]="'showing'"></mat-row>
         </mat-table>
       </ng-container>
     </ng-container>

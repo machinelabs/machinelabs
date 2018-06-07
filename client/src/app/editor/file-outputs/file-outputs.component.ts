@@ -11,7 +11,7 @@ import { LocationHelper } from '../../util/location-helper';
 import { isImage } from '../../util/output';
 import { SnackbarService } from '../../snackbar.service';
 import { environment } from '../../../environments/environment';
-import { trigger, style, animate, transition, query, keyframes, state } from '@angular/animations';
+import { trigger, style, animate, transition, query, keyframes, state, group } from '@angular/animations';
 
 export class OutputFilesDataSource extends DataSource<any> {
   constructor(private outputFilesService: OutputFilesService, private executionId: string) {
@@ -32,16 +32,8 @@ export class OutputFilesDataSource extends DataSource<any> {
   styleUrls: ['./file-outputs.component.scss'],
   animations: [
     trigger('staggerIn', [
-      state('showing', style({ opacity: 0 })),
-      transition('void => showing', [
-        animate(
-          '100ms cubic-bezier(0.4, 0.0, 0.2, 1)',
-          keyframes([
-            style({ minHeight: '0px', overflow: 'hidden', height: '0px' }),
-            style({ minHeight: '*', overflow: 'inherit', height: '*' })
-          ])
-        )
-      ])
+      state('void', style({ opacity: '0' })),
+      transition('void => showing', group([animate(150, style({ opacity: 1 }))]))
     ])
   ]
 })
