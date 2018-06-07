@@ -11,7 +11,7 @@ import { LocationHelper } from '../../util/location-helper';
 import { isImage } from '../../util/output';
 import { SnackbarService } from '../../snackbar.service';
 import { environment } from '../../../environments/environment';
-import { trigger, style, animate, transition, query, keyframes } from '@angular/animations';
+import { trigger, style, animate, transition, query, keyframes, state } from '@angular/animations';
 
 export class OutputFilesDataSource extends DataSource<any> {
   constructor(private outputFilesService: OutputFilesService, private executionId: string) {
@@ -26,25 +26,22 @@ export class OutputFilesDataSource extends DataSource<any> {
 
   disconnect() {}
 }
-
 @Component({
   selector: 'ml-file-outputs',
   templateUrl: './file-outputs.component.html',
   styleUrls: ['./file-outputs.component.scss'],
   animations: [
     trigger('staggerIn', [
-      transition(
-        '* => *',
-        query(':enter', [
-          animate(
-            '450ms cubic-bezier(0.4, 0.0, 0.2, 1)',
-            keyframes([
-              style({ minHeight: '0px', overflow: 'hidden', height: '0px' }),
-              style({ minHeight: '*', overflow: 'inherit', height: '*' })
-            ])
-          )
-        ])
-      )
+      state('showing', style({ opacity: 0 })),
+      transition('void => showing', [
+        animate(
+          '100ms cubic-bezier(0.4, 0.0, 0.2, 1)',
+          keyframes([
+            style({ minHeight: '0px', overflow: 'hidden', height: '0px' }),
+            style({ minHeight: '*', overflow: 'inherit', height: '*' })
+          ])
+        )
+      ])
     ])
   ]
 })
@@ -94,7 +91,6 @@ export class FileOutputsComponent implements OnChanges, OnInit {
     this.locationHelper.updateQueryParams(this.location.path(), {
       preview: outputFile.id
     });
-
     this.filePreviewService
       .open({
         data: {
