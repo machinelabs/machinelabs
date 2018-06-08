@@ -1,17 +1,17 @@
-import { Component, OnInit, OnDestroy, OnChanges, Input } from '@angular/core';
+import { animate, group, state, style, transition, trigger } from '@angular/animations';
 import { DataSource } from '@angular/cdk/collections';
-import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { filter, mergeMap, scan, take } from 'rxjs/operators';
-import { OutputFilesService } from '../../output-files.service';
+import { environment } from '../../../environments/environment';
 import { OutputFile } from '../../models/output-file';
-import { FilePreviewDialogService } from '../file-preview/file-preview-dialog.service';
+import { OutputFilesService } from '../../output-files.service';
+import { SnackbarService } from '../../snackbar.service';
 import { LocationHelper } from '../../util/location-helper';
 import { isImage } from '../../util/output';
-import { SnackbarService } from '../../snackbar.service';
-import { environment } from '../../../environments/environment';
-import { trigger, style, animate, transition, query, keyframes, state, group } from '@angular/animations';
+import { FilePreviewDialogService } from '../file-preview/file-preview-dialog.service';
 
 export class OutputFilesDataSource extends DataSource<any> {
   constructor(private outputFilesService: OutputFilesService, private executionId: string) {
