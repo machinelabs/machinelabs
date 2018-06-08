@@ -1,6 +1,5 @@
 <mat-card>
   <mat-card-content>
-    {{hasOutput | async}}
     <ng-container *ngIf="executionId; else noOutputMessage">
       <ng-container *ngIf="hasOutput | async; else loadingSpinner">
         <h3 mat-subheader>Output Files</h3>
