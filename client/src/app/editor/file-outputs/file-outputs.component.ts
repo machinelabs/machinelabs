@@ -1,4 +1,4 @@
-import { animate, group, state, style, transition, trigger } from '@angular/animations';
+import { animate, trigger, transition, query, style, stagger } from '@angular/animations';
 import { DataSource } from '@angular/cdk/collections';
 import { Location } from '@angular/common';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
@@ -32,8 +32,14 @@ export class OutputFilesDataSource extends DataSource<any> {
   styleUrls: ['./file-outputs.component.scss'],
   animations: [
     trigger('staggerIn', [
-      state('void', style({ opacity: '0' })),
-      transition('void => showing', group([animate(150, style({ opacity: 1 }))]))
+      transition('* <=> *', [
+        query('mat-row', style({ opacity: 0 }), { optional: true }),
+        query(
+          'mat-row',
+          stagger(100, [style({ opacity: 0 }), animate('300ms cubic-bezier(0.35, 0, 0.25, 1)', style({ opacity: 1 }))]),
+          { optional: true }
+        )
+      ])
     ])
   ]
 })
