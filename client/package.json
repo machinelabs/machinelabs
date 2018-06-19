@@ -14,7 +14,7 @@
     "lint": "ng lint",
     "lint-and-check": "npm run lint && npm run format:check",
     "prettier": "prettier --config ../.prettierrc --ignore-path ../.prettierignore",
-    "format:base": "npm run prettier -- '{src,e2e}/**/*{.ts,.js,.json,.css,.scss}'",
+    "format:base": "npm run prettier -- \"{src,e2e}/**/*{.ts,.js,.json,.css,.scss}\"",
     "format:check": "npm run format:base -- --list-different",
     "format:fix": "npm run format:base -- --write",
     "ci": "npm run lint-and-check && npm run test:single-run && start-server-and-test start:staging http-get://localhost:4200 e2e",
