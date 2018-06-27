@@ -16,7 +16,6 @@ import { DockerFileUploader } from './uploader/docker-file-uploader';
 import { DockerFileDownloader } from './downloader/docker-file-downloader';
 import { flatMap } from 'lodash';
 import { DockerExecutable } from './docker-availability-lookup';
-import { UserResolver } from '../validation/resolver/user-resolver';
 
 export class DockerRunnerConfig {
   runPartitionSize = '5g';
@@ -44,7 +43,7 @@ export class DockerRunner implements CodeRunner {
    *
    * @param containerId ID of the container to run the command on.
    * @param command Bash command to run.
-   * @param condition Condition which should evaluation to `true` in order to run the command.
+   * @param condition Condition which should evaluate to `true` in order to run the command.
    */
   private runCommand(containerId: string, command: string, condition = true) {
     return of(condition)
@@ -73,42 +72,36 @@ export class DockerRunner implements CodeRunner {
 
     const mounts = flatMap(configuration.mountPoints, mp => ['-v', `${mp.source}:${mp.destination}:ro`]);
 
-    return new UserResolver().resolve(invocation)
+    let mode = ['--read-only'];
+
+    if (environment.writeable) {
+      mode = [
+        '--storage-opt',
+        `size=${configuration.maxWriteableContainerSizeInGb}`
+      ];
+    }
+
+    return this.config
+      .spawn(this.config.dockerExecutable, [
+        'create',
+        '--cap-drop=ALL',
+        `--kernel-memory=${this.config.maxKernelMemoryKb}k`,
+        '--security-opt=no-new-privileges',
+        '-t',
+        ...mode,
+        '--tmpfs',
+        `/run:rw,size=${this.config.runPartitionSize},mode=${this.config.runPartitionMode}`,
+        '--tmpfs',
+        `/tmp:rw,size=${this.config.tmpPartitionSize},mode=${this.config.tmpPartitionMode}`,
+        ...mounts,
+        '-v',
+        `${tmpExecutionDir}:/lab:ro`,
+        `--name`,
+        invocation.id,
+        configuration.imageWithDigest,
+        '/bin/bash'
+      ])
       .pipe(
-        map(user => {
-          if (!environment.writeable) {
-            return ['--read-only'];
-          }
-
-          const plan = PlanCredits.get(user.plan.plan_id);
-
-          return [
-            '--storage-opt',
-            `size=${plan.maxWriteableContainerSizeInGb}`
-          ];
-        }),
-        switchMap(mode =>
-          this.config
-            .spawn(this.config.dockerExecutable, [
-              'create',
-              '--cap-drop=ALL',
-              `--kernel-memory=${this.config.maxKernelMemoryKb}k`,
-              '--security-opt=no-new-privileges',
-              '-t',
-              ...mode,
-              '--tmpfs',
-              `/run:rw,size=${this.config.runPartitionSize},mode=${this.config.runPartitionMode}`,
-              '--tmpfs',
-              `/tmp:rw,size=${this.config.tmpPartitionSize},mode=${this.config.tmpPartitionMode}`,
-              ...mounts,
-              '-v',
-              `${tmpExecutionDir}:/lab:ro`,
-              `--name`,
-              invocation.id,
-              configuration.imageWithDigest,
-              '/bin/bash'
-            ])
-        ),
         map(msg => trimNewLines(msg.str)),
         mergeMap((containerId: string) =>
           this.config.spawnShell(`docker start ${containerId}`).pipe(
@@ -122,8 +115,8 @@ export class DockerRunner implements CodeRunner {
               })
             ),
             concat(this.config.downloader.fetch(containerId, configuration.inputs)),
-            // Only install `requirements.txt` when the container is writeable
-            concat(this.runCommand(containerId, 'cd /run && test -f requirements.txt && pip install -r requirements.txt', environment.writeable)),
+            // Only run the `preExecutionCommand` if the container is writeable
+            concat(this.runCommand(containerId, `cd /run && ${configuration.preExecutionCommand}`, environment.writeable)),
             concat(this.runCommand(containerId, `mkdir /run/outputs && cd /run && python main.py ${args}`)),
             concat(this.config.uploader.handleUpload(invocation, containerId, configuration)),
             concat(this.config.spawnShell(`docker rm -f ${containerId}`).pipe(mute))

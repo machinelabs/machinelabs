@@ -41,6 +41,7 @@ export class LabConfigService {
     config.inputs = publicConfig.inputs;
     config.parameters = publicConfig.parameters;
     config.imageWithDigest = this.dockerImageService.getImageNameWithDigest(publicConfig.dockerImageId);
+    config.preExecutionCommand = publicConfig.preExecutionCommand;
 
     if (isString(publicConfig.hardwareType)) {
       const specifiedHardwareType = publicConfig.hardwareType.toLowerCase();
