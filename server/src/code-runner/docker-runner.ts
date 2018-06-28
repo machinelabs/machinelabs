@@ -3,7 +3,7 @@ import * as rimraf from 'rimraf';
 import { Observable, of } from 'rxjs';
 import { map, mergeMap, finalize, concat, switchMap, takeWhile, filter, tap } from 'rxjs/operators';
 import { CodeRunner } from './code-runner';
-import { File, PlanCredits } from '@machinelabs/models';
+import { File } from '@machinelabs/models';
 import { writeDirectory } from '@machinelabs/core';
 import { Invocation } from '@machinelabs/models';
 import { InternalLabConfiguration } from '../models/lab-configuration';
@@ -48,6 +48,7 @@ export class DockerRunner implements CodeRunner {
   private runCommand(containerId: string, command: string, condition = true) {
     return of(condition)
       .pipe(
+        // Stop the stream when the `condition` is `false`
         filter(Boolean),
         switchMap(() =>
           this.config.spawn(this.config.dockerExecutable, [
