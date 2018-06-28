@@ -75,6 +75,11 @@ export class LabConfigCompletionProvider implements CompletionItemProvider {
           description: 'List of globbing patterns that should be excluded when pushing the lab.'
         }
       ]
+    },
+    {
+      name: 'preExecutionCommand',
+      type: 'keyword',
+      description: 'Specifies the command that will be executed before running the lab.'
     }
   ];
 
