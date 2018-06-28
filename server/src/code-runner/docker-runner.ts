@@ -73,14 +73,9 @@ export class DockerRunner implements CodeRunner {
 
     const mounts = flatMap(configuration.mountPoints, mp => ['-v', `${mp.source}:${mp.destination}:ro`]);
 
-    let mode = ['--read-only'];
-
-    if (environment.writeable) {
-      mode = [
-        '--storage-opt',
-        `size=${configuration.maxWriteableContainerSizeInGb}`
-      ];
-    }
+    const mode = environment.writeable
+      ? ['--storage-opt', `size=${configuration.maxWriteableContainerSizeInGb}`]
+      : ['--read-only'];
 
     return this.config
       .spawn(this.config.dockerExecutable, [
