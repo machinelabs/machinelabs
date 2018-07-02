@@ -53,6 +53,8 @@ export class FileOutputsComponent implements OnChanges, OnInit {
   hasOutput: Observable<boolean>;
 
   isImage = isImage;
+  data: OutputFile[];
+  showTable: boolean;
 
   constructor(
     public outputFilesService: OutputFilesService,
@@ -81,8 +83,18 @@ export class FileOutputsComponent implements OnChanges, OnInit {
   }
 
   ngOnChanges() {
-    this.dataSource = new OutputFilesDataSource(this.outputFilesService, this.executionId);
-    this.hasOutput = this.outputFilesService.hasOutputFiles(this.executionId);
+    this.showTable = false;
+
+    // jsut a copy of the datasource connect function.
+    this.outputFilesService
+      .observeOutputFilesFromExecution(this.executionId)
+      .pipe(scan((acc: OutputFile[], val: OutputFile) => [val, ...acc], []))
+      .subscribe(data => {
+        //set the data to a local prop.
+        this.data = data;
+        // show the table when we have data.
+        this.showTable = true;
+      });
   }
 
   openPreview(outputFile: OutputFile) {
