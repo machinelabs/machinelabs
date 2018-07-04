@@ -112,7 +112,7 @@ export class DockerRunner implements CodeRunner {
             ),
             concat(this.config.downloader.fetch(containerId, configuration.inputs)),
             // Only run the `preExecutionCommand` if the container is writeable
-            concat(this.runCommand(containerId, `cd /run && ${configuration.preExecutionCommand}`, environment.writeable)),
+            concat(this.runCommand(containerId, `cd /run && ${configuration.preExecutionCommand}`, environment.writeable && configuration.preExecutionCommand.trim().length > 0)),
             concat(this.runCommand(containerId, `mkdir /run/outputs && cd /run && python main.py ${args}`)),
             concat(this.config.uploader.handleUpload(invocation, containerId, configuration)),
             concat(this.config.spawnShell(`docker rm -f ${containerId}`).pipe(mute))
