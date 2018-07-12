@@ -8,7 +8,7 @@ import { LAB_STUB, EDITOR_SERVICE_STUB } from '../../../test-helper/stubs';
 import { FileTreeComponent } from './file-tree.component';
 import { EditorService } from '../editor.service';
 import { FileTreeService } from './file-tree.service';
-import { NameDialogService } from 'app/editor/name-dialog/name-dialog-service';
+import { NameDialogService } from '../name-dialog/name-dialog-service';
 
 describe('FileTreeComponent', () => {
   let fixture: ComponentFixture<FileTreeComponent>;

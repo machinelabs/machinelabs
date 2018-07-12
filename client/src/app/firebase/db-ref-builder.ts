@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
-import { environment } from 'environments/environment';
-import { DATABASE } from 'app/app.tokens';
+import { environment } from '../../environments/environment';
+import { DATABASE } from '../app.tokens';
 import { ObservableDbRef } from './observable-db-ref';
 
 @Injectable()

@@ -1,5 +1,5 @@
 import { Component, Inject, EventEmitter, HostListener } from '@angular/core';
-import { OutputFile } from 'app/models/output-file';
+import { OutputFile } from '../../../models/output-file';
 import { trigger, state, style, transition, animate, AnimationEvent } from '@angular/animations';
 import { ESCAPE } from '@angular/cdk/keycodes';
 

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { filter, map } from 'rxjs/operators';
-import { NameDialogComponent, NameDialogType } from 'app/editor/name-dialog/name-dialog.component';
-import { FileTreeService } from 'app/editor/file-tree/file-tree.service';
+import { NameDialogComponent, NameDialogType } from './name-dialog.component';
+import { FileTreeService } from '../file-tree/file-tree.service';
 import { File, Directory } from '@machinelabs/models';
 import { updateFileInDirectory } from '@machinelabs/core';
 

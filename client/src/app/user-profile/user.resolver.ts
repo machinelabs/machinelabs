@@ -5,7 +5,7 @@ import { tap, catchError } from 'rxjs/operators';
 
 import { LabStorageService } from '../lab-storage.service';
 import { SnackbarService } from '../snackbar.service';
-import { UserService } from 'app/user/user.service';
+import { UserService } from '../user/user.service';
 import { User } from '../models/user';
 
 @Injectable()
