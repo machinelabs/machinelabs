@@ -23,7 +23,7 @@ import { getFileFromPath } from '@machinelabs/core';
 import { LocationHelper } from '../util/location-helper';
 import { RemoteLabExecService } from './remote-code-execution/remote-lab-exec.service';
 import { SnackbarService } from '../snackbar.service';
-import { LabExecutionService } from 'app/lab-execution.service';
+import { LabExecutionService } from '../lab-execution.service';
 import { LabStorageService } from '../lab-storage.service';
 import { createSkipTextHelper } from './util/skip-helper';
 import { FileTreeService } from './file-tree/file-tree.service';
@@ -44,7 +44,7 @@ export enum LabNameTruncationWordCount {
   Web = 10
 }
 
-import { getMainFile } from 'app/util/directory';
+import { getMainFile } from '../util/directory';
 
 export interface ListenAndNotifyOptions {
   inPauseMode: () => boolean;

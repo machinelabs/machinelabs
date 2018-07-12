@@ -22,7 +22,7 @@ import { LabExecutionService } from './lab-execution.service';
 import { OutputFilesService } from './output-files.service';
 import { LoginService } from './login.service';
 import { DockerImageService } from './docker-image.service';
-import { UserService } from 'app/user/user.service';
+import { UserService } from './user/user.service';
 import { AuthService, FirebaseAuthService, OfflineAuthService } from './auth';
 import { SnackbarService } from './snackbar.service';
 import { LocationHelper } from './util/location-helper';

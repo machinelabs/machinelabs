@@ -12,11 +12,11 @@ export function deployClient(project, env) {
   }
 
   return concat(
-    stdout(chalk.green(`Deploying client to ${project} with env=${env}`)),
+    stdout(chalk.green(`Deploying client to ${project} with configuration=${env}`)),
 
     spawnShell(`(cd ./client &&
       npm run node_modules &&
-      npx ng build --prod --environment=${env} &&
+      npx ng build --prod --configuration=${env} &&
       npx firebase use ${project} &&
       npx firebase deploy)`),
 

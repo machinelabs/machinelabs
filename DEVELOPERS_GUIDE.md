@@ -216,7 +216,7 @@ export const environment = {
 
 ##### Client environment files
 
-We can repeat the process for the client. Create a file `environment.personal.ts` in `client/src/environments`. This file is ignored by source control. Feel free to add other environment files by creating a `environment.[NAME].ts` file and adding an entry in [angular-cli.json](https://github.com/angular/angular-cli/wiki/build#build-targets-and-environment-files) accordingly.
+We can repeat the process for the client. Create a file `environment.personal.ts` in `client/src/environments`. This file is ignored by source control. Feel free to add other environment files by creating a `environment.[NAME].ts` file and adding an entry in [angular.json](https://github.com/angular/angular-cli/wiki/stories-application-environments) accordingly.
 
 The contents of your environment file for the client should look something like this:
 
@@ -273,7 +273,7 @@ To run the client, we use Angular CLI, as the client is an Angular app. All we h
 
 ```
 $ cd client
-$ ng serve --env=personal
+$ ng serve --configuration=personal
 ```
 
 **That's it!** You can now open your favourite browser at `localhost:4200` and use the app.

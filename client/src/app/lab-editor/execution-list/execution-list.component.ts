@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angu
 import { Observable } from 'rxjs';
 import { MatDialog, MatDialogRef } from '@angular/material';
 
-import { UserService } from 'app/user/user.service';
+import { UserService } from '../../user/user.service';
 import { RemoteLabExecService } from '../../editor/remote-code-execution/remote-lab-exec.service';
 import { LabExecutionService } from '../../lab-execution.service';
 import { SnackbarService } from '../../snackbar.service';

@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { snapshotToValue } from '../rx/snapshotToValue';
 
-import { AuthService } from 'app/auth';
+import { AuthService } from '../auth';
 import { DbRefBuilder } from '../firebase/db-ref-builder';
 import { LoginUser, User } from '../models/user';
 import { Execution } from '../models/execution';
