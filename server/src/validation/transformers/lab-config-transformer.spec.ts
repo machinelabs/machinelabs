@@ -37,7 +37,7 @@ describe.only('when invoked without plan', () => {
 
       LAB_CONFIG_TRANSFORMER(map);
 
-      expect(config).toEqual({ maxFileUploads: 0, maxUploadFileSizeMb: 0 });
+      expect(config).toEqual({ maxFileUploads: 0, maxUploadFileSizeMb: 0, maxWriteableContainerSizeInGb: 0 });
     }).not.toThrow();
   });
 });
@@ -52,7 +52,7 @@ describe.only('when invoked with plan', () => {
 
       LAB_CONFIG_TRANSFORMER(map);
 
-      expect(config).toEqual({ maxFileUploads: 5, maxUploadFileSizeMb: 20 });
+      expect(config).toEqual({ maxFileUploads: 5, maxUploadFileSizeMb: 20, maxWriteableContainerSizeInGb: 6 });
     }).not.toThrow();
   });
 });
