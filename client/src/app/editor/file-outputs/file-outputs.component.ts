@@ -1,10 +1,22 @@
-import { animate, trigger, transition, query, style, stagger } from '@angular/animations';
+import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
 import { DataSource } from '@angular/cdk/collections';
 import { Location } from '@angular/common';
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { filter, mergeMap, scan, take } from 'rxjs/operators';
+import { merge, Observable, of, Subject } from 'rxjs';
+import {
+  delay,
+  distinctUntilChanged,
+  filter,
+  map,
+  mapTo,
+  mergeMap,
+  scan,
+  share,
+  switchMap,
+  take,
+  takeUntil
+} from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { OutputFile } from '../../models/output-file';
 import { OutputFilesService } from '../../output-files.service';
@@ -21,7 +33,7 @@ export class OutputFilesDataSource extends DataSource<any> {
   connect(): Observable<OutputFile[]> {
     return this.outputFilesService
       .observeOutputFilesFromExecution(this.executionId)
-      .pipe(scan((acc: OutputFile[], val: OutputFile) => [val, ...acc], []));
+      .pipe(scan((acc: OutputFile[], val: OutputFile) => [val, ...acc], []), share());
   }
 
   disconnect() {}
@@ -47,14 +59,12 @@ export class FileOutputsComponent implements OnChanges, OnInit {
   @Input() executionId: string;
 
   displayedColumns = ['name', 'created', 'size', 'contentType', 'actions'];
-
   dataSource: OutputFilesDataSource;
-
   hasOutput: Observable<boolean>;
-
   isImage = isImage;
-  data: OutputFile[];
-  showTable: boolean;
+  loadingState$: Observable<boolean>;
+  observingState$: Observable<boolean>;
+  executionId$ = new Subject<string>();
 
   constructor(
     public outputFilesService: OutputFilesService,
@@ -69,32 +79,39 @@ export class FileOutputsComponent implements OnChanges, OnInit {
     const outputFileId = this.route.snapshot.queryParamMap.get('preview');
 
     if (outputFileId) {
-      this.hasOutput
-        .pipe(
-          filter(hasOutput => hasOutput),
-          mergeMap(() => this.dataSource.connect()),
-          mergeMap(outputFiles => outputFiles),
-          filter(outputFile => outputFile.id === outputFileId),
-          filter(outputFile => isImage(outputFile.name)),
-          take(1)
-        )
-        .subscribe(outputFile => this.openPreview(outputFile));
+      this.executionId = outputFileId;
     }
+
+    const outputFiles$ = this.executionId$.pipe(
+      distinctUntilChanged(),
+      switchMap(() => this.outputFilesService.hasOutputFiles(this.executionId)),
+      filter(hasOutput => hasOutput),
+      mergeMap(() => this.dataSource.connect())
+    );
+
+    const loadingTimeout$ = of(false).pipe(delay(8000), share());
+    const loading$ = outputFiles$.pipe(map(outputFiles => !!outputFiles.length), takeUntil(loadingTimeout$));
+
+    this.loadingState$ = merge(loading$, loadingTimeout$);
+    this.observingState$ = this.loadingState$.pipe(filter(loading => !loading), mapTo(true));
+
+    outputFiles$
+      .pipe(
+        mergeMap(outputFiles => outputFiles),
+        filter(outputFile => outputFile.id === this.executionId),
+        filter(outputFile => isImage(outputFile.name)),
+        take(1)
+      )
+      .subscribe(outputFile => this.openPreview(outputFile));
   }
 
-  ngOnChanges() {
-    this.showTable = false;
-
-    // jsut a copy of the datasource connect function.
-    this.outputFilesService
-      .observeOutputFilesFromExecution(this.executionId)
-      .pipe(scan((acc: OutputFile[], val: OutputFile) => [val, ...acc], []))
-      .subscribe(data => {
-        //set the data to a local prop.
-        this.data = data;
-        // show the table when we have data.
-        this.showTable = true;
-      });
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.executionId) {
+      const newExecutionid = changes.executionId.currentValue ? changes.executionId.currentValue : this.executionId;
+      this.executionId = newExecutionid;
+      this.dataSource = new OutputFilesDataSource(this.outputFilesService, this.executionId);
+      this.executionId$.next(this.executionId);
+    }
   }
 
   openPreview(outputFile: OutputFile) {
