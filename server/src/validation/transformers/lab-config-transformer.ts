@@ -12,7 +12,7 @@ export const LAB_CONFIG_TRANSFORMER = (resolved: ResolvedMap) => {
     const planId = !user.plan ? PlanId.None : user.plan.plan_id;
     const userCredits = PlanCredits.get(planId);
 
-    config.maxWriteableContainerSizeInGb = userCredits.maxWriteableContainerSizeInGb
+    config.maxWriteableContainerSizeInGb = userCredits.maxWriteableContainerSizeInGb;
 
     if (userCredits) {
       config.maxFileUploads = userCredits.maxFileUploads;
