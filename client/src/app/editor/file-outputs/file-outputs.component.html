@@ -1,10 +1,9 @@
 <mat-card>
   <mat-card-content>
-
     <ng-container *ngIf="executionId; else noOutputMessage">
-      <ng-container *ngIf="showTable; else loadingSpinner">
+      <ng-container *ngIf="observingState$ | async; else loadingSpinner">
         <h3 mat-subheader>Output Files</h3>
-        <mat-table #table [dataSource]="data" >
+        <mat-table #table [dataSource]="dataSource">
           <ng-container matColumnDef="name">
             <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
             <mat-cell *matCellDef="let row">
