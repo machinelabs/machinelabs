@@ -50,6 +50,12 @@ const completions = [
     kind: 9,
     insertText: 'cli: ',
     documentation: 'Specifies the configuration when using the MachineLabs CLI.'
+  },
+  {
+    label: 'preExecutionCommand',
+    kind: 9,
+    insertText: 'preExecutionCommand: ',
+    documentation: 'Specifies the command that will be executed before running the lab.'
   }
 ];
 
