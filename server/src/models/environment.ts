@@ -8,6 +8,7 @@ export default interface Environment {
     messagingSenderId: string;
   };
   serverId: string;
+  writeable?: boolean;
   pullImages?: boolean;
   rootMountPath: string;
   slackLogging?: {
