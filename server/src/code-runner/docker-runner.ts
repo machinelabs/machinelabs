@@ -1,6 +1,6 @@
 import { exec } from 'child_process';
 import * as rimraf from 'rimraf';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { map, mergeMap, finalize, concat } from 'rxjs/operators';
 import { CodeRunner } from './code-runner';
 import { File } from '@machinelabs/models';

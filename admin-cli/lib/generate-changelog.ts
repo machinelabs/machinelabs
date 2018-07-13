@@ -2,8 +2,7 @@ import * as process from 'process';
 import * as conventionalChangelog from 'conventional-changelog';
 import * as chalk from 'chalk';
 import * as fs from 'fs';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { Observable, of } from 'rxjs';
 import { tap, catchError, scan, last } from 'rxjs/operators';
 import { conventionalChangelogObservable } from './conventional-changelog-observable';
 

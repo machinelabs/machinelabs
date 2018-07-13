@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 
 import { UserService } from '../user/user.service';
 import { LabStorageService } from '../lab-storage.service';

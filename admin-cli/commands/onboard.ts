@@ -1,8 +1,7 @@
 import { createDb } from '../lib/create-db';
 import { getEnv } from '../lib/get-env';
 import { ObservableDbRef } from '@machinelabs/core';
-import { of } from 'rxjs/observable/of';
-import { empty } from 'rxjs/observable/empty';
+import { of, EMPTY } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 
 const hasArgsForOnboard = argv =>
@@ -43,7 +42,7 @@ const onboard = argv => {
               .pipe(map(_ => snapshot.val()));
           }
 
-          return empty();
+          return EMPTY;
         })
       )
       .subscribe(

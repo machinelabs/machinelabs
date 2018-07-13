@@ -1,7 +1,9 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 
-const config = Object.assign({}, functions.config().firebase, {
+const firebaseConfig = JSON.parse(process.env.FIREBASE_CONFIG);
+
+const config = Object.assign({}, firebaseConfig, {
   databaseAuthVariableOverride: {
     uid: 'SYSTEM_USER'
   }

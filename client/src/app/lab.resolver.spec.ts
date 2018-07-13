@@ -1,7 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material';
 
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 
 import { LabResolver } from './lab.resolver';
 import { LabStorageService } from './lab-storage.service';

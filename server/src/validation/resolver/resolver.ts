@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Invocation } from '@machinelabs/models';
 
 export interface Resolver {

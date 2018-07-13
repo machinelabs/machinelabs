@@ -1,3 +1,4 @@
+import { throwError, Observable } from 'rxjs';
 import program = require('commander');
 import * as chalk from 'chalk';
 import { refBuilder } from '../firebase/fb';
@@ -7,7 +8,6 @@ import { loginFromCache } from '../lib/auth/auth';
 import { writeDirectory, LabApi, parseLabDirectory, parseMlYamlFromPath } from '@machinelabs/core';
 import { writeMlYamlToPath, writeMlYaml, ML_YAML_FILENAME } from '@machinelabs/core';
 import { Lab } from '@machinelabs/models';
-import { Observable } from 'rxjs/Observable';
 import { switchMap, map, catchError, tap } from 'rxjs/operators';
 
 program
@@ -53,7 +53,7 @@ program
               }),
               catchError(error => {
                 console.error(chalk.default.red('Pull failed. Try logging in again with `ml login`.'));
-                return Observable.throw(error);
+                return throwError(error);
               })
             )
         )

@@ -1,5 +1,4 @@
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { Lab, File, instanceOfFile, MountOption, HardwareType } from '@machinelabs/models';
 import { PublicLabConfiguration, InternalLabConfiguration, ScriptParameter } from '../models/lab-configuration';

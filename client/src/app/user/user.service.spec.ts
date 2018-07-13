@@ -5,8 +5,7 @@ import { AuthService } from '../auth';
 import { DATABASE } from '../app.tokens';
 import { DbRefBuilder } from '../firebase/db-ref-builder';
 import { FirebaseMock } from '../../test-helper/firebase-mock';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { Observable, of } from 'rxjs';
 
 describe('UserService', () => {
   let authService: AuthService;

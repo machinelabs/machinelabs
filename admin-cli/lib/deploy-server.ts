@@ -1,7 +1,5 @@
 import * as chalk from 'chalk';
-import { concat } from 'rxjs/observable/concat';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-import { defer } from 'rxjs/observable/defer';
+import { concat, fromEvent, defer } from 'rxjs';
 import { takeWhile, mergeMap } from 'rxjs/operators';
 import { OutputType, stdout, spawnShell } from '@machinelabs/core';
 import { factory } from './execute';
@@ -71,7 +69,7 @@ const copyServer = (serverName: string, project: string, zone: string) => {
   const endOfProcessIndicator = 'a1c80580-1505-4555-814c-301b1c5fff98';
 
   return defer(() => {
-    const term = pty.spawn(
+    const term: any = pty.spawn(
       `/bin/bash`,
       [
         '-c',

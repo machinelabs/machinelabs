@@ -1,15 +1,12 @@
 import { writeFileSync, mkdirSync, existsSync } from 'fs';
 import { spawnShell, OutputType } from '../reactive-process';
-import { Observable } from 'rxjs/Observable';
-import { defer } from 'rxjs/observable/defer';
-import { _throw } from 'rxjs/observable/throw';
-import { of } from 'rxjs/observable/of';
+import { Observable, defer, throwError, of } from 'rxjs';
 
 import { Directory, LabDirectory, File, instanceOfFile, instanceOfDirectory } from '@machinelabs/models';
 
 export const writeDirectory = (directory: Directory, skipRoot?: boolean) => {
   if (!skipRoot && !directory.name) {
-    return defer(() => _throw('Root directory has no name.'));
+    return defer(() => throwError('Root directory has no name.'));
   }
 
   directory.name = skipRoot ? '' : directory.name;

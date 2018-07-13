@@ -1,6 +1,5 @@
 import { SpawnOptions, spawn as _spawn } from 'child_process';
-import { Observable } from 'rxjs/Observable';
-import { defer } from 'rxjs/observable/defer';
+import { Observable, defer } from 'rxjs';
 import { toObservableProcess } from './observable-process';
 import { OutputType, ProcessStreamData } from './process-stream-data';
 

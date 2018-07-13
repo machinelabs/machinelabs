@@ -1,7 +1,4 @@
-import { Observable } from 'rxjs/Observable';
-import { forkJoin } from 'rxjs/observable/forkJoin';
-import { merge } from 'rxjs/observable/merge';
-import { from } from 'rxjs/observable/from';
+import { Observable, forkJoin, merge, from } from 'rxjs';
 import { map, mergeMap, filter } from 'rxjs/operators';
 import { ObservableDbRef, DbRefBuilder, DateUtil } from '@machinelabs/core';
 import { ShortMonth, toShortMonth, HardwareType, PlanId, PlanCredits } from '@machinelabs/models';

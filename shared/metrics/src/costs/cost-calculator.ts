@@ -1,5 +1,5 @@
 import { Execution, HardwareType } from '@machinelabs/models';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { scan, last } from 'rxjs/operators';
 import { COST_PER_SECOND_PER_TYPE } from './costs';
 import { CostReport } from './cost-report';
@@ -27,7 +27,7 @@ export class CostCalculator {
 
         return acc;
       }, new CostReport()),
-      last(null, null, new CostReport())
+      last(null, new CostReport())
     );
   }
 

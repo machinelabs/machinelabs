@@ -1,20 +1,21 @@
 import * as admin from 'firebase-admin';
-import * as functions from 'firebase-functions';
-import { TriggerAnnotated, Event } from 'firebase-functions';
-import { DeltaSnapshot } from 'firebase-functions/lib/providers/database';
+import { database } from 'firebase-functions';
+
+import { Change, Runnable, TriggerAnnotated } from 'firebase-functions/lib/cloud-functions';
+import { DataSnapshot } from 'firebase-functions/lib/providers/database';
 
 import { appendEntryToMonthIndex, updateUserExecutions } from './user-execution-index-tools';
 import { pathify } from './util/pathify';
 
-export const postExecutionWrite = functions.database.ref('/executions/{id}/common').onWrite(event => {
+export const postExecutionWrite = database.ref('/executions/{id}/common').onWrite((change, context) => {
   const delta = {};
-  const data = event.data.val();
+  const data = change.after.val();
 
   console.log(`Running post execution handler for ${data.id}`);
 
-  updateVisibleExecutions(event, data, delta);
-  updateLabExecution(event, data, delta);
-  updateUserExecutions(event, data, delta);
+  updateVisibleExecutions(context, data, delta);
+  updateLabExecution(context, data, delta);
+  updateUserExecutions(context, data, delta);
 
   return admin
     .database()
@@ -28,7 +29,7 @@ export const postExecutionWrite = functions.database.ref('/executions/{id}/commo
         !lab.name.toLowerCase().startsWith('untitled') &&
         !lab.is_private
       ) {
-        updateRecentLabs(event, data, delta);
+        updateRecentLabs(context, data, delta);
       }
     })
     .then(_ => console.log(JSON.stringify(delta)))
@@ -40,16 +41,16 @@ export const postExecutionWrite = functions.database.ref('/executions/{id}/commo
     );
 });
 
-function updateVisibleExecutions(event, data, delta) {
+function updateVisibleExecutions(context, data, delta) {
   delta[`/idx/lab_visible_executions/${data.lab.id}/${data.id}`] = data.hidden ? null : true;
   delta[`/idx/user_visible_executions/${data.user_id}/${data.id}`] = data.hidden ? null : true;
 }
 
-function updateLabExecution(event, data, delta) {
+function updateLabExecution(context, data, delta) {
   delta[`/idx/lab_executions/${data.lab.id}/${data.id}`] = true;
 }
 
-function updateRecentLabs(event, data, delta) {
+function updateRecentLabs(context, data, delta) {
   delta[`/idx/recent_labs/${data.lab.id}`] = {
     updated_at: data.started_at,
     lab_id: data.lab.id

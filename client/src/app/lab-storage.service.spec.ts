@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { Inject } from '@angular/core';
 import { File } from '@machinelabs/models';
 import { ML_YAML_FILENAME } from '@machinelabs/core';
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 
 import { LabStorageService } from './lab-storage.service';
 import { LabTemplateService, InMemoryLabTemplateService, DEFAULT_LAB_TPL_ID } from './lab-template.service';

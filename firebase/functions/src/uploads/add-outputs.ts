@@ -1,20 +1,22 @@
 import * as admin from 'firebase-admin';
-import * as functions from 'firebase-functions';
-import { TriggerAnnotated, Event } from 'firebase-functions';
+import { storage } from 'firebase-functions';
+
 import { ObjectMetadata } from 'firebase-functions/lib/providers/storage';
+import { Runnable, TriggerAnnotated } from 'firebase-functions/lib/cloud-functions';
+
 import { UploadType } from './upload-type';
 
-export const bucketChange = functions.storage.object().onChange(event => {
+export const bucketChange = storage.object().onFinalize((data, context) => {
   if (
-    !event.data ||
-    event.data.metageneration > 1 ||
-    !event.data.metadata ||
-    event.data.metadata['type'] !== UploadType.ExecutionOutput
+    !data ||
+    parseInt(data.metageneration, 10) > 1 ||
+    !data.metadata ||
+    data.metadata['type'] !== UploadType.ExecutionOutput
   ) {
     return Promise.resolve(true);
   }
 
-  const { execution_id, user_id, name } = event.data.metadata;
+  const { execution_id, user_id, name } = data.metadata;
 
   const id = admin
     .database()
@@ -26,10 +28,10 @@ export const bucketChange = functions.storage.object().onChange(event => {
     execution_id,
     user_id,
     name,
-    path: event.data.name,
+    path: data.name,
     content_type: '',
     created_at: Date.now(),
-    size_bytes: event.data.size
+    size_bytes: data.size
   };
 
   return admin
