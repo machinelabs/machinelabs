@@ -53,6 +53,8 @@ describe('.run(lab)', () => {
     const conf: InternalLabConfiguration = {
       maxFileUploads: 5,
       maxUploadFileSizeMb: 20,
+      maxWriteableContainerSizeInGb: 6,
+      preExecutionCommand: '',
       imageWithDigest: 'bar',
       hardwareType: HardwareType.CPU,
       inputs: [],
