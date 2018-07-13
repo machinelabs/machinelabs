@@ -9,7 +9,7 @@ import { Invocation, InvocationType, HardwareType } from '@machinelabs/models';
 import { DockerExecutable } from './docker-availability-lookup';
 
 describe('.run(lab)', () => {
-  it('should create container, execute code and invoke uploader', done => {
+  (it as any)('should create container, execute code and invoke uploader', (done: any) => {
     const containerId = 'awesome-id';
     const spawn = jest
       .fn()
@@ -119,5 +119,5 @@ describe('.run(lab)', () => {
         expect(uploader.handleUpload.mock.calls.length).toBe(1);
         done();
       });
-  });
+  }, 10);
 });
