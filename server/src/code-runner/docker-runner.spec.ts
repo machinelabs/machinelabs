@@ -68,56 +68,76 @@ describe('.run(lab)', () => {
     runner
       .run(inv, conf)
       .pipe(
-        tap(msg => outgoingMessages.push(msg)),
-        tap(_ => expect(runner.count()).toBe(1)),
+        tap(msg => {
+          console.log('Message', msg);
+          outgoingMessages.push(msg);
+        }),
+        tap(_ => {
+          console.log('After messages');
+          expect(runner.count()).toBe(1);
+        }),
         // The concat ensures that all expectations will run after the finally block
         // of the Observable that is being returned from run
-        concat(of())
+        concat(of()),
+        tap(() => console.log('after concat'))
       )
       .subscribe(null, null, () => {
-        expect(runner.count()).toBe(0);
-        expect(outgoingMessages.length).toBe(3);
-        expect(outgoingMessages[0]).toEqual(stdoutMsg('downloader output'));
-        expect(outgoingMessages[1]).toEqual(stdoutMsg('execution output'));
-        expect(outgoingMessages[2]).toEqual(stdoutMsg('uploader output'));
-        expect(spawn.mock.calls[0]).toEqual([
-          'docker',
-          [
-            'create',
-            '--cap-drop=ALL',
-            '--kernel-memory=1024k',
-            '--security-opt=no-new-privileges',
-            '-t',
-            '--read-only',
-            '--tmpfs',
-            '/run:rw,size=5g,mode=1777',
-            '--tmpfs',
-            '/tmp:rw,size=1g,mode=1777',
-            '-v',
-            '/tmp/4711:/lab:ro',
-            '--name',
-            '4711',
-            'bar',
-            '/bin/bash'
-          ]
-        ]);
-        expect(spawn.mock.calls[1]).toEqual([
-          'docker',
-          ['exec', '-t', 'awesome-id', '/bin/bash', '-c', 'cp -R /lab/* /run']
-        ]);
-        expect(spawn.mock.calls[2]).toEqual([
-          'docker',
-          [
-            'exec',
-            '-t',
-            containerId,
-            '/bin/bash',
-            '-c',
-            `mkdir /run/outputs && cd /run && python main.py --learning_rate=5 --max_steps=200`
-          ]
-        ]);
-        expect(uploader.handleUpload.mock.calls.length).toBe(1);
-        done();
+        try {
+          console.log('We are completed');
+          expect(runner.count()).toBe(0);
+          console.log('We are completed 1');
+          expect(outgoingMessages.length).toBe(3);
+          console.log('We are completed 2');
+          expect(outgoingMessages[0]).toEqual(stdoutMsg('downloader output'));
+          console.log('We are completed 3');
+          expect(outgoingMessages[1]).toEqual(stdoutMsg('execution output'));
+          console.log('We are completed 4');
+          expect(outgoingMessages[2]).toEqual(stdoutMsg('uploader output'));
+          console.log('Outgoing messages checked');
+          expect(spawn.mock.calls[0]).toEqual([
+            'docker',
+            [
+              'create',
+              '--cap-drop=ALL',
+              '--kernel-memory=1024k',
+              '--security-opt=no-new-privileges',
+              '-t',
+              '--read-only',
+              '--tmpfs',
+              '/run:rw,size=5g,mode=1777',
+              '--tmpfs',
+              '/tmp:rw,size=1g,mode=1777',
+              '-v',
+              '/tmp/4711:/lab:ro',
+              '--name',
+              '4711',
+              'bar',
+              '/bin/bash'
+            ]
+          ]);
+          expect(spawn.mock.calls[1]).toEqual([
+            'docker',
+            ['exec', '-t', 'awesome-id', '/bin/bash', '-c', 'cp -R /lab/* /run']
+          ]);
+          expect(spawn.mock.calls[2]).toEqual([
+            'docker',
+            [
+              'exec',
+              '-t',
+              containerId,
+              '/bin/bash',
+              '-c',
+              `mkdir /run/outputs && cd /run && python main.py --learning_rate=5 --max_steps=200`
+            ]
+          ]);
+          console.log('Mocked spawn calls checked');
+          expect(uploader.handleUpload.mock.calls.length).toBe(1);
+          console.log('Calling done here');
+          done();
+        } catch (err) {
+          console.log(err);
+          done(err);
+        }
       });
   });
 });
