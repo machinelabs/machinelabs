@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-content>
     <ng-container *ngIf="executionId; else noOutputMessage">
-      <ng-container *ngIf="hasOutput | async; else noOutputMessage">
+      <ng-container *ngIf="observingState$ | async; else loadingSpinner">
         <h3 mat-subheader>Output Files</h3>
         <mat-table #table [dataSource]="dataSource">
           <ng-container matColumnDef="name">
@@ -31,25 +31,24 @@
           <ng-container matColumnDef="actions">
             <mat-header-cell *matHeaderCellDef></mat-header-cell>
             <mat-cell *matCellDef="let row">
-              <button mat-icon-button color="primary" matTooltip="Preview" (click)="openPreview(row)"
-                [disabled]="!isImage(row.name)" title="Preview file"><mat-icon>visibility</mat-icon>
+              <button mat-icon-button color="primary" matTooltip="Preview" (click)="openPreview(row)" [disabled]="!isImage(row.name)" title="Preview file">
+                <mat-icon>visibility</mat-icon>
               </button>
 
-              <button mat-icon-button color="primary" matTooltip="Copy API Link"
-                ngxClipboard [cbContent]="getApiLink(row)"
-                (cbOnSuccess)="copyDone()" (cbOnError)="copyDone(true)"
-                title="Copy API link"><mat-icon>link</mat-icon>
+              <button mat-icon-button color="primary" matTooltip="Copy API Link" ngxClipboard [cbContent]="getApiLink(row)" (cbOnSuccess)="copyDone()"
+                (cbOnError)="copyDone(true)" title="Copy API link">
+                <mat-icon>link</mat-icon>
               </button>
 
-              <a mat-icon-button color="primary" matTooltip="Download" [attr.download]="row.name"
-                target="_blank" [href]="row.download_url"
-                title="Download file"><mat-icon>file_download</mat-icon>
+              <a mat-icon-button color="primary" matTooltip="Download" [attr.download]="row.name" target="_blank" [href]="row.download_url"
+                title="Download file">
+                <mat-icon>file_download</mat-icon>
               </a>
             </mat-cell>
           </ng-container>
 
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;" @staggerIn></mat-row>
         </mat-table>
       </ng-container>
     </ng-container>
@@ -58,6 +57,11 @@
         <mat-icon class="ml-no-information-message-icon">info_outline</mat-icon>
         <h4 class="ml-no-information-message-headline">No outputs available</h4>
         <p class="ml-no-information-message-text">Select an execution that has generated output files.</p>
+      </div>
+    </ng-template>
+    <ng-template #loadingSpinner>
+      <div class="spinner-wrapper">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
       </div>
     </ng-template>
   </mat-card-content>
