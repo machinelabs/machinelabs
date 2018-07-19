@@ -5,7 +5,7 @@ import { DbRefBuilder } from './firebase/db-ref-builder';
 import { AuthService } from './auth';
 import { OutputFile } from './models/output-file';
 import { Observable, from as fromPromise } from 'rxjs';
-import { map, switchMap, startWith, take, flatMap } from 'rxjs/operators';
+import { map, switchMap, startWith, take, flatMap, tap } from 'rxjs/operators';
 import { snapshotToValue } from './rx/snapshotToValue';
 
 @Injectable()

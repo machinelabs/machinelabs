@@ -1,3 +1,5 @@
+$spinner-color: #4caf4f;
+
 :host {
   padding: 1em;
   display: block;
@@ -10,55 +12,52 @@ mat-card {
   max-width: 80%;
 }
 
-mat-cell {
-  mat-icon {
-    vertical-align: -25%;
-    color: #607d8b;
-    font-size: 1.7em;
-    width: initial;
-    height: initial;
-  }
-
-  a mat-icon {
-    vertical-align: -38%;
-  }
-}
-
-[mat-icon-button][disabled] {
-  mat-icon {
-    opacity: 0.2;
-  }
-}
-
-.mat-column-name {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-
-  .text-ellipsis {
-    display: inline-block;
-    overflow: hidden;
-  }
-}
-
-.mat-column-actions {
+header {
   display: flex;
+  align-items: center;
+
+  h3 {
+    margin-right: 0.5rem;
+  }
 }
 
 .spinner-wrapper {
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex-direction: column;
+  color: $spinner-color;
+  font-size: 0.7rem;
+  margin-left: auto;
+}
 
-  mat-progress-spinner {
-    margin-top: 25px;
-    margin-right: 0.5em;
-    width: 98px !important;
-    height: 98px !important;
+.spinner {
+  width: 25px;
+  height: 25px;
+  position: relative;
+
+  .circle-1,
+  .circle-2 {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: $spinner-color;
+    opacity: 0.6;
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: bounce 2s infinite ease-in-out;
   }
-  .no-output-text {
-    display: flex;
-    justify-content: center;
-    margin-top: 80px;
+
+  .circle-2 {
+    animation-delay: -1s;
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(0.7);
   }
 }

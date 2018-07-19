@@ -1,0 +1,46 @@
+mat-cell {
+  mat-icon {
+    vertical-align: -25%;
+    color: #607d8b;
+    font-size: 1.7em;
+    width: initial;
+    height: initial;
+  }
+
+  a mat-icon {
+    vertical-align: -38%;
+  }
+}
+
+mat-row:last-of-type {
+  border-bottom: 0;
+}
+
+[mat-icon-button][disabled] {
+  mat-icon {
+    opacity: 0.2;
+  }
+}
+
+.mat-column-name {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  .text-ellipsis {
+    display: inline-block;
+    overflow: hidden;
+  }
+}
+
+.mat-column-actions {
+  display: flex;
+}
+
+mat-progress-spinner {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+.no-files-placeholder {
+  margin-top: 1rem;
+}
