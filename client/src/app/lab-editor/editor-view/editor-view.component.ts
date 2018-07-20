@@ -409,14 +409,19 @@ export class EditorViewComponent implements OnInit {
 
   private initExecutionList() {
     this.executions = this.editorService.observeExecutionsForLab(this.lab);
-    this.executions.pipe(take(1), filter(executions => !!executions.length)).subscribe(_ => {
-      if (this.shouldOpenExecutionListOnInit) {
-        this.openExecutionList();
-      }
-      if (this.activeExecutionId && !this.route.snapshot.queryParamMap.get('tab')) {
-        this.editorService.selectConsoleTab();
-      }
-    });
+    this.executions
+      .pipe(
+        take(1),
+        filter(executions => !!executions.length)
+      )
+      .subscribe(_ => {
+        if (this.shouldOpenExecutionListOnInit) {
+          this.openExecutionList();
+        }
+        if (this.activeExecutionId && !this.route.snapshot.queryParamMap.get('tab')) {
+          this.editorService.selectConsoleTab();
+        }
+      });
   }
 
   restoreLab() {

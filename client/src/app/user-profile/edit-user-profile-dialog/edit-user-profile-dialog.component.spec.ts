@@ -56,11 +56,9 @@ describe('EditUserProfileDialogComponent', () => {
     });
   });
 
-  beforeEach(
-    inject([MatDialog], (d: MatDialog) => {
-      dialog = d;
-    })
-  );
+  beforeEach(inject([MatDialog], (d: MatDialog) => {
+    dialog = d;
+  }));
 
   it('should initialize form with user data', () => {
     const dialogRef = dialog.open(EditUserProfileDialogComponent, {

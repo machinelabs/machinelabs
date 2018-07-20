@@ -7,12 +7,12 @@ import { Component } from '@angular/core';
   `,
   styles: [
     `
-    :host {
-      width: 40px;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.24);
-      z-index: 1;
-    }
-  `
+      :host {
+        width: 40px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.24);
+        z-index: 1;
+      }
+    `
   ]
 })
 export class EditorLayoutPanelCtaBarComponent {}

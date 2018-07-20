@@ -7,10 +7,10 @@ import Bricks from 'bricks.js';
   template: '<ng-content></ng-content>',
   styles: [
     `
-    :host {
-      display: block;
-    }
-  `
+      :host {
+        display: block;
+      }
+    `
   ]
 })
 export class MasonryComponent implements OnInit, AfterContentInit {

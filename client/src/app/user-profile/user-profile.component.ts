@@ -78,7 +78,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   edit() {
     this.showEditDialog(this.user)
-      .pipe(filter(user => user), switchMap(user => this.userService.updateUser(user)))
+      .pipe(
+        filter(user => user),
+        switchMap(user => this.userService.updateUser(user))
+      )
       .subscribe(_ => this.snackBar.notifyProfileUpdated());
   }
 

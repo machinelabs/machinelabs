@@ -13,18 +13,18 @@ const { version } = require('../../package.json');
   `,
   styles: [
     `
-    :host {
-      display: block;
-    }
-    ml-progress-bar {
-      height: 3px;
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 6;
-    }
-  `
+      :host {
+        display: block;
+      }
+      ml-progress-bar {
+        height: 3px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 6;
+      }
+    `
   ]
 })
 export class AppComponent implements OnInit {

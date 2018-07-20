@@ -7,12 +7,12 @@ import { Component } from '@angular/core';
   `,
   styles: [
     `
-    :host {
-      display: flex;
-      flex: 1;
-      flex-direction: column;
-    }
-  `
+      :host {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+      }
+    `
   ]
 })
 export class EditorLayoutMainComponent {}

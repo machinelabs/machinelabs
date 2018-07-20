@@ -29,18 +29,18 @@ const isNameAllowed = (fileOrDirectory: File | Directory, parentDirectory: Direc
   templateUrl: './name-dialog.component.html',
   styles: [
     `
-    :host {
-      display: block;
-      width: 500px;
-    }
-    mat-form-field {
-      width: 100%;
-    }
-    mat-hint {
-      width: 100%;
-      text-align: right;
-    }
-  `
+      :host {
+        display: block;
+        width: 500px;
+      }
+      mat-form-field {
+        width: 100%;
+      }
+      mat-hint {
+        width: 100%;
+        text-align: right;
+      }
+    `
   ]
 })
 export class NameDialogComponent implements OnInit {

@@ -67,11 +67,9 @@ describe('EditLabDialogComponent', () => {
     });
   });
 
-  beforeEach(
-    inject([MatDialog], (d: MatDialog) => {
-      dialog = d;
-    })
-  );
+  beforeEach(inject([MatDialog], (d: MatDialog) => {
+    dialog = d;
+  }));
 
   it('should initialize form with lab data', () => {
     const dialogRef = dialog.open(EditLabDialogComponent, {

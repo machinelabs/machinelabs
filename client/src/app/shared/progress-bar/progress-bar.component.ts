@@ -23,7 +23,10 @@ export class ProgressBarComponent implements OnInit {
   constructor(private progressbarService: ProgressBarService, private changeDetectorRef: ChangeDetectorRef) {}
   ngOnInit() {
     this.progressbarService.progressbarEvents
-      .pipe(filter(event => event.eventType === ProgressBarEventType.Visible), map(event => event.value))
+      .pipe(
+        filter(event => event.eventType === ProgressBarEventType.Visible),
+        map(event => event.value)
+      )
       .subscribe(isVisible => {
         this.isVisible = isVisible;
         this.changeDetectorRef.markForCheck();

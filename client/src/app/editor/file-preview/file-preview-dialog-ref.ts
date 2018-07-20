@@ -16,7 +16,10 @@ export class FilePreviewDialogRef {
 
   close(): void {
     this.containerInstance.animationStateChanged
-      .pipe(filter(event => event.phaseName === 'start'), take(1))
+      .pipe(
+        filter(event => event.phaseName === 'start'),
+        take(1)
+      )
       .subscribe(() => {
         this._beforeClose.next();
         this._beforeClose.complete();
@@ -24,7 +27,10 @@ export class FilePreviewDialogRef {
       });
 
     this.containerInstance.animationStateChanged
-      .pipe(filter(event => event.phaseName === 'done' && event.toState === 'leave'), take(1))
+      .pipe(
+        filter(event => event.phaseName === 'done' && event.toState === 'leave'),
+        take(1)
+      )
       .subscribe(() => {
         this.overlayRef.dispose();
         this._afterClosed.next();

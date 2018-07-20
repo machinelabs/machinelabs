@@ -7,12 +7,12 @@ import { Component } from '@angular/core';
   `,
   styles: [
     `
-    :host {
-      display: flex;
-      width: 100%;
-      height: 100%;
-    }
-  `
+      :host {
+        display: flex;
+        width: 100%;
+        height: 100%;
+      }
+    `
   ]
 })
 export class EditorLayoutPanelsComponent {}
