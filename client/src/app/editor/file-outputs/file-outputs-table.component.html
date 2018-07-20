@@ -46,6 +46,17 @@
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
-<div class="no-files-placeholder" *ngIf="!outputFiles?.length">
-  No output files yet, but hold tight, we are listening for them in realtime...
+<div class="message" *ngIf="!outputFiles?.length">
+  <ng-container *ngIf="isLoading && !isExecuting">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    Loading output files...
+  </ng-container>
+  <ng-container *ngIf="!isLoading && !isExecuting">
+    <mat-icon>info_outline</mat-icon>
+    This execution has no output files.
+  </ng-container>
+  <ng-container *ngIf="!outputFiles?.length && isExecuting">
+    <mat-icon>info_outline</mat-icon>
+    No output files yet, but hold tight, we are listening for them in realtime...
+  </ng-container>
 </div>

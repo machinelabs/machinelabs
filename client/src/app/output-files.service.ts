@@ -5,7 +5,7 @@ import { DbRefBuilder } from './firebase/db-ref-builder';
 import { AuthService } from './auth';
 import { OutputFile } from './models/output-file';
 import { Observable, from as fromPromise } from 'rxjs';
-import { map, switchMap, startWith, take, flatMap, tap } from 'rxjs/operators';
+import { map, switchMap, flatMap } from 'rxjs/operators';
 import { snapshotToValue } from './rx/snapshotToValue';
 
 @Injectable()
@@ -34,6 +34,14 @@ export class OutputFilesService {
   }
 
   hasOutputFiles(executionId: string) {
-    return this.observeOutputFilesFromExecution(executionId).pipe(map(output => !!output), startWith(false), take(2));
+    return this.authService.requireAuthOnce().pipe(
+      switchMap(_ =>
+        this.db
+          .executionOutputFilesRef(executionId)
+          .onceValue()
+          .pipe(snapshotToValue)
+      ),
+      map(files => (files ? !!Object.keys(files).length : false))
+    );
   }
 }

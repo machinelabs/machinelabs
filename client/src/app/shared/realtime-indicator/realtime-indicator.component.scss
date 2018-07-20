@@ -1,0 +1,42 @@
+$spinner-color: #4caf4f;
+
+.spinner-wrapper {
+  display: flex;
+  align-items: center;
+  color: $spinner-color;
+  font-size: 0.7rem;
+  margin-left: auto;
+}
+
+.spinner {
+  width: 25px;
+  height: 25px;
+  position: relative;
+
+  .circle-1,
+  .circle-2 {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: $spinner-color;
+    opacity: 0.6;
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: bounce 2s infinite ease-in-out;
+  }
+
+  .circle-2 {
+    animation-delay: -1s;
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(0.7);
+  }
+}

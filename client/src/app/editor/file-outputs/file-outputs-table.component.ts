@@ -23,6 +23,8 @@ import { environment } from '../../../environments/environment';
 })
 export class FileOutputsTableComponent {
   @Input() outputFiles: Array<OutputFile>;
+  @Input() isExecuting: boolean;
+  @Input() isLoading: boolean;
 
   @Output() copyDone = new EventEmitter<string>();
   @Output() preview = new EventEmitter<OutputFile>();

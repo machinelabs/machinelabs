@@ -36,11 +36,26 @@ mat-row:last-of-type {
   display: flex;
 }
 
-mat-progress-spinner {
-  width: 16px !important;
-  height: 16px !important;
-}
-
-.no-files-placeholder {
+.message {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   margin-top: 1rem;
+
+  ::ng-deep mat-progress-spinner,
+  ::ng-deep mat-icon {
+    margin: 0 0.6rem 0 0;
+  }
+
+  mat-progress-spinner {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  mat-icon {
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 24px;
+    line-height: 24px;
+  }
 }

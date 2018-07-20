@@ -1,3 +1,5 @@
+import * as firebase from 'firebase';
+
 import { Injectable } from '@angular/core';
 
 import { LoginUser } from '../models/user';

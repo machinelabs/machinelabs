@@ -3,15 +3,14 @@
     <ng-container *ngIf="executionId; else noOutputMessage">
       <header>
         <h3 mat-subheader>Output Files</h3>
-        <div class="spinner-wrapper">
-          <div class="spinner">
-            <div class="circle-1"></div>
-            <div class="circle-2"></div>
-          </div>
-          <span>REALTIME</span>
-        </div>
+        <ml-realtime-indicator [show]="isExecuting"></ml-realtime-indicator>
       </header>
-      <ml-file-outputs-table [outputFiles]="outputFiles$ | async" (preview)="openPreview($event)" (copyDone)="showClipboardToast()">
+      <ml-file-outputs-table
+        [outputFiles]="outputFiles$ | async"
+        [isExecuting]="isExecuting"
+        [isLoading]="isLoading$ | async"
+        (preview)="openPreview($event)"
+        (copyDone)="showClipboardToast()">
       </ml-file-outputs-table>
     </ng-container>
     <ng-template #noOutputMessage>

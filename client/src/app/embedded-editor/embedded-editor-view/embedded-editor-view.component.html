@@ -38,7 +38,7 @@
         </ml-xterm>
       </ml-editor-layout-panel>
       <ml-editor-layout-panel [class.hidden]="!editorService.outputsTabActive()">
-        <ml-file-outputs [executionId]="executionId"></ml-file-outputs>
+        <ml-file-outputs [lab]="lab" [executionId]="executionId"></ml-file-outputs>
       </ml-editor-layout-panel>
     </ml-editor-layout-panels>
   </ml-editor-layout-main>
