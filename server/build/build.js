@@ -20,4 +20,4 @@ if (!skipShared) {
 } else {
   console.log('--skip-shared used. Not building shared libs.');
 }
-execute('./node_modules/typescript/bin/tsc');
+execute('npx tsc');
