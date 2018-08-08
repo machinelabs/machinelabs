@@ -60,6 +60,14 @@ $ml-execution-card-icon-margin: 5px;
   font-size: 0.8em;
 }
 
+.ml-execution-has-outputs {
+  padding: 0 10px 10px;
+  font-size: 0.9em;
+  color: #888;
+  margin-right: 10px;
+  float: right;
+}
+
 .ml-execution-card-info {
   display: flex;
   align-items: center;
