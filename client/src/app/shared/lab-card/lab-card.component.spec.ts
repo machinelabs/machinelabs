@@ -13,6 +13,7 @@ import { TruncateWordsPipe } from '../truncate-words.pipe';
 import { ExecutionCardComponent } from '../execution-card/execution-card.component';
 import { ExecutionStatus } from '@machinelabs/models';
 import { DistanceInWordsToNowPipe } from '../distance-in-words-to-now.pipe';
+import { OutputFilesService } from '../../output-files.service';
 
 const dummyLab: Lab = {
   id: '1',
@@ -48,7 +49,9 @@ const dummyExecutionsArray = [
     execution: of(dummyExecution)
   }
 ];
-
+const outputFilesServiceStub = {
+  hasOutputFiles: () => of(false)
+};
 @Component({
   template: ''
 })
@@ -77,7 +80,8 @@ describe('LabCardComponent', () => {
           { path: 'editor/:labId/:execId', component: DummyRoutingComponent },
           { path: 'user/:userId', component: DummyRoutingComponent }
         ])
-      ]
+      ],
+      providers: [{ provide: OutputFilesService, useValue: outputFilesServiceStub }]
     });
     location = TestBed.get(Location);
 
