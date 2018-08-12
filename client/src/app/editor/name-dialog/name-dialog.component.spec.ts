@@ -28,11 +28,9 @@ describe('NameDialogComponent', () => {
     });
   });
 
-  beforeEach(
-    inject([MatDialog], (d: MatDialog) => {
-      dialog = d;
-    })
-  );
+  beforeEach(inject([MatDialog], (d: MatDialog) => {
+    dialog = d;
+  }));
 
   it('should have an invalid form if no file name is entered', () => {
     const directory = { name: '', contents: [] };

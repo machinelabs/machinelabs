@@ -10,10 +10,10 @@ import { Component } from '@angular/core';
   `,
   styles: [
     `
-    p {
-      text-align: center;
-    }
-  `
+      p {
+        text-align: center;
+      }
+    `
   ]
 })
 export class NoExecutionDialogComponent {}

@@ -16,6 +16,7 @@ import { FileTreeComponent } from './file-tree/file-tree.component';
 import { NameDialogComponent } from './name-dialog/name-dialog.component';
 import { XtermComponent } from './xterm/xterm.component';
 import { FileOutputsComponent } from './file-outputs/file-outputs.component';
+import { FileOutputsTableComponent } from './file-outputs/file-outputs-table.component';
 import { FilePreviewDialogToolbarComponent } from './file-preview/file-preview-dialog-toolbar/file-preview-dialog-toolbar.component';
 import { FilePreviewDialogComponent } from './file-preview/file-preview-dialog/file-preview-dialog.component';
 
@@ -45,6 +46,7 @@ import { ClipboardModule } from 'ngx-clipboard';
     EditorLayoutFooterComponent,
     FileTreeComponent,
     FileOutputsComponent,
+    FileOutputsTableComponent,
     FilePreviewDialogComponent,
     FilePreviewDialogToolbarComponent,
     NameDialogComponent

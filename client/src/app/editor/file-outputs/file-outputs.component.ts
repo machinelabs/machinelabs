@@ -1,33 +1,33 @@
-import { Component, OnInit, OnDestroy, OnChanges, Input } from '@angular/core';
-import { DataSource } from '@angular/cdk/collections';
-import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ExecutionStatus, Lab } from '@machinelabs/models';
 
-import { Observable } from 'rxjs';
-import { filter, mergeMap, scan, take } from 'rxjs/operators';
+import { Observable, ReplaySubject, merge, of } from 'rxjs';
 
-import { OutputFilesService } from '../../output-files.service';
+import {
+  distinctUntilChanged,
+  filter,
+  mergeMap,
+  scan,
+  share,
+  switchMap,
+  take,
+  startWith,
+  auditTime,
+  delay,
+  mapTo,
+  catchError,
+  skip
+} from 'rxjs/operators';
+
 import { OutputFile } from '../../models/output-file';
-import { FilePreviewDialogService } from '../file-preview/file-preview-dialog.service';
-import { LocationHelper } from '../../util/location-helper';
-import { isImage } from '../../util/output';
+import { OutputFilesService } from '../../output-files.service';
 import { SnackbarService } from '../../snackbar.service';
-
-import { environment } from '../../../environments/environment';
-
-export class OutputFilesDataSource extends DataSource<any> {
-  constructor(private outputFilesService: OutputFilesService, private executionId: string) {
-    super();
-  }
-
-  connect(): Observable<OutputFile[]> {
-    return this.outputFilesService
-      .observeOutputFilesFromExecution(this.executionId)
-      .pipe(scan((acc: OutputFile[], val: OutputFile) => [val, ...acc], []));
-  }
-
-  disconnect() {}
-}
+import { LocationHelper } from '../../util/location-helper';
+import { FilePreviewDialogService } from '../file-preview/file-preview-dialog.service';
+import { isImage } from '../../util/output';
+import { LabExecutionService } from '../../lab-execution.service';
 
 @Component({
   selector: 'ml-file-outputs',
@@ -36,17 +36,17 @@ export class OutputFilesDataSource extends DataSource<any> {
 })
 export class FileOutputsComponent implements OnChanges, OnInit {
   @Input() executionId: string;
+  @Input() lab: Lab;
 
-  displayedColumns = ['name', 'created', 'size', 'contentType', 'actions'];
+  outputFiles$: Observable<OutputFile[]>;
+  isLoading$: Observable<boolean>;
+  executionId$ = new ReplaySubject<string>(1);
 
-  dataSource: OutputFilesDataSource;
-
-  hasOutput: Observable<boolean>;
-
-  isImage = isImage;
+  isExecuting: boolean;
 
   constructor(
     public outputFilesService: OutputFilesService,
+    private labExecutionService: LabExecutionService,
     private snackbarService: SnackbarService,
     private filePreviewService: FilePreviewDialogService,
     private route: ActivatedRoute,
@@ -57,30 +57,79 @@ export class FileOutputsComponent implements OnChanges, OnInit {
   ngOnInit() {
     const outputFileId = this.route.snapshot.queryParamMap.get('preview');
 
-    if (outputFileId) {
-      this.hasOutput
-        .pipe(
-          filter(hasOutput => hasOutput),
-          mergeMap(() => this.dataSource.connect()),
-          mergeMap(outputFiles => outputFiles),
-          filter(outputFile => outputFile.id === outputFileId),
-          filter(outputFile => isImage(outputFile.name)),
-          take(1)
+    const executionSelected$ = this.executionId$.pipe(
+      switchMap(executionId => this.labExecutionService.executionExists(executionId).pipe(catchError(() => of(false)))),
+      filter(Boolean)
+    );
+
+    const executionsAdded$ = this.labExecutionService.observeExecutionsForLab(this.lab).pipe(
+      mergeMap(executions => executions),
+      filter(labExecution => labExecution.id === this.executionId),
+      distinctUntilChanged((a, b) => a.id === b.id),
+      // We skip the first value because on page load 'executionSelected$' already emits the
+      // currently selected execution we want to observe. 'executionsAdded$' should only emit
+      // an execution if the user has started a new one. See comment below on the behavior of
+      // 'observeExecution'.
+      skip(1)
+    );
+
+    // We have to merge those two streams together because somehow, when 'observeExecution' is called
+    // on an execution that was just started, it will never emit a value, although it uses ref.value()
+    // under the hood. Hence, we have to observe newly added executions via 'observeExecutionsForLab'
+    // which uses `child_added` internally. Both in combination allow us to switch between executions
+    // but also observe new executions when once they are created in the DB.
+    merge(executionSelected$, executionsAdded$)
+      .pipe(switchMap(() => this.labExecutionService.observeExecution(this.executionId)))
+      .subscribe(execution => {
+        this.isExecuting = execution.status === ExecutionStatus.Executing;
+      });
+
+    this.isLoading$ = merge(
+      this.executionId$.pipe(mapTo(true)),
+      this.executionId$.pipe(
+        switchMap(executionId => this.outputFilesService.hasOutputFiles(executionId)),
+        // This delay is not artifically slowing down the loading of the output files but
+        // rather used to avoid a flicker for the loading message and the no outputs message.
+        // If output files are available before X ms, the loading message will be hidden.
+        delay(1500)
+      )
+    );
+
+    this.outputFiles$ = this.executionId$.pipe(
+      switchMap(() =>
+        this.outputFilesService.observeOutputFilesFromExecution(this.executionId).pipe(
+          scan((acc: OutputFile[], val: OutputFile) => [...acc, val], []),
+          // auditTime is used to 'buffer' the accumulation of the output files via scan.
+          // Otherwise it will break the stagger animation because the array changes too quickly
+          // and all items are animated at the same time.
+          auditTime(100),
+          startWith([])
         )
-        .subscribe(outputFile => this.openPreview(outputFile));
-    }
+      ),
+      distinctUntilChanged(),
+      share()
+    );
+
+    this.outputFiles$
+      .pipe(
+        mergeMap(outputFiles => outputFiles),
+        filter(outputFile => outputFile.id === outputFileId),
+        filter(outputFile => isImage(outputFile.name)),
+        take(1)
+      )
+      .subscribe(outputFile => this.openPreview(outputFile));
   }
 
-  ngOnChanges() {
-    this.dataSource = new OutputFilesDataSource(this.outputFilesService, this.executionId);
-    this.hasOutput = this.outputFilesService.hasOutputFiles(this.executionId);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.executionId && changes.executionId.currentValue) {
+      this.executionId$.next(this.executionId);
+    }
   }
 
   openPreview(outputFile: OutputFile) {
     this.locationHelper.updateQueryParams(this.location.path(), {
       preview: outputFile.id
     });
-
     this.filePreviewService
       .open({
         data: {
@@ -93,11 +142,7 @@ export class FileOutputsComponent implements OnChanges, OnInit {
       });
   }
 
-  getApiLink(outputFile: OutputFile) {
-    return `${environment.restApiURL}/executions/${outputFile.execution_id}/outputs/${outputFile.name}`;
-  }
-
-  copyDone(error = false) {
+  showClipboardToast(error = false) {
     const message = error ? 'Could not copy link' : 'Link copied';
     this.snackbarService.notify(message);
   }

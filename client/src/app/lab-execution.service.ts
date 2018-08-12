@@ -27,9 +27,11 @@ export class LabExecutionService {
   constructor(private db: DbRefBuilder, private authService: AuthService) {}
 
   observeExecution(id: string): Observable<Execution> {
-    return this.authService
-      .requireAuthOnce()
-      .pipe(switchMap(_ => this.db.executionRef(id).value()), snapshotToValue, mapExecutionLabDirectory);
+    return this.authService.requireAuthOnce().pipe(
+      switchMap(_ => this.db.executionRef(id).value()),
+      snapshotToValue,
+      mapExecutionLabDirectory
+    );
   }
 
   observeExecutionsForLab(lab: Lab): Observable<Array<{ id: string; execution: Observable<Execution> }>> {
@@ -88,9 +90,11 @@ export class LabExecutionService {
   }
 
   getExecution(id: string) {
-    return this.authService
-      .requireAuthOnce()
-      .pipe(switchMap(_ => this.db.executionRef(id).onceValue()), snapshotToValue, mapExecutionLabDirectory);
+    return this.authService.requireAuthOnce().pipe(
+      switchMap(_ => this.db.executionRef(id).onceValue()),
+      snapshotToValue,
+      mapExecutionLabDirectory
+    );
   }
 
   getLatestVisibleExecutionIdForLab(id: string) {
@@ -107,15 +111,18 @@ export class LabExecutionService {
   }
 
   executionExists(id: string) {
-    return this.authService
-      .requireAuth()
-      .pipe(switchMap(_ => this.db.executionRef(id).onceValue()), map((snapshot: any) => !!snapshot.val()));
+    return this.authService.requireAuth().pipe(
+      switchMap(_ => this.db.executionRef(id).onceValue()),
+      map((snapshot: any) => !!snapshot.val())
+    );
   }
 
   executionExistsAndVisible(id: string) {
-    return this.authService
-      .requireAuth()
-      .pipe(switchMap(_ => this.db.executionRef(id).onceValue()), snapshotToValue, map(execution => !execution.hidden));
+    return this.authService.requireAuth().pipe(
+      switchMap(_ => this.db.executionRef(id).onceValue()),
+      snapshotToValue,
+      map(execution => !execution.hidden)
+    );
   }
 
   getExecutionsFromLab(id: string) {

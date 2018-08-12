@@ -23,6 +23,7 @@ import { ExecutionCardComponent } from './execution-card/execution-card.componen
 import { LabCardComponent } from './lab-card/lab-card.component';
 import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 import { ProgressBarService } from './progress-bar/progress-bar.service';
+import { RealtimeIndicatorComponent } from './realtime-indicator/realtime-indicator.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { ProgressBarService } from './progress-bar/progress-bar.service';
     DurationTrackerComponent,
     ExecutionCardComponent,
     LabCardComponent,
-    ProgressBarComponent
+    ProgressBarComponent,
+    RealtimeIndicatorComponent
   ],
   imports: [MachineLabsMaterialModule, CommonModule, RouterModule],
   exports: [
@@ -66,7 +68,8 @@ import { ProgressBarService } from './progress-bar/progress-bar.service';
     DurationTrackerComponent,
     ExecutionCardComponent,
     LabCardComponent,
-    ProgressBarComponent
+    ProgressBarComponent,
+    RealtimeIndicatorComponent
   ]
 })
 export class SharedModule {

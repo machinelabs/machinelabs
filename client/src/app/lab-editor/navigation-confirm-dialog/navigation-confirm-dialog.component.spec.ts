@@ -6,13 +6,11 @@ describe('NavigationConfirmDialogComponent', () => {
   let component: NavigationConfirmDialogComponent;
   let fixture: ComponentFixture<NavigationConfirmDialogComponent>;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [NavigationConfirmDialogComponent]
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [NavigationConfirmDialogComponent]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NavigationConfirmDialogComponent);

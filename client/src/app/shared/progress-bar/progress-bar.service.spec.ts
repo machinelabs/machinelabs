@@ -5,7 +5,10 @@ describe('ProgressBarService', () => {
   it('should set the Visible eventtype to true', done => {
     const svc = new ProgressBarService();
     svc.progressbarEvents
-      .pipe(filter(event => event.eventType === ProgressBarEventType.Visible), map(event => event.value))
+      .pipe(
+        filter(event => event.eventType === ProgressBarEventType.Visible),
+        map(event => event.value)
+      )
       .subscribe(visible => {
         expect(visible).toBe(true);
         done();
@@ -17,7 +20,10 @@ describe('ProgressBarService', () => {
     const svc = new ProgressBarService();
 
     svc.progressbarEvents
-      .pipe(filter(event => event.eventType === ProgressBarEventType.Visible), map(event => event.value))
+      .pipe(
+        filter(event => event.eventType === ProgressBarEventType.Visible),
+        map(event => event.value)
+      )
       .subscribe(visible => {
         expect(visible).toBe(false);
         done();

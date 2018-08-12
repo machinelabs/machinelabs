@@ -1,0 +1,61 @@
+mat-cell {
+  mat-icon {
+    vertical-align: -25%;
+    color: #607d8b;
+    font-size: 1.7em;
+    width: initial;
+    height: initial;
+  }
+
+  a mat-icon {
+    vertical-align: -38%;
+  }
+}
+
+mat-row:last-of-type {
+  border-bottom: 0;
+}
+
+[mat-icon-button][disabled] {
+  mat-icon {
+    opacity: 0.2;
+  }
+}
+
+.mat-column-name {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  .text-ellipsis {
+    display: inline-block;
+    overflow: hidden;
+  }
+}
+
+.mat-column-actions {
+  display: flex;
+}
+
+.message {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 1rem;
+
+  ::ng-deep mat-progress-spinner,
+  ::ng-deep mat-icon {
+    margin: 0 0.6rem 0 0;
+  }
+
+  mat-progress-spinner {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  mat-icon {
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 24px;
+    line-height: 24px;
+  }
+}

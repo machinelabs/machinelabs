@@ -14,6 +14,9 @@ export class DockerImageService {
     return this.db
       .dockerImagesRef()
       .onceValue()
-      .pipe(snapshotToValue, map((data: any) => Object.keys(data).map(id => data[id])));
+      .pipe(
+        snapshotToValue,
+        map((data: any) => Object.keys(data).map(id => data[id]))
+      );
   }
 }

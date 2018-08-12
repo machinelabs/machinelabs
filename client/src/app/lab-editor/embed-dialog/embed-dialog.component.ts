@@ -7,16 +7,16 @@ import { LocationHelper } from '../../util/location-helper';
   templateUrl: './embed-dialog.component.html',
   styles: [
     `
-    textarea {
-      width: 100%;
-      height: 175px;
-      font-size: 0.9em;
-      border: 1px solid #ccc;
-    }
-    p {
-      text-align: center;
-    }
-  `
+      textarea {
+        width: 100%;
+        height: 175px;
+        font-size: 0.9em;
+        border: 1px solid #ccc;
+      }
+      p {
+        text-align: center;
+      }
+    `
   ]
 })
 export class EmbedDialogComponent implements OnInit {

@@ -64,7 +64,7 @@
           </div>
         </ml-editor-layout-panel>
         <ml-editor-layout-panel [class.hidden]="!editorService.outputsTabActive()">
-          <ml-file-outputs [executionId]="activeExecutionId"></ml-file-outputs>
+          <ml-file-outputs [lab]="lab" [executionId]="activeExecutionId"></ml-file-outputs>
         </ml-editor-layout-panel>
       </ml-editor-layout-panels>
       <mat-drawer

@@ -1,57 +1,17 @@
 <mat-card>
   <mat-card-content>
     <ng-container *ngIf="executionId; else noOutputMessage">
-      <ng-container *ngIf="hasOutput | async; else noOutputMessage">
+      <header>
         <h3 mat-subheader>Output Files</h3>
-        <mat-table #table [dataSource]="dataSource">
-          <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
-            <mat-cell *matCellDef="let row">
-              <div class="text-ellipsis">
-                <mat-icon>description</mat-icon> {{row.name}}
-              </div>
-            </mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="created">
-            <mat-header-cell *matHeaderCellDef>Created</mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.created_at | date}} </mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="size">
-            <mat-header-cell *matHeaderCellDef>Size</mat-header-cell>
-            <mat-cell *matCellDef="let row">{{row.size_bytes | digitalFormatUnit}}</mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="contentType">
-            <mat-header-cell *matHeaderCellDef>Content Type</mat-header-cell>
-            <mat-cell *matCellDef="let row">{{row.content_type || '-'}}</mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="actions">
-            <mat-header-cell *matHeaderCellDef></mat-header-cell>
-            <mat-cell *matCellDef="let row">
-              <button mat-icon-button color="primary" matTooltip="Preview" (click)="openPreview(row)"
-                [disabled]="!isImage(row.name)" title="Preview file"><mat-icon>visibility</mat-icon>
-              </button>
-
-              <button mat-icon-button color="primary" matTooltip="Copy API Link"
-                ngxClipboard [cbContent]="getApiLink(row)"
-                (cbOnSuccess)="copyDone()" (cbOnError)="copyDone(true)"
-                title="Copy API link"><mat-icon>link</mat-icon>
-              </button>
-
-              <a mat-icon-button color="primary" matTooltip="Download" [attr.download]="row.name"
-                target="_blank" [href]="row.download_url"
-                title="Download file"><mat-icon>file_download</mat-icon>
-              </a>
-            </mat-cell>
-          </ng-container>
-
-          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-        </mat-table>
-      </ng-container>
+        <ml-realtime-indicator [show]="isExecuting"></ml-realtime-indicator>
+      </header>
+      <ml-file-outputs-table
+        [outputFiles]="outputFiles$ | async"
+        [isExecuting]="isExecuting"
+        [isLoading]="isLoading$ | async"
+        (preview)="openPreview($event)"
+        (copyDone)="showClipboardToast()">
+      </ml-file-outputs-table>
     </ng-container>
     <ng-template #noOutputMessage>
       <div class="ml-no-information-message">

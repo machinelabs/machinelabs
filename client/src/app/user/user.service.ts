@@ -23,7 +23,10 @@ export class UserService {
         this.db
           .userRef(user.uid)
           .onceValue()
-          .pipe(snapshotToValue, map(existingUser => ({ existingUser, user })))
+          .pipe(
+            snapshotToValue,
+            map(existingUser => ({ existingUser, user }))
+          )
       ),
       switchMap(
         data =>
@@ -62,17 +65,24 @@ export class UserService {
   }
 
   saveUser(user: User): Observable<User> {
-    return this.authService.requireAuthOnce().pipe(switchMap(_ => this.db.userRef(user.id).set(user)), map(_ => user));
+    return this.authService.requireAuthOnce().pipe(
+      switchMap(_ => this.db.userRef(user.id).set(user)),
+      map(_ => user)
+    );
   }
 
   updateUser(user: User): Observable<User> {
-    return this.authService
-      .requireAuthOnce()
-      .pipe(switchMap(_ => this.db.userRef(user.id).update(user)), map(_ => user));
+    return this.authService.requireAuthOnce().pipe(
+      switchMap(_ => this.db.userRef(user.id).update(user)),
+      map(_ => user)
+    );
   }
 
   getUser(id: string): Observable<User> {
-    return this.authService.requireAuthOnce().pipe(switchMap(_ => this.db.userRef(id).onceValue()), snapshotToValue);
+    return this.authService.requireAuthOnce().pipe(
+      switchMap(_ => this.db.userRef(id).onceValue()),
+      snapshotToValue
+    );
   }
 
   getCurrentUser(): Observable<User> {
@@ -96,6 +106,9 @@ export class UserService {
   }
 
   getUserPlan() {
-    return this.getCurrentUser().pipe(switchMap(user => this.db.userPlansRef(user.id).onceValue()), snapshotToValue);
+    return this.getCurrentUser().pipe(
+      switchMap(user => this.db.userPlansRef(user.id).onceValue()),
+      snapshotToValue
+    );
   }
 }

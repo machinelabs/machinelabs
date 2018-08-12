@@ -18,10 +18,10 @@ export class MutationObserverFactory {
   template: '<ng-content></ng-content>',
   styles: [
     `
-    :host {
-      display: block;
-    }
-  `
+      :host {
+        display: block;
+      }
+    `
   ]
 })
 export class MasonryItemComponent implements AfterContentInit, OnDestroy {
