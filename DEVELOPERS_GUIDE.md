@@ -94,6 +94,8 @@ Create a project on [firebase.google.com](https://firebase.google.com), you can 
 
 In order to take advantage of your firebase project's authentication features, we have to explicitly activate the authentication providers we want to support in MachineLabs. Right now, those are **GitHub** and **Anonymous**. To activate authentication providers go to **Develop -> Authentication ->  Sign-in Method**. 
 
+*Note*: You will need to create a GitHub application and use its Client ID and Client secret tokens into your firebase authentication configuration. 
+
 #### Configuring Docker image entries
 
 MachineLabs runs users code in docker containers. All available docker containers need to be registered in the database. For that, MachineLabs expects a `docker_images` node that has docker image nodes with the following structure:
@@ -154,11 +156,30 @@ Next we need to deploy firebase rules so not everyone can just go ahead and writ
 $ npx firebase login
 ```
 
-Once logged in, we can deploy the provided rules by executing:
+Once logged in, make sure you update the local configuration file under `firebase/functions/.firebaserc` to point to your own firebase project:
+
+```
+{
+  "projects": {
+    "default": "<PRODUCTION PROJECT_ID>",
+    "machinelabs-staging": "<STAGGING PROJECT_ID>"
+  }
+}
+```
+
+Now, we can deploy the provided rules by executing:
 
 ```
 $ cd firebase/functions
 $ npx yarn run deploy
+```
+
+*Troubleshooting*
+
+If you get a `No project active, but project aliases are available` error, then run the following command: 
+
+```
+$ firebase use <PROJECT_ID>
 ```
 
 ##### Recompile Firebase rules
@@ -169,7 +190,7 @@ You can recompile the database rules like so:
 
 ```
 $ cd firebase
-$ firebase-bolt database.rules.bolt
+$ firebase-bolt rules/database.rules.bolt
 ```
 
 After that you simply deploy the generated `database.rules.json` using either the deploy script, or by deploying them using the firebase CLI like this:
