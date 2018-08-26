@@ -2,6 +2,8 @@ import { Component, OnInit, HostBinding } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationError, NavigationCancel } from '@angular/router';
 import { ProgressBarService } from './shared/progress-bar/progress-bar.service';
 
+import { MetatagService } from './metatag.service';
+
 declare const require: any;
 const { version } = require('../../package.json');
 
@@ -30,7 +32,9 @@ const { version } = require('../../package.json');
 export class AppComponent implements OnInit {
   @HostBinding('attr.ml-version') version = version;
 
-  constructor(private router: Router, private progressBarService: ProgressBarService) {}
+  constructor(private router: Router, private meta: MetatagService, private progressBarService: ProgressBarService) {
+    this.meta.generateTags({});
+  }
 
   ngOnInit() {
     this.router.events.subscribe(event => {
