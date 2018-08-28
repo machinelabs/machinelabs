@@ -26,6 +26,7 @@ import { UserService } from './user/user.service';
 import { AuthService, FirebaseAuthService, OfflineAuthService } from './auth';
 import { SnackbarService } from './snackbar.service';
 import { LocationHelper } from './util/location-helper';
+import { MetatagService } from './metatag.service';
 
 import { AppComponent } from './app.component';
 
@@ -76,6 +77,7 @@ const AnimationsModule = [environment.testing ? NoopAnimationsModule : BrowserAn
     UserService,
     DockerImageService,
     SnackbarService,
+    MetatagService,
     DbRefBuilder,
     { provide: DATABASE, useFactory: databaseFactory },
     { provide: AuthService, useClass: environment.offline ? OfflineAuthService : FirebaseAuthService },
