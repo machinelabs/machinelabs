@@ -1,7 +1,7 @@
 import { exec } from 'child_process';
 import * as rimraf from 'rimraf';
-import { Observable } from 'rxjs';
-import { map, mergeMap, finalize, concat } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, mergeMap, finalize, concat, switchMap, filter } from 'rxjs/operators';
 import { CodeRunner } from './code-runner';
 import { File } from '@machinelabs/models';
 import { writeDirectory } from '@machinelabs/core';
@@ -38,6 +38,23 @@ export class DockerRunner implements CodeRunner {
 
   private processCount = 0;
 
+  /**
+   * Run a command on a container conditionally.
+   *
+   * @param containerId ID of the container to run the command on.
+   * @param command Bash command to run.
+   * @param condition Condition which should evaluate to `true` in order to run the command.
+   */
+  private runCommand(containerId: string, command: string, condition = true) {
+    return of(condition).pipe(
+      // Stop the stream when the `condition` is `false`
+      filter(Boolean),
+      switchMap(() =>
+        this.config.spawn(this.config.dockerExecutable, ['exec', '-t', containerId, '/bin/bash', '-c', command])
+      )
+    );
+  }
+
   run(invocation: Invocation, configuration: InternalLabConfiguration): Observable<ProcessStreamData> {
     const tmpExecutionDir = `/tmp/${invocation.id}`;
     writeDirectory({ name: tmpExecutionDir, contents: invocation.data.directory }).subscribe();
@@ -48,6 +65,10 @@ export class DockerRunner implements CodeRunner {
 
     const mounts = flatMap(configuration.mountPoints, mp => ['-v', `${mp.source}:${mp.destination}:ro`]);
 
+    const mode = environment.writeable
+      ? ['--storage-opt', `size=${configuration.maxWriteableContainerSizeInGb}`]
+      : ['--read-only'];
+
     return this.config
       .spawn(this.config.dockerExecutable, [
         'create',
@@ -55,7 +76,7 @@ export class DockerRunner implements CodeRunner {
         `--kernel-memory=${this.config.maxKernelMemoryKb}k`,
         '--security-opt=no-new-privileges',
         '-t',
-        '--read-only',
+        ...mode,
         '--tmpfs',
         `/run:rw,size=${this.config.runPartitionSize},mode=${this.config.runPartitionMode}`,
         '--tmpfs',
@@ -72,16 +93,7 @@ export class DockerRunner implements CodeRunner {
         map(msg => trimNewLines(msg.str)),
         mergeMap((containerId: string) =>
           this.config.spawnShell(`docker start ${containerId}`).pipe(
-            concat(
-              this.config.spawn(this.config.dockerExecutable, [
-                'exec',
-                '-t',
-                containerId,
-                '/bin/bash',
-                '-c',
-                `cp -R /lab/* /run`
-              ])
-            ),
+            concat(this.runCommand(containerId, 'cp -R /lab/* /run')),
             mute,
             finalize(() =>
               rimraf(tmpExecutionDir, err => {
@@ -91,16 +103,15 @@ export class DockerRunner implements CodeRunner {
               })
             ),
             concat(this.config.downloader.fetch(containerId, configuration.inputs)),
+            // Only run the `preExecutionCommand` if the container is writeable
             concat(
-              this.config.spawn(this.config.dockerExecutable, [
-                'exec',
-                '-t',
+              this.runCommand(
                 containerId,
-                '/bin/bash',
-                '-c',
-                `mkdir /run/outputs && cd /run && python main.py ${args}`
-              ])
+                `cd /run && ${configuration.preExecutionCommand}`,
+                environment.writeable && configuration.preExecutionCommand.trim().length > 0
+              )
             ),
+            concat(this.runCommand(containerId, `mkdir /run/outputs && cd /run && python main.py ${args}`)),
             concat(this.config.uploader.handleUpload(invocation, containerId, configuration)),
             concat(this.config.spawnShell(`docker rm -f ${containerId}`).pipe(mute))
           )

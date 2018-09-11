@@ -10,6 +10,7 @@ export const environment: Environment = {
   },
   serverId: 'ahlem',
   pullImages: true,
+  writeable: true,
   rootMountPath: '/bucket',
   slackLogging: {
     allChannel: 'log-staging-all',

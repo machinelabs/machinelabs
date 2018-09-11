@@ -17,6 +17,7 @@ export interface MountPoint {
 export class PublicLabConfiguration {
   dockerImageId = '';
   hardwareType = HardwareType.CPU;
+  preExecutionCommand = '';
   inputs: Array<LabInput> = [];
   parameters: Array<ScriptParameter> = [];
   mounts: Array<MountOption> = [];
@@ -27,6 +28,8 @@ export class InternalLabConfiguration {
   imageWithDigest = '';
   maxFileUploads = 0;
   maxUploadFileSizeMb = 0;
+  maxWriteableContainerSizeInGb = 0;
+  preExecutionCommand = '';
   hardwareType = HardwareType.CPU;
   inputs: Array<LabInput> = [];
   parameters: Array<ScriptParameter> = [];

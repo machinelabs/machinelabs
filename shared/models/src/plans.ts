@@ -4,6 +4,7 @@ export interface Credits {
   maxFileUploads: number;
   maxUploadFileSizeMb: number;
   maxExecutionConcurrency: number;
+  maxWriteableContainerSizeInGb: number;
 }
 
 export enum PlanId {
@@ -21,7 +22,8 @@ export const PlanCredits = new Map<string, Credits>([
       cpuHoursPerMonth: 0,
       maxFileUploads: 0,
       maxUploadFileSizeMb: 0,
-      maxExecutionConcurrency: 0
+      maxExecutionConcurrency: 0,
+      maxWriteableContainerSizeInGb: 0
     }
   ],
   [
@@ -31,7 +33,8 @@ export const PlanCredits = new Map<string, Credits>([
       cpuHoursPerMonth: Number.POSITIVE_INFINITY,
       maxFileUploads: 20,
       maxUploadFileSizeMb: 150,
-      maxExecutionConcurrency: 8
+      maxExecutionConcurrency: 8,
+      maxWriteableContainerSizeInGb: 20
     }
   ],
   [
@@ -41,7 +44,8 @@ export const PlanCredits = new Map<string, Credits>([
       cpuHoursPerMonth: 72,
       maxFileUploads: 5,
       maxUploadFileSizeMb: 20,
-      maxExecutionConcurrency: 2
+      maxExecutionConcurrency: 2,
+      maxWriteableContainerSizeInGb: 6
     }
   ],
   [
@@ -51,7 +55,8 @@ export const PlanCredits = new Map<string, Credits>([
       cpuHoursPerMonth: 72,
       maxFileUploads: 10,
       maxUploadFileSizeMb: 100,
-      maxExecutionConcurrency: 2
+      maxExecutionConcurrency: 2,
+      maxWriteableContainerSizeInGb: 6
     }
   ]
 ]);
